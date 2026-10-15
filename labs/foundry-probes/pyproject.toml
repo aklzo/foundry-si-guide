@@ -1,0 +1,41 @@
+[project]
+name = "foundry-probes"
+version = "0.1.0"
+description = "Foundry 未検証機能の挙動確認 probe 集(実装例に乗らない機能を単純例で検証)"
+requires-python = ">=3.11"
+dependencies = [
+    # 2026-10-06 検証版を下限に。openai 3.x は HTTP クライアントが httpx2 に変わった
+    # (probe は httpx を直接使わないので影響なし。未使用だった httpx 依存は削除)
+    "openai>=3.24",
+    "azure-identity>=1.26",
+    "azure-ai-projects>=2.8.0",
+    "python-dotenv>=1.2",
+    # 11(トレース本文の振り分け)用: App Insights への送信と Log Analytics の照会(2026-10-06 追加)
+    "azure-monitor-opentelemetry>=1.8.10",
+    "azure-monitor-query>=2.0",
+]
+
+[project.optional-dependencies]
+# 11 の発生源 (c) = MAF のクライアント側スパン。agent-framework-foundry は使わない
+# (azure-ai-projects<2.8.0 の制約を持ち込まないため。チャットは openai/v1 直)
+maf = [
+    "agent-framework-core>=1.20",
+    "agent-framework-openai>=1.15",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/foundry_probes"]
+
+[dependency-groups]
+dev = ["ruff>=0.16"]
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+# probe は「失敗も観察対象」なので blind except を許可する
+ignore = ["BLE001"]

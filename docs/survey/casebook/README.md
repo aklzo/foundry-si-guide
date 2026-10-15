@@ -1,0 +1,72 @@
+# Foundry SI ケースブック — 要件別プレイブック・詰まりどころ索引
+
+> **最終更新:** 2026-09-04 / 2026-09-26(月次更新) / 2026-09-29(P-A11 注記のみ) / 2026-09-30(Port 15 ライブの実測 3 件+probe 10 の 1 件を追加) / 2026-10-06(2026-09-29 以降の差分更新: 02 に 16 件追加・既存 24 件に注記、01 の 7 シナリオと横断節)/ 2026-10-06(ラボの最新化+ライブ検証の還元: 02 に [実測] 14 件追加・P-H25 を両論に書き直し・P-O05 を訂正、01 の 7 シナリオと横断節) / 2026-10-14(差分更新: 02 に 19 件追加・既存 18 件に注記、01 の 9 シナリオと横断節) / **版:** 初版
+> [features](../features/README.md) が「その機能は使えるのか」、[architecture](../architecture/README.md) が「どう組むか」、[proposal](../proposal/README.md) が「どう提案するか」に答えるのに対し、本セットは **「この要件が来たら何を決め、どこで詰まるか」** に答える。公式ドキュメント調査(survey)と実装検証([tech-selection-guide](../../tech-selection-guide.md) / labs)の**間を埋める実務層**で、公開されている第三者の記事(「ハマった」「苦労した」系)も出典として扱う唯一のセット。
+
+## ドキュメント構成
+
+| # | ドキュメント | 内容 | 使うタイミング |
+| --- | --- | --- | --- |
+| 01 | [要件シナリオ別プレイブック](./01-scenario-playbook.md) | SI で頻出する 10 の要件セットについて「ゲート判定 → 推奨構成 → 却下案と理由 → 詰まりどころ → 見積もり・契約で効く点」を 1 シナリオ 1 節で | ヒアリング直後、構成案を 1〜2 に絞るとき |
+| 02 | [詰まりどころ索引](./02-pitfalls-index.md) | 機能・レイヤー別に「症状 → 原因 → 設計上の対処 → 出典」を索引化。出典は **[公式] / [実測] / [記事]** の 3 種を明記 | 設計レビュー前、提案書のリスク欄を書くとき、障害切り分け |
+
+## 出典の格付け(本セット固有のルール)
+
+| 表記 | 意味 | 信頼の置き方 |
+| --- | --- | --- |
+| **[公式]** | Microsoft Learn / 公式ブログ / 公式サンプルリポジトリ | 一次情報。ただし**ページ間で表記が揺れる**ことがある(→ [architecture 10 章 A11](../architecture/10-migration-antipatterns.md#a11-ドキュメントのステータス表記を-1-ページだけ見て判断する)) |
+| **[実測]** | 本リポジトリの labs([maf-ports](../../../labs/maf-ports/README.md) / [foundry-probes](../../../labs/foundry-probes/README.md) / [cu-video-rag](../../../labs/cu-video-rag/README.md))で再現した事実 | 日付・バージョン付きの事実。**版が変われば結論も変わりうる** |
+| **[記事]** | 第三者の公開記事(Zenn / Qiita / Tech Community / GitHub issue / Microsoft Q&A 等) | 二次情報。**執筆時点の挙動**であり、修正済みの可能性がある。採用前に日付と対象バージョンを確認し、可能なら [実測] か [公式] で裏を取る |
+
+**[記事] を載せる基準:** (1) URL を実際に開いて内容を確認できたもの (2) 症状と原因(または回避策)が具体的に書かれているもの (3) 公式ドキュメントだけでは気づけない点を含むもの。「やってみた」だけで詰まりどころのない記事は載せない。
+
+## 使い方(提案フローとの対応)
+
+```
+ proposal/01 ヒアリングシート ──▶ casebook/01 シナリオ照合(最も近い S-xx を 1〜2 本)
+                                        │
+                                        ▼
+                               casebook/02 詰まりどころ抽出(S-xx が参照する P-xx を列挙)
+                                        │
+                                        ▼
+                    提案書のリスク欄 / 設計レビューのチェック項目 / 見積もりの前提条件
+                                        │
+                                        ▼
+                     architecture 該当章で構成を詳細化 → features で GA/プレビューを再確認
+```
+
+- シナリオは「要件の言葉」で引く。複数に跨る案件は、後戻りコストの大きいほう(閉域・マルチテナント・移行期限)を主シナリオにする
+- 詰まりどころは **ID(P-xx)で提案書・設計書から参照**できるようにしてある。案件で新たに踏んだものは 02 に追記し、ID を振る
+
+## 更新運用
+
+**推奨頻度:** 02 は月次(公開記事・GitHub issue の追加)、01 は四半期(architecture と同サイクル)。
+
+**[記事] のウォッチ先:**
+
+| # | ソース | 見るもの |
+| --- | --- | --- |
+| 1 | Zenn(トピック `azureaifoundry` / `microsoftfoundry` / `agentframework`)、Qiita(タグ `AzureAIFoundry` / `MicrosoftFoundry`) | 日本語の「ハマった」「やってみた」記事。Ignite(11 月)・Build(5 月)直後に増える |
+| 2 | [Microsoft Foundry Blog(Tech Community)](https://techcommunity.microsoft.com/category/azure-ai-foundry/blog/azure-ai-foundry-blog) | 公式の「through the corporate firewall」系トラブルシュート記事 |
+| 3 | [microsoft/agent-framework issues](https://github.com/microsoft/agent-framework/issues)、[Azure/azure-sdk-for-python issues(azure-ai-projects)](https://github.com/Azure/azure-sdk-for-python/issues?q=azure-ai-projects)、[microsoft-foundry/foundry-samples issues](https://github.com/microsoft-foundry/foundry-samples/issues) | SDK・サンプルの再現性のある不具合 |
+| 4 | [Microsoft Q&A(Foundry タグ)](https://learn.microsoft.com/en-us/answers/tags/133/azure) | 公式回答つきのトラブル |
+
+**取得のコツ(2026-09-26 追記):** Tech Community の記事は既定の curl / WebFetch だとログインリダイレクトや JS レンダリングで本文が取れないことがあるが、Windows 系ブラウザの User-Agent を付けた `curl -sL` なら本文 HTML を取得できる(公開日は `datePublished`)。個人ブログの 429 はボット対策で、リンク切れではない。
+
+**リンク切れの扱い:** [記事] は削除・移転が起きる。リンク切れを見つけたら行を消さず「(リンク切れ YYYY-MM-DD 確認)」を付記して残す(症状の記録自体に価値があるため)。
+
+**HTML の再生成:** リポジトリルートで `python3 docs/survey/tools/md2html.py casebook`(引数なしで全セット)。
+
+## 更新履歴
+
+| 日付 | 内容 |
+| --- | --- |
+| 2026-10-14 | 2026-10-06〜10-14 の公式変更(Learn 巡回。公開ドキュメントリポジトリは 404)・公開記事・パッケージ更新を反映。**02 追加(19 件):** P-H30(委任された利用者どうしはプラットフォームが隔てない・multiplex でコンテナ側の保存データは自動では分かれない・Foundry User は全セッションを一覧・管理できる — 新機能ではなく文書の整理)・P-A16(Memory の検索ツール出力が `results` → `memories`・TTL は新しいストアだけ・`x-memory-user-id`)・P-A17(Browser Automation の GA 表明とイベント型 `browser_automation_preview_call`・閉域非対応)・P-N21(VNet 注入なしでは PE 付き Search に繋がらないことがある)・P-R17(Foundry IQ の retrieve の 401 / 502・SharePoint ソースはカスタム列を取り込まない — [記事])・P-M18(Fireworks の Pay-per-token がリタイア表にない期限で終了)・P-M19(Bing 系ツールではプロンプトキャッシュが効かない)・P-O22(Simulation seed は SDK 2.8.0 で作れない)・P-O23(Quality Grader は実行不可)・P-O24(トレース評価は Learn が 2.7.0 固定、2.8.0 と食い違う)・P-O25(turn 専用評価器のスキップ / エラーが公式間で食い違う)・P-O26(注釈は閲覧できても書き込めない)・P-G12(既定ストリーミングでも末尾 15〜30 語が適用前に届きうる)・P-F20(MAF ホスティングの既定ストアは更新後に旧会話を読まない)・P-F21(`steerable_conversations=True` で RuntimeError)・P-C15(azd はセッション ID をエージェント単位で保存 → `--new-session`)・P-C16(azd 拡張 beta.18 / 19 の破壊的変更・`-m` 非推奨・`textField` 必須)・P-C17(Search の自動生成 DNS ラベル)・P-D11(TTS の 429 は多くが容量不足)。**02 注記(※2026-10-14):** P-H13(idle timeout 上限の両論 240 分 / 60 分)・H20・H29(`azure-ai-agentserver-responses` 2.3.0 stable と flush 既定 background)・H24(公式が他人の `previous_response_id` 不可を明記)・A11(`api-version=v1` 省略で 400 が公式化)・A12(JS 2.8.0 の creator ID、azd の対応 PR #10242 はマージ済み・未リリース)・N03・C06(capability settings ページの 301)・N12(REST 公開手順・受信は公衆インターネット経由・ZIP の代替)・R12(本日が廃止日)・M06(Fireworks 3 モデルが既定プール入り)・M07(gpt-4.1-nano 2027-04-14・Grok 最低 6 か月)・M08・D09(Voice Live の処理スコープ表記・Japan East の音声機能は Global)・O19(`score_model` と Rubric 評価器の区別)・G04・X08(ゲスト不可)・D08(voice の tool search・WebRTC 制約の記述消失)。**01:** S-01 / S-03 / S-04(capability settings・サンプラー)/ S-05(末尾漏れ・router)/ S-06(ユーザー分離の明文化)/ S-08 / S-09(DI / CU の公式の選び方)/ S-10(処理スコープ・テレフォニーの voice agents 誘導・TTS の 429)/ S-11(On Your Data 当日・nano の再延長・FW の期限・Grok・TTS アバター)と横断節(評価の版の割れ・公式間の食い違いの例・flush) |
+| 2026-10-10 | **02:** P-X24 を追加(日本の環境で Copilot Studio の生成 AI がどこで処理されるか、Power Platform と Copilot Studio の公式記載が食い違う)。P-X05 に公式の課金レート(推論モデルは機能レート+premium 10 クレジット / 1K トークン、未使用分は繰り越さない)を追記 |
+| 2026-10-06(ラボ還元) | ラボの 2026-10-06 最新化+ライブ検証(maf-ports・foundry-probes・cu-video-rag)の結果を還元。**02 追加([実測] 14 件):** P-A15(Code Interpreter の stdout は `include` 必須・画像は data URI・Files が溜まる)・P-R15(Japan East の AI Search Free で agentic retrieval が動く — 「Basic が下限」を訂正)・P-R16(ナレッジベース MCP の応答形は preview の api-version 次第)・P-O16(既定サンプラー 5 スパン / 秒でトレースが歯抜け)・P-O17(`az monitor app-insights query` の既定 1 時間)・P-O18(`gen_ai.*` 以外と MAF のメッセージイベントは保護テーブルの振り分け対象外 → 成立条件の 4 点目)・P-O19(ルーブリックの `pass_threshold` 省略で run 全体が失敗)・P-O20(継続評価の `sampling_rate` は百分率、1.0 = 1%)・P-O21(エージェントエンドポイント経由の応答は継続評価が failed)・P-F17(HandoffBuilder の handoff だけ呼んで本文を書かない)・P-F18(agent-as-tool は必須の相談を保証しない)・P-F19(外部検索のレート制限で空のレポートが正常終了)・P-D09(Voice Live は表外の組合せも受理・実効モデル名で処理場所を確認)・P-D10(CU の usage にキャッシュ入力の新費目)。**02 書き直し・訂正:** P-H25 を両論に(公式と Port 11 は作成時の版のまま / probe 10 は休止明けに現行版。受入試験で自分の構成を確かめる)、P-O05 の「自動ランが evals.runs に出ない」を訂正(真因は `sampling_rate`)、P-O12・O13 の保護テーブルの成立条件を 4 点に、P-H20 の重複注記を統合。**02 注記:** P-I09・I13(port 9 でアカウントスコープ+`pass_threshold` により完走)・I10(probe 08 で資格情報 1 つ・アカウント URL が成立)・M06(probe 05 で 7 件中 3 件が Grok、`routing_trace`)・F01(core 1.20 の switch-case 例外の伝播・承認の fail-closed)・F02・D02。親が先に入れた P-H29 と P-H20・H26・H28・A13・F04・I10・I13・O12・O13 の注記とは重複させていない。**01:** S-01・S-05(Search SKU)、S-03(ネイティブ承認の評価・handoff / agent-as-tool の崩れ方)、S-04・S-07・横断(サンプラー・保護テーブルの 4 点目・最終状態で判定)、S-09(CU 費目)、S-10(Japan East の移行経路と Global 処理) |
+| 2026-10-06 | 2026-09-29〜10-06 の公式変更・公開記事・issue と、同日の AppGenAIContent の実測(親エージェント)を反映。**02 追加(16 件):** P-H26(toolbox 経由の利用者委任で「401 / 403 なしに別の利用者の権限で動く」・非ストリーミングで同意リンクが消える)・P-H27(Agent 365 への観測エクスポートが FW で拒否され続ける → `a365LoggingEnabled=false`)・P-H28(latest 追従で候補版が本番に出る・`azd deploy` がピンを上書き → 公式の本番リリース手順)・P-A13(Routines の再試行 5 回・30 秒は受付まで)・P-A14(Toolbox の既定版昇格忘れ・tool search で遅くなる)・P-I13(モデルを呼ぶ評価は Foundry User をアカウントスコープ)・P-M16(GPT-6 系 PTU はキャッシュ入力も容量を消費)・P-M17(priority を指定しても無言で Standard)・P-O13(**[実測]** 保護テーブルにしても従来テーブルに本文が残る二重書き)・P-O14(移行が進んだ場合に既存クエリが本文を拾えない・保護後の評価に PMDR — 条件付き)・P-O15(prompt agent の function tool はクラウド評価で skipped・generation job のヘッダー)・P-F15(Claude × MAF ストリーミングでツールが捨てられる)・P-F16(background の再ポーリングで関数ツールが二重実行)・P-C13(Terraform の eject は `network:` 非対応・版と state の関係・`rai_policy_name` は ARM ID)・P-C14(azd deploy が Bot の重複判定で失敗)・P-D08(voice agents の接続 3.7〜12.4 秒・モニタ値と体感のずれ・WebRTC の制約)。**02 注記(※2026-10-06):** P-H06(版間カナリアの公式間の食い違い)・H25(公式は「既存セッションは作成時の版に束縛」「削除はロールバックではない」と明記 → 緊急退避の第一手を版固定セッションに)・H24・O12(第 4 案 = 保護テーブル。3 点がそろって成立、2026-10-06 実測は二重書き)・I08 / X08(`BotServiceTenant` と Foundry Agent Consumer)・I09・M08 / D05(Japan East の Voice Live に Global standard のリアルタイムモデル)・D06(voice agents の組込みテレフォニー)・F14(agent-framework-foundry 1.14 は azure-ai-projects<2.8.0)・X16(`llm-token-limit` の並列時の超過の実測)ほか。**01:** S-03 / S-06(toolbox 委任・クロステナント不可)、S-04(Agent 365・保護テーブル・Terraform)、S-05、S-08(Foundry IQ in Copilot Studio GA)、S-10(voice agents・Japan East)、S-11(期限表にモデル・Voice Live classic 連携・Anomaly Detector を追加)、横断(公式ページ間の食い違いの例) |
+| 2026-09-30 | **02:** foundry-probes probe 10(hosted agent の版更新と会話の継続)の実測から **P-H25**(版を切り替えても起動中の会話は旧版のまま・休止明けに新版・ロールバックも同じ・旧版削除は 409 → `force=true`)を追加し、P-H24 の「版更新をまたぐ場合は未確認」を解消 |
+| 2026-09-30 | **02:** Port 15(delegated-access-hosted)のライブ検証から実測 3 件を末尾追加 — **P-H24**(hosted agent の会話継続は利用者ごと・agent ごとに分離され 404)、**P-O12**(プラットフォーム側 `responsesapi` スパンが会話全文を記録し、コンテナ側の設定では止まらない)、**P-C12**(Foundry アカウント配下の子リソースを並列に作ると RequestConflict)。P-I01 に hosted agent 作成での再現(`agents/write`)を付記。P-O12 は公式(トレースは接続したときだけ有効・止め方は接続解除のみ・接続文字列はコンテナにも注入)と突き合わせ、対処を architecture 09 §3.6 の 3 案(集約 / 分離 / 接続しない)に接続 |
+| 2026-09-29 | features 差分更新の波及のみ。**02:** P-A11(Routines REST)に「※2026-09-29: `Foundry-Features` の値は `Routines=V2Preview`(REST 仕様では任意ヘッダー、SDK 2.5.0+ は自動付与)。V1Preview 固定のコードは外すか揃える」を注記。P-ID の追加・振り直しなし |
+| 2026-09-26 | 月次更新。**02:** 外部 URL 全件の生存確認(410 の Q&A 2 件に「リンク切れ」付記、リダイレクト 5 件と転載記事 1 件を新 URL / 原文へ差し替え)、[公式] 前提の再確認で「※2026-09-26」注記(Routines GA・リージョン拡大〈P-A11〉、Toolboxes GA〈P-H12〉、idle timeout 2〜60 分〈P-H13〉、サブネット容量表と 429 `subnet_exhausted`〈P-N05〉、egress controls〈P-N07〉、incoming A2A〈P-A06〉、Foundry IQ の per-request ヘッダーと未フィルタ返却〈P-R07〉、日本 Regional +35% の価格改定〈P-M03〉、Claude の 2 系統〈P-M05〉、state store / resilience〈P-H17・H18・F06〉、公式プロトコルライブラリの stable 化〈P-H20〉、capability settings〈P-N03〉)。**訂正:** P-C06(capabilityHosts は安定版 ARM API 2025-06-01 以降にもある)、P-H06(prompt agent も版間の % 分割なし)、P-H15(旧アダプタ名の特定)。**追加:** P-H23・A12・N20・M15・G11・F13・F14。**01:** S-03(Routines GA)/ S-04 / S-05 / S-06(セッション上限・`x-ms-user-identity`)/ S-07 / S-10(Voice Live の面別ステータス)と横断節を更新 |
+| 2026-09-04 | 初版。01 シナリオ 10 本、02 詰まりどころ索引(公式・実測・公開記事)を作成 |

@@ -1,0 +1,58 @@
+[project]
+name = "hn-briefing-maf"
+version = "0.1.0"
+description = "awesome-llm-apps always_on_hn_briefing_agent の MAF + Foundry 移植(hosted agent + Routines スケジュール起動)"
+requires-python = ">=3.11"
+dependencies = [
+    "agent-framework-core>=1.20",
+    "agent-framework-openai>=1.15",
+    "httpx>=0.28",     # HN Algolia API(キーレス)。MockTransport でオフラインテスト可能
+    "python-dotenv>=1.0",
+    "typing-extensions>=4.10",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8",
+    "pytest-asyncio>=0.24",
+    "ruff>=0.14",
+]
+# ホスティング層(hosting/main.py のローカル実行・配線テスト+deploy/routine スクリプト)。
+# agent-framework-foundry-hosting はプレリリースのみ(PEP 440: プレ版を含む指定で解禁)。
+# agentserver 3 点は hosting/requirements.txt と同じ指定(REMOTE_BUILD の pip 解決と揃える。
+# responses の上限 <2.3 の理由も requirements.txt のコメント)。
+# azure-ai-projects は agent-framework-foundry 1.14 が <2.8.0 に上限を張るため 2.7 系で解決される
+# (2.8.0 は 2026-10-05 公開だが MAF が未対応)。
+hosting = [
+    "agent-framework-foundry>=1.14",
+    "agent-framework-foundry-hosting>=1.0.0b261002",
+    "azure-ai-agentserver-core>=2.2.0",
+    "azure-ai-agentserver-responses>=2.2.0,<2.3",
+    "azure-ai-agentserver-invocations>=1.2.0",
+    "azure-ai-projects>=2.7",
+    "azure-identity>=1.26",
+]
+live = [
+    "azure-monitor-opentelemetry>=1.8.10",
+]
+
+[project.scripts]
+hn-briefing-maf = "hn_briefing_maf.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/hn_briefing_maf"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+addopts = "-m 'not live'"
+markers = [
+    "live: 実 HN Algolia + 実 Foundry モデルを呼ぶスモークテスト(要 .env)。hosted 検証はデプロイ後に HN_BRIEFING_HOSTED_SMOKE=1",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"

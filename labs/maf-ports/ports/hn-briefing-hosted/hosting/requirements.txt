@@ -1,0 +1,20 @@
+# hosted agent コンテナの依存(REMOTE_BUILD がこのファイルを zip ルートから読み pip で解決する)。
+# pyproject の hosting extra と揃えること(test_hosted_wiring がインポート網羅を固定)。
+agent-framework-core>=1.20
+agent-framework-foundry>=1.14
+agent-framework-foundry-hosting>=1.0.0b261002
+# Responses protocol ライブラリは stable 2.2 系に固定する(2026-10-06 に上限 <2.3 を追加)。
+# foundry-hosting b261002 の依存指定 azure-ai-agentserver-responses>=2.2.0b1 がプレ版を含むため、
+# pip はこのパッケージのプレ版を解禁し、下限だけだと **responses 2.3.0b2** を選ぶ
+# (`pip install --dry-run --report` で確認。2.3.0b1 は 2026-09-29 16:10 UTC 公開 = 前回の確認直後。
+# uv は 2.2.0 を選ぶので uv.lock = オフラインテストの組と食い違う)。PEP 440 の `<2.3` は
+# 2.3 のプレ版も除外する。上限を付けると pip の解決は uv.lock と全パッケージ一致した(Python 3.13)。
+# invocations は 1.2.0 が stable になった(2026-09-29 16:08 UTC 公開。それまでは 1.2.0b1 しか
+# core 2.2 系と組めなかった)。
+# 本ポートは Invocations protocol を使わないが hosting パッケージの必須依存。
+azure-ai-agentserver-core>=2.2.0
+azure-ai-agentserver-responses>=2.2.0,<2.3
+azure-ai-agentserver-invocations>=1.2.0
+azure-identity>=1.26
+httpx>=0.28
+python-dotenv>=1.0

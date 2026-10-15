@@ -1,0 +1,161 @@
+# game-design-team — AG2 Swarm リング型(Port 7)
+
+元: [`agent_teams/ai_game_design_agent_team`](https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/advanced_ai_agents/multi_agent_apps/agent_teams/ai_game_design_agent_team)(AutoGen/AG2 旧 Swarm API + Streamlit、291 行)
+
+## 元の構成(5行)
+
+- Streamlit フォームで 15 項目(世界観・ジャンル・対象層・予算・メカニクス等)を集めてタスク文を組み、`initiate_swarm_chat(initial_agent=story, agents=[story, gameplay, visuals, tech], max_rounds=13)` で 4 役割の `SwarmAgent` を回す
+- ハンドオフは **AfterWork リング**: `register_hand_off(AFTER_WORK(next))` ×4(story→gameplay→visuals→tech→story)。加えて各エージェントの `update_*_overview` 関数が `SwarmResult(agent="次", context_variables=...)` を返して**関数呼び出しの戻り値でも制御移譲**する
+- 共有状態は **context_variables**(全員が読める dict)。1 周目は各役割が update 関数(**tool_choice で呼び出しを強制**)で 2-3 文の要約を書き込む
+- **UPDATE_SYSTEM_MESSAGE** の動的プロンプト: 毎ターン「自分のキーが未記入なら要約指示+関数強制 / 記入済みなら『## X Design』詳細指示+tools 削除+会話履歴を先頭 task 1 件に切り詰め」+記入済み要約一覧を system prompt に差し込む
+- 2 周目(詳細)を書き終えた `chat_history[-4:]` を Streamlit 側が story/gameplay/visuals/tech として拾い、expander 表示(**max_rounds=13 はこの添字が成立するよう暗黙に調整された値**: 1 task + 4×(関数呼び出し+関数結果) + 4 詳細 = 13)
+
+なお、コード中で定義される `context_variables = {"story": None, ...}` は `initiate_swarm_chat` に**渡されていない**(dead code)。swarm は空 context で開始し、`.get()` が missing key に None を返すため偶然同じ挙動になる — Port 3 学び 3・Port 4 学び 3 と同じ「宣言と実挙動のズレ」がここにもあった。
+
+## AG2 Swarm → MAF 対応表(本ポートの核心)
+
+| 元(AG2 旧 Swarm API) | 移植後(MAF core) | 備考 |
+| --- | --- | --- |
+| `initiate_swarm_chat(initial_agent=story, max_rounds=13)` | `WorkflowBuilder(start_executor=story)` + `workflow.run(GameDesignContext(task))` | 開始点は同じ「story から」。停止は回数でなくデータ条件(下記) |
+| `register_hand_off(AFTER_WORK(next))` ×4 のリング | `add_edge` ×3 + tech→story の**ループエッジ**(switch-case の Default) | 応答後の無条件遷移 → グラフの明示エッジ |
+| `SwarmResult(agent="gameplay_agent", context_variables=...)`(update 関数の戻り値でルーティング) | Executor が `ctx.send_message(updated_context)`(行き先はエッジが決める) | **委譲先は元コードでも全部ハードコード** — LLM は選んでいない(学び 1) |
+| `context_variables`(全員が読める可変 dict) | `GameDesignContext.summaries`(型付き dataclass をメッセージとして運ぶ) | LLM の関数呼び出しによる書き込み → Executor の決定的書き込み |
+| `update_*_overview` 関数 + `tool_choice` 強制 | 要約フェーズの応答テキストをそのまま回収 | 強制付き関数呼び出しは実質「構造化出力」。MAF では強制装置ごと不要(学び 2) |
+| `UPDATE_SYSTEM_MESSAGE(update_system_message_func)` | `prompts.build_summary_prompt / build_section_prompt`(毎 run 組み立て) | system prompt 差し替え機構 → ステートレス実行では只の文字列組み立て(学び 2) |
+| フェーズ判定(`agent._context_variables.get(role) is None`) | `RoleExecutor` の同じ判定(`context.summaries[role] is None`) | 判定ロジック自体は 1:1 で移植 |
+| 詳細フェーズの履歴切り詰め(`_oai_messages[k][:1]`) | 不要(Agent.run が毎回ステートレス) | 「task+全要約だけ渡す」が既定の動作になる |
+| `max_rounds=13`(回数による停止) | switch-case エッジ `Case(all_sections_done → deliver)` | 回数の暗黙調整 → 状態から決まる終了(学び 4) |
+| `chat_history[-4:]` の添字拾い(Streamlit 側) | `DeliverExecutor` → `GameDesignDocument.sections`(型付き) | 添字とターン数の暗黙結合が消える(学び 4) |
+| `st.sidebar.success('Story overview: ...')` | intermediate イベント `RoleSummaryDone / RoleSectionDone` | CLI が stderr に表示 |
+| Streamlit フォーム 15 項目 | `GameSpec`(既定値=ウィジェット初期値)+ CLI フラグ | タスク文の f-string は原文踏襲 |
+
+## 移植後の構成
+
+![architecture](./docs/architecture.png)
+
+```
+GameDesignContext(task, summaries={}, sections={})
+      │
+      ▼        1周目: 要約(2-3文)を summaries に書き足す
+   story ─▶ gameplay ─▶ visuals ─▶ tech ─┐
+      ▲                                   │ switch-case
+      └──[Default: サマリー周回中]────────┤
+               2周目: '## X Design' を     └─[全セクション完成]─▶ deliver
+               sections に書き足す                                  │
+                                                                    ▼
+                                                          GameDesignDocument
+                                                          (4 セクションの企画書)
+```
+
+- 4 役割 = 4 `RoleExecutor`(id: story/gameplay/visuals/tech)+ `DeliverExecutor`。リングを 2 周し、1 周目は要約、2 周目は詳細セクションを `GameDesignContext` に書き足して次へ渡す(計 8 エージェントターン。元の max_rounds=13 と同じ実質仕事量)
+- 役割ペルソナ(元 system_messages 原文)は `Agent` の静的 instructions、フェーズ指示+要約一覧+タスク文は `prompts.py` が**実行のたびに**組み立てて `Agent.run` に渡す(research-handoff の「handoff 先が受け取るコンテキストをプロンプトで明示する」方式の拡張)。文言は原文踏襲(「You task is write ...」の typo 含む)
+- Streamlit → CLI(`uv run game-design-team-maf [--vibe ... --game-type ... --json]`)。既定値は元ウィジェットの初期値
+- トレース: `configure_azure_monitor` + agent-framework 既定計装で App Insights へ
+- テスト: オフライン 30 件(リング順序・context 蓄積・動的プロンプト・最終成果物・HandoffBuilder 変種の構築)+ ライブスモーク(`pytest -m live`)
+
+## HandoffBuilder 比較(agent-framework-orchestrations)
+
+Port 3 では調査のみで不採用にした `HandoffBuilder` を、今回は**実際に同じ 4 役割で組んだ**(`src/game_design_team_maf/handoff_variant.py` + live 専用の `examples/handoff_builder_variant.py`。`uv sync --extra orchestrations` で導入する core 外の別パッケージ、検証時 1.0.2)。
+
+| 元アプリの機構 | HandoffBuilder での再現 | 主実装(MAF core)での再現 |
+| --- | --- | --- |
+| AfterWork リング | `add_handoff` ×4 で明示リング(既定は全結線メッシュ)。ただし発火は **LLM が `handoff_to_*` ツールを呼んだときだけ** → 「返答の最後に必ず呼べ」とプロンプトに書く | グラフのエッジ(決定的) |
+| context_variables | なし。共有状態は「全結線 broadcast される会話履歴」そのもの | 型付きメッセージ(決定的) |
+| UPDATE_SYSTEM_MESSAGE | なし。participants は build 時に clone される静的 Agent。フェーズは「1 回目は要約 / 2 回目は詳細」と instructions に書き **LLM に会話履歴から数えさせる** | Executor が状態から判定(決定的) |
+| max_rounds=13 | `with_termination_condition`(会話全文の述語: '## Tech Design' が現れたら終了)+ `with_autonomous_mode()`(既定の human-in-loop を解除) | switch-case のデータ条件(決定的) |
+
+判明した制約(構築テスト `tests/test_handoff_variant.py` で固定):
+
+1. participants は実 `Agent` 限定(clone・ツール注入・middleware 前提)。scripted fake は `TypeError` で弾かれる → **実行のオフラインテストは構造的に不可能**(構築の検証のみ可能)。PORTING.md §4 と両立しないという Port 3 の不採用理由を実物で確認(※2026-09-29 補足: 正確には「Agent を差し替える scripted fake では不可能」。HTTP レベルのモックなら実行できる — 検証結果 2026-09-29 参照)
+2. 全参加者に `require_per_service_call_history_persistence=True` が必須(handoff ツールを middleware が short-circuit するため、履歴整合の要件。無いと `build()` が `ValueError`)— ドキュメントより先にエラーメッセージで知るタイプの制約
+3. one-shot パイプラインに載せるには「human-in-loop 既定の解除(autonomous mode)」「終了述語の自作」「リング・フェーズ・終了をプロンプトに書き下す」の 3 点が必要で、**主実装ではグラフと Executor が決定的に保証していた性質が全部確率的になる**(LLM がツールを呼び忘れたら autonomous mode の nudge 頼み、フェーズを数え違えたら要約と詳細が崩れる)
+
+※2026-10-06: agent-framework-orchestrations 1.3.0 でも制約 1〜3 は不変(新設の `enable_return_to_previous` は human-in-loop のユーザー応答の行き先、生成 handoff の検証は誤ルーティング防止で、どちらも決定性は戻らない — 検証結果 2026-10-06 参照)。
+
+## 実行
+
+```bash
+uv sync --extra dev --extra live
+uv run pytest                 # オフライン(ネットワーク不要・30 件。HandoffBuilder 構築テスト 4 件は --extra orchestrations 導入時のみ有効で、未導入なら 26 passed+1 skipped)
+uv run game-design-team-maf   # 既定値(Epic fantasy with dragons / RPG / ...)で実行(要 ../../.env)
+uv run game-design-team-maf --vibe "Cozy island life" --game-type Simulation \
+    --mechanics "Crafting,Exploration" --mood "Peaceful" --depth Medium
+uv run game-design-team-maf --json          # 要約+全セクションを JSON で
+uv run pytest -m live                       # ライブスモーク
+
+# HandoffBuilder 変種(比較検証・live 専用)
+uv sync --extra orchestrations --extra live
+uv run python examples/handoff_builder_variant.py
+```
+
+詳細な実行手順と確認観点は [docs/runbook.md](./docs/runbook.md)(人間用 HTML: `docs/runbook.html`)。
+
+インフラ: 共有基盤のみで動作(`infra/main.bicep` は existing 参照+出力のみ)。
+
+## 評価
+
+`tests/eval_dataset.jsonl`(5 ケース)。全ケース共通の期待は「**4 役割全ての観点が最終出力に反映される**」ことで、各ケースはそれに加えて共有 context の効き方を測る: 非戦闘ジャンルで gameplay が既定の戦闘ループを出さないか(要約共有の価値)、予算・期間の制約が tech 以外にも波及するか、1 つの独自要素(筆致コンバット)が 4 役割×2 フェーズを貫通するか。ライブ評価を回す場合は `--json` 出力の `sections` に対し Foundry の Task Adherence / Coherence 評価器を役割ごとに適用すると「どの役割が仕様を落とすか」を切り分けられる。
+
+## 検証結果(2026-07-31)
+
+- オフラインテスト 30 passed(workflow 13 / prompts 7 / spec 3 / agents_build 3 / handoff_variant 構築 4)/ ruff clean / `az bicep build` OK(生成 json は削除)
+- ライブスモークとトレース到達確認は未実施(呼び出し元で実施)。確認クエリ:
+
+```bash
+az monitor app-insights query --app appi-mafports -g rg-maf-ports \
+  --analytics-query "dependencies | where timestamp > ago(30m) | summarize count() by name"
+```
+
+## 検証結果(2026-07-31 ライブ)
+
+- オフライン **30 passed**(HandoffBuilder 構築テスト4件は `--extra orchestrations` 導入で有効化)
+- ライブスモーク **1 passed(54s)**: 4役割リング+ tech→story ループエッジが実モデルで完走し、4観点入りの企画書を生成
+- トレース: `executor.process` が story/gameplay/visuals/tech **各×2**(ループエッジの発火が
+  スパン数でそのまま見える)+ deliver ×1、`invoke_agent` ×8 を App Insights で確認
+
+## 検証結果(2026-10-06 ライブ)
+
+共有基盤(rg-maf-ports / japaneast・gpt-5.4-mini 容量 100・App Insights `appi-mafp1006`)で runbook §5〜§7 を実施(`OTEL_SERVICE_NAME` で `cloud_RoleName` を分けて集計)。
+
+- **ライブスモーク**: `uv run pytest -m live` 1 passed(52.6 秒)
+- **主実装・正常系(§6 #1・#2)**: 既定値で 49.2 秒・終了コード 0。stdout に `# Game Concept` → `## Story Design` / `## Gameplay Design` / `## Visuals Design` / `## Tech Design` がこの順に揃い、stderr は `overview` が story → gameplay → visuals → tech の順に 4 行、続いて `section done` が同じ順に 4 行(ループエッジが 1 回だけ発火)
+- **共有 context(#3)**: `--vibe "Cozy island life" --game-type Simulation --mechanics "Crafting,Exploration" --mood Peaceful --depth Medium --json`(51.8 秒)。gameplay の要約が story の要約(凍った季節・島民・遺跡)を踏まえ、詳細セクションは「No combat pressure: There are no enemies」「knowledge and tools, not combat stats」と**戦闘ループを明示的に否定**していた
+- **設定不足(#4)**: `FOUNDRY_MODEL=` で終了コード 2・期待どおりのメッセージ
+- **トレース(#5)**: 主実装 1 回あたり `executor.process` story / gameplay / visuals / tech **各 2**・deliver 1、`invoke_agent *_agent` 計 8 — ループエッジの発火がスパン数にそのまま出る(2 回分で一致)
+- **HandoffBuilder 変種(#6)を初めてライブで実行**(`examples/handoff_builder_variant.py`、28.4 秒): `[handoff]` は 7 行ともリング順(story→gameplay→visuals→tech→story→gameplay→visuals→tech)、nudge なし、tech の `## Tech Design` で終了。**ところが visuals_agent は 2 回とも本文を書かずに handoff ツールだけを呼び(出力 18 トークン)、tech_agent も 1 回目は本文なし(17 トークン)** — 会話には `## Visuals Design` も tech の要約も残らないまま、終了述語(`## Tech Design` の出現)で「完成」扱いになった。トレースでも `invoke_agent` は各役割 2 回ずつで、visuals の 2 回は 0.9〜1.0 秒で終わっている。主実装は 4 セクションが揃わないと deliver に進まない(型付き成果物)ので、この欠落は起こり得ない。**handoff の順序が正しくても中身が抜ける** — 学び 5 の「決定的な性質が確率的になる」が、2026-09-29 のモックで見た「呼び忘れ」ではなく「呼ぶだけで書かない」形でも起きることをライブで確認
+- 変種のトレース: `invoke_agent` 計 8(各役割 2)・`chat` 8。`executor.process <role>_agent` は各 8〜9 件(HandoffAgentExecutor は他エージェントの発話のブロードキャストも処理するため、発話回数より多い)
+- **コスト(#8)**: 主実装 1 回 = `chat` 8 回(2 回分で入力 7,309 / 出力 11,477 トークン)。変種は今回 8 回で終わった
+- **修正**: azure-monitor-opentelemetry の既定サンプラー(rate-limited 5 spans/秒)でトレースが欠ける問題を Port 1 で見つけたため、`observability.py` で `sampling_ratio=1.0` を明示した(詳細は Port 1 の検証結果 2026-10-06 ライブ)
+
+## 検証結果(2026-10-06 最新化チェック)
+
+- 依存更新(`uv lock --upgrade`): agent-framework-core 1.19.0 → **1.20.0** / agent-framework-openai 1.14.4 → **1.15.0** / agent-framework-orchestrations 1.2.0 → **1.3.0** / openai 3.20.0 → **3.24.0** / azure-identity 1.25.3 → 1.26.0 / msgspec 0.21.1 → 0.22.0(推移依存)/ ruff 0.16.9 → 0.16.10。core 1.20 の新しい推移依存として `regex` が入る。pyproject の下限を検証版へ引き上げ(`agent-framework-core>=1.20.0` / `agent-framework-openai>=1.15.0` / `agent-framework-orchestrations>=1.3.0`。live extra の `azure-monitor-opentelemetry` も実際に使っている 1.8.10 に揃えた)
+- オフライン **30 passed**(`uv sync --all-extras`。`-W error::DeprecationWarning` でも同じ)/ `--extra dev` のみなら 26 passed+1 skipped / `uv run ruff check .` clean
+- **`src/` の変更なし(API 互換)**(オフライン確認の時点。その後のライブ検証で `observability.py` にサンプリング設定を追加 — 上の「検証結果(2026-10-06 ライブ)」)。主実装を HTTP 層だけ差し替えたモックで実行し、8 リクエストが story → gameplay → visuals → tech(要約)→ story → … → tech(詳細)の順に並び、4 セクション完成で deliver に抜けることを再確認
+- 変更不要と判断した点(1.20 の switch-case の挙動変化): `add_switch_case_edge_group` の条件関数が例外を投げたとき、1.19 までは警告ログだけで次の Case → `Default` へ流れていた。本ポートの `Default` は **story へ戻るループエッジ**なので、1.19 では壊れた終了条件が「静かにリングを回り続ける」(superstep 上限まで)形になり得た。1.20 では例外が伝播して失敗として見える。現行の条件(`isinstance(msg, GameDesignContext) and msg.all_sections_done()`)は例外を投げないため影響なし — ループエッジの終了条件を書くときは 1.20 の方が安全
+- **HandoffBuilder 不採用の理由を 1.3.0 で再確認 → 結論は維持**:
+  - 1.2.0 → 1.3.0 の `_handoff.py` の差分は、(a) `enable_return_to_previous(enabled=True)` の新設(`False` にすると human-in-loop のユーザー応答を開始エージェント経由に戻す。既定は従来どおり「応答を求めたエージェントへ戻す」)、(b) 生成した handoff ツールの検証(ルーティングは自動 handoff middleware が実際に横取りした呼び出しと `call_id` が一致する結果だけ。`call_id` が無ければ `RuntimeError`)、(c) 参加者が context provider を持つときは横取り middleware を provider の middleware より内側に置く — の 3 点。「participants は `Agent` 限定」「全参加者に `require_per_service_call_history_persistence=True` が必須」「one-shot には `with_autonomous_mode()`+`with_termination_condition()`」は不変で、構築テスト 4 件は無修正で通過
+  - (a) は `request_info` で返ってくるユーザー応答の行き先の話で、autonomous mode の one-shot 実行(本ポートの変種)にはユーザー応答のターンがないため効かない。リング順・フェーズ・終了を決定的にする機能は 1.3.0 にもない
+  - 変種を **1.2.0(core 1.19)と 1.3.0(core 1.20)の両方**で同じ HTTP モック(Responses API の SSE を固定)に流して比べた: 正常系は 8 リクエストで handoff 7 回(story→gameplay→visuals→tech→story→gameplay→visuals→tech)、1 役割が handoff を呼び忘れると autonomous mode の nudge が 1 回入って 9 リクエストになり**その役割の発話回数が 1 つずれる**、通常ツールの結果が `{"handoff_to": "tech_agent"}` の形をしていても誤ルーティングしない — の 3 シナリオとも**両版で同一**(スクラッチでの確認のみ・テスト資産にはしていない。3 つ目はツール結果の後にモデル呼び出しが続くため 1.2.0 でも誤ルーティングしない。1.3.0 の検証が効くのは、handoff 形の関数結果が応答の最後に残るケース)。2026-09-29 の観察(学び 5 の「決定的な性質が確率的になる」の具体例)は 1.3.0 でもそのまま
+- 構成図(`docs/architecture.png`)の HandoffBuilder 変種の版表記を orchestrations 1.3.0 に更新して再生成
+- ライブ: 上の「検証結果(2026-10-06 ライブ)」(スモーク・確認観点・トレース)
+
+## 検証結果(2026-09-29 最新化チェック)
+
+- 依存更新(`uv lock --upgrade`): agent-framework-core 1.13.0 → **1.19.0** / agent-framework-openai 1.12.0 → **1.14.4** / agent-framework-orchestrations 1.0.2 → **1.2.0** / openai 2.51.0 → **3.20.0**(推移依存。HTTP 層が httpx2 に)/ azure-monitor-opentelemetry 1.8.9 → 1.8.10 / ruff 0.16.1 → 0.16.9。pyproject の下限を検証した版へ引き上げ(`agent-framework-core>=1.19.0` / `agent-framework-openai>=1.14.4` / `agent-framework-orchestrations>=1.2.0`)
+- オフライン **30 passed**(`uv sync --extra dev --extra orchestrations`。`-W error::DeprecationWarning` でも 30 passed)/ `--extra dev` のみなら 26 passed+1 skipped(HandoffBuilder 構築テストのモジュールが skip)/ `uv run ruff check .` clean(`docs/architecture.py` を v2 図〈日本語+処理順バッジ〉に書き直した際に、2026-07-31 の図追加時からあった I001 / RUF100 / ISC004 も解消)/ `az bicep build` OK
+- **`src/` の変更なし(API 互換)**: MAF 1.14〜1.19 の [BREAKING] は本ポートの使用面(`Agent` / `WorkflowBuilder` の `add_edge`・`add_switch_case_edge_group` によるループエッジ / `OpenAIChatClient`)に当たらない。スパン名 `executor.process` / `invoke_agent` と計装の既定有効も不変。実 `Agent`×4 の主実装を HTTP 層だけ差し替えたモックで実行し、8 リクエストが story → gameplay → visuals → tech → story → … → tech の順に並び、4 セクション完成で deliver に抜けることを確認
+- **HandoffBuilder 不採用の理由を 1.2.0 で再確認 → 結論は維持**: 1.0.2 → 1.2.0 の `_handoff.py` の差分は、participant の clone で `compaction_strategy` / `tokenizer` / `additional_properties` を引き継ぐ修正、ワークフロー既定名 `"Handoff"` の付与、orchestration のメッセージ型の checkpoint 許可リスト登録のみ。「participants は `Agent` 限定(`TypeError: Participants must be Agent instances`)」「全参加者に `require_per_service_call_history_persistence=True` が必須(無いと `build()` が `ValueError`)」「one-shot には `with_autonomous_mode()`+`with_termination_condition()` が要る」は不変で、構築テスト 4 件は無修正で通過した
+- **補足(判明した制約 1 の精度)**: Agent を差し替える scripted fake は渡せないが、**HTTP レベルのモック**(Responses API の SSE ストリームを固定)なら実 `Agent` のまま変種をオフライン実行できた。正常時は 8 リクエストで story→gameplay→visuals→tech→story→gameplay→visuals→tech の handoff が発火し、tech の `## Tech Design` で終了。1 役割が handoff を呼び忘れると autonomous mode の nudge(`User did not respond. Continue assisting autonomously.`)が 1 回入って復帰するが、**その役割の発話回数が 1 つずれる**(「2 回目に話すときは詳細」の数え方が崩れる芽 — 学び 5 の「決定的な性質が確率的になる」の具体例)。変種は participants を `stream: true` で呼ぶため、非ストリーミング応答のモックでは handoff を検出できず `request_info` で止まる点に注意。モックが openai / MAF のストリーム解釈に密結合するため、テスト資産にはしていない(スクラッチでの確認のみ)
+- **修正(`examples/handoff_builder_variant.py` の表示)**: `stream=True` の output イベントは応答全体でなく `AgentResponseUpdate`(ストリーミング断片。上記モックでは 8 ターンで 68 件)で届くのに、断片ごとに `----- author -----` 見出しを出していた。旧版(core 1.13.0 / orchestrations 1.0.2)でも同じ挙動なので今回の更新による退行ではなく、2026-07-31 にこの example をライブ実行していなかったため残っていた潜在不具合。話者が変わったときだけ見出しを出し、断片を連結して表示するよう修正(同じモックで表示を確認)
+- GroupChatBuilder(1.0.2 から存在、1.2.0 で API 同一)も比較対象として確認: `selection_func`(ラウンドロビン)+`max_rounds=8` でリング順と停止は決定的に書け、participants には `Executor` も置ける。ただし `Agent` 参加者は静的 instructions とブロードキャストされる会話履歴しか持たないため、フェーズ判定(要約 / 詳細)と共有 context は HandoffBuilder と同じくプロンプト頼み。`Executor` 参加者で決定的にすると主実装の RoleExecutor を GroupChat のメッセージ型に合わせて書き直すだけになる → 主実装(明示グラフ)の判断を維持(ソース確認のみ・実行は未検証)
+- **ライブ未検証**: 以上はオフライン・静的確認のみ(Azure リソースは削除済み)。openai 3.x 経由の実 Foundry 応答での完走、HandoffBuilder 変種の実モデルでの handoff 呼び忘れ頻度は再デプロイ時に要確認
+- 実行手順と確認観点を [docs/runbook.md](./docs/runbook.md) に新設
+
+## 学び(MAF vs 元構成)— Wave 1 handoff 系の総括を含む
+
+1. **「Swarm」を名乗る元アプリの handoff は、実は 1 箇所も LLM が委譲先を選んでいない。**`SwarmResult(agent="gameplay_agent")` も `AFTER_WORK(next)` も**ターゲットは全部ハードコード**で、実態は「リングを 2 周する固定シーケンス」。だから MAF の明示グラフに 1:1 で写り、しかも決定的になった。ここで Port 3 と接続すると Wave 1 の handoff 系の総括が書ける: handoff には **(a) 委譲先を LLM が実行時に選ぶ動的 handoff**(Port 3 元アプリの triage、HandoffBuilder の思想)と **(b) 委譲先固定の「演出としての handoff」**(本ポートの AfterWork リング)の 2 種があり、元 FW が同じ「handoff」の語で両方を覆うため区別が見えにくい。(a) は Port 3 でやったように「判断を構造化出力に落として条件エッジで分岐」(委譲先が列挙できる場合)か HandoffBuilder(列挙できない会話の場合)、(b) はただの明示グラフでよい — **SI の技術選定でエージェント構成図を見たら、矢印ごとに「この委譲は LLM の判断が本当に必要か」を最初に問う**。必要な矢印が 1 本もなければ「マルチエージェント handoff 基盤」は要らず、Workflows(グラフ)だけで決定的・テスト可能に組める。本ポートはその実証で、8 ターンの協調全体がネットワークなしで 13 テストに固定できた。
+2. **UPDATE_SYSTEM_MESSAGE という複雑装置は、AG2 の「長寿命エージェント+累積会話」モデルの必要悪で、ステートレス実行では消滅する。**元実装は毎ターン (a) system prompt 差し替え、(b) tool_choice で update 関数を強制/解除、(c) `_oai_messages[k][:1]` の履歴切り詰め、と 3 つの内部状態手術をしていた。MAF の `Agent.run` は毎回ステートレスなので、同じことが「context から文字列を組んで渡す」1 つの純関数(prompts.py)になり、単体テストも 7 件で済む。(b) の「引数 story_summary を強制的に呼ばせて回収」は実質**構造化出力の 90 年代的実装**であり、移植では応答テキストをそのまま回収するだけでよかった。(c) はステートレス実行の既定動作そのもの。**「フレームワークの高度な機能」に見えるものが、実は別のフレームワークでは存在しない問題への対症療法**である典型例 — 移植の見積りでは「この機構は相手側で何に対応するか」でなく「相手側でもこの問題は存在するか」を問うべき。
+3. **状態を書くのが LLM か框架か — AG2 は「LLM の関数呼び出しが context を書く」、MAF は「Executor が決定的に書く」。**Port 4 の学び 1(LangGraph の共有 dict → 型付きメッセージ)と同型だが、AG2 は一段深く暗黙的で、状態の書き込み自体を LLM のツール実行(update 関数)に委ねる。書き込み内容・タイミングが LLM の挙動に依存するためテストは実質不可能で、しかも本アプリでは tool_choice で強制している=自由裁量は演出に過ぎない。移植では「LLM は文章を作る/框架が状態を書く」に責務分離され、`summaries` の蓄積(gameplay のプロンプトに story の要約が現れる、2 周目は全員が 4 要約を見る)を決定的にアサートできた。おまけに元コードの context_variables 渡し忘れ(dead code)も、型付きにした瞬間に発見された — **可変 dict の共有状態は「渡し忘れても偶然動く」ことを許す**。
+4. **回数と添字の暗黙結合(max_rounds=13 + chat_history[-4:])は、データ条件の終了+型付き成果物で構造的に消えた。**13 という数は「1 task + 4×(関数呼び出し+関数結果) + 4 詳細」を数えて逆算した値で、エージェントが 1 回でも想定外のターンを使えば、swarm は静かに途中で止まり Streamlit は**別の役割のメッセージを story として表示する**(エラーにすらならない)。移植では「全セクションが揃ったら deliver へ」という switch-case のデータ条件が終了を決め、成果物は役割名キーの dict なので、ズレは即例外になる。Port 4 の「補正ループはループしない」と同じく、**グラフを書き直す作業が元アプリの暗黙の前提(ここでは『各役割はきっかり 1 ターンで応じる』)を洗い出す** — これが Wave 1 を通じて最も再現性の高かった移植の副産物。
+5. **HandoffBuilder に同じ協調を載せる実験は「決定的な性質が確率的になる」ことの実地確認だった。**リング順・フェーズ判定・終了という主実装ではグラフと Executor が保証する性質が、HandoffBuilder では全部プロンプト(「1 回目は要約して handoff_to_* を呼べ、2 回目は詳細を書け」)+ autonomous mode + 終了述語に化ける。しかも participants は実 Agent 限定+`require_per_service_call_history_persistence=True` 必須で、実行のオフラインテストは構造的に組めない(構築のみ 4 件で固定。※Agent 差し替え型の fake の場合 — 2026-09-29 補足参照)。Port 3 の「handoff という同じ語が SDK ごとに別のワークロードを指す」の続報として: **HandoffBuilder は『次に誰が話すかが本当に会話次第』な長寿命会話のための道具**であり、固定シーケンスに使うと「LLM がツールを呼び忘れない」ことを祈る羽目になる。逆に固定シーケンス派(MAF core)で動的委譲をやると条件エッジの事前列挙が要る(Port 3 学び 1)。この対称性が Wave 1 handoff 系の結論で、選定基準は一言に圧縮できる — **「委譲先が仕様で決まるならグラフ、会話で決まるなら handoff 基盤」**。 ※2026-10-06 ライブ: 変種を実モデルで初めて流すと、handoff はリング順どおり 7 回発火したのに visuals_agent が 2 回とも本文を書かずに handoff ツールだけを呼び、`## Visuals Design` が無いまま終了述語で「完成」になった。崩れ方は「呼び忘れ」だけでなく「呼ぶだけで書かない」もある(検証結果 2026-10-06 ライブ)。

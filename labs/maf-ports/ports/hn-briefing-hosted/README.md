@@ -1,0 +1,218 @@
+# hn-briefing-hosted — 常時稼働 HN ブリーフィングの hosted agent 化 + Routines(Port 11)
+
+元: [`always_on_agents/always_on_hn_briefing_agent`](https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/always_on_agents/always_on_hn_briefing_agent)(Google ADK + FastAPI、約 700 行)
+
+Wave 2 で唯一の「**Foundry に載せる**」実証ポート。これまでの 10 ポートは全部 MAF を**クライアント実行**してきた(tech-selection-guide §4 の未検証領域)。本ポートは同じロジックを **hosted agent** として Foundry Agent Service にデプロイし、**Routines(実装時はプレビュー。2026-09 に GA)**で日次スケジュール起動する構成まで作る。
+
+## 元の構成(5行)
+
+- AgentScout: HN を監視して AI エージェント関連の日次エンジニアリングブリーフを生成・配信する「常時稼働」エージェント。ADK Web(対話)と FastAPI(スケジューラ)の 2 面構成
+- 収集: `news.ycombinator.com/news` の HTML を `HTMLParser` 100 行でスクレイプ(またはハードコードされた 5 篇のサンプルデータ)
+- ランキング: 決定論スコア式(キーワードヒット×16 + min(comments,150)/3 + min(points,500)/10 + max(0, 35−rank))でフィルタ・降順・top_n
+- ブリーフ: text/HTML を決定論レンダリング(LLM 不使用)。ADK の `LlmAgent` は `preview_agent_builder_brief` ツールとしてこのパイプラインを呼ぶだけ
+- 配信・起動: Cloud Scheduler → FastAPI(`/trigger`・Pub/Sub push)→ Gmail API or webhook。dry_run 既定・資格情報が揃ったときだけ送信
+
+## 本ポートの核心 = 「常時稼働の運用グルー」を全部 Foundry 側へ移す
+
+元アプリが自前で持っていた常時稼働の 3 点セットを、それぞれ Foundry のマネージド機能に置き換える:
+
+| 元(自前の運用グルー) | 移植後(Foundry 側) |
+| --- | --- |
+| Cloud Run 等に置く FastAPI サーバー(`scheduler_api.py`) | **hosted agent**(コンテナ化・HTTP サーバー・ヘルスチェック・スケールゼロを `ResponsesHostServer` とプラットフォームが持つ) |
+| Cloud Scheduler + Pub/Sub push 配管 | **Routine**(schedule トリガー、プロジェクト内のオブジェクト) |
+| 認証(OIDC 検証等は元実装では未実装=誰でも叩ける) | agent identity(専用 Entra ID)+ プロジェクト RBAC |
+| HTML スクレイパー 100 行 | HN **Algolia API**(キーレス・JSON)+ httpx |
+| ADK Web(対話面) | 同じ hosted agent の playground / Responses エンドポイント |
+| Gmail / webhook 配信 | **スコープ外**(下記の設計判断) |
+
+二層構成:
+
+1. **ロジック層(MAF・クライアント実行)**: 収集 → 決定論ランキング → LLM ブリーフ生成の直列ワークフロー。CLI で実行でき、全段オフラインテスト可能
+2. **ホスティング層(hosting/ + scripts/)**: 同じロジックを Responses protocol で包むエントリポイント+SDK デプロイスクリプト+Routine 作成スクリプト
+
+## 実装前調査の結果(2026-07、Learn ドキュメント+installed package 精読)
+
+### hosted agent のデプロイ方式(quickstart-hosted-agent / concepts/hosted-agents)
+
+- サービスは **GA**(azure-ai-projects 2.3.0〜)。リージョンは 31 で **Japan East を含む** → 共有基盤のままでよい
+- デプロイ経路は 5 つ(azd 拡張 `microsoft.foundry` / **Python SDK** / VS Code Foundry Toolkit / Foundry Canvas / Foundry Skill)。本ポートは SDK の **`create_version_from_code`** を採用: zip(**ルートに `main.py` と `requirements.txt` 必須**、パッケージも同梱)+ `HostedAgentDefinition`(cpu/memory + `CodeConfiguration(runtime, entry_point, dependency_resolution=REMOTE_BUILD)` + 環境変数 + `protocol_versions`)を投げ、provisioning をポーリング → `update_details` でエンドポイントをそのバージョンへ向ける(**1 バージョン 100% のみ・トラフィック分割不可**)
+- **コンテナプロトコルは responses 2.0.0**(1.0.0 は非推奨で猶予期間後ブロック)。コンテナは :8088 で待ち受け、`POST /responses` を受ける
+- 環境変数がコンテナへの唯一の構成手段(バージョンごとに不変)。**App Insights 接続文字列はプラットフォームが自動注入**し、protocol ライブラリが OTel を既定発信 — クライアント実行で書いていた `configure_azure_monitor` の配線が消える
+- 課金は推論+**アクティブセッション中の CPU/メモリ**(セッション毎 VM 分離サンドボックス、アイドル 15 分でスケールゼロ、セッション状態は $HOME 永続)。※2026-09-29: idle timeout はバージョンごとに 2〜60 分で設定可(`session_configuration.idle_timeout_seconds`、既定 15 分)
+
+### MAF アプリを hosted agent プロトコルで包む方法(installed package の grep)
+
+- `agent_framework.foundry` 名前空間が **`agent-framework-foundry-hosting`**(PyPI プレリリース `1.0.0b260730`)から `ResponsesHostServer` / `InvocationsHostServer` / `FoundryToolbox` / `FoundrySessionStore` を lazy re-export している
+- foundry-samples の `hosted-agents/agent-framework/responses/01-basic` が規約の一次資料: `main.py` で `Agent` を作り `ResponsesHostServer(agent).run()`。モデルは `FoundryChatClient(project_endpoint, model, DefaultAzureCredential())`(= agent identity・キーレス)。`default_options={"store": False}`(履歴はホスティング基盤の conversation ID 管理)
+- `ResponsesHostServer` は `WorkflowAgent` も受ける(import に現れる)ため**ワークフローをそのまま載せる選択肢もある**が、本ポートは元 ADK 実装と同型の「関数ツール 1 本持ちエージェント」を採用(下記の設計判断)
+
+### ツール直付け不可の制約の実地判断(タスクの検証項目)
+
+survey features/03 の「hosted agent はエージェント定義にツールを直付けできない(`create_version` の `tools` パラメータは削除済み)→ Toolbox 前提」は、**Foundry 管理ツール**(Code Interpreter / Web Search / MCP 接続等)を定義レベルでアタッチする話。concepts ページの原文は「The platform doesn't inject tools automatically」— つまり**コンテナ内の自前コードが持つツールは制約の対象外**。本ポートのツールは HN Algolia へのキーレス GET 1 本なので、**MAF の関数ツール(エージェント内部の httpx 呼び出し)として実装すれば Toolbox 不要=制約に該当しない**([hosted.py](./src/hn_briefing_maf/hosted.py) の docstring に判断を記録)。Toolbox(MCP エンドポイント+`FoundryToolbox`)が要るのは認証付きの Foundry 管理ツールを hosted から使うときだけ。
+
+### Routines(プレビュー)のリージョンと契約(concepts/routines / how-to/use-routines)
+
+> ※2026-09-29: Routines は **2026-09 に GA**。現行 Learn(2026-08-27 版)の REST 例は `?api-version=v1` 付き・`Foundry-Features` ヘッダーなしで、利用不可リージョンは UK West / Switzerland West / Japan West / UAE North / Norway East の 5 つだけになった。本ポートはヘッダー送信をやめた(下記「検証結果(2026-09-29 最新化チェック)」)。以下は実装時(2026-07)の調査記録。
+
+- 対応リージョンは 8 つ: East US / East US 2 / West US / West US 2 / West Central US / North Central US / Sweden Central / **Japan East** — **共有基盤(japaneast)で使える**(タスクの「不可なら代替」分岐は不要だった)
+- REST 契約: `PUT {project_endpoint}/routines/{name}`(api-version クエリなし)、全リクエストに **`Foundry-Features: Routines=V1Preview`** ヘッダー、トークンリソースは `https://ai.azure.com`。トリガーは `{"type": "schedule", "cron_expression": ..., "time_zone": ...}`(**最小間隔 5 分**)、アクションは `{"type": "invoke_agent_responses_api", "agent_name": ..., "input": ...}`(1 トリガー+1 アクション固定)。操作は `POST :enable/:disable/:dispatch_async`(手動テストの公開契約は `:dispatch_async` のみ)、履歴は `GET /runs`
+- SDK は `client.beta.routines.create_or_update`(azure-ai-projects>=2.2)にもあるが、プレビューの一次契約はヘッダー込みの REST なので REST で実装
+
+## 移植後の構成
+
+![architecture](./docs/architecture.png)
+
+```
+【ロジック層(CLI・クライアント実行)】
+BriefingRequest ─▶ collect(HN Algolia・httpx) ─▶ rank(決定論・元式) ─▶ brief(MAF Agent) ─▶ Brief
+                    └ StageDone 進捗イベント(intermediate output)         └ digest を編集した brief_md
+
+【ホスティング層(Foundry)】
+Routine(schedule 平日 9:00 JST, api-version=v1)
+  └─▶ invoke_agent_responses_api ─▶ hosted agent "hn-briefing-agent"
+        hosting/main.py: ResponsesHostServer(Agent(FoundryChatClient(agent identity)))
+          └ 関数ツール collect_ranked_stories(コンテナ内 httpx → Algolia → 決定論ランク → digest)
+```
+
+- 決定論部分(collect/rank/digest)は両層で**同一のコード**([hn.py](./src/hn_briefing_maf/hn.py) / [ranking.py](./src/hn_briefing_maf/ranking.py) / [briefing.py](./src/hn_briefing_maf/briefing.py))。層で違うのは LLM の呼び方だけ — ワークフローは digest を直接 LLM に渡し、hosted はツール経由で digest を取らせる
+- デプロイ zip のステージング・バージョン定義・Routine ペイロードは純関数([hosting_setup.py](./src/hn_briefing_maf/hosting_setup.py) / [routine_setup.py](./src/hn_briefing_maf/routine_setup.py))で組み立ててオフラインテストで固定。HTTP/SDK を貼るのは [hosting/deploy_hosted_agent.py](./hosting/deploy_hosted_agent.py) と [scripts/setup_routine.py](./scripts/setup_routine.py) のみ(db-routing-iq の kb_setup 方針)
+
+## 設計判断
+
+### hosted 面は「ワークフローの直載せ」ではなく「ツール持ちエージェント」
+
+`ResponsesHostServer` は `WorkflowAgent` を受けるのでワークフローをそのまま載せることもできたが、(1) 元 ADK 実装がまさに「LlmAgent + パイプラインツール」の形でその同型移植になる、(2) Responses は会話面なので Routine のプロンプト以外に playground での自由な問いかけ(「top 3 だけ」「MCP の話題ある?」)にも同じ定義で応えられる、(3) `WorkflowAgent` を hosted で使うにはチェックポイントストレージ構成が要る(`_responses.py` が要求)— の 3 点でツール持ちエージェントにした。決定論部分が共有コードなので、二形態の差分は「LLM への渡し方」だけに閉じる。
+
+**2026-10-06 注記:** agent-framework-foundry-hosting 1.0.0b261002 で **native workflow hosting**(`ResponsesHostServer(workflow=要求ごとのファクトリ, parse_response=...)`。`WorkflowAgent` を `agent=` で載せる旧経路は非推奨)が入った。本ポートのワークフローを試作で載せたところ動いたが、(3) のチェックポイント構成は既定で付く代わりに**境界を越える自前の型 6 つをチェックポイントの許可リストに載せる**必要があり、出力が `structured_outputs`(JSON)になって会話の応答(`output_text`)が出ない = (2) が消える。判断は変えない(詳細は「検証結果(2026-10-06 最新化チェック)」)。
+
+### HTML スクレイパー → Algolia API(rank は近似になる)
+
+元の `HNFrontPageParser`(100 行)は `tags=front_page` の Algolia 検索 1 本で消える。ただし Algolia は「現在フロントページにある記事」を返すが**表示順位そのものは返さない**ため、`rank`(freshness 項)は応答リスト位置の近似になる。式そのものは元実装と同一で、ゴールデンテスト(元 scout.py を実行して得たスコア値)は元の rank を再現した入力で固定した。
+
+### 配信(Gmail / webhook)はスコープ外
+
+元 delivery.py は Gmail OAuth のリフレッシュトークン運用と任意 webhook への POST。移植の学習目的は「常時稼働の**起動と実行**を Foundry がどう肩代わりするか」であり、配信チャネルは Google 固有の OAuth 配管の再現になって学びがない。CLI は stdout / `--output`(JSON ファイル)まで、hosted は Responses 応答(= run history から辿れる)まで。実運用で足すなら Routine ではなくエージェント側ツール(Logic Apps / Teams webhook)になる。
+
+### 元実装の癖の発見と保存
+
+ライブ経路ではキーワード 0 件の記事の fallback summary が必ず "agent builders" を含むため、curate のフィルタ `keyword_hits or "agent" in summary` は**実質ノイズ除去だけに縮退**している(誰も気づかないまま全記事がランキングへ進む)。挙動互換を優先してそのまま移植し、テスト(`test_keywordless_story_passes_filter_via_fallback_summary`)で文書化した — 「移植はコードレビュー」の今回分。ほか、キーワード照合が部分一致("tool" が "tools" にヒット)なのも仕様として保存。
+
+## 実行
+
+詳細な実行手順と確認観点は [docs/runbook.md](./docs/runbook.md)(人間用 HTML: `docs/runbook.html`)。
+
+```bash
+uv sync --extra dev --extra hosting
+uv run pytest                      # オフライン(ネットワーク不要・60 件)
+
+# --- ロジック層ライブ(要 共有基盤 + ../../.env)---
+uv run hn-briefing-maf --top-n 3               # 実 HN + 実モデルでブリーフ生成
+uv run hn-briefing-maf --json --output runs/brief.json
+uv sync --extra dev --extra hosting --extra live && uv run pytest -m live   # uv sync は指定しない extra を外すので hosting も並べる
+
+# --- ホスティング層(実デプロイ。呼び出し元が実施)---
+az login    # Foundry Project Manager 以上
+uv run python hosting/deploy_hosted_agent.py --dry-run          # zip 内容と定義の確認
+uv run python hosting/deploy_hosted_agent.py --invoke "Give me today's brief."
+HN_BRIEFING_HOSTED_SMOKE=1 uv run pytest -m live -k hosted      # デプロイ済み面のスモーク
+
+# --- 本番を変えずに更新する(公式の本番リリース手順。2026-10-06 追加)---
+uv run python hosting/deploy_hosted_agent.py --candidate --invoke "Give me today's brief."
+uv run python hosting/deploy_hosted_agent.py --promote <候補の版> --invoke "Give me today's brief."
+uv run python hosting/deploy_hosted_agent.py --promote <前の版>  # ロールバック
+
+# --- Routines(GA)---
+uv run python scripts/setup_routine.py create --dry-run
+uv run python scripts/setup_routine.py create                   # 平日 9:00 JST
+uv run python scripts/setup_routine.py dispatch                 # 手動テスト発火(:dispatch_async)
+uv run python scripts/setup_routine.py runs                     # 実行履歴
+uv run python scripts/setup_routine.py disable                  # 一時停止(delete で削除)
+```
+
+ローカルでコンテナ相当を立てる(デプロイ前検証):
+
+```bash
+FOUNDRY_PROJECT_ENDPOINT=... FOUNDRY_MODEL_NAME=... uv run python hosting/main.py   # :8088
+curl -sS -H "Content-Type: application/json" -X POST http://localhost:8088/responses \
+  -d '{"input": "Give me today'\''s brief (top 3).", "stream": false}'
+```
+
+**コスト注意**: hosted agent は**アクティブセッション中の CPU/メモリ課金**(0.5vCPU/1GiB・アイドル 15 分〈既定。2〜60 分で設定可〉でスケールゼロ)。Routine を有効のまま放置すると平日ごとにセッション+モデル呼び出しが発生する — 検証後は `setup_routine.py disable`(または RG 削除)。
+
+## 評価
+
+[tests/eval_dataset.jsonl](./tests/eval_dataset.jsonl)(8 ケース)は決定論部分のデータ駆動検証: keyword(部分一致の仕様含む 4)/ noise(2)/ rank_order(「キーワード×16 は points の厚みに勝つ」「freshness のタイブレーク」の 2)。`test_eval_dataset.py` がランキング実装との整合をオフラインで固定する。LLM 部分(brief_md)の品質は `--output` で保存した Brief を critique-loop の `run_cloud_eval.py` の型(evals API + coherence/rubric)に渡せば定量化できる — 決定論部分をデータセットで固めたので、ライブ評価は「digest に忠実か(並び替え・捏造がないか)」の rubric 1 本に絞れる。
+
+## 検証結果(2026-07-31)
+
+- オフラインテスト **48 passed**(収集パース 6 / ランキング決定論 10 / digest・Brief 4 / ワークフロー 5 / hosted 配線 6 / デプロイ・Routine ペイロード 5 / 設定 3 / データセット 9)/ ruff clean / `az bicep build` OK(生成 json は削除)
+- hosted 配線は**実 import まで**検証済み: `hosting/main.py` のモジュールロード+実 MAF `Agent` を `ResponsesHostServer` に実構築(`run()` なし)。`azure-ai-projects` 2.3.0 の `create_version_from_code` / `HostedAgentDefinition` / `CodeDependencyResolution.REMOTE_BUILD` の型面もオフラインで構築確認済み
+- 実デプロイ・Routine 作成・ライブスモークは未実施(呼び出し元で実施)。手順は上記「実行」節。**未検証の残リスク**:
+  1. `create_version_from_code`(REMOTE_BUILD)のイメージビルド先 — azd フローはプロジェクト用 ACR をプロビジョニングするが SDK 経路の quickstart は ACR に言及しない。ACR 不在で失敗する場合は `azd ai agent init` フローへ切替(azure.yaml は SDK 定義と 1:1 なので書き起こしは容易)
+  2. `agent-framework-foundry-hosting` はプレリリース(b260730)— REMOTE_BUILD 時の解決が将来版でズレる可能性(requirements.txt に下限ピン済み)
+  3. Routines は Japan East 対応リストに載っているが「リージョンまたはサブスクリプションで未有効」の但し書きがポータル節にある — `create` が 4xx を返す場合はアカウントチームへの申請経路
+  4. Routine → hosted agent 呼び出しは Responses API 経由なので、**コールドスタート**(スケールゼロからの再開)が cron 時刻に毎回入る。実測は run history の所要時間で確認する
+
+## 検証結果(2026-07-31 ライブ)
+
+- ロジック層: ローカル完動(実 HN データ→ランキング→ブリーフ生成)
+- **hosted agent デプロイ成功**: `create_version_from_code`(REMOTE_BUILD)で creating→active、version 1 に 100% ルーティング、Entra 認証。`--invoke` でコンテナ内からの HN 収集+ブリーフ生成を確認(= コンテナ内 httpx 関数ツールは「ツール直付け不可」制約の対象外という設計判断が実証された)
+- **Routines 実証**: 日次 cron(21:00 JST)のルーチン作成 → `:dispatch_async` 手動起動 → run が **Finished**。スケジュール→hosted agent 呼び出しのループが Foundry 上で成立
+- **実測での発見**: Routines REST は **`?api-version=v1` クエリが必須**(欠くと BadRequest。Learn の例では省略されており、実装前調査だけでは気づけない)→ routine_url に反映
+- 検証後、定期実行による無人課金を避けるためルーチンは **disable** 済み(再開は `setup_routine.py enable`)
+
+## 検証結果(2026-09-29 最新化チェック)
+
+オフラインのみ(Azure リソースは削除済み・ライブ未実施)。
+
+- **依存更新**(`uv lock --upgrade`): agent-framework-core 1.13.0 → **1.19.0** / agent-framework-openai 1.12.0 → 1.14.4 / agent-framework-foundry 1.10.4 → **1.13.1** / agent-framework-foundry-hosting 1.0.0b260730 → **1.0.0b260918** / azure-ai-agentserver-core 2.0.0b9 → **2.2.0** / azure-ai-agentserver-responses 1.0.0b9 → **2.2.0** / azure-ai-agentserver-invocations 1.0.0b7 → 1.2.0b1 / azure-ai-projects 2.3.0 → 2.6.1 / openai 2.51.0 → 3.20.0。pyproject の下限を実テスト版へ引き上げ
+- オフラインテスト **48 passed** / `ruff check .` clean(図生成スクリプト `docs/architecture.py` を v2 スタイルに書き直し、2026-07-31 からの既存指摘 6 件も解消)/ `az bicep build` OK(コメントのみ更新)
+- **改修 1 — Routines のフィーチャーヘッダーを削除**: GA 後の Learn の REST 例([use-routines](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/use-routines)、2026-08-27 版)は `?api-version=v1` のみでヘッダーなし。REST 仕様([azure-rest-api-specs routines/routes.tsp](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/ai-foundry/data-plane/Foundry/src/routines))では `Routines=V1Preview` キーが 2026-08 に削除され、後継 `Routines=V2Preview` は任意ヘッダー。本ポートは GA 範囲(schedule+Responses API アクション)だけなので送らないのが正。`routine_request_headers()` / `routines_collection_url()` を純関数化してテストで固定(`list` の api-version 直書きも解消)。api-version は GA 後も `v1`(SDK 2.6.1 / 2.7.0 の既定値も `v1`)
+- **改修 2 — hosted コンテナの依存を明示**: `hosting/requirements.txt` に `azure-ai-agentserver-core>=2.2.0` / `-responses>=2.2.0` / `-invocations>=1.2.0b1` を追加。無指定だと REMOTE_BUILD の pip は stable の invocations 1.1.0(core<2.2.0 上限)を優先して **responses 2.2.0b1 + core 2.1.0** に落ち、uv.lock(= オフラインテストの組)と食い違うことを `pip install --dry-run` で確認した。pyproject の hosting extra も同じ指定に揃えた
+- **変更不要**: コンテナプロトコル **responses 2.0.0** は現行(1.0.0 はサポート終了。[deploy-hosted-agent-code](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/deploy-hosted-agent-code) / quickstart 2026-09-17 版)。`hosting/main.py` は現行の foundry-samples 01-basic と同じ形(`from agent_framework_foundry_hosting import ResponsesHostServer`・`FoundryChatClient`・`store=False`)で API 変更なし — 新版の `ResponsesHostServer` は `history_source="agent_server"` 既定でサーバー側も `store=False` を強制する(明示指定は冗長だが残置)。`configure_observability` 引数も agentserver-core 2.2.0 に残存。`hosting/main.py` をローカル起動して `GET /readiness` → 200(`x-platform-server: azure-ai-agentserver-core/2.2.0 … responses/2.2.0`)まで確認。deploy スクリプトの SDK 型(`HostedAgentDefinition` / `CodeConfiguration` / `ProtocolVersionRecord` / `AgentEndpointConfig` / `FixedRatioVersionSelectionRule` 等)と `create_version_from_code` / `update_details` / `get_openai_client(agent_name=)` のシグネチャは azure-ai-projects **2.6.1(ロック版)と 2.7.0(別 venv)の両方**で構築確認済み。なお agent-framework-foundry 1.13.1 が `azure-ai-projects<2.7.0` に上限を張るため、本ポートの環境は 2.6.1 で解決される(retired 済みの `azure-ai-inference` 1.0.0b9 も同パッケージの依存として残る)
+- **観測の既定変更(コード変更なし・注意点)**: azure-ai-agentserver-core 2.2 系は既定の OTel 構成で **Azure SDK / HTTPX / requests / urllib の計装を無効化**した([CHANGELOG 2.2.0b1](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/agentserver/azure-ai-agentserver-core/CHANGELOG.md)、`_tracing._DISABLED_INSTRUMENTATIONS` で確認)。hosted 側ではコンテナ内の HN Algolia GET が App Insights の dependency として出なくなる見込み(リクエストスパンと MAF の `invoke_agent` / `execute_tool` は従来どおり)。必要なら `configure_observability` に `instrumentation_options={"httpx": {"enabled": True}}` を渡す。`get_openai_client(agent_name=)` の docstring は「`allow_preview=True` が必要」と書くが、2.6.1 / 2.7.0 の実コードは例外を出さず agent エンドポイント(`…/agents/{name}/endpoint/protocols/openai?api-version=v1`)を返すことを確認 — deploy スクリプトとライブスモークはそのまま
+- **ライブ未検証で残るリスク**: (1) ヘッダーなしの Routines 呼び出し(仕様・docs 上は正だが実測なし)(2) REMOTE_BUILD が invocations 1.2.0b1(プレリリース)を含む組を解決できるか(3) hosting パッケージの `history_source` 既定変更後の会話継続の挙動(4) 2026-07 に作成したルーチンは RG 削除で消えているため、再作成は `setup_routine.py create` から (5) 現行 docs は Routine の下流呼び出しを「1 試行 30 秒・最大 3 試行(指数バックオフ)」と明記 — コールドスタート+HN 取得+ブリーフ生成が 30 秒を超えると失敗・再試行(= 重複実行)になりうる。2026-07 の手動発火は Finished だったが所要時間は未記録なので、再デプロイ時は run history の `started_at` / `ended_at` で確認する
+- **今後の選択肢**: 日次 1 回の起動なら `session_configuration.idle_timeout_seconds=120`(最小 2 分)でサンドボックスの保持時間を縮められる([manage-hosted-sessions](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/manage-hosted-sessions)。課金との関係は料金ページで要確認)/ hosted agent の **network egress controls(プレビュー)**を使うなら許可先は `hn.algolia.com` の 1 ホストで足りる。TLS 検査用 CA は `SSL_CERT_FILE` で注入され、httpx は既定(`trust_env=True`)でこれを読む([add-hosted-agent-guardrails](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/add-hosted-agent-guardrails))
+
+## 検証結果(2026-10-06 最新化チェック)
+
+オフラインのみ(Azure リソースは削除済み・ライブ未実施)。
+
+- **依存更新**(`uv lock --upgrade`): agent-framework-core 1.19.0 → **1.20.0** / agent-framework-openai 1.14.4 → 1.15.0 / agent-framework-foundry 1.13.1 → **1.14.0** / agent-framework-foundry-hosting 1.0.0b260918 → **1.0.0b261002**(BREAKING 再設計)/ azure-ai-agentserver-invocations 1.2.0b1 → **1.2.0**(stable)/ azure-ai-projects 2.6.1 → **2.7.0**(agent-framework-foundry 1.14 の上限 `<2.8.0` 内の最新。2026-10-05 公開の 2.8.0 は使えない)/ openai 3.20.0 → 3.24.0 / azure-identity 1.25.3 → 1.26.0。agentserver-core / -responses は 2.2.0 のまま。pyproject の下限と `hosting/requirements.txt` を実テスト版へ引き上げ
+- オフラインテスト **60 passed**(48 → 60: hosted の往復 2 / ルーティングの純関数 3 / リリース手順 7 — うち 1 件は同日のライブで見つけた「同じ内容の再デプロイ」)/ `ruff check .` clean / `az bicep build` OK(変更なし)/ `hosting/main.py` をローカル起動して `GET /readiness` → 200(`azure-ai-agentserver-core/2.2.0 … responses/2.2.0`)
+- **foundry-hosting b261002 の BREAKING への追随: コード変更なし。**`ResponsesHostServer(agent)`(インスタンス渡し)はそのまま動く。新版はエージェントの代わりに**引数なしのファクトリ**(要求ごとに Agent を作る)も受けるが、本ポートのエージェントは利用者ごとの状態を持たない(共有するのは HN 用の httpx クライアントだけ)のでインスタンスのままにした — 新版の docstring の「`AgentSession` の外に可変状態を持つならファクトリ」に当たらない。往復テストで観測した挙動の変化: (1) ホスティング層は要求の `stream` に関係なく**内側のエージェントをストリーミングで回す**(非ストリーミング専用のテスト用モデルは `response.failed` になった)(2) store=true の会話状態をローカルでは `~/.agentserver/state_stores` に書く(`AGENTSERVER_STATE_ROOT` で変更。テストは tmp に向けた)(3) 起動時に「Responses resilience: DISABLED — store=true の応答はプロセス内で動き、強制終了されると in_progress のまま残る」の警告が出る(durable にするのはプレビューの resilient モード。本ポートは使わない)
+- **改修 1 — hosted 面の往復テストを追加**([tests/test_hosted_server.py](./tests/test_hosted_server.py)): これまでは `ResponsesHostServer` の構築までしか見ていなかった。ASGI のまま `POST /responses` を送り、モデルだけ台本化して「関数ツール → digest → 応答」の往復を固定した。**background の要求(Routines の Responses API アクション相当)**も、受付の応答が完了を待たずに `in_progress` で返り、後から `GET /responses/{id}` で `completed` になることを固定した
+- **改修 2 — コンテナ依存へのプレ版の混入を塞いだ**: REMOTE_BUILD と同じ pip で `pip install --dry-run --report -r hosting/requirements.txt` を解決すると、`azure-ai-agentserver-responses` が **2.3.0b2(プレ版)** になることを発見した。foundry-hosting b261002 の依存指定 `azure-ai-agentserver-responses>=2.2.0b1` がプレ版を含むため、pip はこのパッケージのプレ版を解禁する(uv は 2.2.0 を選ぶ = オフラインテストの組と食い違う)。2.3.0b1 は 2026-09-29 16:10 UTC 公開で、**前回(09-29)の確認の直後からこの状態だった**。`>=2.2.0,<2.3` に上限を付け(PEP 440 の `<2.3` は 2.3 のプレ版も除外する)、pip の解決が uv.lock と全パッケージ一致することを確認し、上限をテストで固定した
+- **改修 3 — デプロイスクリプトに本番リリース手順を反映**(Learn [manage-hosted-agent](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/manage-hosted-agent)「Release a version without changing production」2026-09-16 版): 既定のルーティングは最新版に追従するので、版を作る前に本番をピン留めし、候補は版指定のセッションで試してから切り替えるのが公式の段取り。`--candidate`(本番が具体版にピン留めされていなければ現在の最新版にピン留め → 候補を作成 → `create_session(version_indicator=version_ref)` の候補専用セッションで `--invoke` → 本番のセレクタが動いていないことを確かめて終了)と `--promote <版>`(active の版だけへ 100% を切り替え。ロールバックも同じ操作)を追加した。従来の既定動作(作成即 100%)は残した。ルーティングの更新は**エンドポイント設定のほかの項目(プロトコル・認可方式)を保ってセレクタだけ差し替える**形に変えた(以前は `AgentEndpointConfig` を作り直していたので、ほかの経路で付けた認可方式を消しうる)。純関数(`fixed_version_selector` / `pinned_version` / `endpoint_with_version`)とフェイクの SDK でオフライン固定し、フェイクのキーワードは実 SDK 2.7 のシグネチャと突き合わせた。Routine を有効にしたままでも、候補の試験中に平日 9:00 の起動が新版を踏まない
+- **簡素化の評価**:
+  - **(不採用)native workflow hosting**(b261002 の新機能): 本ポートのワークフロー(collect → rank → brief)を `ResponsesHostServer(workflow=ファクトリ, parse_response=入力文から BriefingRequest を作る関数)` で載せる試作は約 25 行で動いた。ただし (1) ワークフローの境界を越える自前の型(`BriefingRequest` / `CollectedStories` / `RankedStories` / `StageDone` / `Story` / `Brief`)を `CheckpointStoreProvider(allowed_checkpoint_types=["module:qualname", ...])` に**全部**載せる必要がある(1 つでも欠けると store=true の要求が「not checkpoint-allowlisted」で failed)(2) 出力は `structured_outputs` 項目(StageDone ×2 と Brief の JSON)で、メッセージ(`output_text`)が出ない → playground での自由な問いかけ(設計判断の理由 2)が消える (3) 置き換わるのは hosted.py(docstring を除いて約 40 行。うち instructions が 18 行)で、行数はほぼ変わらない。定時バッチ専用で後段に JSON を渡す構成なら有力(記事の順序が instructions ではなくグラフの構造で保証される)。プレリリースで入ったばかりの機能でもある
+  - **(反映・コード変更なし)Routines の配信ポリシー変更**(Learn [use-routines](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/use-routines) 2026-09-24 版: 3 試行・1〜5 秒 → **5 試行・5〜60 秒**の指数バックオフ。**Responses API アクションは background で、1 試行 30 秒は受付まで**): 2026-09-29 の残リスク 5(コールドスタート+HN 取得+ブリーフ生成が 30 秒を超えると再試行で重複実行)は、30 秒が「受付まで」になったので大きく下がった。残るのは**コールドスタートで受付自体が 30 秒を超える**場合だけ。逆に run の FINISHED はエージェントの完了を意味しなくなった(完了は run の `response_id` の応答を引いて確かめる)→ runbook の確認観点 3・4 とトラブル表を更新
+  - **(不採用)Terraform**(`azd ai agent init --infra=terraform` / AzAPI で版を Terraform 管理): 本ラボの「Bicep(ARM)+ スクリプト(データプレーン)」の規約と二重管理になる。SDK 経路でも `--candidate` / `--promote` で公式と同じ段取りを踏める
+- **ライブで確かめること**: 同日のライブで確認した(次節)
+
+## 検証結果(2026-10-06 ライブ)
+
+japaneast の共有基盤(`aif-mafp1006` / プロジェクト `maf-ports` / gpt-5.4-mini、App Insights 接続済み)で、runbook §5 の手順を一巡した。他のポートのライブと同じ基盤を共有し、共有基盤には手を入れていない。検証後に Routine と hosted agent を削除した(共有基盤と RG は残置)。結果の一覧は runbook §6.1。
+
+1. **デプロイ(既定動作)**: REMOTE_BUILD で version 1 が約 2 分で active → 100% ルーティング → `--invoke` で当日の HN からブリーフ生成。コンテナの起動ログは `azure-ai-agentserver-core/2.2.0 … responses/2.2.0` で、**上限 `<2.3` を付けた requirements が pip でも 2.2.0 を解決した**(改修 2 の確認)。エンドポイント設定には `authorization_schemes: [{"type": "Entra"}]` と `protocols` がサーバー側で入っていた(改修 3 で「セレクタだけ差し替え」にしたのはこれを消さないため)
+2. **【発見】同じ内容の再デプロイは新しい版を作らない**: 最初の `--candidate` はコードも定義も本番と同じだったため、`create_version_from_code` が**既存の version 1 を返した**(新版なし)。スクリプトはそれを「候補」として試してしまったので、**候補が本番と同じ版なら止める**よう修正し、テストを足した(`test_candidate_with_unchanged_content_stops_without_testing`)。定義を変えた候補(`--cpu 1 --memory 2Gi`)で version 2 を作成(1 分弱で active)
+3. **候補の試験中も本番は動かない**: 候補専用セッション(`version_ref` = 2)の応答はコンテナ側スパンの `gen_ai.agent.version` = 2。同じ時間帯に版指定なしで送った新しい会話は version 1 のコンテナが答えた。`--promote 2` の後の新しい会話は version 2
+4. **既存セッションの版束縛 — 公式どおり「作成時の版に束縛」だった(白)**: 切り替え前(version 1)に始めた会話を切り替え後に続けると、`agent_session_id` を付けても、`previous_response_id` だけでも、**version 1 のコンテナ**(切り替え前と同じインスタンス)が答えた。さらに **`stop_session` でサンドボックスを止め(状態 `idle`)てから続けても、新しいコンテナで version 1 が起動した**。セッションの `version_indicator` は自動作成のセッションでも `version_ref` = 作成時の版になっている。foundry-probes probe 10(2026-09-30)の「休止明けは現行ルーティング先で再開」とは結果が違う(probe 10 はアイドルタイムアウトでの休止。本ポートではアイドルタイムアウト後の再開も確かめた — 下の 9)
+5. **【落とし穴】応答の `agent_reference.version` は「答えた版」ではない**: 上の 4 で version 1 のコンテナが答えた応答も、`agent_reference.version` は **"2"**(その時点のセレクタ)だった。どの版が答えたかは、セッションの `version_indicator`(`get_session`)かコンテナ側スパンの `gen_ai.agent.version` で見る
+6. **Routines(GA)**: フィーチャーヘッダーなしの `PUT …/routines/hn-briefing-daily?api-version=v1` で作成できた(2026-09-29 の改修 1 のライブ確認)。既定で `authorization.identity: "agent"` が付く。`:dispatch_async` → run が **Finished / completed、started → ended 8 秒**(新しいセッションのコールドスタート込みの「受付」。30 秒の 1/4)。エージェントの処理はその後約 6 秒で完了した(コンテナの `invoke_agent` スパン)。手動発火でも run の `trigger_type` は `schedule`
+7. **【落とし穴】Routine が作った応答は開発者の ID では読めない**: run の `response_id` を開発者の ID で GET すると **403 `session_not_accessible`**。Routine は agent identity で呼ぶので、セッションと会話がエージェント側の利用者に属する(セッションのメタデータ `get_session` は読める)。→ 「完了は `response_id` の応答で確かめる」は使えず、**トレース(コンテナの `invoke_agent` スパンの成否)で確かめる**。runbook の確認観点 3 を直した
+8. **トレース: 会話本文は従来テーブルと `AppGenAIContent` の二重書き(プラットフォーム側も同じ)**: プラットフォーム側(`AppRoleName == "responsesapi"` の `invoke_agent hn-briefing-agent:N` / `chat` 44 本)とコンテナ側(`invoke_agent` / `chat` / `execute_tool` 44 本)の GenAI スパンは**すべて** `AppDependencies.Properties` の `gen_ai.input.messages` / `gen_ai.output.messages`(コンテナ側は `gen_ai.system_instructions` / `gen_ai.tool.call.result` も)に本文を持ち、`_MS.GenAIContentId` が付き、同じ ID の行が `AppGenAIContent` にあった(プラットフォーム側 44 本は本文の長さも一致)。プラットフォーム側の入力には**ツール結果(HN の digest)を含む会話全文**が入る(26 本)。`AppGenAIContent` の取り込みの遅れは**最大 4 秒**(親の 2026-10-06 の測定では約 5 分 — 一定ではない)。さらに**コンテナの `AppTraces` には MAF の GenAI ログイベント(instructions・利用者の入力・モデルの出力)が 74 件、ポインターなしで入っていた**(振り分けの対象外)。早期フラグ未登録のサブスクリプション。→ 公式の「2026-09-30 以降は専用テーブルだけ」はこの環境ではまだ成り立たず、`AppGenAIContent` を Protected にしても従来テーブルと `AppTraces` の本文は通常のリーダーで読める(architecture 09 §3.6 の案 4 の前提条件どおり)。本ポートはコンテナ側の記録(`OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT`)を既定のまま(記録する)にしている
+9. **アイドルタイムアウト後の再開も version 1**: 切り替え前(候補の試験中)に始めた version 1 の会話を最後の要求から約 15 分放置し、セッションが `idle`(`stopped_at` 付き)になってから同じ `agent_session_id` で続けると、**新しいコンテナが `agent_version=1` で起動して答えた**(コンテナの起動ログ・スパンで確認。会話の中身も引き継いだ)。→ 2026-10-06 時点では、明示停止でもアイドルタイムアウトでも**セッションは作成時の版に束縛され続ける**。probe 10(2026-09-30)の「休止明けは現行ルーティング先で再開し、`version_indicator` も新しい版に書き換わる」は再現しなかった(本ポートでは再開後も `version_indicator` = 1)。probe 10 は `idle_timeout_seconds=120`・App Insights 未接続・版を自己申告するテスト用エージェントで測っており、条件は同一ではない — 挙動の変更か条件差かは未切り分けで、probe 10 側の再測定が要る。全会話を新版へ移したいときは、公式どおり新しいセッションを作り直させる(版を消すのはロールバック手段ではない)
+10. **後片付け**: Routine を disable → delete(`list` が空)。hosted agent はセッションが残っていると `DELETE` が 409(「deletion-blocking sessions … use force=true」)→ `force=true` で削除(エージェント一覧が空)。共有基盤・RG・ロールは残置
+11. その他: `pytest -m live`(ロジック層の実 HN + 実モデル / hosted のスモーク)2 passed。所要(クライアントで計測): 新しい会話 12.7〜13.8 秒(新しいセッション = サンドボックスの起動+HN 取得+生成)/ 起動中のセッションでの続き(ツールを呼ばない短い質問)4.2〜4.4 秒 / 同じ短い質問を `stop_session` の後に送ると 11.1 秒 → **サンドボックスの再起動は約 7 秒**。コンテナ内の HN Algolia への GET は dependency として出ない(agentserver-core 2.2 系で HTTPX の計装が既定無効 — 2026-09-29 の予測どおり)が、モデル呼び出しの `POST …/openai/v1/responses` は出る
+12. **(親の追補)CLI 実行のトレースを全件送信に**: azure-monitor-opentelemetry 1.8.x の既定サンプラーは rate-limited(5 spans/秒)で、ワークフロー開始直後のスパンが間引かれる(trend-analysis のライブで実測)。`observability.py` に `sampling_ratio=1.0` を明示した(hosted 側のコンテナはプロトコルライブラリが構成するので対象外)。オフライン 60 passed・ruff clean
+
+## 学び(MAF/Foundry vs 元構成)
+
+1. **「クライアント実行 MAF」→「hosted agent 化」で書き換わったのはエージェントコードではなく周辺 3 点 — 資格情報・観測・HTTP 面。**エージェント本体(instructions+ツール)は完全共有で、hosted 化の差分は hosting/main.py の 60 行に閉じた。(a) **資格情報**: クライアント実行の「OpenAI v1 エンドポイント+API キー」が「`FoundryChatClient` + agent identity(デプロイ時に自動付与される専用 Entra ID)」になり、**コンテナに秘密を 1 つも持ち込まない**構成が既定になる(環境変数はエンドポイントとモデル名だけ)。(b) **観測**: 全ポートで書いてきた `configure_azure_monitor` の配線が消える — 接続文字列はプラットフォームが注入し、protocol ライブラリが OTel を既定発信。逆にオフラインテストでは既定の observability 構成が IMDS(169.254.169.254)を突く副作用があり、`configure_observability=None` で切る必要があった(コンストラクタ引数として公開されているのは良設計)。(c) **HTTP 面**: 元アプリが FastAPI で自作した trigger/pubsub/health エンドポイントは `ResponsesHostServer` が標準の Responses 契約として持つ。**元 scheduler_api.py の約 120 行と Cloud Run 運用がまるごと消えた**一方、デプロイは「zip 規約+provisioning ポーリング+バージョン即時不変」という新しい運用語彙を要求する — サーバー運用の消滅とデプロイ工程の増加のトレードオフ。
+2. **Routines は「Cloud Scheduler 相当をプロジェクト内オブジェクトにした」もので、契約は素直だがプレビューの割り切りが濃い。**REST は PUT 1 本+フィーチャーヘッダーで、元構成の Scheduler ジョブ+Pub/Sub トピック+push サブスクリプション+OIDC 設定より明確に少ない。run history がエージェント応答・トレースにリンクされるのはスケジューラ側からは得られなかった観測性。一方で (a) 1 トリガー+1 アクション固定(元 README がやっていた「複数チャネルへの配信分岐」は routine では組めずエージェント側の責務)、(b) `Foundry-Features` ヘッダー必須の API は SDK でも beta 名前空間で、**「機能の成熟度がヘッダー名で分かる」**段階(※2026-09-29: GA で REST はヘッダー不要になったが、SDK は beta 名前空間のまま任意ヘッダー `Routines=V2Preview` を自動付与する — **GA と SDK の beta 卒業は同期しない**)、(c) 対応 8 リージョンに Japan East が入っていたのは幸運の部類(Memory は 19、hosted は 31、Routines は 8 — **同じ「新 Foundry」でもサブ機能ごとにリージョン集合が違う**ので、リージョン選定は使いたいサブ機能の積集合で決める必要がある)。実デプロイでの使用感(コールドスタート込みの発火遅延、失敗時のリトライ有無)は残リスク 4 の実測待ち。
+3. **「ツール直付け不可」の制約は実際には二層に分解して読む必要がある — 「定義にアタッチする Foundry 管理ツール」は不可(Toolbox 経由)、「コンテナ内の自前コードのツール」は無関係。**survey の一文だけ読むと「hosted にするとツールが使えない」ように見えるが、本ポートの HN 収集ツールはコンテナ内 httpx 呼び出しなので何の制約も受けなかった。制約が効くのは Code Interpreter / Web Search / 認証付き MCP 等を hosted から使いたいときで、その場合は Toolbox MCP エンドポイント+`FoundryToolbox` クライアントという追加ホップが入る。**選定軸: hosted agent 化の摩擦は「ツールの出所」で決まる** — 自前 API 呼び出し中心のエージェントはほぼ無摩擦、Foundry 管理ツール中心のエージェントは Toolbox 設計が先に要る。prompt agent なら定義に直接ツールを書ける(ここは prompt/hosted で非対称)。
+4. **常時稼働型の運用観点 — 元実装の「常時稼働」は実はサーバー常駐で、Foundry 版は「常時*予約*・実行時のみ稼働」になる。**元構成は Cloud Run の最小インスタンス設定次第で 24h 課金がありえた。hosted agent はセッション毎サンドボックス+アイドル 15 分スケールゼロ+状態($HOME)の自動退避/復元で、日次ブリーフのような**低頻度バッチには構造的に安い**。ただし運用上の含意が 3 つ: (a) cron 発火のたびにコールドスタートを踏む(日次ブリーフでは許容、対話 UX では要考慮)、(b) バージョンは不変オブジェクトなので「環境変数を 1 個変える」にも新バージョン+ルーティング切替が要る — 元の「Cloud Run の env を書き換えて再起動」よりも重いが、ロールバックは routing の付け替えで確実、(c) 「止める」操作は Routine の disable(トリガー停止)とエージェント削除(定義ごと)の二段があり、コスト停止の単位が明確。ラボのステートレス規約(RG 削除で全撤去 → スクリプト再構築)は hosted agent でも成立する — デプロイもルーチンもスクリプト化してあるので再現は 2 コマンド。
+5. **決定論パイプラインと LLM の境界を「digest 文字列」1 点に固定すると、二形態(ワークフロー/ツール持ちエージェント)の共存がタダになる。**収集→ランク→digest までを純関数にし、ワークフローは digest を LLM に渡し、hosted はツールが digest を返す — LLM に触れさせる面が 1 つの文字列に収まっているので、オフラインテストはゴールデン値(元実装実行で採取したスコア)で決定論部分を完全固定でき、LLM 側の検証は「digest に忠実か」だけに縮む。元実装が LLM を「使っても使わなくても同じ出力」の飾りにしていた(スケジューラ経路は LLM 非経由)のと対照的に、移植版は静的テンプレート(next_actions 3 行固定)を LLM の編集に置き換えつつ、正確性が要る部分(順位・数値)は決定論のまま残した。**「どこまでを式にしてどこから LLM か」の線引きを移植時に引き直せる**のは、フレームワーク移植の隠れた価値だと思う。
+6. **(2026-10-06 追記)プレリリースのホスティングライブラリを載せると、「テストした依存の組」と「コンテナで動く組」が解決器の違いでずれる。**uv はプレ版を明示したパッケージだけに許し、pip は依存の指定にプレ版が 1 つでも混じるとそのパッケージのプレ版を解禁する。foundry-hosting(プレ版)の `>=2.2.0b1` という指定 1 つで、REMOTE_BUILD だけ agentserver-responses が 2.3.0b2 に上がっていた。lock ファイルを使えないコードデプロイ(requirements.txt を pip が解く)では、**上限付きの指定と `pip install --dry-run --report` による lock との突き合わせ**までを最新化の手順に入れる必要がある。併せて、公式の本番リリース手順(本番のピン留め → 版指定セッションでの候補試験 → セレクタの切り替え)が出たことで、hosted agent の「バージョンは不変・ルーティングで切り替え」(学び 4 (b))が**デプロイと公開を分ける**運用の部品として揃った。
+7. **(2026-10-06 ライブ)hosted agent の「どの版が答えたか」は、応答ではなくセッションとコンテナに聞く。**版を切り替えた後も、切り替え前に始めた会話は(続けても、止めて再開しても、アイドル明けでも)作成時の版のコンテナが答えた — 公式の「セッションは作成時の版に束縛」どおりで、2026-09-30 の probe 10 とは逆の結果だった(条件差か挙動の変更かは未切り分け。いずれにせよ、リリース手順の前提にする挙動は版更新のたびに測る)。一方、応答の `agent_reference.version` はその時点のセレクタを返すので、旧版が答えた応答にも新版の番号が付く。**運用の見え方(応答のメタデータ)と実体(どのコンテナが動いたか)がずれる**ので、版の切り替えを伴うリリースの受入れは、セッションの `version_indicator` とコンテナ側スパンの `gen_ai.agent.version` で判定する。併せて、Routine(agent identity で呼ぶ)が作った会話は開発者の ID からは読めず(403)、完了確認もトレースに寄る — **hosted agent の観測の主役は応答 API ではなくトレース**で、そのトレースには(専用テーブル化の後も)従来テーブルに会話本文が残る。

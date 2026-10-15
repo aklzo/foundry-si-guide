@@ -1,0 +1,53 @@
+[project]
+name = "github-mcp-maf"
+version = "0.1.0"
+description = "awesome-llm-apps github_mcp_agent の MAF + Foundry 移植(stdio Docker → GitHub 公式リモート MCP)"
+requires-python = ">=3.11"
+dependencies = [
+    # MCPStreamableHTTPTool(static_headers=...) は 1.19.0 で追加。2026-10-06 に 1.20.0 で検証
+    "agent-framework-core>=1.20",
+    "agent-framework-openai>=1.15",
+    # MAF の MCPStreamableHTTPTool が要求(agent-framework-core では optional 依存。上限ピン必須)。
+    # 2026-09-29 再確認: agent-framework-core 1.19 も extra 経由で mcp<2 を宣言し、mcp 2.2.0 と
+    # 組み合わせるとローカル MCP サーバーへの接続で initialize 時に
+    # 'InitializeResult' object has no attribute 'protocolVersion' → ToolException になる
+    # (_mcp.py が camelCase 属性を参照。mcp 2.x は snake_case に改名)。
+    # 2026-10-06 再確認: agent-framework-core 1.20.0 も mcp<2 を宣言し _mcp.py は
+    # protocolVersion を参照したまま。mcp 2.3.0 は型を別パッケージ mcp-types に分離し、
+    # InitializeResult は protocol_version(snake_case)のみ → 上限ピンは引き続き必須
+    "mcp>=1.30,<2",
+    "python-dotenv>=1.0",
+    "typing-extensions>=4.10",
+]
+
+[project.optional-dependencies]
+dev = [
+    "httpx>=0.28",  # テストの MockTransport(スタブ MCP サーバーでハンドシェイクのヘッダーを検証)
+    "pytest>=8",
+    "pytest-asyncio>=0.24",
+    "ruff>=0.14",
+]
+live = [
+    "azure-monitor-opentelemetry>=1.6",
+]
+
+[project.scripts]
+github-mcp-maf = "github_mcp_maf.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/github_mcp_maf"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+addopts = "-m 'not live'"
+markers = [
+    "live: 実 GitHub リモート MCP + 実モデルを呼ぶスモークテスト(要 .env + GITHUB_TOKEN)",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"

@@ -1,0 +1,195 @@
+"""継続評価(continuous evaluation / evaluation_rules)の挙動確認。
+
+critique-loop は evals API の「その場でランを作る」バッチ評価を検証済み。
+未検証なのは **evaluation_rules によるイベント駆動の自動評価**:
+response_completed イベントで自動的に評価ランが作られる仕組み。
+
+観点:
+  A. eval 定義(builtin.coherence)の作成
+  B. evaluation_rules.create_or_update(RESPONSE_COMPLETED + CONTINUOUS_EVALUATION)
+  C. ルールが list に現れるか・フィールドの見え方
+  D. store=True の response を数件生成 → 自動ランが作られるか(バウンドポーリング)
+  D2. 公式サンプルの呼び方(プロジェクトの openai client + conversation + agent_reference)
+      でも生成する(2026-10-06 追加)
+
+2026-10-06 実測: sampling_rate は百分率(0-100]で、従来の 1.0 は 1% だった(自動ランが出なかった
+真因)→ 100 に修正。修正後は 1 応答 = 1 ランが 16 秒以内に出るが、D(エージェントエンドポイント
+経由)のランは評価器が応答を取得できず failed(AOAI 404 "Response ... not found")、D2 は completed。
+  E. 後片付け
+
+注意: 自動ランは非同期。observ できなくても「配線の仕方と観測可否」自体が記録価値。
+
+2026-09-29 改訂: eval のデータソースを公式の継続評価の形
+(`{"type": "azure_ai_source", "scenario": "responses"}`、data_mapping なし)に変更。
+2026-08-04 実測時は custom(item_schema + data_mapping)で作っており、自動ランが
+evals.runs に現れなかった一因と考えられる(公式サンプルではランが
+continuousevalrun_* として evals.runs.list に出て report_url を持つ)。
+前提: プロジェクト MI に Foundry User(旧 Azure AI User)— roles.bicep で付与済み。
+出典: https://learn.microsoft.com/en-us/azure/foundry/observability/how-to/how-to-monitor-agents-dashboard
+      azure-sdk-for-python samples/evaluations/sample_continuous_evaluation_rule.py
+"""
+
+from __future__ import annotations
+
+import sys
+import time
+
+from foundry_probes.common import Settings, make_project_client, section, show
+
+EVAL_NAME = "probe-coherence-eval"
+RULE_ID = "probe-continuous-rule"
+AGENT_NAME = "probe-ce-agent"
+POLL_SECONDS = 600
+
+
+def main() -> int:
+    settings = Settings.from_env()
+    project = make_project_client(settings)
+    client = project.get_openai_client()
+
+    section("0. 継続評価の対象となる prompt agent を用意(filter.agent_name 用)")
+    from azure.ai.projects.models import PromptAgentDefinition
+
+    project.agents.create_version(
+        agent_name=AGENT_NAME,
+        definition=PromptAgentDefinition(
+            model=settings.model,
+            instructions="質問に簡潔に答えるアシスタント。",
+        ),
+    )
+    agent_client = project.get_openai_client(agent_name=AGENT_NAME)
+    print(f"  agent 準備完了: {AGENT_NAME}")
+
+    section("A. eval 定義の作成(builtin.coherence)")
+    try:
+        ev = client.evals.create(
+            name=EVAL_NAME,
+            # 継続評価は「エージェントの応答」を入力にする azure_ai_source / responses
+            # シナリオで定義する(custom + data_mapping はバッチ評価用の形)。
+            data_source_config={"type": "azure_ai_source", "scenario": "responses"},
+            testing_criteria=[
+                {
+                    "type": "azure_ai_evaluator",
+                    "name": "coherence",
+                    "evaluator_name": "builtin.coherence",
+                    # AI 支援評価器なので判定用のモデルデプロイを渡す
+                    "initialization_parameters": {"deployment_name": settings.model},
+                }
+            ],
+        )
+        show("eval 作成", {"id": ev.id, "name": ev.name})
+        eval_id = ev.id
+    except Exception as exc:
+        print(f"!! eval 作成失敗: {type(exc).__name__}: {str(exc)[:400]}")
+        return 1
+
+    section("B. evaluation_rules.create_or_update(RESPONSE_COMPLETED 駆動)")
+    from azure.ai.projects.models import (
+        ContinuousEvaluationRuleAction,
+        EvaluationRule,
+        EvaluationRuleEventType,
+        EvaluationRuleFilter,
+    )
+
+    try:
+        rule = project.evaluation_rules.create_or_update(
+            id=RULE_ID,
+            evaluation_rule=EvaluationRule(
+                display_name="probe continuous coherence",
+                description="probe: response_completed で coherence を自動評価",
+                event_type=EvaluationRuleEventType.RESPONSE_COMPLETED,
+                enabled=True,
+                filter=EvaluationRuleFilter(agent_name=AGENT_NAME),
+                action=ContinuousEvaluationRuleAction(
+                    eval_id=eval_id,
+                    max_hourly_runs=100,
+                    # sampling_rate は「百分率」(0-100]。2026-10-06 まで 1.0 を渡しており、
+                    # 実際は 1% しか評価されなかった(自動ランが出なかった真因)。100 = 全件
+                    sampling_rate=100.0,
+                ),
+            ),
+        )
+        show("ルール作成", rule.as_dict())
+    except Exception as exc:
+        print(f"!! ルール作成失敗: {type(exc).__name__}: {str(exc)[:500]}")
+
+    section("C. ルール一覧")
+    try:
+        for r in project.evaluation_rules.list():
+            d = r.as_dict()
+            print(f"  id={d.get('id')} event={d.get('event_type')} enabled={d.get('enabled')} action={d.get('action',{}).get('type')}")
+    except Exception as exc:
+        print(f"!! list 失敗: {type(exc).__name__}: {str(exc)[:200]}")
+
+    section("D. エージェントエンドポイント経由で response を生成(probe の従来の呼び方)")
+    for i in range(3):
+        r = agent_client.responses.create(
+            input=f"継続評価テスト{i}: 再帰関数を一文で説明して。",
+            store=True,
+        )
+        print(f"  response {i} 生成: {r.id}")
+
+    section("D2. 公式サンプルの呼び方: プロジェクトの openai client + conversation + agent_reference")
+    # sample_continuous_evaluation_rule.py はエージェントエンドポイントではなく
+    # プロジェクトの /openai/v1 に agent_reference を付けて呼ぶ(2026-10-06 追加)
+    conv = client.conversations.create(
+        items=[{"type": "message", "role": "user", "content": "継続評価テスト D2: フランスの首都は?"}],
+    )
+    for i in range(3):
+        if i:
+            client.conversations.items.create(
+                conversation_id=conv.id,
+                items=[{"type": "message", "role": "user", "content": f"続けて {i}: 一文で補足して。"}],
+            )
+        r = client.responses.create(
+            conversation=conv.id,
+            extra_body={"agent_reference": {"name": AGENT_NAME, "type": "agent_reference"}},
+        )
+        print(f"  response D2-{i} 生成: {r.id}")
+
+    print(f"  自動ラン発火をポーリング(最大 {POLL_SECONDS}s)...")
+    t0 = time.monotonic()
+    seen_runs: list[str] = []
+    while time.monotonic() - t0 < POLL_SECONDS:
+        try:
+            for run in client.evals.runs.list(eval_id, order="desc", limit=20):
+                if run.id not in seen_runs:
+                    seen_runs.append(run.id)
+                    print(f"  {time.monotonic()-t0:5.1f}s 自動ラン検出: {run.id} status={run.status}")
+                    print(f"    report_url={getattr(run, 'report_url', None)}")
+                    show("    data_source", getattr(run, "data_source", None), limit=400)
+                    show("    result_counts", getattr(run, "result_counts", None), limit=300)
+                    if getattr(run, "error", None):
+                        show("    error", run.error, limit=500)
+        except Exception as exc:
+            print(f"  runs.list エラー: {type(exc).__name__}: {str(exc)[:150]}")
+            break
+        if len(seen_runs) >= 6:
+            break
+        time.sleep(15)
+    if not seen_runs:
+        print(f"  {time.monotonic()-t0:5.1f}s 自動ランは観測されず(非同期遅延 or 別サーフェス集計の可能性)")
+    else:
+        print(f"  自動ラン {len(seen_runs)} 件(D と D2 のどちらの応答かは data_source で見る)")
+
+    section("E. 後片付け")
+    try:
+        project.evaluation_rules.delete(RULE_ID)
+        print("  ルール削除 OK")
+    except Exception as exc:
+        print(f"!! ルール削除: {type(exc).__name__}: {str(exc)[:150]}")
+    try:
+        client.evals.delete(eval_id)
+        print("  eval 削除 OK")
+    except Exception as exc:
+        print(f"!! eval 削除: {type(exc).__name__}: {str(exc)[:150]}")
+    try:
+        project.agents.delete(agent_name=AGENT_NAME)
+        print("  agent 削除 OK")
+    except Exception as exc:
+        print(f"!! agent 削除: {type(exc).__name__}: {str(exc)[:150]}")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

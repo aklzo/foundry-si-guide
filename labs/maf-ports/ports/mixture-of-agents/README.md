@@ -1,0 +1,99 @@
+# mixture-of-agents — ファンアウト/ファンイン並列合議(Port 2)
+
+元: [`starter_ai_agents/mixture_of_agents`](https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/starter_ai_agents/mixture_of_agents)(Together SDK 直書き + Streamlit、103行)
+
+## 元の構成(5行)
+
+- Streamlit UI で Together API キーと質問を入力し、ボタンで実行
+- reference_models 4種(Qwen2-72B / Qwen1.5-72B / Mixtral-8x22B / DBRX)へ同一質問を `asyncio.gather` で**並列送信**(temperature 0.7, max_tokens 512)
+- アグリゲータ(Mixtral-8x22B)が固定 system prompt で4回答を統合(**回答はカンマ結合しただけ・質問本文はアグリゲータに渡らない**)
+- 個別回答は expander、統合回答はストリーミング表示
+- エラー処理・観測性なし
+
+## 移植後の構成
+
+![architecture](./docs/architecture.png)
+
+```
+                ┌─▶ Proposer(analyst)    ─┐
+question ──▶ Dispatcher ─▶ Proposer(creative)   ─┼─▶ Aggregator ──▶ MoAResult
+                ├─▶ Proposer(skeptic)    ─┤      (list[ProposerReply] を合流)
+                └─▶ Proposer(pragmatist) ─┘
+```
+
+- `asyncio.gather` の手続き並列を `WorkflowBuilder.add_fan_out_edges`(dispatcher → proposer 4体)+ `add_fan_in_edges`(proposer 4体 → aggregator)のグラフに昇格。fan-in は全 proposer の完了を待って `list[ProposerReply]` を1回だけ配送する(並び順はエッジ定義順=決定的)
+- **既定は gpt-5.4-mini ×ペルソナ4体**(analyst / creative / skeptic / pragmatist の self-MoA)。共有基盤に他モデルがないための代替であり、`FOUNDRY_PROPOSER_MODELS=model-a,model-b,...` で「1モデル=1 proposer」の本来のモデル多様性モードに切替(要: 共有基盤への追加モデルデプロイ)。`FOUNDRY_AGGREGATOR_MODEL` で統合モデルも差し替え可
+- アグリゲータの system prompt は原文をそのまま移植。ただし user message は「カンマ結合」→「proposer 名ラベル付きセクション+質問本文」に変更(下記・学び4)
+- Streamlit → CLI(`uv run mixture-of-agents-maf "question" [--show-proposals] [--json]`)
+- トレース: `configure_azure_monitor` + agent-framework 既定計装で App Insights へ(fan-out / fan-in のエッジ配送もスパンになる)
+- テスト: オフライン 13 件(ScriptedAgent + バリア同期による並列性の証明)+ ライブスモーク(`pytest -m live`)
+
+## 実行
+
+```bash
+uv sync --extra dev --extra live
+uv run pytest                 # オフライン(ネットワーク不要)
+uv run mixture-of-agents-maf "When should a team choose a monolith over microservices?"   # 要 ../../.env
+FOUNDRY_PROPOSER_MODELS=gpt-5.4-mini,phi-4 uv run mixture-of-agents-maf "..."  # モデル多様性モード
+uv run pytest -m live         # ライブスモーク
+```
+
+詳細な実行手順と確認観点は [docs/runbook.md](./docs/runbook.md)(人間用 HTML: `docs/runbook.html`)。
+
+インフラ: 共有基盤のみで動作(`infra/main.bicep` は existing 参照+出力のみ)。モデル多様性モードを使う場合の追加モデルデプロイは共有基盤(`infra/shared.bicep`)側の変更。
+
+評価: `tests/eval_dataset.jsonl` は各ケースに `single_vs_aggregate`(proposer 単体と集約後をどう比べるか: 誤情報の抑制・観点カバレッジの和集合・数値不一致の解決・集約が割に合わない対照ケース)を明記。
+
+## 検証結果(2026-10-06 ライブ)
+
+共有基盤(rg-maf-ports / japaneast・gpt-5.4-mini 容量 100・App Insights `appi-mafp1006`)で runbook §5〜§7 を実施(`OTEL_SERVICE_NAME` で `cloud_RoleName` を分けて集計)。
+
+- **ライブスモーク**: `uv run pytest -m live` 1 passed(10.0 秒)
+- **正常系(§6 #1)**: `--show-proposals` で 14.7 秒。stderr に `proposers: analyst, creative, skeptic, pragmatist` と `[<name>] done` 4 行(2,346〜2,728 字)、stdout に `## Response from analyst` … `pragmatist` → `## Aggregated response`
+- **並列性(#2)**: 3 回とも proposer 4 体の `invoke_agent` 開始が 0.09〜0.28 秒以内にそろい区間が重なる。aggregator は最後の proposer の終了直後に開始(例: 最後の proposer 終了 6.69 秒 → aggregator 開始 6.69 秒)
+- **fan-in の並び(#3)**: 完了順は毎回違った(skeptic→creative→pragmatist→analyst / analyst→skeptic→pragmatist→creative / skeptic→pragmatist→creative→analyst)が、`proposals` は 3 回とも analyst → creative → skeptic → pragmatist
+- **統合の質(#4)**: 統合回答は 1 体のコピーでなく、modular monolith から始める(pragmatist / analyst)・ACID の一貫性(skeptic)・運用成熟度などを取り込んでいた
+- **モデル多様性モード(#5)**: 共有基盤のチャットモデルは gpt-5.4-mini だけ(Azure リソースは作らない方針)のため、`FOUNDRY_PROPOSER_MODELS=gpt-5.4-mini,gpt-5.4-mini` で**経路だけ**確認: `proposers: m1-gpt-5-4-mini, m2-gpt-5-4-mini`、12.4 秒、`chat` 3 回。**別モデルを混ぜる本来の多様性は未検証**
+- **proposer 1 体の失敗(#6)**: `FOUNDRY_PROPOSER_MODELS=gpt-5.4-mini,nope` で終了コード 1(`ChatClientException` 404 DeploymentNotFound)、aggregator は動かない。トレースでも `invoke_agent m2-nope`・`executor.process proposer_m2-nope`・`workflow.run` が失敗(Success=false)として残る
+- **トレース(#7)**: 1 回あたり `invoke_agent` 5(proposer 4+aggregator)・`executor.process` 6(dispatcher・proposer 4・aggregator)・`FanOutEdgeGroup` 1・`FanInEdgeGroup` 4・`chat` 5
+- **コスト(#8)**: aggregator の入力が平均 2,283 トークンで最大(proposer は約 57)。出力は proposer 480〜620・aggregator 443
+- **修正**: azure-monitor-opentelemetry の既定サンプラー(rate-limited 5 spans/秒)でトレースが欠ける問題を Port 1 で見つけたため、`observability.py` で `sampling_ratio=1.0` を明示した(詳細は Port 1 の検証結果 2026-10-06 ライブ)。修正後の本ポートの実行はスパン欠落なし
+
+## 検証結果(2026-10-06 最新化チェック)
+
+- **依存更新**(`uv lock --upgrade`): agent-framework-core 1.19.0 → **1.20.0** / agent-framework-openai 1.14.4 → **1.15.0** / openai 3.20.0 → **3.24.0** / azure-identity 1.25.3 → 1.26.0 / msgspec 0.21.1 → 0.22.0(推移依存)/ ruff 0.16.9 → 0.16.10。core 1.20 の新しい推移依存として `regex` が入る。pyproject の下限を検証版(`agent-framework-core>=1.20` / `agent-framework-openai>=1.15`)に引き上げ
+- オフライン **13 passed**(`-W error::DeprecationWarning` でも同じ。バリア同期の並列性証明も 1.20 で通る)/ `uv run ruff check .` clean
+- **コード改修なし**(オフライン確認の時点。その後のライブ検証で `observability.py` にサンプリング設定を追加 — 上の「検証結果(2026-10-06 ライブ)」)。追加確認として、実 `Agent` + `OpenAIChatClient` を `/openai/v1/responses` のモックに向けて両モードをリポジトリ外のスクラッチで完走させた: ペルソナ 4 体モード = 5 リクエスト(全て `gpt-5.4-mini`)、`FOUNDRY_PROPOSER_MODELS=gpt-5.4-mini,phi-4` + `FOUNDRY_AGGREGATOR_MODEL=gpt-5.4` = 3 リクエスト(`model` がデプロイ名どおり振り分け)。fan-in の並び順(エッジ定義順)と、aggregator のプロンプトに全 proposer の回答が入ることも同じ。スパンは `invoke_agent` ×5・`edge_group.process FanOutEdgeGroup` / `FanInEdgeGroup`
+- 変更不要と判断した点: 1.20 で fan-out の edge runner が「そのグループで配送できないメッセージ(宛先・型の不一致)を選択関数の前に捨てる」「選択関数が同じ宛先を重複して返しても 1 回だけ配送する」ようになったが、本ポートは選択関数なしで dispatcher → proposer 全員に同じ型を配るだけなので挙動は同じ / openai 1.15 の Azure 経路ヘッダー修正は `azure_endpoint=` 経路の話で、本ポートは `base_url` 経路
+- 簡素化の検討: GA 機能・新 API で減らせる自前実装はなかった(fan-out / fan-in は 1.x から first-class)
+- 構成図(`docs/architecture.png`)の版表記を core 1.20 / openai 3.24 に更新して再生成
+- ライブ: 上の「検証結果(2026-10-06 ライブ)」(スモーク・確認観点・トレース)
+
+## 検証結果(2026-09-29 最新化チェック)
+
+- **依存更新**(`uv lock --upgrade`): agent-framework-core 1.12.1 → **1.19.0** / agent-framework-openai 1.11.0 → **1.14.4** / openai 2.51.0 → **3.20.0**(HTTP 層が httpx2 になり、本ポートの依存木から httpx 自体が外れた)/ azure-monitor-opentelemetry 1.8.9 → 1.8.10。pyproject の下限を検証版に引き上げ
+- オフライン **13 passed**(DeprecationWarning なし。バリア同期の並列性証明も 1.19 で通る)/ ruff clean(`uv run ruff check .`。旧図スクリプトの既存指摘は図の v2 化で解消)/ `az bicep build` OK
+- 構成図(`docs/architecture.png`)を v2 スタイル(日本語ラベル・処理順バッジ・処理の流れパネル・タグ付き注記)に描き直し、内容を現行実装(core 1.19 / openai 3.x・api-key・スパン名)に合わせた
+- **コード改修なし**。`add_fan_out_edges` / `add_fan_in_edges` / `WorkflowBuilder(start_executor=, output_from=, intermediate_output_from=)` は 1.19 でシグネチャ同一。追加確認として、実 `Agent` + `OpenAIChatClient` を `/openai/v1/responses` のモックに向けて両モード(ペルソナ 4 体 / `FOUNDRY_PROPOSER_MODELS=gpt-5.4-mini,phi-4` + `FOUNDRY_AGGREGATOR_MODEL=gpt-5.4`)をリポジトリ外のスクラッチで完走させ、リクエストの `model` がデプロイ名どおりに振り分けられること、スパン(`invoke_agent` ×5・`edge_group.process FanOutEdgeGroup` / `FanInEdgeGroup`)が出ることを確認
+- 変更不要と判断した点: v1 エンドポイントと api-key 認証は現行 docs どおり / gpt-5.4-mini は 2027-09-21 まで GA / MAF 1.14→1.19 の破壊的変更は本ポートの使用 API に該当なし / fan-in の並び順(エッジ定義順)も 1.19 のテストで維持
+- **ライブ未検証**: openai 3.x 経由の実 Foundry 呼び出しと App Insights 着信(Azure リソース削除済み)。手順は [docs/runbook.md](./docs/runbook.md)
+
+## 検証結果(2026-07-31)
+
+- オフラインテスト 13 passed(fan-out 全員呼び出し / aggregator プロンプトに全回答 / 進捗イベント / 出力構造 / バリア同期での並列性証明)
+- ruff clean / `az bicep build` OK
+- ライブスモーク: 完走(2026-07-31)。4 ペルソナ並列(analyst 1,305 / creative 2,724 / pragmatist 1,287 / skeptic 1,630 chars)→ aggregator 統合まで成功
+- トレース: App Insights に `invoke_agent` × 5(4 proposer + aggregator)着信確認。確認クエリ:
+
+```bash
+az monitor app-insights query --app appi-mafports -g rg-maf-ports \
+  --analytics-query "dependencies | where timestamp > ago(30m) | summarize count() by name"
+```
+
+## 学び(MAF vs 元構成)
+
+1. **ファンアウト/ファンインは MAF の first-class API。**`add_fan_out_edges` / `add_fan_in_edges` があり、実装(`_workflows/_edge_runner.py`)を読むと FanOutEdgeRunner は対象エッジへ `asyncio.gather` で並列配送、FanInEdgeRunner はソース毎にバッファし**全ソース到着で `list[T]` を1回だけ**ターゲットに配送する。元の `asyncio.gather` 1行と比べ行数は増えるが、「全員待ち」「並び順はエッジ定義順(到着順でない)」がフレームワーク保証になり、オフラインテストで順序を決定的にアサートできた。並列性自体もバリア同期テスト(全 proposer が互いの開始を待つ。逐次実行ならタイムアウト)で証明できる。
+2. **MoA の本質はモデル多様性だが、Foundry では「モデルを増やす」= インフラ作業。**Together は1つの API キーで数十モデルを即座に混ぜられるのに対し、Foundry は各モデルを Bicep でデプロイ(capacity 割当・課金単位)してから使う。共有基盤に gpt-5.4-mini しかない制約から既定を「同一モデル×ペルソナ差」(いわゆる self-MoA)にしたが、これは原論文の主張(モデル間多様性が品質向上の源泉)からは弱い代替。SI 観点では、マルチベンダーモデル合議の PoC は Foundry 単体だと立ち上げコストが高く、モデルカタログの serverless デプロイ併用や「そもそも合議が要るか」の見極めが先に来る。
+3. **「温度で多様性」はモデル世代で消えた技法。**元アプリは temperature 0.7 に頼るが、gpt-5 系 reasoning モデルは temperature 指定を受け付けない(既定値固定)。そのため多様性の軸を temperature ではなくペルソナ(instructions)差に置き換えた。移植とは API の対応付けだけでなく「多様性の作り方」のような設計技法自体の翻訳が要る、という例。
+4. **移植で元コードのバグ級の癖を発見: アグリゲータに質問が渡っていない。**元の user message はカンマ結合した4回答のみで、質問本文は system prompt 内の "the latest user query" という言及だけ。回答同士の境界もカンマで曖昧。移植では「proposer 名ラベル付きセクション+質問本文」に直し、忠実性より正しさを優先した差分として記録した。グラフ化に伴い型付きメッセージ(`ProposerReply`)を定義したことで、この種の「何をアグリゲータに渡すか」が暗黙でなく設計判断として可視化された。
+5. **fan-out のソースは単一 executor である必要があり、入口正規化の dispatcher が1ノード増える。**str 入力 → `ProposalRequest` への持ち上げだけの executor だが、グラフモデルではこの「入口の正規化」がトレース上も1ノードとして見える。元コードの暗黙の `main()` より観測しやすい一方、「たった1行の変換に executor 1つ」というオーバーヘッドの感覚は SI での工数見積りに直結する。

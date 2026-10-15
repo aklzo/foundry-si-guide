@@ -1,0 +1,52 @@
+[project]
+name = "db-routing-iq-maf"
+version = "0.1.0"
+description = "awesome-llm-apps rag_database_routing の MAF + Foundry 移植(三段カスケードルーティング → Foundry IQ agentic retrieval + MCP)"
+requires-python = ">=3.11"
+dependencies = [
+    # MCPStreamableHTTPTool(static_headers=...) は 1.19.0 から。2026-10-06 に 1.20.0 で検証
+    "agent-framework-core>=1.20",
+    "agent-framework-openai>=1.15",
+    "httpx>=0.28",     # setup_kb.py の REST+自前 DDG 検索(MCP の HTTP クライアントは MAF が生成)
+    # MAF の MCPStreamableHTTPTool が要求(上限ピン必須 — Port 6 で実測した罠)。
+    # 2026-09-29 再確認: agent-framework-core 1.19 も extra 経由で mcp<2 を宣言し、
+    # _mcp.py が InitializeResult.protocolVersion を参照する(mcp 2.x は protocol_version
+    # に改名)ため、mcp 2.2 では initialize 時に AttributeError → ToolException になる。
+    # 2026-10-06: agent-framework-core 1.20.0 も同じ(mcp<2 宣言・protocolVersion 参照)。
+    # mcp 2.3.0 の InitializeResult(別パッケージ mcp-types)も protocol_version のみ
+    "mcp>=1.30,<2",
+    "beautifulsoup4>=4.12",  # 自前 DDG 検索(Web fallback)の HTML パース
+    "python-dotenv>=1.0",
+    "typing-extensions>=4.10",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8",
+    "pytest-asyncio>=0.24",
+    "ruff>=0.14",
+]
+live = [
+    "azure-monitor-opentelemetry>=1.6",
+]
+
+[project.scripts]
+db-routing-iq-maf = "db_routing_iq_maf.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/db_routing_iq_maf"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+addopts = "-m 'not live'"
+markers = [
+    "live: 実 Foundry + 実 AI Search knowledge base を呼ぶスモークテスト(要 .env + setup_kb.py 済)",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"

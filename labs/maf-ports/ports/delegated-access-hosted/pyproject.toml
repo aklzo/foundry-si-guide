@@ -1,0 +1,76 @@
+[project]
+name = "delegated-access-maf"
+version = "0.1.0"
+description = "hosted agent × アプリ管理 OBO で、ユーザーの委任権限に応じて社内文書と基幹 API(MCP)へのアクセスを制御する実装例(Port 15)"
+requires-python = ">=3.11"
+dependencies = [
+    "agent-framework-core>=1.20",
+    "agent-framework-openai>=1.15",
+    "mcp>=1.30,<2",          # MCP サーバー(FastMCP)とクライアント。MAF 1.20 自身が <2 を要求(Port 6・10 と同じ)
+    "httpx>=0.28",
+    "pyjwt[crypto]>=2.10",   # MCP サーバー / バックエンドの JWT 検証(JWKS)
+    "starlette>=0.40",       # MCP サーバーの ASGI 合成(3 エンドポイントを 1 アプリに mount)
+    "fastapi>=0.115",        # 中間層バックエンド
+    "uvicorn>=0.30",
+    "msal>=1.31",            # 中間層の OBO 交換(機密クライアント)とデバイスコードログイン
+    "python-dotenv>=1.0",
+    "typing-extensions>=4.10",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8",
+    "pytest-asyncio>=0.24",
+    "ruff>=0.14",
+]
+# 社内文書の検索(AI Search)。オフラインテストはインメモリの疑似検索で代替する
+search = [
+    "azure-search-documents>=12.0",
+    "azure-identity>=1.26",
+    "aiohttp>=3.9",
+]
+# hosted agent のコンテナ(hosting/main.py)とデプロイスクリプト。
+# MAF のホスティング層(ResponsesHostServer)はエージェントと MCP ツールを起動時に 1 回だけ接続し、
+# リクエストのヘッダーをツールへ渡さないため使わない — Agent Server SDK のハンドラを直接使う(README 参照)
+hosting = [
+    "agent-framework-foundry>=1.14",
+    "azure-ai-agentserver-core>=2.2.0",
+    "azure-ai-agentserver-responses>=2.2.0",
+    "azure-ai-projects>=2.7",
+    "azure-identity>=1.26",
+]
+# 方式 C(エージェント側の配線とテストだけ。README「方式 C の設計メモ」): Foundry Toolbox の
+# OAuth ID パススルー。FoundryToolbox と要求スコープのファクトリは agent-framework-foundry-hosting
+# (プレリリース)にしかない。方式 A / B のコンテナ(hosting/requirements.txt)には入れない。
+# responses の上限 <2.3 は Port 11 と同じ理由(foundry-hosting の >=2.2.0b1 が pip のプレ版を解禁する)。
+toolbox = [
+    "agent-framework-foundry>=1.14",
+    "agent-framework-foundry-hosting>=1.0.0b261002",
+    "azure-ai-agentserver-core>=2.2.0",
+    "azure-ai-agentserver-responses>=2.2.0,<2.3",
+    "azure-ai-agentserver-invocations>=1.2.0",
+]
+live = [
+    "azure-monitor-opentelemetry>=1.8.10",
+]
+
+[project.scripts]
+delegated-access = "delegated_access_maf.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/delegated_access_maf"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+addopts = "-m 'not live'"
+markers = [
+    "live: 実 Entra / 実 Foundry(hosted agent)/ 実 APIM・MCP サーバーを使うスモークテスト(要 .env とデプロイ済み環境)",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
