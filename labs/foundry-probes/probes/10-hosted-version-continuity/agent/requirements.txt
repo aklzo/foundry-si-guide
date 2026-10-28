@@ -2,3 +2,5 @@
 # モデルも MAF も使わないので Agent Server SDK だけ。版は Port 15 の検証版(2.2.0)を下限にする。
 azure-ai-agentserver-core>=2.2.0,<3
 azure-ai-agentserver-responses>=2.2.0,<3
+# 推移的依存 certifi の下限(2026-10-28 セキュリティ対応): emSign ルート(eMudhra 中間 CA 鍵漏洩)を除去した版
+certifi>=2026.10.19
