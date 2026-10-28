@@ -18,3 +18,11 @@ azure-ai-agentserver-invocations>=1.2.0
 azure-identity>=1.26
 httpx>=0.28
 python-dotenv>=1.0
+# 脆弱版を除外する推移的依存の下限(2026-10-28 セキュリティ対応)。pip は通常最新を選ぶが、
+# 解決結果に関わらず REMOTE_BUILD が既知の脆弱版を入れないよう明示する。
+# certifi: emSign ルート(eMudhra 中間 CA 鍵漏洩)を除去した 2026.10.19 以上 / httpx2・httpcore2: mcp・openai 経由 /
+# python-multipart: mcp 経由
+certifi>=2026.10.19
+httpx2>=2.12.0
+httpcore2>=2.10.0
+python-multipart>=0.0.31
