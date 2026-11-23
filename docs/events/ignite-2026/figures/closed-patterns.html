@@ -1,0 +1,14 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8"><meta name="figure-size" content="1600x675"><link rel="stylesheet" href="../../tools/figure.css"><style>
+.g{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1.25fr) minmax(0,1fr);gap:12px;height:470px;zoom:1.3}
+.p{border:2px solid var(--border);border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.p.rec{border:3px solid var(--accent);background:var(--accent-bg)}
+.p h2{font-size:25px;margin:0}.p .k{font-size:17px;color:var(--muted);font-weight:700}
+.p .v{font-size:20px;line-height:1.35}
+.p .tag{font-size:16px;font-weight:800;color:var(--accent)}
+.p .w{margin-top:auto;font-size:18px;border-left:6px solid var(--dep);background:var(--dep-bg);border-radius:6px;padding:6px 10px}
+</style></head><body><div class="g">
+<div class="p"><h2>A. 入口だけ閉じる</h2><div class="k">受信</div><div class="v">プライベート<wbr>エンドポイント</div><div class="k">エージェントの送信</div><div class="v"><b>公開のまま</b></div><div class="k">データ</div><div class="v">Microsoft 管理</div><div class="w">呼び出し元を絞るだけ。エージェントからは社内に届かない</div></div>
+<div class="p"><h2>B. VNet 注入+管理データ</h2><div class="k">受信</div><div class="v">プライベート<wbr>エンドポイント</div><div class="k">エージェントの送信</div><div class="v">委任サブネット経由</div><div class="k">データ</div><div class="v">Microsoft 管理</div><div class="w">公式ページ間で成立条件が割れる(BYO 3 つが必須とも読める)</div></div>
+<div class="p rec"><span class="tag">規制案件の標準 ・ <span class="pill meas" style="font-size:15px">実測した構成</span></span><h2>C. VNet 注入+BYO データ</h2><div class="k">受信</div><div class="v">プライベート<wbr>エンドポイント</div><div class="k">エージェントの送信</div><div class="v">委任サブネット経由(社内 API・MCP に届く)</div><div class="k">データ</div><div class="v">自社の Cosmos DB・Storage・Search(すべて PE)</div><div class="w">VNet 注入はアカウント作成時だけ。後から付けられない</div></div>
+<div class="p"><h2>D. Managed VNet</h2><div class="k">受信</div><div class="v">プライベート<wbr>エンドポイント</div><div class="k">エージェントの送信</div><div class="v">Microsoft 管理の VNet</div><div class="k">データ</div><div class="v">BYO か既定</div><div class="w">FQDN 規則を足すと Azure Firewall(約 198 円/時)が自動で作られる。費用見込み超過のため実測せず</div></div>
+</div></body></html>

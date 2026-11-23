@@ -1,0 +1,60 @@
+### [2026-11-22 20:01:50 JST] egressprobe.py t2 P0 
+Enable succeeded: 
+[stdout]
+===== t2 P0 @ 2026-11-22T11:01:57Z
+[P0][T2 openapi→ipify] HTTP 200 (10.5s) route=agent-endpoint 
+[P0][T2 items] [{"type": "openapi_call", "status": "completed", "name": "ipecho_getEgressIp"}, {"type": "openapi_call_output", "status": "completed", "output": "{\n        \"response\": \"{\\n  \\\"ip\\\": \\\"<public-ip-25>\\\"\\n}\"\n      }", "name": "ipecho_getEgressIp"}, {"type": "openapi_call", "status": "completed", "name": "ipecho2_getAllHeaders"}, {"type": "openapi_call_output", "status": "completed", "output": "{\n        \"response\": \"{\\n  \\\"ip_addr\\\": \\\"<public-ip-20>\\\",\\n  \\\"user_agent\\\": \\\"azure-agents\\\",\\n  \\\"port\\\": \\\"45216\\\",\\n  \\\"method\\\": \\\"GET\\\",\\n  \\\"encoding\\\": \\\"gzip, deflate\\\",\\n  \\\"mime\\\": \\\"*/*\\\",\\n  \\\"via\\\": \\\"1.1 google\\\",\\n  \\\"forwarded\\\": \\\"<public-ip-25>,<public-ip-26>,<public-ip-20>,<public-ip-18>\\\"\\n}\"\n      }", "name": "ipecho2_getAllHeaders"}] | text='Raw outputs:\n\n`getEgressIp`:\n```json\n{\n  "ip": "<public-ip-25>"\n}\n```\n\n`getAllHeaders`:\n```json\n{\n  "ip_addr": "<public-ip-20>",\n  "user_agent": "azure-agents",\n  "port": "45216",\n  "method": "GET",\n  "e'
+
+[stderr]
+
+### [2026-11-22 20:02:21 JST] done
+### [2026-11-22 20:07:35 JST] egressprobe.py t2 P1 
+Enable succeeded: 
+[stdout]
+===== t2 P1 @ 2026-11-22T11:07:41Z
+[P1][T2 openapi→ipify] HTTP 400 (17.2s) route=agent-endpoint tool_user_error: A user error occurred while executing a tool call.
+[P1][T2 items] [] | text=''
+
+[stderr]
+
+### [2026-11-22 20:08:36 JST] done
+### [2026-11-22 20:13:33 JST] egressprobe.py t2 P2 
+Enable succeeded: 
+[stdout]
+===== t2 P2 @ 2026-11-22T11:13:34Z
+[P2][T2 openapi→ipify] HTTP 400 (16.9s) route=agent-endpoint tool_user_error: A user error occurred while executing a tool call.
+[P2][T2 items] [] | text=''
+
+[stderr]
+
+### [2026-11-22 20:14:36 JST] done
+### [2026-11-22 20:19:08 JST] egressprobe.py t2 P3 
+Enable succeeded: 
+[stdout]
+===== t2 P3 @ 2026-11-22T11:19:10Z
+[P3][T2 openapi→ipify] HTTP 400 (17.1s) route=agent-endpoint tool_user_error: A user error occurred while executing a tool call.
+[P3][T2 items] [] | text=''
+
+[stderr]
+
+### [2026-11-22 20:20:11 JST] done
+### [2026-11-22 20:25:02 JST] egressprobe.py t2 P4 
+Enable succeeded: 
+[stdout]
+===== t2 P4 @ 2026-11-22T11:25:05Z
+[P4][T2 openapi→ipify] HTTP 200 (4.9s) route=agent-endpoint 
+[P4][T2 items] [{"type": "openapi_call", "status": "completed", "name": "ipecho_getEgressIp"}, {"type": "openapi_call_output", "status": "completed", "output": "{\n        \"response\": \"{\\n  \\\"ip\\\": \\\"<public-ip-25>\\\"\\n}\"\n      }", "name": "ipecho_getEgressIp"}, {"type": "openapi_call", "status": "completed", "name": "ipecho2_getAllHeaders"}, {"type": "openapi_call_output", "status": "completed", "output": "{\n        \"response\": \"{\\n  \\\"ip_addr\\\": \\\"<public-ip-20>\\\",\\n  \\\"user_agent\\\": \\\"azure-agents\\\",\\n  \\\"port\\\": \\\"36136\\\",\\n  \\\"method\\\": \\\"GET\\\",\\n  \\\"encoding\\\": \\\"gzip, deflate\\\",\\n  \\\"mime\\\": \\\"*/*\\\",\\n  \\\"via\\\": \\\"1.1 google\\\",\\n  \\\"forwarded\\\": \\\"<public-ip-27>,<public-ip-28>,<public-ip-20>,<public-ip-18>\\\"\\n}\"\n      }", "name": "ipecho2_getAllHeaders"}] | text='Raw outputs:\n\n`getEgressIp`:\n```json\n{\n  "ip": "<public-ip-25>"\n}\n```\n\n`getAllHeaders`:\n```json\n{\n  "ip_addr": "<public-ip-20>",\n  "user_agent": "azure-agents",\n  "port": "36136",\n  "method": "GET",\n  "e'
+
+[stderr]
+
+### [2026-11-22 20:25:35 JST] done
+### [2026-11-22 20:27:11 JST] egressprobe.py t2 P5 
+Enable succeeded: 
+[stdout]
+===== t2 P5 @ 2026-11-22T11:27:16Z
+[P5][T2 openapi→ipify] HTTP 200 (10.8s) route=agent-endpoint 
+[P5][T2 items] [{"type": "openapi_call", "status": "completed", "name": "ipecho_getEgressIp"}, {"type": "openapi_call_output", "status": "completed", "output": "{\n        \"response\": \"{\\n  \\\"ip\\\": \\\"<public-ip-25>\\\"\\n}\"\n      }", "name": "ipecho_getEgressIp"}, {"type": "openapi_call", "status": "completed", "name": "ipecho2_getAllHeaders"}, {"type": "openapi_call_output", "status": "completed", "output": "{\n        \"response\": \"{\\n  \\\"ip_addr\\\": \\\"<public-ip-21>\\\",\\n  \\\"user_agent\\\": \\\"azure-agents\\\",\\n  \\\"port\\\": \\\"40224\\\",\\n  \\\"method\\\": \\\"GET\\\",\\n  \\\"encoding\\\": \\\"gzip, deflate\\\",\\n  \\\"mime\\\": \\\"*/*\\\",\\n  \\\"via\\\": \\\"1.1 google\\\",\\n  \\\"forwarded\\\": \\\"<public-ip-25>,<public-ip-29>,<public-ip-21>,<public-ip-18>\\\"\\n}\"\n      }", "name": "ipecho2_getAllHeaders"}] | text='Raw outputs:\n\n`getEgressIp`:\n```json\n{\n  "ip": "<public-ip-25>"\n}\n```\n\n`getAllHeaders`:\n```json\n{\n  "ip_addr": "<public-ip-21>",\n  "user_agent": "azure-agents",\n  "port": "40224",\n  "method": "GET",\n  "'
+
+[stderr]
+
+### [2026-11-22 20:27:42 JST] done

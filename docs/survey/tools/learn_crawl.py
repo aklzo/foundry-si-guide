@@ -25,6 +25,7 @@ import json
 import os
 import re
 import sys
+import urllib.error
 import urllib.parse
 import urllib.request
 from html.parser import HTMLParser
@@ -43,10 +44,18 @@ SKIP = ('/rest/', '/python/api', '/dotnet/api', '/javascript/api', '/java/api', 
 UA = {'User-Agent': 'foundry-si-guide-learn-crawl/1.0 (+https://github.com/aklzo/foundry-si-guide)'}
 
 
-def get(url):
-    req = urllib.request.Request(url, headers=UA)
-    with urllib.request.urlopen(req, timeout=60) as r:
-        return r.geturl(), r.read().decode('utf-8', 'replace')
+def get(url, tries=3):
+    """タイムアウト等の一時的な失敗は再試行する(1 回の失敗で「削除」と誤判定しないため)。"""
+    for i in range(tries):
+        try:
+            req = urllib.request.Request(url, headers=UA)
+            with urllib.request.urlopen(req, timeout=60) as r:
+                return r.geturl(), r.read().decode('utf-8', 'replace')
+        except urllib.error.HTTPError:
+            raise
+        except Exception:  # noqa: BLE001
+            if i == tries - 1:
+                raise
 
 
 class MainText(HTMLParser):
@@ -157,16 +166,23 @@ def main():
     for r in sorted((r for r in ok if r.get('file')), key=lambda r: r['updated_at'], reverse=True):
         lines.append('%s  ms.date=%s  %s' % (r['updated_at'][:16], r['ms_date'], r['final']))
 
+    errs = [r for r in recs if 'err' in r]
+    if errs:
+        lines.append('\n# fetch errors (removed 判定から除外し、スナップショットは前回値を維持): %d' % len(errs))
+        lines += ['%s  %s' % (r['url'], r['err']) for r in errs]
+
     snap = load_snapshot(a.snapshot)
     if snap:
         cur = {r['url']: r for r in ok}
+        cur_all = set(cur) | {r['url'] for r in errs}
         inc = [r for u, r in cur.items() if u in snap and snap[u][0] == r['updated_at'] and snap[u][2] != r['sha']]
         lines.append('\n# body changed without updated_at change (include-only edits?): %d' % len(inc))
         lines += ['%s  %s' % (r['updated_at'][:16], r['final']) for r in inc]
         lines.append('\n# new pages vs snapshot: %d' % len(set(cur) - set(snap)))
         lines += sorted(set(cur) - set(snap))
-        lines.append('\n# removed pages vs snapshot: %d' % len(set(snap) - set(cur)))
-        lines += sorted(set(snap) - set(cur))
+        # TOC から消えたページ。301 で移設されたものも含むので、旧 URL を curl -I で確かめてから扱う
+        lines.append('\n# removed from TOC vs snapshot (移設の 301 を含む): %d' % len(set(snap) - cur_all))
+        lines += sorted(set(snap) - cur_all)
     report = '\n'.join(lines) + '\n'
     with open(os.path.join(a.out, 'report.txt'), 'w', encoding='utf-8') as f:
         f.write(report)
@@ -174,8 +190,12 @@ def main():
     if a.snapshot:
         with open(a.snapshot, 'w', encoding='utf-8') as f:
             f.write('# url\tupdated_at\tms.date\tbody_sha1_12 — learn_crawl.py が上書きする(手で編集しない)\n')
-            for r in sorted(ok, key=lambda r: r['url']):
-                f.write('%s\t%s\t%s\t%s\n' % (r['url'], r['updated_at'], r['ms_date'], r['sha']))
+            rows = {r['url']: (r['updated_at'], r['ms_date'], r['sha']) for r in ok}
+            for r in errs:  # 取得に失敗したページは前回の記録を残す
+                if r['url'] in snap:
+                    rows[r['url']] = snap[r['url']]
+            for u in sorted(rows):
+                f.write('%s\t%s\t%s\t%s\n' % ((u,) + tuple(rows[u])))
     print('errors', len(recs) - len(ok), 'updated', sum(1 for r in ok if r.get('file')),
           '-> %s/report.txt' % a.out, file=sys.stderr)
 

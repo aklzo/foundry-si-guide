@@ -1,0 +1,53 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8"><meta name="figure-size" content="1600x675"><link rel="stylesheet" href="../../tools/figure.css"><style>
+body{padding:12px 22px}
+.t{display:grid;grid-template-columns:250px 1fr 1fr 1.12fr 1.2fr;gap:3px;font-size:18px;line-height:1.27}
+.t>div{padding:5px 9px;border-radius:5px;display:flex;flex-direction:column;justify-content:center;min-height:94px}
+.h{background:var(--fg);color:#fff;font-weight:700;min-height:38px!important;font-size:19px}
+.k{background:var(--panel);font-weight:800;font-size:19px}
+.k .s{font-weight:400;font-size:16px;color:var(--muted)}
+.c{background:#fff;border:1px solid var(--border)}
+.fix{background:#f3fbf5}
+.cust{background:var(--accent-bg)}
+.any{background:var(--dep-bg)}
+.c b{font-weight:800}
+.pill{font-size:14px;padding:0 7px;margin-left:4px;vertical-align:1px;white-space:nowrap}
+.n{font-size:16px;color:var(--muted)}
+</style></head><body><div class="t">
+<div class="h">経路</div><div class="h">宛先を決めるのは</div><div class="h">外に出るもの</div><div class="h">通る場所</div><div class="h">止め方</div>
+
+<div class="k">モデルのデプロイ<span class="s">Global Standard・Data Zone</span></div>
+<div class="c fix"><b>Microsoft の推論基盤だけ</b><span class="n">変わるのは処理する国</span></div>
+<div class="c">プロンプトと応答<span class="n">保存データは選んだ地域に残る</span></div>
+<div class="c">Microsoft の網の中<span class="n">DPA の範囲内</span></div>
+<div class="c">デプロイの種類を選ぶ<span class="n">Azure Policy で Global Standard を拒否できる</span></div>
+
+<div class="k">Web search<span class="s">Web IQ・Grounding with Bing</span></div>
+<div class="c fix"><b>固定のサービス</b><span class="n">任意の URL は取りに行かない</span></div>
+<div class="c">モデルが作った検索語</div>
+<div class="c"><span>顧客のサブネットを通らない<span class="pill meas">実測</span></span><span class="n">Bing は DPA と Azure の境界の外</span></div>
+<div class="c">ツールを付けない・管理者の設定<span class="n">サブネットの UDR では止まらなかった</span></div>
+
+<div class="k">Code Interpreter</div>
+<div class="c fix"><b>宛先なし</b></div>
+<div class="c"><span>出ない<span class="pill meas">実測</span></span></div>
+<div class="c">Microsoft 管理のサンドボックス</div>
+<div class="c">—</div>
+
+<div class="k">OpenAPI・MCP ツール</div>
+<div class="c cust"><b>定義に書いた URL</b><span class="n">モデルが選ぶのは操作と引数</span></div>
+<div class="c">モデルが組んだ引数</div>
+<div class="c"><span>委任サブネット → Azure の公開 IP<span class="pill meas">実測</span></span><span class="n">NAT がなくても公開側に届いた</span></div>
+<div class="c"><span><b>サブネットの NSG・UDR で止まった</b><span class="pill meas">実測</span></span></div>
+
+<div class="k">hosted agent</div>
+<div class="c cust"><b>自社のコード</b></div>
+<div class="c">コードが送るもの</div>
+<div class="c">委任サブネットから直接<span class="n">公式の記述</span></div>
+<div class="c"><span>egress controls<span class="pill ann">Learn GA</span><span class="pill doc">公式一覧 なし</span></span><span>と NSG・ファイアウォール</span><span class="n">公式の記述。今回は実測なし</span></div>
+
+<div class="k" style="border-left:6px solid var(--dep)">Copilot harness<span class="s">shell・Web ツール</span></div>
+<div class="c any"><b>実行時にモデルが決める</b><span class="n">任意の URL・任意のコマンド</span></div>
+<div class="c any"><b>モデルが選んだ任意のデータ</b><span class="n">社内の API から読んだものも送れる</span></div>
+<div class="c"><span>委任サブネット → Azure の公開 IP<span class="pill meas">実測</span></span><span class="n">VNet 内の社内 API にも届いた</span></div>
+<div class="c"><span><b>サブネットの NSG・UDR で止まった</b><span class="pill meas">実測</span></span><span>egress controls<span class="pill preview">Preview</span>でホスト名ごとに止まった<span class="pill meas">実測</span></span></div>
+</div></body></html>

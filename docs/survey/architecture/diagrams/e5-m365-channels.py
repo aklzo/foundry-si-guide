@@ -15,7 +15,7 @@ d = Diagram(
     "E5: Teams / M365 Copilot への公開と Copilot Studio 連携",
     width=1530,
     height=800,
-    subtitle="Foundry → Teams / M365 Copilot の公開は GA(Responses から Activity プロトコルへ自動ブリッジ)。"
+    subtitle="Foundry → Teams / M365 Copilot の公開は GA(Activity プロトコルへ自動ブリッジ。2026-11 から Bot Service リソース不要)。"
     "逆方向の Copilot Studio → Foundry 接続はプレビュー",
 )
 
@@ -29,7 +29,7 @@ cs = d.node(315, Y2, az("integration/power-platform.png"), "Copilot Studio", not
 
 # --- Azure --------------------------------------------------------------------
 d.cluster(450, 100, 1170, 585, "Azure サブスクリプション", kind="azure")
-bot = d.node(565, Y1, az("aimachinelearning/bot-services.png"), "Bot Service", note="Microsoft.BotService")
+bot = d.node(565, Y1, az("aimachinelearning/bot-services.png"), "ボット登録(Foundry が実施)", note="Bot Service リソース不要")
 
 d.cluster(670, 140, 1150, 555, "Foundry プロジェクト", kind="focus")
 act = d.box(790, YM, 128, 48, "Activity\nエンドポイント")
@@ -37,7 +37,7 @@ agent = d.node(1030, YM, icon("foundry"), "Foundry エージェント\n(Prompt /
 
 # --- Work IQ(Azure 外・右) -------------------------------------------------------
 d.cluster(1195, 110, 1490, 555, "Microsoft 365(業務文脈)", kind="external")
-wiq = d.node(1342, YM, az("integration/software-as-a-service.png"), "Work IQ", status="Preview",
+wiq = d.node(1342, YM, az("integration/software-as-a-service.png"), "Work IQ", status="GA / Preview",
              note="メール・会議・ファイル・チャット")
 
 # --- edges --------------------------------------------------------------------
@@ -48,7 +48,7 @@ d.pill(582, 159, "GA")  # 公開フロー = GA
 # 2: 利用者 → Teams / Copilot Studio
 d.edge(users, teams, via=[(205, YM), (205, Y1)], step=2, label_t=0.78)
 d.edge(users, cs, via=[(205, YM), (205, Y2)])
-# 3: Bot Service が Activity で中継
+# 3: チャネル基盤が Activity で中継(Foundry がボット登録。別途の Bot Service リソースは不要)
 d.edge(teams, bot, step=3, label_t=0.5)
 d.edge(bot, act, via=[(790, Y1)])
 d.edge(act, agent, label="Responses へ\n自動ブリッジ", label_t=0.5, label_dy=-22)
@@ -61,7 +61,7 @@ d.pill(582, Y2 + 23, "Preview", anchor="lm")  # Copilot Studio → Foundry 接�
 d.steps_panel(40, 610, 1490, [
     "Teams アプリとして公開(組織公開は管理者承認)",
     "利用者が Teams / M365 Copilot から呼ぶ",
-    "Bot Service が Activity プロトコルで中継",
+    "チャネル基盤が Activity プロトコルで中継(公衆網経由)",
     "Work IQ で M365 の業務文脈を参照(OBO)",
     "Copilot Studio から接続エージェントとして呼ぶ",
 ], columns=3)

@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Microsoft Ignite 2026 — Foundry / Copilot Studio の変更まとめ</title>
+<style>
+:root {
+  --bg: #ffffff; --fg: #1c1e21; --muted: #57606a; --border: #d8dee4;
+  --accent: #0f6cbd; --code-bg: #f3f5f7; --nav-bg: #f7f9fb;
+  --ga: #1a7f37; --ga-bg: #dafbe1; --preview: #9a6700; --preview-bg: #fff8c5;
+  --dep: #cf222e; --dep-bg: #ffebe9; --unk: #57606a; --unk-bg: #eef1f4;
+  --priv: #8250df; --priv-bg: #fbefff;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #161a1e; --fg: #e6e8ea; --muted: #9aa4ae; --border: #3a4149;
+    --accent: #62aaf0; --code-bg: #22272d; --nav-bg: #1d2227;
+    --ga: #4ecb71; --ga-bg: #16321d; --preview: #e8bd4e; --preview-bg: #3a3016;
+    --dep: #ff7b72; --dep-bg: #3c1f1e; --unk: #a8b3bd; --unk-bg: #2a3138;
+    --priv: #c297ff; --priv-bg: #2f2440;
+  }
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg);
+  font-family: "Segoe UI", "Hiragino Sans", "Noto Sans JP", Meiryo, sans-serif;
+  font-size: 15px; line-height: 1.75;
+}
+nav.site {
+  background: var(--nav-bg); border-bottom: 1px solid var(--border);
+  padding: 0.5rem 1.2rem; display: flex; flex-wrap: wrap; gap: 0.2rem 1.1rem;
+  font-size: 0.85rem; position: sticky; top: 0; z-index: 10;
+}
+nav.site a { color: var(--muted); text-decoration: none; padding: 0.15rem 0; }
+nav.site a:hover { color: var(--accent); }
+nav.site a.current { color: var(--accent); font-weight: 600; }
+nav.site a.xset { color: var(--muted); opacity: 0.75; font-style: italic; }
+main { max-width: 1100px; margin: 0 auto; padding: 1.5rem 1.2rem 4rem; }
+h1 { font-size: 1.7rem; line-height: 1.35; border-bottom: 2px solid var(--border); padding-bottom: 0.4rem; }
+h2 { font-size: 1.3rem; margin-top: 2.2rem; border-bottom: 1px solid var(--border); padding-bottom: 0.25rem; }
+h3 { font-size: 1.1rem; margin-top: 1.8rem; }
+h4 { font-size: 1rem; margin-top: 1.4rem; }
+a { color: var(--accent); }
+code {
+  background: var(--code-bg); border-radius: 4px; padding: 0.1em 0.4em;
+  font-family: Consolas, "SF Mono", Menlo, monospace; font-size: 0.86em;
+}
+pre {
+  background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px;
+  padding: 0.9rem 1rem; overflow-x: auto; line-height: 1.45;
+}
+pre code { background: none; padding: 0; font-size: 0.82em; }
+blockquote {
+  margin: 1rem 0; padding: 0.5rem 1rem; border-left: 4px solid var(--accent);
+  background: var(--nav-bg); border-radius: 0 6px 6px 0; color: var(--muted);
+}
+.tablewrap { overflow-x: auto; margin: 1rem 0; }
+table { border-collapse: collapse; width: 100%; font-size: 0.88rem; line-height: 1.55; }
+th, td {
+  border: 1px solid var(--border); padding: 0.45rem 0.6rem;
+  text-align: left; vertical-align: top; min-width: 4.5em;
+}
+th { background: var(--nav-bg); white-space: nowrap; }
+tr:nth-child(even) td { background: color-mix(in srgb, var(--nav-bg) 40%, transparent); }
+.badge {
+  display: inline-block; font-size: 0.78rem; font-weight: 600; line-height: 1.4;
+  padding: 0 0.5em; border-radius: 999px; white-space: nowrap;
+}
+.badge.ga { color: var(--ga); background: var(--ga-bg); }
+.badge.preview, .badge.beta { color: var(--preview); background: var(--preview-bg); }
+.badge.private { color: var(--priv); background: var(--priv-bg); }
+.badge.deprecated, .badge.retired, .badge.no { color: var(--dep); background: var(--dep-bg); }
+.badge.unknown, .badge.na { color: var(--unk); background: var(--unk-bg); }
+.badge.ok { color: var(--ga); background: var(--ga-bg); }
+main img {
+  max-width: 100%; height: auto; display: block; margin: 1rem 0;
+  border: 1px solid var(--border); border-radius: 8px; background: #fff;
+}
+.toc {
+  background: var(--nav-bg); border: 1px solid var(--border); border-radius: 8px;
+  padding: 0.8rem 1.2rem; margin: 1.2rem 0; font-size: 0.9rem;
+}
+.toc strong { display: block; margin-bottom: 0.3rem; }
+.toc ul { margin: 0; padding-left: 1.2rem; columns: 2; column-gap: 2rem; }
+@media (max-width: 700px) { .toc ul { columns: 1; } }
+footer {
+  max-width: 1100px; margin: 0 auto; padding: 0 1.2rem 2rem;
+  color: var(--muted); font-size: 0.8rem;
+}
+
+main { max-width: 1180px; }
+figure { margin: 1.4rem 0; text-align: center; }
+figure img { max-width: 100%; border: 1px solid var(--border); border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,.06); }
+figcaption { color: var(--muted); font-size: .85rem; margin-top: .4rem; }
+.lead { font-size: 1.05rem; }
+.badge.split { color: #8250df; background: #fbefff; }
+.badge small { font-weight: 400; margin-left: 2px; }
+.badge.soon { color: #57606a; background: #eef1f4; }
+</style></head>
+<body><nav class="site"><a href="index.html" class="current">Microsoft Ignite 2026</a><a class="xset" href="../../README.md">→ events</a></nav>
+<main>
+<h1 id="microsoft-ignite-2026-foundry-copilot-studio-の変更まとめ">Microsoft Ignite 2026 — Foundry / Copilot Studio の変更まとめ</h1><div class="toc"><strong>このページの内容</strong><ul><li><a href="#1-ignite-2026-の概要">1. Ignite 2026 の概要</a></li><li><a href="#2-foundry-何が変わったか">2. Foundry: 何が変わったか</a></li><li><a href="#3-foundry-領域別の詳細">3. Foundry: 領域別の詳細</a></li><li><a href="#4-copilot-studio-関連">4. Copilot Studio 関連</a></li><li><a href="#5-閉域と権限制御">5. 閉域と権限制御</a></li><li><a href="#6-si-への影響と期限">6. SI への影響と期限</a></li><li><a href="#7-発表と公式ドキュメントが食い違う機能">7. 発表と公式ドキュメントが食い違う機能</a></li><li><a href="#出典">出典</a></li></ul></div>
+<blockquote><p><strong>基準日:</strong> 2026-11-22 / <strong>対象:</strong> Ignite 2026(2026-11-17〜20)の発表と、前回の調査(2026-10-14)以降に Learn・公式ブログへ出た Microsoft Foundry・Copilot Studio の変更 / <strong>ステータスの判定:</strong> <a href="../../../survey/features/html/index.html">features 調査</a>と同じく、本番に使えるかは「公式 GA 一覧」で決める。</p></blockquote>
+<p><strong>この資料のステータス表記</strong></p>
+<div class="tablewrap"><table><thead><tr>
+<th>表記</th>
+<th>意味</th>
+</tr></thead><tbody>
+<tr>
+<td><span class="badge ga">GA</span></td>
+<td>一般提供。公式 GA 一覧でも GA、またはモデル・ツールの公式ページで GA</td>
+</tr>
+<tr>
+<td><span class="badge preview">Preview</span></td>
+<td><span class="badge preview">プレビュー</span>(SLA なし。本番の必須経路に置かない)</td>
+</tr>
+<tr>
+<td><span class="badge private">限定プレビュー</span></td>
+<td>申請制・招待制のプレビュー</td>
+</tr>
+<tr>
+<td><span class="badge soon">予定</span> / <span class="badge soon">Frontier</span></td>
+<td>提供予定 / Microsoft の Frontier プログラム参加者向けの先行提供</td>
+</tr>
+<tr>
+<td><span class="badge ga">GA<small>(発表)</small></span> <span class="badge preview">Preview<small>(公式 GA 一覧)</small></span></td>
+<td><strong>発表とドキュメントが食い違う。</strong> ブログ・Book of News などの発表では GA だが、公式 GA 一覧では Preview。カッコ内が出典</td>
+</tr>
+<tr>
+<td><span class="badge ga">GA<small>(発表)</small></span> <span class="badge na">記載なし<small>(公式 GA 一覧)</small></span></td>
+<td>発表では GA だが、公式 GA 一覧にその機能の行がない</td>
+</tr>
+<tr>
+<td><span class="badge ga">GA</span> <span class="badge preview">Preview<small>(一部)</small></span></td>
+<td><strong>機能の一部だけが Preview。</strong> どの部分かを同じ行に書く</td>
+</tr>
+</tbody></table></div>
+<p><strong>実測</strong>は、2026-11-22 に Japan East の Azure で実際に組んで確かめた結果を指す(5 章)。</p>
+<p><strong>公式 GA 一覧</strong>は、Microsoft Learn の「<a href="https://learn.microsoft.com/en-us/azure/foundry/concepts/general-availability">Feature readiness at GA</a>」にある表(Foundry ポータルの機能ごとに GA / Preview を示す。2026-11-17 更新)を指す。Microsoft が本番利用の可否を機能単位で示している唯一の一覧なので、これを正とする。</p>
+<figure><img src="../images/fig-themes.png" alt="Ignite 2026 の全体像(出典: Book of News・各発表ブログ。ステータスは発表時の表記)" loading="lazy"><figcaption>Ignite 2026 の全体像(出典: Book of News・各発表ブログ。ステータスは発表時の表記)</figcaption></figure>
+<p>Ignite 2026 の軸は「エージェントを本番で回し続ける」継続改善だった。Foundry では観測・評価・最適化・再学習が 1 本のループになり、GA と新プレビューが同時に大量に出た。ただし公式 GA 一覧に反映された GA は一部だけで、<strong>発表の GA をそのまま本番採用の根拠にしない</strong>ことが今回いちばんの注意点だ。</p>
+<h2 id="1-ignite-2026-の概要">1. Ignite 2026 の概要</h2>
+<div class="tablewrap"><table><thead><tr>
+<th>項目</th>
+<th>内容</th>
+</tr></thead><tbody>
+<tr>
+<td>開催</td>
+<td>2026-11-17〜20、San Francisco+オンライン</td>
+</tr>
+<tr>
+<td>テーマ</td>
+<td>AI エージェントの本番運用と継続改善。Microsoft IQ(企業の文脈を束ねる層)を GA にし、Foundry が改善ループを担う</td>
+</tr>
+<tr>
+<td>主な柱</td>
+<td>Microsoft Foundry / Microsoft IQ / Microsoft Copilot・Copilot Studio・Agent 365 / Azure 基盤 / セキュリティ / GitHub</td>
+</tr>
+<tr>
+<td>一次情報</td>
+<td><a href="https://news.microsoft.com/events/ignite/2026/book-of-news/">Book of News</a>、<a href="https://azure.microsoft.com/en-us/blog/continuous-improvement-comes-to-microsoft-foundry/">Azure ブログ「Continuous improvement comes to Microsoft Foundry」</a>、<a href="https://devblogs.microsoft.com/foundry/">devblogs Foundry</a>、<a href="https://techcommunity.microsoft.com/category/azure-ai-foundry/blog/azure-ai-foundry-blog">Tech Community Foundry Blog</a></td>
+</tr>
+</tbody></table></div>
+<h2 id="2-foundry-何が変わったか">2. Foundry: 何が変わったか</h2>
+<figure><img src="../images/fig-loop.png" alt="Foundry の継続改善ループ。② 見つける〜④ 直すが今回の中心(出典: Azure ブログ 2026-11-17・devblogs 2026-11-18・Book of News)" loading="lazy"><figcaption>Foundry の継続改善ループ。② 見つける〜④ 直すが今回の中心(出典: Azure ブログ 2026-11-17・devblogs 2026-11-18・Book of News)</figcaption></figure>
+<ul>
+<li>本番のトレースから問題を束ね(Insights)、ルーブリックと人の注釈で測り、Agent optimizer が改善案を出し、それでも足りなければモデルを再学習する。この改善の手順が製品の機能として並んだ。</li>
+<li>同じ基準で版を比べ続けるのが前提なので、評価データセット(正解集)を誰が持つかを最初に決める必要がある。</li>
+</ul>
+<figure><img src="../images/fig-status-map.png" alt="ステータスは 3 つに分かれた(出典: Feature readiness at GA 2026-11-17 版と各発表)" loading="lazy"><figcaption>ステータスは 3 つに分かれた(出典: Feature readiness at GA 2026-11-17 版と各発表)</figcaption></figure>
+<ul>
+<li>本番の必須経路に載せてよいのは左の列だけ。中央の列は、公式 GA 一覧が更新されれば GA になる候補として扱う。</li>
+</ul>
+<h2 id="3-foundry-領域別の詳細">3. Foundry: 領域別の詳細</h2>
+<h3 id="3-1-エージェントの動かし方-agent-service">3.1 エージェントの動かし方(Agent Service)</h3>
+<figure><img src="../images/fig-agent-types.png" alt="エージェントの動かし方ごとの状態・料金・日本リージョン・閉域の条件。青い見出しが Ignite で増えた・変わったもの(出典: devblogs 2026-11-18、Learn の billing-concepts・limits-quotas-regions・voice agent の各ページ、Copilot harness の料金は devblogs 2026-10-28)" loading="lazy"><figcaption>エージェントの動かし方ごとの状態・料金・日本リージョン・閉域の条件。青い見出しが Ignite で増えた・変わったもの(出典: devblogs 2026-11-18、Learn の billing-concepts・limits-quotas-regions・voice agent の各ページ、Copilot harness の料金は devblogs 2026-10-28)</figcaption></figure>
+<ul>
+<li><strong>新しい選択肢の条件</strong>: Copilot harness は 12-01 から実行環境(vCPU・メモリの時間)に課金が加わり、日本では Japan East だけで使える。閉域のプロジェクトでも動き、shell から公開インターネットにも出られた。止めるには、委任サブネットの NSG・UDR か RAI ポリシーの egress controls(<span class="badge preview">Preview</span>)を使う(5.4 の実測)。voice agent は日本の両リージョンで使えるが、閉域のプロジェクトでは電話番号チャネル・SIP・発信が使えない。hosted agent は CPU とメモリの時間課金が加わり、VNet に入れられるのはアカウントを作るときだけ。</li>
+<li>料金の単価は 2026-11-22 時点の公開値。地域や契約で変わるので、見積もりでは料金ページで確かめる。</li>
+</ul>
+<p>画面: <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/voice-agent-observability">Microsoft Learn「voice-agent-observability」</a> — voice agent の Monitor タブ。タブ列に Channels(電話などのチャネル)がある(画面はイベント前の 2026-11-11 版)</p>
+<div class="tablewrap"><table><thead><tr>
+<th>発表</th>
+<th>ステータス</th>
+<th>SI に効く点</th>
+<th>出典</th>
+</tr></thead><tbody>
+<tr>
+<td>voice agents</td>
+<td><span class="badge ga">GA<small>(発表・Learn・SDK)</small></span> <span class="badge preview">Preview<small>(公式 GA 一覧)</small></span> <span class="badge preview">Preview<small>(一部)</small></span></td>
+<td>公式 GA 一覧の行名は「Agents — Voice Live」。電話系(SIP・発信)・WebRTC・監視と評価は Preview。<strong>閉域プロジェクトでは電話チャネルと発信が使えない</strong></td>
+<td><a href="https://devblogs.microsoft.com/foundry/whats-new-in-foundry-agent-service-at-ignite-2026/">devblogs 11-18</a></td>
+</tr>
+<tr>
+<td>Microsoft Copilot harness(prompt agent のマネージド実行)</td>
+<td><span class="badge preview">プレビュー</span></td>
+<td><strong>2026-12-01 から従量課金</strong>(0.0994 USD / vCPU 時・0.0118 USD / GiB 時。料金は地域・契約で変わり、Learn には未掲載)。Japan West・East US 2 不可、BYOM・Memory 不可</td>
+<td><a href="https://devblogs.microsoft.com/foundry/microsoft-copilot-harness-in-foundry/">devblogs 10-28</a></td>
+</tr>
+<tr>
+<td>hosted agents: 長時間実行の回復・サブネット IP 共有</td>
+<td><span class="badge ga">GA</span></td>
+<td>サブネットは /24 で約 60,000 セッションの計画値(上限はセッションクォータ 2,000 / 1,000)</td>
+<td><a href="https://devblogs.microsoft.com/foundry/hosted-agents-foundry-agent-service-ignite-2026/">devblogs 11-18</a></td>
+</tr>
+<tr>
+<td>hosted agents: egress 制御</td>
+<td><span class="badge ga">GA<small>(発表・Learn)</small></span> <span class="badge na">記載なし<small>(公式 GA 一覧)</small></span></td>
+<td>公式 GA 一覧で近い行「Guardrails — Agents」は Preview。安定版 API 2026-09-01。Transform rules・シークレット注入は Preview</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/add-hosted-agent-guardrails">Learn add-hosted-agent-guardrails</a></td>
+</tr>
+<tr>
+<td>hosted agents: memory snapshot・社内 CA の信頼・Azure Policy による egress 統制</td>
+<td><span class="badge preview">プレビュー</span></td>
+<td>Policy 統制は Canada Central / Spain Central / Korea Central のみ(日本なし)</td>
+<td>同上</td>
+</tr>
+<tr>
+<td>自社 AKS への配置</td>
+<td><span class="badge soon">予定</span>(public preview は 12 月上旬が目標)</td>
+<td>GPU・リージョン・統制を自社で選べる。本番採用はまだ先</td>
+<td>同上</td>
+</tr>
+<tr>
+<td>M365 / Teams への公開</td>
+<td><span class="badge ga">GA</span>(Bot Service リソースが不要に)</td>
+<td>別途の Azure Bot Service を作らずに公開できる。受信は公衆インターネット経由で、パブリックネットワークアクセスが無効ならポータルは使えず REST だけ</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/publish-copilot">Learn publish-copilot</a></td>
+</tr>
+<tr>
+<td>ビジュアル Workflows</td>
+<td>プレビューのまま <strong>2026-12-01 廃止</strong></td>
+<td>Microsoft Agent Framework へ移行</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/workflow">Learn workflow</a></td>
+</tr>
+</tbody></table></div>
+<h3 id="3-2-観測・評価・最適化">3.2 観測・評価・最適化</h3>
+<p>画面: <a href="https://learn.microsoft.com/en-us/azure/foundry/observability/how-to/agent-insights">Microsoft Learn「agent-insights」</a> — Insights タブ。繰り返し起きる問題を束ね、関連トレースと修正案を示す(画面はイベント前の 2026-11-10 版で Preview 表記がある)</p>
+<p>画面: <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/register-external-agent">Microsoft Learn「register-external-agent」</a> — Foundry の外で動くエージェントを「Link external agent」で登録する(画面はイベント前の 2026-11-11 版)</p>
+<p>画面: <a href="https://learn.microsoft.com/en-us/azure/foundry/observability/how-to/trace-annotations">Microsoft Learn「trace-annotations」</a> — トレースに Good / Bad とコメントを付ける注釈画面(画面はイベント前の 2026-09-30 版)</p>
+<p>画面: <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/optimize-agents-from-insights">Microsoft Learn「optimize-agents-from-insights」</a> — Insights を基にした最適化の結果。候補ごとに品質とレイテンシを比べる(画面はイベント前の 2026-11-11 版)</p>
+<div class="tablewrap"><table><thead><tr>
+<th>発表</th>
+<th>ステータス</th>
+<th>SI に効く点</th>
+<th>出典</th>
+</tr></thead><tbody>
+<tr>
+<td>Insights(繰り返す失敗の分析)</td>
+<td><span class="badge ga">GA<small>(発表・SDK 2.11.0)</small></span> <span class="badge na">記載なし<small>(公式 GA 一覧)</small></span></td>
+<td>Japan East / West で使える。分析に使うモデルの料金と閲覧ロールが要り、voice agents では使えない。SDK は beta から GA への移行で破壊的変更</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/foundry/observability/how-to/agent-insights">Learn agent-insights</a></td>
+</tr>
+<tr>
+<td>外部エージェントの登録・観測(LangGraph / LangChain / CrewAI)</td>
+<td><span class="badge ga">GA</span>(トレースは公式 GA 一覧でも GA)</td>
+<td>Insights の修正案は一般的な助言だけ(Foundry がコードを持たないため)。人手評価・red teaming の対象化・イベント起動の継続評価は非対応。旧カスタムエージェントは <strong>2027-05-07 終了</strong></td>
+<td><a href="https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/external-agents-in-microsoft-foundry-are-now-generally-available/4572630">TC 11-18</a></td>
+</tr>
+<tr>
+<td>品質ルーブリック</td>
+<td><span class="badge ga">GA</span>(Learn が明記。評価器一覧の見出しは preview のまま)</td>
+<td>業務の「良い回答」の基準を項目で書ける</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/foundry/observability/how-to/continuous-scheduled-evaluation">Learn continuous-scheduled-evaluation</a></td>
+</tr>
+<tr>
+<td>安全・タスク単位のルーブリック</td>
+<td><span class="badge preview">プレビュー</span></td>
+<td>安全ルーブリックは日本リージョンなし</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/foundry/concepts/evaluation-evaluators/safety-rubric-evaluators">Learn safety-rubric</a></td>
+</tr>
+<tr>
+<td>Human in the loop(トレース注釈 → 評価データセット → 正解集)</td>
+<td><span class="badge preview">プレビュー</span></td>
+<td>注釈を付ける人と正解集の持ち主を体制に入れる</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/foundry/observability/how-to/human-in-the-loop">Learn human-in-the-loop</a></td>
+</tr>
+<tr>
+<td>Agent optimizer(Insights 連携・スキル最適化・コスト最適化)</td>
+<td><span class="badge ga">GA<small>(Book of News)</small></span> <span class="badge private">限定プレビュー<small>(公式 GA 一覧)</small></span>。Insights 連携・スキル最適化・コスト最適化は <span class="badge preview">Preview</span></td>
+<td>改善案は評価で比べてから採用する流れ。2026-11-22 の実測では申請なしで使えた(5.8)</td>
+<td><a href="https://azure.microsoft.com/en-us/blog/continuous-improvement-comes-to-microsoft-foundry/">Azure ブログ 11-17</a></td>
+</tr>
+<tr>
+<td>決定モデルを評価の判定役に</td>
+<td><span class="badge preview">プレビュー</span></td>
+<td>Learn は Decision-1 のみ対応(ブログは 1.1 も可と書く)。Decision-1 は 2027-02-04 リタイア</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/foundry/observability/how-to/decision-model-judge">Learn decision-model-judge</a></td>
+</tr>
+</tbody></table></div>
+<h3 id="3-3-モデル">3.3 モデル</h3>
+<figure><img src="../images/fig-models.png" alt="Model router と新しいモデル・提供形態(出典: Learn の model-router 各ページ・リタイア表 2026-11-18 版・reasoning 2026-11-20 版)" loading="lazy"><figcaption>Model router と新しいモデル・提供形態(出典: Learn の model-router 各ページ・リタイア表 2026-11-18 版・reasoning 2026-11-20 版)</figcaption></figure>
+<div class="tablewrap"><table><thead><tr>
+<th>発表</th>
+<th>ステータス</th>
+<th>SI に効く点</th>
+<th>出典</th>
+</tr></thead><tbody>
+<tr>
+<td>GPT-6.2 astra / sol、gpt-6.1-terra</td>
+<td><span class="badge ga">GA</span></td>
+<td>APAC Data Zone(Japan East)に対応。<strong>GPT-6 系で tools を使うなら Responses API</strong>(Chat Completions には制約)。GPT-6.2 は 2026-11-01 以降に提供開始したモデルなので <strong>Modified Abuse Monitoring の対象外</strong>になる(日付は 30 日前以上に通知)</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/reasoning">Learn reasoning</a></td>
+</tr>
+<tr>
+<td>Microsoft-Decision-1.1(分類・振り分け用の小型)</td>
+<td><span class="badge ga">GA</span></td>
+<td>APAC Data Zone(Japan East / West)で使える</td>
+<td><a href="https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/introducing-microsoft-decision-1-1-build-faster-more-efficient-ai-applications-w/4573877">TC 11-18</a></td>
+</tr>
+<tr>
+<td>Model router の大改訂(Learn は 45 モデル・Book of News は上位 50、Responses ネイティブ、AI Gateway 連携)</td>
+<td><span class="badge ga">GA</span>(router 本体は version 2025-11-18。Auto・Messages API・要求ごとの制御・自動モデル選択は プレビュー)</td>
+<td><strong>Azure Policy は要求ごとの振り先を縛らない</strong>。router 経由の Claude は Global のみ。所在要件があるなら Data Zone の router とモデルの絞り込み</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/model-router-faq">Learn model-router-faq</a></td>
+</tr>
+<tr>
+<td>managed compute(オープンモデルの専用配置)</td>
+<td><span class="badge ga">GA</span>(公式 GA 一覧でもプレビューの注記が消えた)</td>
+<td>Data Zone は US / EU のみで APAC なし</td>
+<td><a href="https://devblogs.microsoft.com/foundry/managed-compute-ga/">devblogs 11-20</a></td>
+</tr>
+<tr>
+<td>Baseten on Foundry・fal の動画モデル</td>
+<td><span class="badge preview">プレビュー</span></td>
+<td><strong>Microsoft の Product Terms・DPA の対象外</strong>(Fireworks は対象)</td>
+<td><a href="https://news.microsoft.com/events/ignite/2026/book-of-news/">Book of News</a></td>
+</tr>
+<tr>
+<td>Managed Training / Programmed Training</td>
+<td><span class="badge preview">プレビュー</span></td>
+<td>旧 managed fine-tuning / interactive training の改称</td>
+<td><a href="https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/programmed-training-you-write-the-loop-foundry-runs-the-gpus/4573299">TC 11-18</a></td>
+</tr>
+<tr>
+<td>MAI-Code-2-Flash</td>
+<td><span class="badge private">限定プレビュー</span>(Foundry。GitHub では MAI-Code-2 が GA)</td>
+<td>Foundry での本番利用はまだ</td>
+<td><a href="https://news.microsoft.com/events/ignite/2026/book-of-news/">Book of News</a></td>
+</tr>
+<tr>
+<td>GPT-5.6 以降のプロンプトキャッシュ</td>
+<td><span class="badge ga">GA</span>(課金の変更)</td>
+<td>キャッシュの書き込みが課金対象に(12 時間保持の書き込みは 2026-11-01 の利用分から)</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/prompt-caching">Learn prompt-caching</a></td>
+</tr>
+</tbody></table></div>
+<h3 id="3-4-ナレッジ・ツール">3.4 ナレッジ・ツール</h3>
+<figure><img src="../images/fig-knowledge.png" alt="Foundry IQ への改称と、つなぎ方で変わる条件(出典: Learn の Search whats-new・foundry-iq-connect・web-search・browser-automation)" loading="lazy"><figcaption>Foundry IQ への改称と、つなぎ方で変わる条件(出典: Learn の Search whats-new・foundry-iq-connect・web-search・browser-automation)</figcaption></figure>
+<p>画面: <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/monitor-toolbox">Microsoft Learn「monitor-toolbox」</a> — Toolbox の Monitor タブ。呼び出し数・成功率・エージェント別の利用(画面はイベント前の 2026-11-03 版)</p>
+<div class="tablewrap"><table><thead><tr>
+<th>発表</th>
+<th>ステータス</th>
+<th>SI に効く点</th>
+<th>出典</th>
+</tr></thead><tbody>
+<tr>
+<td>Azure AI Search → Foundry IQ (Azure AI Search)</td>
+<td><span class="badge ga">GA</span>(名称の変更)</td>
+<td>リソース種別・エンドポイント・API 版・RBAC・課金名は変わらない</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/search/whats-new">Learn search whats-new</a></td>
+</tr>
+<tr>
+<td>ナレッジベースの計画・回答合成、SharePoint(indexed)・Azure SQL・ファイルのソース</td>
+<td><span class="badge ga">GA</span> <span class="badge preview">Preview<small>(一部)</small></span></td>
+<td>API 2026-10-01 で GA。<strong>エージェントからの接続(<code>RemoteTool</code>)は Preview</strong>。ユーザーのトークンなしで呼んだときに権限付きの文書が返るかは、Learn のページで食い違う(下の節)</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/foundry-iq-connect">Learn foundry-iq-connect</a></td>
+</tr>
+<tr>
+<td>マネージド Foundry IQ(プロジェクトに内蔵)</td>
+<td><span class="badge private">限定プレビュー</span>(12 月に全プロジェクトへ展開予定)</td>
+<td>課金とリージョンの条件は要確認</td>
+<td><a href="https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/foundry-iq-now-managed-for-you-in-every-foundry-project/4573316">TC 11-18</a></td>
+</tr>
+<tr>
+<td>ナレッジグラフ・Microsoft-Retriever-1</td>
+<td><span class="badge preview">プレビュー</span></td>
+<td>—</td>
+<td><a href="https://news.microsoft.com/events/ignite/2026/book-of-news/">Book of News</a></td>
+</tr>
+<tr>
+<td>Web 検索(Web IQ)</td>
+<td><span class="badge ga">GA</span>(prompt agent に直付け)</td>
+<td><strong>Toolbox 経由は Grounding with Bing のまま</strong>で、データ境界・DPA の条項が経路で違う</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/web-search">Learn web-search</a></td>
+</tr>
+<tr>
+<td>Browser Automation・Computer Use</td>
+<td><span class="badge ga">GA<small>(Learn の機能ページ)</small></span> <span class="badge preview">Preview<small>(Learn の移行ガイドの表)</small></span> <span class="badge na">記載なし<small>(公式 GA 一覧)</small></span></td>
+<td>Browser Automation の閉域可否はページで割れる。Computer Use は申請制で、Japan East は対象外(Japan West は可)</td>
+<td><a href="https://devblogs.microsoft.com/foundry/browser-automation-tool-ignite/">devblogs 11-18</a></td>
+</tr>
+<tr>
+<td>Toolbox の Monitor・VS Code 連携</td>
+<td><span class="badge na">記載なし</span>(ステータス表記なし)</td>
+<td>呼び出し数・成功率・エラーをエージェント別に見られる</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/monitor-toolbox">Learn monitor-toolbox</a></td>
+</tr>
+</tbody></table></div>
+<h3 id="エージェントにつなぐ-rag-foundry-iq-を選ぶ条件">エージェントにつなぐ RAG: Foundry IQ を選ぶ条件</h3>
+<p>「汎用の RAG なら Foundry IQ」とは言えない。エージェントにつなぐ 4 つの方法を同じ観点で比べると、向く条件が分かれる(2026-11-22 時点の公式ドキュメントによる。実測はしていない)。</p>
+<figure><img src="../images/fig-rag-choice.png" alt="エージェントにつなぐ RAG の 4 つの方法と向く条件(出典: Learn の foundry-iq-connect・agentic-retrieval-how-to-retrieve・agentic-retrieval-how-to-create-index・tools/ai-search・tools/file-search・tools/model-context-protocol・tools/openapi・Feature readiness at GA、Search の REST 仕様 2026-10-01)" loading="lazy"><figcaption>エージェントにつなぐ RAG の 4 つの方法と向く条件(出典: Learn の foundry-iq-connect・agentic-retrieval-how-to-retrieve・agentic-retrieval-how-to-create-index・tools/ai-search・tools/file-search・tools/model-context-protocol・tools/openapi・Feature readiness at GA、Search の REST 仕様 2026-10-01)</figcaption></figure>
+<ul>
+<li><strong>API の GA は広がったが、エージェントからつなぐ部分には Preview が残る。</strong> Search の安定版 API 2026-10-01 で、LLM によるクエリ計画・回答合成・reasoning effort(minimal / low / medium)と、7 種のナレッジソース(検索インデックス・Blob / ADLS・OneLake・Web・ファイル・Azure SQL・SharePoint(indexed))が GA になった。一方、Agent Service からナレッジベースにつなぐ接続(<code>RemoteTool</code>)は Preview で、手順の例も Preview 版の MCP(2026-11-01-preview)を使う。GA 版(2026-04-01)の MCP は常に minimal で、抽出した結果だけを返す。公式 GA 一覧の扱いも「Partial GA(API は GA、ポータルは Preview)」のまま。Ignite で増えた Microsoft Retriever 1・ナレッジグラフ・GPT-6 系のモデルは Preview 版の API にしかない。</li>
+<li><strong>検索はある程度まで調整できるが、最終順位と前処理は Foundry IQ に任せる。</strong> 調整できるのは、既存のインデックスを包む(セマンティック構成が必須)、保存フィルターとリクエスト時のフィルター、検索と回答への指示(<code>retrievalInstructions</code>・<code>answerInstructions</code>)、件数・時間・出力トークンの上限、minimal にして LLM の計画を省く、の範囲。スコアリングプロファイルは候補の選び方に効くだけで、最終順位は決められない。Blob・OneLake・SharePoint から自動で作るインデックスは固定のテンプレートで、埋め込みは Azure OpenAI に限られる。エージェントから使えるツールは <code>knowledge_base_retrieve</code> だけで、Agent Service は MCP の呼び出しを 100 秒で打ち切る。</li>
+<li><strong>ユーザーのトークンを渡さないときの動きが、Learn のページで食い違う。</strong> foundry-iq-connect(11-09)は「権限付きのソースもフィルターせずに返す」と書き、retrieve とクエリ時の ACL のページ(11-06・11-09)は「ACL 付きの文書は返さない」と書く。どちらの動きでも困らないよう、ユーザーのトークンを渡す設計にし、受入試験で確かめる。</li>
+<li><strong>日本と閉域では、次の条件がつく。</strong> Japan West では medium effort と可用性ゾーンが使えない。自動で作るインデックスを閉域で取り込むには Search を S2 / S3 / L1 / L2 にし、取り込み時の埋め込みは trusted-service bypass に頼る。SharePoint Online への通信は常に公開経路を通る。Serverless は閉域の取り込みに対応せず、ほかの tier にも移れないので、PoC を Serverless で作ると本番の閉域で作り直しになる。</li>
+<li><strong>費用は 3 つ重なる。</strong> Search の tier 料金に、agentic retrieval のトークン(free プランは使い切ると 402 を返す)と、計画・回答合成に使う Azure OpenAI のトークンが加わる。</li>
+</ul>
+<h3 id="azure-ai-search-の改称は表示名だけ">Azure AI Search の改称は表示名だけ</h3>
+<figure><img src="../images/fig-rename.png" alt="Azure AI Search の改称で変わったもの・変わらないもの(出典: Learn「What&#x27;s new in Foundry IQ (Azure AI Search)」2026-11-17 版)" loading="lazy"><figcaption>Azure AI Search の改称で変わったもの・変わらないもの(出典: Learn「What&#x27;s new in Foundry IQ (Azure AI Search)」2026-11-17 版)</figcaption></figure>
+<ul>
+<li>変わったのは Azure ポータル・Foundry ポータル・ドキュメント・製品ページの表示名だけで、Learn は「コードやアプリの変更は不要」と書く。リソースプロバイダー(<code>Microsoft.Search</code>)・エンドポイント・SDK のパッケージ名と API 版・RBAC のロール名・エラーとログ・課金メーター名は旧名のまま残る。手元の Azure CLI 2.93 でも <code>az search</code> のヘルプは「Manage Azure AI Search」のままだった。</li>
+<li>Foundry 側に残る「cognitive」の名前(<code>Microsoft.CognitiveServices/accounts</code>、<code>az cognitiveservices</code>)は Foundry リソース自体の型で、Search の改称とは関係がない。</li>
+<li>「Foundry IQ」はナレッジベース(エージェント向けの検索の仕組み)の機能名としても使われてきた。設計書では「Search サービス」と「ナレッジベース」を言い分ける。</li>
+</ul>
+<p>公式ドキュメントに画面画像がない機能: Copilot harness の prompt agent、Foundry IQ(マネージド・SharePoint)、Browser Automation。Browser Automation と Foundry IQ の接続は上の図、Copilot harness は 3.1 の図で示している。</p>
+<h3 id="3-5-管理・コスト">3.5 管理・コスト</h3>
+<figure><img src="../images/fig-governance.png" alt="Manage の再編と cost controls の効き方(出典: Feature readiness at GA 2026-11-17 版、Learn の cost-controls・cost-management-permissions・agent-deployment-policy)" loading="lazy"><figcaption>Manage の再編と cost controls の効き方(出典: Feature readiness at GA 2026-11-17 版、Learn の cost-controls・cost-management-permissions・agent-deployment-policy)</figcaption></figure>
+<p>画面: <a href="https://learn.microsoft.com/en-us/azure/foundry/control-plane/monitor-fleet">Microsoft Learn「monitor-fleet」</a> — Manage の Fleet overview。左ナビに Fleet・Cost・Operations・Compliance・Quota・Gateways(2026-11-18 版。上部ナビに Operate が残る統合前の画面)</p>
+<p>画面: <a href="https://learn.microsoft.com/en-us/azure/foundry/how-to/view-project-costs">Microsoft Learn「view-project-costs」</a> — プロジェクトの「Cost by agent」。エージェントごとの推定トークンコスト</p>
+<p>画面: <a href="https://learn.microsoft.com/en-us/azure/foundry/how-to/create-cost-controls">Microsoft Learn「create-cost-controls」</a> — 「Create cost control」。予算・対象・エージェント単位の配分を決める</p>
+<div class="tablewrap"><table><thead><tr>
+<th>発表</th>
+<th>ステータス</th>
+<th>SI に効く点</th>
+<th>出典</th>
+</tr></thead><tbody>
+<tr>
+<td>Operate を Manage に統合(Fleet / Cost / Operations / Compliance)</td>
+<td><span class="badge preview">プレビュー</span>(Quota・プロジェクト詳細は GA)</td>
+<td>ポータルは Home / Discover / Build / Manage / Docs の 5 セクション。手順書の画面説明を直す</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/foundry/concepts/general-availability">Feature readiness at GA</a></td>
+</tr>
+<tr>
+<td>Cost in Foundry・cost controls</td>
+<td><span class="badge preview">プレビュー</span></td>
+<td>超過で HTTP 429。<strong>対象は GPT / o-series だけ</strong>(PTU・ツール料金・hosted の実行基盤は数えない)、判定できないと通す。<strong>金額の閲覧には Cost Management Reader が別に要る</strong></td>
+<td><a href="https://learn.microsoft.com/en-us/azure/foundry/concepts/cost-controls">Learn cost-controls</a></td>
+</tr>
+<tr>
+<td>Foundry governance(旧コントロールプレーン)</td>
+<td>名称の変更</td>
+<td>AI gateway がガバナンスの前提ではなくなった</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/foundry/control-plane/overview">Learn control-plane overview</a></td>
+</tr>
+<tr>
+<td>Azure Policy でエージェント種別・コンテナイメージ・egress を縛る</td>
+<td><span class="badge preview">プレビュー</span></td>
+<td>Canada Central / Spain Central / Korea Central のみ(日本なし)</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/foundry/how-to/agent-deployment-policy">Learn agent-deployment-policy</a></td>
+</tr>
+<tr>
+<td>Azure AI Gateway(新しいリソース種別)</td>
+<td><span class="badge ga">GA<small>(Learn・Tech Community)</small></span> <span class="badge preview">Preview<small>(公式 GA 一覧)</small></span></td>
+<td>Foundry の画面から APIM を新しく紐付けることはできなくなった</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/foundry/configuration/enable-ai-api-management-gateway-portal">Learn AI gateway</a></td>
+</tr>
+</tbody></table></div>
+<h3 id="3-6-開発者ツール">3.6 開発者ツール</h3>
+<div class="tablewrap"><table><thead><tr>
+<th>発表</th>
+<th>ステータス</th>
+<th>SI に効く点</th>
+<th>出典</th>
+</tr></thead><tbody>
+<tr>
+<td>azd の Foundry 拡張(<code>microsoft.foundry</code> 1.0 ほか)</td>
+<td><span class="badge ga">GA</span>(2026-11-05)</td>
+<td>CI/CD の標準は azd。<code>az cognitiveservices agent</code> は非推奨で、2027-02-28 後の最初の CLI リリースで削除</td>
+<td><a href="https://github.com/Azure/azure-dev/releases">Azure/azure-dev releases</a></td>
+</tr>
+<tr>
+<td>Foundry Dev Pack</td>
+<td><span class="badge ga">GA</span>(2026-11-18)</td>
+<td>チームの開発環境をワンコマンドでそろえられる</td>
+<td><a href="https://devblogs.microsoft.com/foundry/the-foundry-dev-pack-is-here-build-foundry-agents-your-way/">devblogs 11-18</a></td>
+</tr>
+<tr>
+<td>SDK(<code>azure-ai-projects</code> 2.11.0、.NET 3.0.0)</td>
+<td><span class="badge ga">GA</span></td>
+<td>Voice Agents・Insights・External Agents が SDK 上 GA</td>
+<td><a href="https://pypi.org/project/azure-ai-projects/">PyPI</a></td>
+</tr>
+<tr>
+<td>Microsoft Agent Framework</td>
+<td><span class="badge ga">GA</span>(1.26)</td>
+<td><code>azure-ai-projects</code> の上限は解消。<strong>Python 3.11 以上・MCP SDK 2.x が必須</strong>に</td>
+<td><a href="https://learn.microsoft.com/en-us/agent-framework/overview/">Learn MAF</a></td>
+</tr>
+</tbody></table></div>
+<h2 id="4-copilot-studio-関連">4. Copilot Studio 関連</h2>
+<figure><img src="../images/fig-copilot-studio.png" alt="Copilot Studio と Foundry の境界(Ignite 後)。中央は両方に共通する土台(出典: Copilot Studio ブログ 2026-11-18、Official Microsoft Blog 2026-10-28、Book of News、Learn)" loading="lazy"><figcaption>Copilot Studio と Foundry の境界(Ignite 後)。中央は両方に共通する土台(出典: Copilot Studio ブログ 2026-11-18、Official Microsoft Blog 2026-10-28、Book of News、Learn)</figcaption></figure>
+<ul>
+<li>Copilot Studio の新機能は Book of News にほとんど載らず、主な一次情報は Copilot Studio ブログの Ignite 記事(2026-11-18)だった。Learn の What's new は 10 月分までで、Ignite の項はまだない(2026-11-22 時点)。</li>
+<li>発表と Learn が食い違う機能が多い点は Foundry と同じで、ブログが GA と書いても Learn や目次は Preview のままのものが多い。</li>
+<li>Foundry との関係で一番大きいのは、<strong>Microsoft Copilot harness の技術が両製品で共通だと公式に書かれた</strong>こと(<a href="https://blogs.microsoft.com/blog/2026/10/28/introducing-the-microsoft-copilot-harness-unlocking-the-potential-of-truly-multi-model-agentic-work/">Official Microsoft Blog 2026-10-28</a>。devblogs も「shared execution foundation」と書く)。製品としてのステータス・課金・機能は別で、エージェント定義を移せるかは書かれていない。</li>
+</ul>
+<p>画面: <a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/agents-experience/overview">Microsoft Learn「agents-experience/overview」</a> — 新しいハーネス(Microsoft Copilot harness)の Build タブ。右側に Model・Microsoft IQ・Skills・Tools・Knowledge・Connected agents・Memory が並ぶ(2026-11-17 版)</p>
+<p>画面: <a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/agents-experience/authoring-add-event-trigger">Microsoft Learn「authoring-add-event-trigger」</a> — イベントで自律実行するトリガー(メール受信・ファイル更新・定期実行など)(画面はイベント前の 2026-11-12 版)</p>
+<p>画面: <a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/agents-experience/authoring-agent-account">Microsoft Learn「authoring-agent-account」</a> — エージェントに専用のアカウントを持たせる「+ Agent account」(画面はイベント前の 2026-10-15 版)</p>
+<div class="tablewrap"><table><thead><tr>
+<th>発表</th>
+<th>ステータス(出典の表現)</th>
+<th>SI に効く点</th>
+<th>出典</th>
+</tr></thead><tbody>
+<tr>
+<td>Copilot Managed Runtime(Copilot Code・Cowork・Copilot Studio のアプリを動かす実行基盤)</td>
+<td><span class="badge ga">GA</span></td>
+<td>Copilot Studio のエージェントとワークフローをローカルで作り、CLI で publish する機能は public preview</td>
+<td><a href="https://techcommunity.microsoft.com/blog/copilot-managed-runtime-blog/copilot-managed-runtime-is-now-generally-available-with-additional-new-preview-f/4571846">TC 11-17</a></td>
+</tr>
+<tr>
+<td>Customer Conversation harness(コンタクトセンター向け)</td>
+<td><span class="badge ga">GA<small>(ブログ 11-18)</small></span> <span class="badge preview">Preview<small>(Learn What's new 10 月)</small></span></td>
+<td>対応地域に Japan がない。connected agent は Foundry だけ</td>
+<td><a href="https://www.microsoft.com/en-us/copilot/blog/copilot-studio/build-and-manage-business-processes-with-microsoft-copilot-studio/">Copilot Studio ブログ 11-18</a></td>
+</tr>
+<tr>
+<td>Microsoft Copilot harness(旧 GitHub Copilot harness)</td>
+<td>Production-ready preview(Ignite での GA 表明なし)</td>
+<td>1 ターン 200 ツール呼び出し・90 分。外部エージェントの呼び出しは 5 分で切れる。トークン・ツール・ハーネスに Copilot Credits が作り始めからかかる</td>
+<td><a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/whats-new">Learn What's new</a></td>
+</tr>
+<tr>
+<td>CLI(<code>msagent</code>)と Copilot Studio MCP</td>
+<td><span class="badge preview">プレビュー</span></td>
+<td>Git でのソース管理やコード開発ができるようになりつつあるが、本番の ALM の根拠にはまだできない</td>
+<td><a href="https://www.microsoft.com/en-us/copilot/blog/copilot-studio/build-and-manage-business-processes-with-microsoft-copilot-studio/">Copilot Studio ブログ 11-18</a></td>
+</tr>
+<tr>
+<td>エージェントのアカウント</td>
+<td><span class="badge soon">予定<small>(ブログ 11-18 = 12 月に Preview)</small></span> <span class="badge soon">Frontier<small>(Learn)</small></span></td>
+<td>常駐する自律エージェントに M365 の ID を持たせる</td>
+<td><a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/agents-experience/authoring-agent-account">Learn authoring-agent-account</a></td>
+</tr>
+<tr>
+<td>Windows 365 for Agents(computer use)</td>
+<td><span class="badge ga">GA<small>(Book of News = standard harness で利用可)</small></span> <span class="badge preview">Preview<small>(Learn の Cloud PC pool)</small></span>。新ハーネスは 12 月に Preview、Foundry は 2027 年初めに Preview の予定</td>
+<td>API のない業務アプリの画面操作は、当面 Copilot Studio のほうが早く組める。Copilot Credits の対象に</td>
+<td><a href="https://news.microsoft.com/events/ignite/2026/book-of-news/">Book of News</a></td>
+</tr>
+<tr>
+<td>エージェントの共有・Apps in Copilot Studio</td>
+<td><span class="badge ga">GA<small>(ブログ 11-18)</small></span> <span class="badge preview">Preview<small>(Learn のクイックスタート)</small></span>。Learn の共有ページは閲覧権限しか渡せないと書く</td>
+<td>複数の作成者での共同編集</td>
+<td><a href="https://www.microsoft.com/en-us/copilot/blog/copilot-studio/build-and-manage-business-processes-with-microsoft-copilot-studio/">Copilot Studio ブログ 11-18</a></td>
+</tr>
+<tr>
+<td>Foundry エージェントの接続</td>
+<td>standard harness = プレビュー / 新ハーネス = 表記なし(GA の明記もなし)</td>
+<td>Foundry 側のエンドポイント設定には <code>V1Preview</code> ヘッダーが要る</td>
+<td><a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/add-agent-foundry-agent">Learn add-agent-foundry-agent(2026-11-18 更新)</a></td>
+</tr>
+<tr>
+<td>Foundry IQ の接続</td>
+<td><span class="badge ga">GA</span>(Copilot Studio ブログ 10-07)</td>
+<td>新ハーネスのエージェントだけで、1 エージェント 1 接続。Azure AI Search を使っていた構成は Foundry IQ に移す</td>
+<td><a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/agents-experience/foundry-iq-connect">Learn foundry-iq-connect</a></td>
+</tr>
+</tbody></table></div>
+<h3 id="copilot-studio-と-foundry-の使い分けで変わった点">Copilot Studio と Foundry の使い分けで変わった点</h3>
+<div class="tablewrap"><table><thead><tr>
+<th>観点</th>
+<th>Ignite 以降に確認できたこと</th>
+<th>使い分けへの影響</th>
+</tr></thead><tbody>
+<tr>
+<td>国内処理</td>
+<td>standard harness の既定モデル(GPT Chat Latest)は Japan で「Default (cross-geo)」(11-19 版。What's new とは食い違う)</td>
+<td>国内処理が要件なら Foundry に寄せる根拠が強まった</td>
+</tr>
+<tr>
+<td>コードでの開発・運用</td>
+<td>CLI・Copilot Studio MCP・ローカル開発(いずれも preview)、Managed Runtime 上の Code Agents(early access)</td>
+<td>「コードで管理したい」だけでは Foundry を選ぶ理由にならなくなりつつある。Code Agents と Foundry の hosted agent の使い分けは書かれていない</td>
+</tr>
+<tr>
+<td>課金の比べ方</td>
+<td>新ハーネスは作り始めから Copilot Credits。M365 Copilot ライセンス保有者の扱いは新ハーネスの課金ページに記載なし</td>
+<td>試算の前に「どのハーネスで作るか」を決める</td>
+</tr>
+<tr>
+<td>規模の上限</td>
+<td>新ハーネスは 1 ターン 200 ツール呼び出し・90 分。委任は 1 段、外部エージェントは 5 分</td>
+<td>「アクション数が多いから Foundry」は standard harness だけの基準になった</td>
+</tr>
+<tr>
+<td>統制と費用</td>
+<td>Agent 365・Defender・Entra Agent ID に両製品のエージェントが並ぶ。費用は Copilot Credits と Foundry の Cost(preview)に分かれたまま</td>
+<td>「統制は Agent 365 で一元化、費用は製品ごと」と説明する</td>
+</tr>
+</tbody></table></div>
+<p>画面は Microsoft Learn の掲載ページへのリンクで示す(画像はこのリポジトリに転載していない)。Foundry エージェントの接続・Foundry IQ の接続のページには画面画像がない。</p>
+<h2 id="5-閉域と権限制御">5. 閉域と権限制御</h2>
+<p>Foundry を導入する企業の多くは閉域を求める。この章では公式ドキュメントの記述と、2026-11-22 に Japan East の Azure で実際に組んで確かめた結果(図の「実測」)を分けて示す。検証の手順・生ログ・費用の内訳は <a href="../../../../labs/foundry-probes/README.md">labs/foundry-probes の probe 12〜15</a> にある。検証に使ったリソースはすべて削除した。</p>
+<h3 id="5-1-閉域の構成パターン">5.1 閉域の構成パターン</h3>
+<figure><img src="../images/fig-closed-patterns.png" alt="閉域の 4 つの構成パターン。今回の実測は C(出典: Learn の configure-private-link・agents/how-to/virtual-networks・networking-options、2026-11-22 取得)" loading="lazy"><figcaption>閉域の 4 つの構成パターン。今回の実測は C(出典: Learn の configure-private-link・agents/how-to/virtual-networks・networking-options、2026-11-22 取得)</figcaption></figure>
+<ul>
+<li>規制のある案件では C(VNet 注入+自社のデータ資源)が標準になる。VNet 注入はアカウントを作るときにしか付けられないので、PoC の段階から C で作る。</li>
+<li>自社のデータ資源のうち Cosmos DB は Serverless で足りた(実測)。検証環境の常時課金を減らせる。</li>
+<li>D(Managed VNet)は、送信先の FQDN 規則を足すと Azure Firewall が自動で作られ、約 198 円/時かかり続ける。今回は費用見込み超過のため実測していない。</li>
+</ul>
+<h3 id="5-2-機能ごとの閉域対応">5.2 機能ごとの閉域対応</h3>
+<figure><img src="../images/fig-closed-matrix.png" alt="機能ごとの閉域対応。「実測」の印は 2026-11-22 に Japan East の閉域プロジェクトで確かめたもの、印のない項目は公式ドキュメントの記述(出典: Learn の configure-private-link・toolbox-network-isolation・voice agent の各ページ、probe 12)" loading="lazy"><figcaption>機能ごとの閉域対応。「実測」の印は 2026-11-22 に Japan East の閉域プロジェクトで確かめたもの、印のない項目は公式ドキュメントの記述(出典: Learn の configure-private-link・toolbox-network-isolation・voice agent の各ページ、probe 12)</figcaption></figure>
+<h3 id="5-3-実測-閉域プロジェクトで何が動いたか">5.3 実測: 閉域プロジェクトで何が動いたか</h3>
+<figure><img src="../images/fig-verify-closed.png" alt="実測した構成と結果。Japan East、パブリックアクセス無効、VNet 注入、自社の Cosmos DB(Serverless)・Storage・AI Search、エージェントのサブネットに NAT なし(出典: probe 12、2026-11-22)" loading="lazy"><figcaption>実測した構成と結果。Japan East、パブリックアクセス無効、VNet 注入、自社の Cosmos DB(Serverless)・Storage・AI Search、エージェントのサブネットに NAT なし(出典: probe 12、2026-11-22)</figcaption></figure>
+<ul>
+<li>VNet の外からは Foundry User を付けた利用者でも 403(Public access is disabled)で拒否された。VNet 内の VM からは名前がプライベート IP に解決され、200 で通った。</li>
+<li>エージェントのサブネットに NAT やファイアウォールがなくても、prompt agent と File Search・Code Interpreter・Web search・OpenAPI・MCP が動いた。OpenAPI と MCP の要求はエージェントのサブネットから VNet 内の VM に届き、公開の URL にも届いた(5.4)。</li>
+<li><strong>Copilot harness も閉域のプロジェクトで動き、shell から VNet 内の VM にも公開インターネットにも届いた。</strong> NAT がなくても外に出たのは OpenAPI・MCP と同じで、委任サブネットに NSG か UDR を当てると止まった(5.4)。</li>
+<li>添付ファイル(<code>input_file</code>)だけは、閉域のプロジェクトで誰が送っても 400 になった(公開側の同じ手順では 200)。閉域でファイルを渡すなら Code Interpreter か File Search を使う。</li>
+<li>構築でつまずいた点: VNet 注入ありのアカウントでは、アカウント側の capability host が自動で作られ、IaC で作ろうとすると 400 / 409 になる。削除では、アカウントを完全に削除(purge)するまで委任サブネットのリンクが残り、リソースグループの削除が止まった(閉域側の purge に 22 分)。purge したアカウントと同じ名前で作り直すと、エージェントのエンドポイントだけが 70 分以上 403「Traffic is not from an approved private endpoint.」を返した(名前を変えると出なかった。原因は未確定)。</li>
+</ul>
+<h3 id="5-4-外向きの通信-経路ごとの違い">5.4 外向きの通信: 経路ごとの違い</h3>
+<p>Web search は検索語を Azure の境界の外(Bing)に送り、Global Standard のデプロイは国外で処理することがある。Copilot harness との違いを、宛先を誰が決めるか・何が出るか・どこを通るか・どう止めるかの 4 つの軸で比べた。2026-11-22 には閉域のプロジェクトのエージェントのサブネットに NSG と UDR を当て、どの通信が止まるかを確かめた(probe 15)。</p>
+<figure><img src="../images/fig-egress-compare.png" alt="外向きの通信の経路ごとの違い。「実測」の印は 2026-11-22 に Japan East の閉域プロジェクトで、エージェントのサブネットに NSG と UDR を当てて確かめたもの(出典: probe 15、Learn の agents/how-to/virtual-networks・agents-networking-deep-dive・web-search・deployment-types・Copilot harness の各ページ)" loading="lazy"><figcaption>外向きの通信の経路ごとの違い。「実測」の印は 2026-11-22 に Japan East の閉域プロジェクトで、エージェントのサブネットに NSG と UDR を当てて確かめたもの(出典: probe 15、Learn の agents/how-to/virtual-networks・agents-networking-deep-dive・web-search・deployment-types・Copilot harness の各ページ)</figcaption></figure>
+<ul>
+<li><strong>Copilot harness の違いは、宛先と送る中身を実行時にモデルが決めること。</strong> shell と Web ツールで任意の URL・任意のコマンドを使えるので、VNet 内の社内 API から読んだ内容を外へ送ることもできる。通る場所と止め方は OpenAPI・MCP と同じで、委任サブネットの NSG と UDR で止まり、外すと戻った。RAI ポリシーの egress controls(<span class="badge preview">Preview</span>)を付けると、Deny にしたホスト名だけが 403 になり、ほかのホストには届いた。ただし egress controls を付けると、規則に当たらない VNet 内の 8080 番と公開の 22 番への接続も拒否された(原因は切り分けていない)。社内 API を harness から呼ぶなら、付けた状態で届くかを確かめる。</li>
+<li><strong>Global Standard はどの国で処理するかの話。</strong> 宛先は Microsoft の推論基盤に限られ、プロンプトと応答は Microsoft の網の中で DPA の範囲に残る。保存データは選んだ地域に残る。国内で処理するなら Standard(リージョン)を選ぶ。ただし Japan East の Standard で使えるモデルは gpt-4.1-mini・gpt-4o・埋め込みなどに限られ、Data Zone の APAC には豪州・韓国・東南アジア・インドも入る。Azure Policy で Global Standard のデプロイを拒否できる。</li>
+<li><strong>Web search は宛先が固定のサービスで、出るのはモデルが作った検索語。</strong> 任意の URL を取りに行く機能はない。Bing(Grounding with Bing)は DPA の対象外で、Azure のコンプライアンス境界の外に出る。顧客のサブネットは通らない(0.0.0.0/0 → None でも動いた)。止めるのはサブネットではなく管理者の設定で、サブスクリプションの機能フラグ <code>OpenAI.BlockedTools.web_search</code>、<code>Microsoft.Bing</code> の登録解除と Azure Policy、承認済みツールのポリシー(<span class="badge preview">Preview</span>)がある。</li>
+<li><strong>OpenAPI と MCP は宛先が定義の URL に固定され、通信は顧客の委任サブネットを通る。</strong> NAT もファイアウォールもなく、サブネットの既定の送信を切っていても、公開の URL に届いた。宛先から見た送信元は Microsoft が管理する Azure の公開 IP(AzureCloud.japaneast。呼び出しごとに変わる)だった。OpenAPI は宛先の IP だけを拒否する NSG でも、UDR(宛先の /32 → None)でも止まり、外すと戻った。MCP は 0.0.0.0/0 → None で止まった。</li>
+<li><strong>hosted agent は自社のコードが宛先を決め、委任サブネットから直接出る</strong>(公式の記述。今回は実測していない)。egress controls と NSG・ファイアウォールを併せて使う。</li>
+<li><strong>送信元の公開 IP では絞れない。</strong> harness も OpenAPI も、送信元は AzureCloud.japaneast(リージョンの Azure 全体)のタグにしか入らず、プレフィックスも互いに別だった。宛先の側で harness や Foundry のツールだけを許可することはできない。</li>
+<li><strong>閉域の要件では、NAT を置かないことを「外に出ない」根拠にしない。</strong> 委任サブネットに NSG か UDR を当て、harness を使うエージェントには egress controls でホスト名も絞る。0.0.0.0/0 → None でもツールなしの prompt agent と harness の応答は返ったので、実行基盤そのものはサブネット経由のインターネットに頼っていない。ツールの呼び出しは失敗したので、0.0.0.0/0 をファイアウォールに向けるなら、公式の許可リスト(<code>login.microsoftonline.com</code> などの Entra の宛先、または AzureActiveDirectory タグ)を入れてからツールの動作を確かめる。</li>
+</ul>
+<h3 id="5-5-権限-ロールごとにできること">5.5 権限: ロールごとにできること</h3>
+<figure><img src="../images/fig-rbac.png" alt="ロール × 操作。「実測」の印は 2026-11-22 に Japan East で確かめた結果、印のない ○ / × はロール定義の読み(出典: az role definition list 2026-11-22、probe 13)" loading="lazy"><figcaption>ロール × 操作。「実測」の印は 2026-11-22 に Japan East で確かめた結果、印のない ○ / × はロール定義の読み(出典: az role definition list 2026-11-22、probe 13)</figcaption></figure>
+<ul>
+<li>利用者にエージェントを使わせるだけなら、Agent Consumer をエージェント単位で付ける。呼べるのはエージェントのエンドポイントだけになる。</li>
+<li>Project Runtime User は、定義上は Responses を呼べるように見えるが、実測ではどの経路も 403 だった。実行専用の ID には使わない。</li>
+<li>「モデルだけを呼べる」組み込みロールはない。Foundry User を付けるとエージェントも作れる。</li>
+<li>コストの金額はどの Foundry ロールでも見えない。Cost Management Reader を別に付ける。Project Manager では利用量のメトリクスもエラーにならずに空で返る。</li>
+</ul>
+<h3 id="5-6-プロジェクトの中で分けられないもの">5.6 プロジェクトの中で分けられないもの</h3>
+<figure><img src="../images/fig-isolation.png" alt="プロジェクトの中で利用者どうしを分けられないもの(出典: probe 13、Learn の rbac-foundry・memory-usage・hosted agent の権限ページ)" loading="lazy"><figcaption>プロジェクトの中で利用者どうしを分けられないもの(出典: probe 13、Learn の rbac-foundry・memory-usage・hosted agent の権限ページ)</figcaption></figure>
+<ul>
+<li>1 つのプロジェクトを複数の部署や顧客で共有すると、応答の続き・メモリ・接続のシークレットを通じて他人のデータに届く。分けたい単位ごとにプロジェクトを分け、利用者には Agent Consumer だけを付けてエンドポイント経由で使わせる(エンドポイントでは <code>x-memory-user-id</code> が無視された)。</li>
+<li>応答 ID を利用者のブラウザーに渡す設計では、ID が漏れると他人の会話の続きが読める。応答 ID はサーバー側で利用者に紐づけて検証する。</li>
+<li>API キーはエージェント単位の権限を迂回する。本番では <code>disableLocalAuth</code> を有効にする。反映は約 1 分で、拒否は 401 ではなく 403 <code>AuthenticationTypeDisabled</code> になった。</li>
+</ul>
+<h3 id="5-7-公式の記述と実測が食い違った点">5.7 公式の記述と実測が食い違った点</h3>
+<figure><img src="../images/fig-verify-gaps.png" alt="公式の記述と実測(2026-11-22・Japan East)が食い違った 10 点(出典: probe 12〜14 の NOTES)" loading="lazy"><figcaption>公式の記述と実測(2026-11-22・Japan East)が食い違った 10 点(出典: probe 12〜14 の NOTES)</figcaption></figure>
+<h3 id="5-8-agent-optimizer-は申請なしで使えた">5.8 Agent Optimizer は申請なしで使えた</h3>
+<p>公式 GA 一覧は Agent Optimizer を「Limited preview」と書くが、Agent Optimizer の概要とクイックスタートには申請の手順がない。2026-11-22 に Japan East で、機能の登録やプレビューの申請をせずに API を呼んだ結果は次のとおり。</p>
+<div class="tablewrap"><table><thead><tr>
+<th>確かめたこと</th>
+<th>結果</th>
+</tr></thead><tbody>
+<tr>
+<td>費用の見積もり(ジョブを作らない)</td>
+<td>200。データ 3 行・候補 1 つで見積もりの上限は 0.55 USD</td>
+</tr>
+<tr>
+<td>最小のジョブ(prompt agent、データ 3 行、候補 1 つ)</td>
+<td>約 2 分で完了。評価のスコアは 0.833 から 0.917 に上がった。実費は数円</td>
+</tr>
+<tr>
+<td>閉域のプロジェクト</td>
+<td>見積もり・ジョブとも成功(ジョブは約 3.6 分)</td>
+</tr>
+</tbody></table></div>
+<p>申請の段取りは要らないが、GA ではないので Preview の条件(SLA なし)は変わらない。候補はエージェントの下書きの版として作られ、評価のためにエージェントが実際に呼ばれる。本番の系に書き込むツールを持つエージェントは、検証用の資源に向けてから流す。</p>
+<h3 id="5-9-実施しなかった検証と費用">5.9 実施しなかった検証と費用</h3>
+<figure><img src="../images/fig-verify-scope.png" alt="実施した検証・実施しなかったもの・費用の見込み(出典: probe 12・15 の COST.md。費用は Azure Retail Prices API の単価から計算した見込みで、請求の確定値ではない)" loading="lazy"><figcaption>実施した検証・実施しなかったもの・費用の見込み(出典: probe 12・15 の COST.md。費用は Azure Retail Prices API の単価から計算した見込みで、請求の確定値ではない)</figcaption></figure>
+<div class="tablewrap"><table><thead><tr>
+<th>実施しなかったもの</th>
+<th>理由</th>
+<th>実施した場合の概算</th>
+</tr></thead><tbody>
+<tr>
+<td>Managed VNet</td>
+<td><strong>費用見込み超過のため除外。</strong> FQDN 規則を足すと Azure Firewall Standard が自動で作られ、SKU を後から変えられない</td>
+<td>197.8 円/時(1 日 4,747 円)</td>
+</tr>
+<tr>
+<td>hosted agent の閉域(閉域でのビルド・プライベート ACR・外向きの通信)</td>
+<td>コンテナー イメージと ACR の構築に時間がかかるため</td>
+<td>0.5 vCPU・1 GiB で約 10.7 円/時+ACR Standard 105.5 円/日</td>
+</tr>
+<tr>
+<td>0.0.0.0/0 を Azure Firewall に向けた構成</td>
+<td><strong>費用見込み超過のため除外</strong></td>
+<td>197.8 円/時</td>
+</tr>
+<tr>
+<td>egress controls を付けたときの VNet 内・22 番の拒否の切り分け</td>
+<td>外向きの経路を確かめる目的の外(付随して見つかった)</td>
+<td>トークン代のみ(数円)</td>
+</tr>
+<tr>
+<td>Foundry IQ の権限絞り込み</td>
+<td>テスト用の Entra ユーザーと ACL 付きのデータソースが要るため</td>
+<td>—</td>
+</tr>
+<tr>
+<td>エージェント ID の無効化</td>
+<td>Entra の管理者ロールが要るため</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Browser Automation・Work IQ・A2A の閉域</td>
+<td>今回の対象外</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Bastion・NAT Gateway</td>
+<td>要らなかったため(VM の操作は run-command で済み、NAT なしで全項目が成立した)</td>
+<td>30.06 円/時・約 7 円/時</td>
+</tr>
+</tbody></table></div>
+<p>費用は予算 5,000 円に対して約 1,790 円の見込み(環境を 3 回作った)。うち 1,425 円は Private DNS ゾーン 6 つを 3 回とも 1 か月分で計上した額で、日割りなら合計は約 370 円になる。時間課金のリソース(AI Search Basic・プライベートエンドポイント・VM)は毎回テストの後すぐに削除し、稼働は合わせて約 4.3 時間だった。消し忘れると 1 日 716 円かかる構成だった。</p>
+<h2 id="6-si-への影響と期限">6. SI への影響と期限</h2>
+<figure><img src="../images/fig-deadlines.png" alt="直近の期限(出典: リタイア表 2026-11-18 版、features の重要期限表 2026-11-22)" loading="lazy"><figcaption>直近の期限(出典: リタイア表 2026-11-18 版、features の重要期限表 2026-11-22)</figcaption></figure>
+<div class="tablewrap"><table><thead><tr>
+<th>観点</th>
+<th>判断が変わる点</th>
+</tr></thead><tbody>
+<tr>
+<td>データ所在(日本)</td>
+<td>GPT-6.1 / 6.2・Decision-1.1 は Japan East の Data Zone で使える。ただし 2026-11-01 以降に提供開始したモデル(GPT-6.2 など)は Modified Abuse Monitoring の対象外になる。managed compute・Policy 系のプレビュー・安全ルーブリックは日本で使えない</td>
+</tr>
+<tr>
+<td>閉域</td>
+<td>サブネット IP 共有が GA。egress 制御は発表では GA だが公式 GA 一覧に記載なし。voice の電話チャネルは閉域で使えない。M365 / Teams 公開の受信は公衆インターネット経由。エージェントのサブネットに NAT がなくても OpenAPI・MCP・Copilot harness は公開インターネットに出る。NSG・UDR を当てれば止まる(実測)。添付ファイルは閉域で失敗する(実測)。Browser Automation の閉域可否は要確認</td>
+</tr>
+<tr>
+<td>課金</td>
+<td>Copilot harness は 12-01 から課金。プロンプトキャッシュの書き込みが課金対象に。cost controls は上限保証にならない</td>
+</tr>
+<tr>
+<td>権限</td>
+<td>利用者には Agent Consumer だけを付け、分けたい単位ごとにプロジェクトを分ける。API キーは <code>disableLocalAuth</code> で止める。コストの閲覧に Cost Management Reader。ナレッジベースはユーザーのトークンを渡す設計にする</td>
+</tr>
+<tr>
+<td>期限</td>
+<td>Workflows(12-01)、gpt-4o 2024-05-13(2027-01-14)、カスタムエージェント(2027-05-07)、Language の CLU / CQA など(2029-03-31)</td>
+</tr>
+</tbody></table></div>
+<h2 id="7-発表と公式ドキュメントが食い違う機能">7. 発表と公式ドキュメントが食い違う機能</h2>
+<div class="tablewrap"><table><thead><tr>
+<th>機能</th>
+<th>GA など強い表記の出典</th>
+<th>公式 GA 一覧・食い違う出典</th>
+</tr></thead><tbody>
+<tr>
+<td>voice agents</td>
+<td>Learn・SDK・ブログ = GA</td>
+<td>公式 GA 一覧「Agents — Voice Live」= Preview</td>
+</tr>
+<tr>
+<td>Insights</td>
+<td>ブログ・Book of News・SDK = GA</td>
+<td>公式 GA 一覧に記載なし</td>
+</tr>
+<tr>
+<td>hosted agent の egress 制御</td>
+<td>Learn・devblogs = GA</td>
+<td>公式 GA 一覧に記載なし(Guardrails — Agents = Preview)</td>
+</tr>
+<tr>
+<td>Agent optimizer</td>
+<td>Book of News = GA</td>
+<td>公式 GA 一覧 = Limited preview(実測では申請なしで使えた。5.8)</td>
+</tr>
+<tr>
+<td>Browser Automation・Computer Use</td>
+<td>Learn 本文・TOC = GA</td>
+<td>公式 GA 一覧に記載なし(移行表 = preview)</td>
+</tr>
+<tr>
+<td>継続評価・Agent Monitoring Dashboard</td>
+<td>Learn = ラベルなし</td>
+<td>公式 GA 一覧「Monitoring」= Preview</td>
+</tr>
+<tr>
+<td>multi-turn evaluation</td>
+<td>Book of News = GA</td>
+<td>Learn = preview</td>
+</tr>
+<tr>
+<td>Azure AI Gateway</td>
+<td>Learn・Tech Community = GA</td>
+<td>公式 GA 一覧「AI Gateway」= Preview</td>
+</tr>
+<tr>
+<td>Foundry IQ Serverless</td>
+<td>Search の Learn = GA</td>
+<td>Azure ブログ = 2026-12 に GA</td>
+</tr>
+<tr>
+<td>Work IQ</td>
+<td>Learn = 標準 MCP 経路は GA</td>
+<td>ブログ = preview</td>
+</tr>
+<tr>
+<td>Model router のプール</td>
+<td>Book of News = 上位 50 モデル</td>
+<td>Learn = 45 モデル</td>
+</tr>
+<tr>
+<td>Microsoft Copilot SDK 2.0</td>
+<td>Book of News = GA</td>
+<td>PyPI の分類 = Alpha</td>
+</tr>
+</tbody></table></div>
+<p>詳細と出典は <a href="../../../survey/features/html/index.html">features 調査の「注意」欄</a> にある。</p>
+<h2 id="出典">出典</h2>
+<ul>
+<li>Ignite 2026 <a href="https://news.microsoft.com/events/ignite/2026/book-of-news/">Book of News</a>、<a href="https://news.microsoft.com/source/2026/11/17/microsoft-ignite-2026-empowering-human-ambition-intelligence-and-trust/">Microsoft Source(2026-11-17)</a></li>
+<li>Azure ブログ: <a href="https://azure.microsoft.com/en-us/blog/continuous-improvement-comes-to-microsoft-foundry/">Continuous improvement comes to Microsoft Foundry</a>、<a href="https://azure.microsoft.com/en-us/blog/introducing-the-new-microsoft-iq-putting-your-organizations-intelligence-to-work-in-every-agent/">Introducing the new Microsoft IQ</a>、<a href="https://azure.microsoft.com/en-us/blog/microsoft-ignite-2026-whats-new-in-azure-the-platform-purpose-built-for-ai/">What's new in Azure at Ignite 2026</a></li>
+<li>devblogs Foundry: <a href="https://devblogs.microsoft.com/foundry/whats-new-in-foundry-agent-service-at-ignite-2026/">What's new in Foundry Agent Service at Ignite 2026</a>、<a href="https://devblogs.microsoft.com/foundry/hosted-agents-foundry-agent-service-ignite-2026/">Hosted agents at Ignite 2026</a>、<a href="https://devblogs.microsoft.com/foundry/build-once-reuse-across-your-agent-fleet-tools-and-toolboxes-in-foundry/">Tools and Toolboxes</a>、<a href="https://devblogs.microsoft.com/foundry/managed-compute-ga/">Managed Compute GA</a>、<a href="https://devblogs.microsoft.com/foundry/the-foundry-dev-pack-is-here-build-foundry-agents-your-way/">Dev Pack</a></li>
+<li>Official Microsoft Blog: <a href="https://blogs.microsoft.com/blog/2026/10/28/introducing-the-microsoft-copilot-harness-unlocking-the-potential-of-truly-multi-model-agentic-work/">Introducing the Microsoft Copilot harness(2026-10-28)</a></li>
+<li>Microsoft Learn: <a href="https://learn.microsoft.com/en-us/azure/foundry/concepts/general-availability">Feature readiness at GA</a>、<a href="https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/model-retirement-schedule">Model retirement schedule</a> ほか各表の出典欄</li>
+<li>Copilot Studio: <a href="https://www.microsoft.com/en-us/copilot/blog/copilot-studio/build-and-manage-business-processes-with-microsoft-copilot-studio/">Build and manage business processes with Microsoft Copilot Studio(2026-11-18)</a>、<a href="https://www.microsoft.com/en-us/copilot/blog/2026/11/17/copilot-at-microsoft-ignite-expanding-whats-possible-with-intelligence-built-for-work/">Copilot at Microsoft Ignite(2026-11-17)</a>、<a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/whats-new">What's new in Copilot Studio</a></li>
+<li>本リポジトリ: <a href="../../../survey/features/html/index.html">features 調査(2026-11-22 更新)</a></li>
+<li>本リポジトリの実測: <a href="../../../../labs/foundry-probes/README.md">labs/foundry-probes の probe 12〜15</a>(閉域・権限・Agent Optimizer・外向きの経路、2026-11-22、Japan East)</li>
+</ul>
+</main>
+<footer>この HTML は docs/events/ignite-2026/README.md から docs/events/tools/build.py で自動生成。編集は Markdown 側で。</footer></body></html>

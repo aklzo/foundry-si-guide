@@ -1,0 +1,457 @@
+### [2026-11-22 14:11:21 JST] probe 14 (estimate のみ)
+   Building foundry-probes @ file://<home>/<repo>/labs/foundry-probes
+      Built foundry-probes @ file://<home>/<repo>/labs/foundry-probes
+Uninstalled 1 package in 114ms
+Installed 1 package in 0.80ms
+Installed 29 packages in 1.79s
+[2026-11-22T05:11:39Z] endpoint=https://aif-<sfx>p.services.ai.azure.com/api/projects/pub
+agent a14-opt:1 created
+
+== estimate 要求本文(SDK が送る JSON)
+{
+ "target_configuration": {
+  "name": "a14-opt",
+  "type": "foundry_agent"
+ },
+ "optimization_model_configuration": {
+  "model": "gpt-5.4"
+ },
+ "optimization_configuration": {
+  "evaluation_configuration": {
+   "training_set": {
+    "source": {
+     "test_cases": [
+      {
+       "query": "日本の首都はどこ?",
+       "ground_truth": "東京"
+      },
+      {
+       "query": "2 + 2 は?",
+       "ground_truth": "4"
+      },
+      {
+       "query": "地球で一番大きい海は?",
+       "ground_truth": "太平洋"
+      }
+     ],
+     "type": "inline"
+    },
+    "type": "target_completion"
+   },
+   "evaluators": [
+    {
+     "name": "builtin.coherence"
+    }
+   ],
+   "evaluation_model": {
+    "model": "gpt-5.4-mini"
+   }
+  },
+  "candidate_search_configuration": {
+   "max_candidates": 1
+  },
+  "agent_optimization_space": {},
+  "type": "agent_optimization"
+ }
+}
+
+== (1) estimate 結果
+{
+ "call_counts": {
+  "agent": {
+   "low": 6.0,
+   "typical": 16.2,
+   "ceiling": 54.0
+  },
+  "evaluation": {
+   "low": 6.0,
+   "typical": 16.2,
+   "ceiling": 54.0
+  },
+  "optimization": {
+   "low": 0.0,
+   "typical": 1.5,
+   "ceiling": 5.0
+  }
+ },
+ "cost": {
+  "currency": "USD",
+  "total": {
+   "low": 0.036539999999999996,
+   "typical": 0.166158,
+   "ceiling": 0.55386
+  },
+  "by_stage": {
+   "agent": {
+    "low": 0.019799999999999998,
+    "typical": 0.05346,
+    "ceiling": 0.1782
+   },
+   "evaluation": {
+    "low": 0.016739999999999998,
+    "typical": 0.045197999999999995,
+    "ceiling": 0.15066
+   },
+   "optimization": {
+    "low": 0.0,
+    "typical": 0.0675,
+    "ceiling": 0.22499999999999998
+   }
+  }
+ },
+ "prices_as_of": 1794787200
+}
+
+== list_optimization_jobs: 0 件
+### [2026-11-22 14:12:03 JST] probe 14 (estimate → --start、候補 1、最大 40 分待ち)
+[2026-11-22T05:12:04Z] endpoint=https://aif-<sfx>p.services.ai.azure.com/api/projects/pub
+agent a14-opt:1 created
+
+== estimate 要求本文(SDK が送る JSON)
+{
+ "target_configuration": {
+  "name": "a14-opt",
+  "type": "foundry_agent"
+ },
+ "optimization_model_configuration": {
+  "model": "gpt-5.4"
+ },
+ "optimization_configuration": {
+  "evaluation_configuration": {
+   "training_set": {
+    "source": {
+     "test_cases": [
+      {
+       "query": "日本の首都はどこ?",
+       "ground_truth": "東京"
+      },
+      {
+       "query": "2 + 2 は?",
+       "ground_truth": "4"
+      },
+      {
+       "query": "地球で一番大きい海は?",
+       "ground_truth": "太平洋"
+      }
+     ],
+     "type": "inline"
+    },
+    "type": "target_completion"
+   },
+   "evaluators": [
+    {
+     "name": "builtin.coherence"
+    }
+   ],
+   "evaluation_model": {
+    "model": "gpt-5.4-mini"
+   }
+  },
+  "candidate_search_configuration": {
+   "max_candidates": 1
+  },
+  "agent_optimization_space": {},
+  "type": "agent_optimization"
+ }
+}
+
+== (1) estimate 結果
+{
+ "call_counts": {
+  "agent": {
+   "low": 6.0,
+   "typical": 16.2,
+   "ceiling": 54.0
+  },
+  "evaluation": {
+   "low": 6.0,
+   "typical": 16.2,
+   "ceiling": 54.0
+  },
+  "optimization": {
+   "low": 0.0,
+   "typical": 1.5,
+   "ceiling": 5.0
+  }
+ },
+ "cost": {
+  "currency": "USD",
+  "total": {
+   "low": 0.036539999999999996,
+   "typical": 0.166158,
+   "ceiling": 0.55386
+  },
+  "by_stage": {
+   "agent": {
+    "low": 0.019799999999999998,
+    "typical": 0.05346,
+    "ceiling": 0.1782
+   },
+   "evaluation": {
+    "low": 0.016739999999999998,
+    "typical": 0.045197999999999995,
+    "ceiling": 0.15066
+   },
+   "optimization": {
+    "low": 0.0,
+    "typical": 0.0675,
+    "ceiling": 0.22499999999999998
+   }
+  }
+ },
+ "prices_as_of": 1794787200
+}
+
+== list_optimization_jobs: 0 件
+
+ estimate maximum=0.55386 USD → 約 ¥88(上限 ¥1000)
+
+== (2) 開始: job_id=opt_<hex-18> status=queued
+  [30s] status=JobStatus.IN_PROGRESS error=None
+  [60s] status=JobStatus.IN_PROGRESS error=None
+  [90s] status=JobStatus.IN_PROGRESS error=None
+  [120s] status=JobStatus.SUCCEEDED error=None
+  [151s] status=JobStatus.SUCCEEDED error=None
+
+== (2) 最終のジョブ
+{
+ "id": "opt_<hex-18>",
+ "status": "succeeded",
+ "display_name": "probe14-min",
+ "target_configuration": {
+  "type": "foundry_agent",
+  "name": "a14-opt",
+  "version": "1"
+ },
+ "optimization_model_configuration": {
+  "model": "gpt-5.4"
+ },
+ "optimization_configuration": {
+  "type": "agent_optimization",
+  "goal": "improve_quality",
+  "evaluation_configuration": {
+   "training_set": {
+    "type": "target_completion",
+    "source": {
+     "type": "dataset_reference",
+     "name": "opt-inline-<hex-70>",
+     "version": "1"
+    }
+   },
+   "evaluators": [
+    {
+     "name": "coherence"
+    }
+   ],
+   "evaluation_model": {
+    "model": "gpt-5.4-mini"
+   }
+  },
+  "candidate_search_configuration": {
+   "max_candidates": 1
+  },
+  "baseline_agent_configuration": {
+   "system_prompt": "質問に日本語で一言だけ答える。",
+   "current_model": "gpt-5.4-mini",
+   "skills": [],
+   "tools": []
+  },
+  "agent_optimization_space": {}
+ },
+ "result": {
+  "candidate_summary": {
+   "completed_candidate_count": 1,
+   "baseline_id": "cand_opt_<hex-18>_0000",
+   "best_id": "cand_opt_<hex-18>_0001",
+   "baseline_score": 0.8333333333333334,
+   "best_score": 0.9166666666666666
+  },
+  "token_usage": [
+   {
+    "stage": "agent",
+    "model": "gpt-5.4-mini",
+    "input_tokens": 666,
+    "output_tokens": 51,
+    "total_tokens": 717,
+    "cached_tokens": 0,
+    "cache_creation_tokens": 0,
+    "reasoning_tokens": 0
+   },
+   {
+    "stage": "evaluation",
+    "model": "gpt-5.4-mini-2026-03-17",
+    "input_tokens": 12177,
+    "output_tokens": 845,
+    "total_tokens": 13022,
+    "cached_tokens": 0,
+    "cache_creation_tokens": 0,
+    "reasoning_tokens": 0
+   },
+   {
+    "stage": "optimization",
+    "model": "gpt-5.4",
+    "input_tokens": 891,
+    "output_tokens": 152,
+    "total_tokens": 1043,
+    "cached_tokens": 0,
+    "cache_creation_tokens": 0,
+    "reasoning_tokens": 0
+   }
+  ],
+  "latency_metrics": [
+   {
+    "stage": "agent",
+    "model": "gpt-5.4-mini",
+    "avg_latency_ms": 1196,
+    "call_count": 9
+   }
+  ],
+  "termination_reason": "completed"
+ },
+ "activity_progress": {
+  "tracking_status": "available",
+  "activities": [
+   {
+    "id": "create_optimization_job",
+    "attempt_number": 1,
+    "order": 0,
+    "title": "Create optimization job",
+    "status": "completed",
+    "started_at": 1795324330,
+    "completed_at": 1795324330,
+    "duration_ms": 252,
+    "detail_markdown": "Create an optimization job for the requested strategy.",
+    "references": []
+   },
+   {
+    "id": "prepare_for_optimization",
+    "attempt_number": 1,
+    "order": 1,
+    "title": "Prepare for optimization",
+    "status": "completed",
+    "started_at": 1795324366,
+    "completed_at": 1795324367,
+    "duration_ms": 1145,
+    "detail_markdown": "Resolve the baseline, evaluation inputs, and allowed optimization targets.",
+    "references": []
+   },
+   {
+    "id": "run_optimization",
+    "attempt_number": 1,
+    "order": 2,
+    "title": "Run optimization",
+    "status": "completed",
+    "started_at": 1795324367,
+    "completed_at": 1795324445,
+    "duration_ms": 77352,
+    "detail_markdown": "Compare candidates using the configured quality objective, selecting the best evaluated configuration, including the baseline.",
+    "references": []
+   },
+   {
+    "id": "complete_job",
+    "attempt_number": 1,
+    "order": 3,
+    "title": "Job completion",
+    "status": "completed",
+    "started_at": 1795324445,
+    "completed_at": 1795324445,
+    "duration_ms": 0,
+    "detail_markdown": "Optimization job completed successfully. Results are ready to review.",
+    "references": []
+   }
+  ],
+  "updated_at": 1795324445,
+  "observed_at": 1795324482
+ },
+ "run_duration_ms": 75416,
+ "created_at": 1795324330,
+ "updated_at": 1795324445
+}
+
+== candidate
+{
+ "candidate_id": "cand_opt_<hex-18>_0001",
+ "job_id": "opt_<hex-18>",
+ "name": "candidate_1",
+ "status": "completed",
+ "started_at": 1795324398,
+ "output": {
+  "type": "agent_optimization",
+  "mutations": [
+   {
+    "type": "instructions"
+   }
+  ]
+ },
+ "agent_version": "draft-1795324423056",
+ "evaluation": {
+  "score": 0.9166666666666666,
+  "evaluator_scores": {
+   "coherence": 0.916667
+  },
+  "avg_tokens": 169.0,
+  "candidate_cost": {
+   "model_costs": [
+    {
+     "model": "gpt-5.4-mini",
+     "token_usage": {
+      "prompt_tokens": 490,
+      "cached_tokens": 0,
+      "completion_tokens": 17,
+      "reasoning_tokens": 0,
+      "total_tokens": 507
+     },
+     "estimated_cost": 0.00044400000000000006
+    }
+   ],
+   "estimated_cost": 0.00044400000000000006,
+   "estimated_cost_per_task": 0.00014800000000000002,
+   "measurement_coverage": 1.0,
+   "currency": "USD"
+  },
+  "avg_latency_ms": 1200,
+  "eval_id": "eval_<id-145>",
+  "eval_run_id": "evalrun_<id-146>",
+  "completed_at": 1795324444
+ }
+}
+
+== candidate
+{
+ "candidate_id": "cand_opt_<hex-18>_0000",
+ "job_id": "opt_<hex-18>",
+ "name": "baseline",
+ "status": "completed",
+ "started_at": 1795324369,
+ "agent_version": "draft-1795324369517",
+ "evaluation": {
+  "score": 0.8333333333333334,
+  "evaluator_scores": {
+   "coherence": 0.833333
+  },
+  "avg_tokens": 35.0,
+  "candidate_cost": {
+   "model_costs": [
+    {
+     "model": "gpt-5.4-mini",
+     "token_usage": {
+      "prompt_tokens": 88,
+      "cached_tokens": 0,
+      "completion_tokens": 17,
+      "reasoning_tokens": 0,
+      "total_tokens": 105
+     },
+     "estimated_cost": 0.0001425
+    }
+   ],
+   "estimated_cost": 0.0001425,
+   "estimated_cost_per_task": 4.7499999999999996e-05,
+   "measurement_coverage": 1.0,
+   "currency": "USD"
+  },
+  "avg_latency_ms": 1271,
+  "eval_id": "eval_<id-145>",
+  "eval_run_id": "evalrun_<id-147>",
+  "completed_at": 1795324397
+ }
+}

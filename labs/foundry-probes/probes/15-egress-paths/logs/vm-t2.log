@@ -1,0 +1,10 @@
+### [2026-11-22 18:52:19 JST] egressprobe.py t2 P4 
+Enable succeeded: 
+[stdout]
+===== t2 P4 @ 2026-11-22T09:52:23Z
+[P4][T2 openapi→ipify] HTTP 200 (5.7s) route=project+agent_reference(agent endpoint 403) 
+[P4][T2 items] [{"type": "openapi_call", "status": "completed", "name": "ipecho_getEgressIp"}, {"type": "openapi_call_output", "status": "completed", "output": "{\n        \"response\": \"{\\n  \\\"ip\\\": \\\"<public-ip-11>\\\"\\n}\"\n      }", "name": "ipecho_getEgressIp"}, {"type": "openapi_call", "status": "completed", "name": "ipecho2_getAllHeaders"}, {"type": "openapi_call_output", "status": "completed", "output": "{\n        \"response\": \"{\\n  \\\"ip_addr\\\": \\\"<public-ip-4>\\\",\\n  \\\"user_agent\\\": \\\"azure-agents\\\",\\n  \\\"port\\\": \\\"59870\\\",\\n  \\\"method\\\": \\\"GET\\\",\\n  \\\"encoding\\\": \\\"gzip, deflate\\\",\\n  \\\"mime\\\": \\\"*/*\\\",\\n  \\\"via\\\": \\\"1.1 google\\\",\\n  \\\"forwarded\\\": \\\"<public-ip-11>,<public-ip-13>,<public-ip-4>,<public-ip-9>\\\"\\n}\"\n      }", "name": "ipecho2_getAllHeaders"}] | text='Raw outputs:\n\n`getEgressIp`:\n```json\n{\n  "ip": "<public-ip-11>"\n}\n```\n\n`getAllHeaders`:\n```json\n{\n  "ip_addr": "<public-ip-4>",\n  "user_agent": "azure-agents",\n  "port": "59870",\n  "method": "GET",\n  '
+
+[stderr]
+
+### [2026-11-22 18:52:50 JST] done

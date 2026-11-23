@@ -1,0 +1,15 @@
+### [2026-11-22 14:23:55 JST] vmprobe.py conv 
+Enable succeeded: 
+[stdout]
+===== conv  @ 2026-11-22T05:23:58Z
+[project conversation] POST {proj}/openai/v1/conversations -> 200 (4.6s) {   "id": "conv_<id-13>",   "object": "conversation",   "metadata": {},   "created_at": 1795325042 }
+[create conversation (agent endpoint)] POST {proj}/agents/a12-basic/endpoint/protocols/openai/conversations?api-version=v1 -> 200 (1.0s) {   "id": "conv_<id-14>",   "object": "conversation",   "metadata": {},   "created_at": 1795325043 }
+[project-conv via agent endpoint] POST {proj}/agents/a12-basic/endpoint/protocols/openai/responses?api-version=v1 -> 400 (1.2s) {"error":{"message":"Conversation with id 'conv_<id-13>' not found.","type":"invalid_request_error","param":"conversation","code":"conversation_not_found","request_id":"<hex-6>"}}
+[project-conv via project responses + agent_reference] POST {proj}/openai/v1/responses -> 200 (2.0s) {   "metadata": {},   "top_logprobs": 0,   "temperature": 1,   "top_p": 0.98,   "service_tier": "default",   "prompt_cache_retention": "in_memory",   "model": "gpt-5.4-mini",   "reasoning": {     "effort": "none",     "context": "current_turn",     "mode": "standard"   },   "background": false,   "text": {     "format": {       "type": "text"     },     "verbosity": "medium"   },   "tools": [],   "tool_choice": "auto",   "truncation": "disabled",   "id": "resp_<id-15>",   "object": "response",   "status": "completed",   "created_at": 1795325045,   "completed_at": 1795325046,   "error": null,   "incomplete_details": null,   "output": [     {       "type": "message",       "id": "msg_<id-16>",       "agent_reference": {         "type": "agent_reference",         "name": "a12-basic",         "version": "1"
+[conv] project-conv: '申し訳ありませんが、あなたの名前は分かりません】【。'
+[agent-conv via agent endpoint] POST {proj}/agents/a12-basic/endpoint/protocols/openai/responses?api-version=v1 -> 200 (2.1s) {   "metadata": {},   "top_logprobs": 0,   "temperature": 1,   "top_p": 0.98,   "service_tier": "default",   "prompt_cache_retention": "in_memory",   "model": "gpt-5.4-mini",   "reasoning": {     "effort": "none",     "context": "current_turn",     "mode": "standard"   },   "background": false,   "text": {     "format": {       "type": "text"     },     "verbosity": "medium"   },   "tools": [],   "tool_choice": "auto",   "truncation": "disabled",   "id": "resp_<id-17>",   "object": "response",   "status": "completed",   "created_at": 1795325047,   "completed_at": 1795325048,   "error": null,   "incomplete_details": null,   "output": [     {       "type": "message",       "id": "msg_<id-18>",       "agent_reference": {         "type": "agent_reference",         "name": "a12-basic",         "version": "1"
+[agent-conv via project responses + agent_reference] POST {proj}/openai/v1/responses -> 400 (0.7s) {"error":{"message":"Conversation with id 'conv_<id-14>' not found.","type":"invalid_request_error","param":"conversation","code":"conversation_not_found","request_id":"<hex-7>"}}
+[conv] agent-conv: ''
+
+[stderr]
+

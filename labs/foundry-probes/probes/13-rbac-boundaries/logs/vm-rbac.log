@@ -1,0 +1,47 @@
+### [2026-11-22 14:34:01 JST] vmprobe.py rbac 
+Enable succeeded: 
+[stdout]
+al `<guid-9>` lacks the required data action `Microsoft.CognitiveServices/accounts/OpenAI/responses/write` to perform `POST /openai/v1/responses` operation."}}
+[ac1 (e) list agents] GET {proj}/agents?api-version=v1&limit=1 -> 403 (0.2s) {   "error": {     "code": "UserError",     "severity": null,     "message": "Identity(object id: <guid-9>) does not have permissions for Microsoft.CognitiveServices/accoun
+[ac1 (f) create_version] POST {proj}/agents/a13-by-ac1/versions?api-version=v1 -> 403 (0.0s) {   "error": {     "code": "UserError",     "severity": null,     "message": "Identity(object id: <guid-9>) does not have permissions for Microsoft.CognitiveServices/accounts/AIServices/agents/write actions. Please refer to https://learn.microsoft.com/en-us/azure/foundry/concepts/rbac-foundry to fix the permissions issue.",     "messageFormat": null,     "messageParameters": null,     "referenceCode": null,     "detailsUri": null,     "target": null,     "details": [],     "innerError": {       "code": "ForbiddenError",       "innerError": null     },     "debugInfo
+--- who=rd
+[rd (a) project responses (no agent)] POST {proj}/openai/v1/responses -> 403 (0.2s) 
+[rd (b) agent endpoint] POST {proj}/agents/a13-target/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.5s) {   "error": {     "code": "UserError",     "severity": null,     "message": "Identity(object id: <guid-11>) does not have permissions for Microsoft.CognitiveServices/accounts/AIServices/agents/write actions. Please refer to https://learn.microsoft.com/en-us/azure/foundry/concepts/rbac-foundry to fix the permissions issue.",     "messageFormat": null,     "messageParameters": null,     "referenceCode": null,     "detailsUri": null,     "target": null,     "details": [],     "innerError": {       "code": "ForbiddenError",       "innerError": null     },     "debugInfo": null,     "additionalInfo": null   },   "correlation": {     "operation": "<hex-26>",     "request": "b19bbe211cf92b58"   },   "environment": "japaneast",   "location": "japaneast",   "time": "2026-11-22T05:34:29.1806954+00:00",   "componentName": null,   "statusCode": 403
+[rd (c) project responses + agent_reference] POST {proj}/openai/v1/responses -> 403 (0.0s) 
+[rd (d) account /openai/v1/responses] POST {acct-oai}/responses -> 401 (0.2s) {"error":{"code":"PermissionDenied","message":"The principal `<guid-11>` lacks the required data action `Microsoft.CognitiveServices/accounts/OpenAI/responses/write` to perform `POST /openai/v1/responses` operation."}}
+[rd (d2) account /openai/v1 with ai.azure.com token] POST {acct-oai}/responses -> 401 (0.1s) {"error":{"code":"PermissionDenied","message":"The principal `<guid-11>` lacks the required data action `Microsoft.CognitiveServices/accounts/OpenAI/responses/write` to perform `POST /openai/v1/responses` operation."}}
+[rd (e) list agents] GET {proj}/agents?api-version=v1&limit=1 -> 403 (0.2s) {   "error": {     "code": "UserError",     "severity": null,     "message": "Identity(object id: <guid-11>) does not have permissions for Microsoft.CognitiveServices/accoun
+[rd (f) create_version] POST {proj}/agents/a13-by-rd/versions?api-version=v1 -> 403 (0.1s) {   "error": {     "code": "UserError",     "severity": null,     "message": "Identity(object id: <guid-11>) does not have permissions for Microsoft.CognitiveServices/accounts/AIServices/agents/write actions. Please refer to https://learn.microsoft.com/en-us/azure/foundry/concepts/rbac-foundry to fix the permissions issue.",     "messageFormat": null,     "messageParameters": null,     "referenceCode": null,     "detailsUri": null,     "target": null,     "details": [],     "innerError": {       "code": "ForbiddenError",       "innerError": null     },     "debugInfo
+
+[stderr]
+
+### [2026-11-22 14:44:17 JST] vmprobe.py rbac rt
+Enable succeeded: 
+[stdout]
+===== rbac rt @ 2026-11-22T05:44:20Z
+--- who=rt
+[rt (a) project responses (no agent)] POST {proj}/openai/v1/responses -> 403 (0.1s) 
+[rt (b) agent endpoint] POST {proj}/agents/a13-target/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.4s) {   "error": {     "code": "UserError",     "severity": null,     "message": "Identity(object id: <guid-7>) does not have permissions for Microsoft.CognitiveServices/accounts/AIServices/agents/write actions. Please refer to https://learn.microsoft.com/en-us/azure/foundry/concepts/rbac-foundry to fix the permissions issue.",     "messageFormat": null,     "messageParameters": null,     "referenceCode": null,     "detailsUri": null,     "target": null,     "details": [],     "innerError": {       "code": "ForbiddenError",       "innerError": null     },     "debugInfo": null,     "additionalInfo": null   },   "correlation": {     "operation": "<hex-27>",     "request": "757cf29fccf1b8ec"   },   "environment": "japaneast",   "location": "japaneast",   "time": "2026-11-22T05:44:21.152634+00:00",   "componentName": null,   "statusCode": 403 
+[rt (c) project responses + agent_reference] POST {proj}/openai/v1/responses -> 403 (0.0s) 
+[rt (d) account /openai/v1/responses] POST {acct-oai}/responses -> 401 (0.0s) {"error":{"code":"PermissionDenied","message":"Principal does not have access to API/Operation."}}
+[rt (d2) account /openai/v1 with ai.azure.com token] POST {acct-oai}/responses -> 401 (0.0s) {"error":{"code":"PermissionDenied","message":"Principal does not have access to API/Operation."}}
+[rt (e) list agents] GET {proj}/agents?api-version=v1&limit=1 -> 403 (0.1s) {   "error": {     "code": "UserError",     "severity": null,     "message": "Identity(object id: <guid-7>) does not have permissions for Microsoft.CognitiveServices/accoun
+[rt (f) create_version] POST {proj}/agents/a13-by-rt/versions?api-version=v1 -> 403 (0.1s) {   "error": {     "code": "UserError",     "severity": null,     "message": "Identity(object id: <guid-7>) does not have permissions for Microsoft.CognitiveServices/accounts/AIServices/agents/write actions. Please refer to https://learn.microsoft.com/en-us/azure/foundry/concepts/rbac-foundry to fix the permissions issue.",     "messageFormat": null,     "messageParameters": null,     "referenceCode": null,     "detailsUri": null,     "target": null,     "details": [],     "innerError": {       "code": "ForbiddenError",       "innerError": null     },     "debugInfo
+
+[stderr]
+
+### [2026-11-22 14:51:25 JST] vmprobe.py rbac rt
+Enable succeeded: 
+[stdout]
+===== rbac rt @ 2026-11-22T05:51:27Z
+--- who=rt
+[rt (a) project responses (no agent)] POST {proj}/openai/v1/responses -> 403 (0.2s) 
+[rt (b) agent endpoint] POST {proj}/agents/a13-target/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.2s) {   "error": {     "code": "UserError",     "severity": null,     "message": "Identity(object id: <guid-7>) does not have permissions for Microsoft.CognitiveServices/accounts/AIServices/agents/write actions. Please refer to https://learn.microsoft.com/en-us/azure/foundry/concepts/rbac-foundry to fix the permissions issue.",     "messageFormat": null,     "messageParameters": null,     "referenceCode": null,     "detailsUri": null,     "target": null,     "details": [],     "innerError": {       "code": "ForbiddenError",       "innerError": null     },     "debugInfo": null,     "additionalInfo": null   },   "correlation": {     "operation": "<hex-28>",     "request": "66e5807e9bf37abc"   },   "environment": "japaneast",   "location": "japaneast",   "time": "2026-11-22T05:51:28.2147914+00:00",   "componentName": null,   "statusCode": 403
+[rt (c) project responses + agent_reference] POST {proj}/openai/v1/responses -> 403 (0.0s) 
+[rt (d) account /openai/v1/responses] POST {acct-oai}/responses -> 401 (0.0s) {"error":{"code":"PermissionDenied","message":"Principal does not have access to API/Operation."}}
+[rt (d2) account /openai/v1 with ai.azure.com token] POST {acct-oai}/responses -> 401 (0.0s) {"error":{"code":"PermissionDenied","message":"Principal does not have access to API/Operation."}}
+[rt (e) list agents] GET {proj}/agents?api-version=v1&limit=1 -> 403 (0.1s) {   "error": {     "code": "UserError",     "severity": null,     "message": "Identity(object id: <guid-7>) does not have permissions for Microsoft.CognitiveServices/accoun
+[rt (f) create_version] POST {proj}/agents/a13-by-rt/versions?api-version=v1 -> 403 (0.0s) {   "error": {     "code": "UserError",     "severity": null,     "message": "Identity(object id: <guid-7>) does not have permissions for Microsoft.CognitiveServices/accounts/AIServices/agents/write actions. Please refer to https://learn.microsoft.com/en-us/azure/foundry/concepts/rbac-foundry to fix the permissions issue.",     "messageFormat": null,     "messageParameters": null,     "referenceCode": null,     "detailsUri": null,     "target": null,     "details": [],     "innerError": {       "code": "ForbiddenError",       "innerError": null     },     "debugInfo
+
+[stderr]
+

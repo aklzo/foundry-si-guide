@@ -1,0 +1,5 @@
+### [2026-11-22 19:54:09 JST] getent hosts (作成直後)
+10.40.1.9       aif-<sfx>.privatelink.services.ai.azure.com aif-<sfx>.services.ai.azure.com
+10.40.1.8       aif-<sfx>.privatelink.openai.azure.com aif-<sfx>.openai.azure.com
+10.40.1.7       aif-<sfx>.privatelink.cognitiveservices.azure.com aif-<sfx>.cognitiveservices.azure.com
+

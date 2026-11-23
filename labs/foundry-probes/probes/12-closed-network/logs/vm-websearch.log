@@ -1,0 +1,11 @@
+### [2026-11-22 14:29:10 JST] vmprobe.py websearch 
+Enable succeeded: 
+[stdout]
+===== websearch  @ 2026-11-22T05:29:14Z
+[create_version] POST {proj}/agents/a12-web/versions?api-version=v1 -> 200 (3.7s) {   "metadata": {},   "object": "agent.version",   "id": "a12-web:1",   "name": "a12-web",   "version": "1",   "description": "probe a12-web",   "created_at": 1795325357,   "definition": {     "kind": "prompt",     "model": "gpt-5.4-mini",     "instructions": "Use web search. Answer briefly.",     "tools": [       {         "type": "web_search"       }     ]   },   "draft": false,   "status": "active",   "instance_identity": {     "principal_id": "<guid-19>",     "client_id": "<guid-19>"   },   "blueprint": {     "principal_id": "cf4f4e93-1
+[agent web_search] POST {proj}/agents/a12-web/endpoint/protocols/openai/responses?api-version=v1 -> 200 (5.2s) {   "metadata": {},   "top_logprobs": 0,   "temperature": 1,   "top_p": 0.98,   "service_tier": "default",   "prompt_cache_retention": "in_memory",   "model": "gpt-5.4-mini",   "reasoning": {     "effort": "none",     "context": "current_turn",     "mode": "standard"   },   "background": false,   "text": {     "format": {       "type": "text"     },     "verbosity": "medium"   },   "tools": [     {       "type": "web_search",       "return_token_budget": "default",       "search_content_types": [         "text"       ],       "user_location": {         "type": "approximate",         "country": "US"       },       "search_context_size": "medium"     }   ],   "tool_choice": "required",   "truncation": "disabled",   "id": "resp_<id-31>",   "object": "response",   "status": "completed",   "created_at": 1795325359,   "completed_at": 1795325362,   "er
+[web] output_text: 'Microsoft Ignite 2026 の開催都市は **サンフランシスコ** です。オンラインでも開催されます。 ([partner.microsoft.com](https://partner.microsoft.com/en-us/blog/article/ignite-2026-overview))'
+[web] tool items: [{"type": "web_search_call", "status": "completed", "action": {"type": "search", "queries": ["Microsoft Ignite 2026 location city official", "site:microsoft.com Ignite 2026 city"], "query": "Microsoft Ignite 2026 location city official"}}]
+
+[stderr]
+

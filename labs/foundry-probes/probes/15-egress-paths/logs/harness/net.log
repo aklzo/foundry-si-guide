@@ -1,0 +1,139 @@
+{
+  "defaultOutboundAccess": false,
+  "delegations": [
+    "Microsoft.App/environments"
+  ],
+  "nsg": null,
+  "routeTable": null,
+  "sal": [
+    "Microsoft.App/environments"
+  ],
+  "state": "Succeeded"
+}
+### [2026-11-22 20:02:45 JST] NSG nsg-p15-agent: deny outbound to <public-ip-15>/32 <public-ip-16>/32 <public-ip-17>/32 <public-ip-18>/32 (priority 100) → snet-agent
+[2026-11-22 20:03:15 JST] 上の行の実行は手元の出力のパイプ(jq)が先に終わって NSG の作成直後に止まった(規則・関連付けは未実施)。同じ内容でやり直す
+### [2026-11-22 20:03:17 JST] NSG nsg-p15-agent: deny outbound to <public-ip-15>/32 <public-ip-16>/32 <public-ip-17>/32 <public-ip-18>/32 (priority 100) → snet-agent
+{
+  "access": "Deny",
+  "direction": "Outbound",
+  "dst": [
+    "<public-ip-15>/32",
+    "<public-ip-16>/32",
+    "<public-ip-17>/32",
+    "<public-ip-18>/32"
+  ],
+  "name": "deny-echo",
+  "priority": 100,
+  "state": "Succeeded"
+}
+[2026-11-22 20:03:33 JST] associated
+{
+  "defaultOutboundAccess": false,
+  "delegations": [
+    "Microsoft.App/environments"
+  ],
+  "nsg": "/subscriptions/<sub>/resourceGroups/rg-ignite26-verify2/providers/Microsoft.Network/networkSecurityGroups/nsg-p15-agent",
+  "routeTable": null,
+  "sal": [
+    "Microsoft.App/environments"
+  ],
+  "state": "Succeeded"
+}
+### [2026-11-22 20:08:50 JST] NSG off
+[2026-11-22 20:09:04 JST] NSG removed
+{
+  "defaultOutboundAccess": false,
+  "delegations": [
+    "Microsoft.App/environments"
+  ],
+  "nsg": null,
+  "routeTable": null,
+  "sal": [
+    "Microsoft.App/environments"
+  ],
+  "state": "Succeeded"
+}
+### [2026-11-22 20:09:08 JST] route table rt-p15-agent: <public-ip-15>/32 <public-ip-16>/32 <public-ip-17>/32 <public-ip-18>/32 → next hop None → snet-agent
+{
+  "name": "r1",
+  "nextHop": "None",
+  "prefix": "<public-ip-15>/32",
+  "state": "Succeeded"
+}
+{
+  "name": "r2",
+  "nextHop": "None",
+  "prefix": "<public-ip-16>/32",
+  "state": "Succeeded"
+}
+{
+  "name": "r3",
+  "nextHop": "None",
+  "prefix": "<public-ip-17>/32",
+  "state": "Succeeded"
+}
+{
+  "name": "r4",
+  "nextHop": "None",
+  "prefix": "<public-ip-18>/32",
+  "state": "Succeeded"
+}
+[2026-11-22 20:09:39 JST] associated
+{
+  "defaultOutboundAccess": false,
+  "delegations": [
+    "Microsoft.App/environments"
+  ],
+  "nsg": null,
+  "routeTable": "/subscriptions/<sub>/resourceGroups/rg-ignite26-verify2/providers/Microsoft.Network/routeTables/rt-p15-agent",
+  "sal": [
+    "Microsoft.App/environments"
+  ],
+  "state": "Succeeded"
+}
+### [2026-11-22 20:14:57 JST] route table rt-p15-agent: 0.0.0.0/0 → next hop None → snet-agent
+{
+  "name": "r1",
+  "nextHop": "None",
+  "prefix": "0.0.0.0/0",
+  "state": "Succeeded"
+}
+[2026-11-22 20:15:16 JST] associated
+{
+  "defaultOutboundAccess": false,
+  "delegations": [
+    "Microsoft.App/environments"
+  ],
+  "nsg": null,
+  "routeTable": "/subscriptions/<sub>/resourceGroups/rg-ignite26-verify2/providers/Microsoft.Network/routeTables/rt-p15-agent",
+  "sal": [
+    "Microsoft.App/environments"
+  ],
+  "state": "Succeeded"
+}
+### [2026-11-22 20:21:20 JST] route table off
+[2026-11-22 20:21:34 JST] route table removed
+{
+  "defaultOutboundAccess": false,
+  "delegations": [
+    "Microsoft.App/environments"
+  ],
+  "nsg": null,
+  "routeTable": null,
+  "sal": [
+    "Microsoft.App/environments"
+  ],
+  "state": "Succeeded"
+}
+{
+  "defaultOutboundAccess": false,
+  "delegations": [
+    "Microsoft.App/environments"
+  ],
+  "nsg": null,
+  "routeTable": null,
+  "sal": [
+    "Microsoft.App/environments"
+  ],
+  "state": "Succeeded"
+}

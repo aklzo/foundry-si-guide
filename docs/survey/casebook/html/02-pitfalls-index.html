@@ -91,7 +91,7 @@ footer {
 <main>
 <h1 id="02-詰まりどころ索引-症状から引く-原因・対処・出典">02. 詰まりどころ索引 — 症状から引く「原因・対処・出典」</h1><div class="toc"><strong>このページの内容</strong><ul><li><a href="#使い方">使い方</a></li><li><a href="#a-hosted-agent">A. hosted agent</a></li><li><a href="#b-agent-service-コア">B. Agent Service コア</a></li><li><a href="#c-id-と-rbac">C. ID と RBAC</a></li><li><a href="#d-ネットワークと閉域">D. ネットワークと閉域</a></li><li><a href="#e-rag-とナレッジ">E. RAG とナレッジ</a></li><li><a href="#f-モデル-クォータ-コスト">F. モデル / クォータ / コスト</a></li><li><a href="#g-観測と評価">G. 観測と評価</a></li><li><a href="#h-ガードレール">H. ガードレール</a></li><li><a href="#i-maf-とフレームワーク">I. MAF とフレームワーク</a></li><li><a href="#j-iac-cli-ci-cd">J. IaC / CLI / CI-CD</a></li><li><a href="#k-copilot-studio-m365-apim-業務連携">K. Copilot Studio / M365 / APIM / 業務連携</a></li><li><a href="#l-文書処理と音声">L. 文書処理と音声</a></li><li><a href="#公開記事が見当たらなかったトピック-2026-09-04-時点-2026-09-26-再確認">公開記事が見当たらなかったトピック(2026-09-04 時点、2026-09-26 再確認)</a></li><li><a href="#出典の取得状況-メタ情報">出典の取得状況(メタ情報)</a></li></ul></div>
 <p><a href="index.html">← ケースブック TOP</a></p>
-<blockquote><p><strong>最終更新:</strong> 2026-09-04(初版。公開記事の実在確認 2026-09-04)/ 2026-09-26(月次更新: 全外部 URL の生存確認〈410 が 2 件 → リンク切れ付記、リダイレクト 5 件 → 新 URL〉、[公式] 前提の再確認〈Routines GA・hosted agent の idle timeout / サブネット容量表・egress controls 登場 等を「※2026-09-26」で注記〉、2026-09-04 以降の公開記事・issue から P-H23 / P-A12 / P-N20 / P-M15 / P-G11 / P-F13 / P-F14 を追加) / 2026-09-29(P-A11 に Routines の <code>Foundry-Features</code> 値〈V2Preview〉の変化を「※2026-09-29」で注記。P-F03 に MAF 1.13 / 1.19 でのヘッダー注入の変化を注記 — labs 最新化チェックの結果) / 2026-09-30(Port 15 のライブ検証から P-H24 / P-O12 / P-C12 を追加、P-I01 に再現を付記。P-O12 は公式の trace-data / deploy-hosted-agent と突き合わせ、選択肢を architecture 09 §3.6 に接続) / 2026-09-30(foundry-probes probe 10 の実測から P-H25 を追加、P-H24 の「版更新は未確認」を解消) / 2026-10-06(2026-09-29 以降の公式変更・公開記事・issue から P-H26〜H28 / P-A13・A14 / P-I13 / P-M16・M17 / P-O13〜O15 / P-F15・F16 / P-C13・C14 / P-D08 を追加。トレース本文の専用テーブル〈AppGenAIContent〉は 2026-10-06 の japaneast 実測〈二重書き〉と公式の移行日を両論で記載。既存行は「※2026-10-06」で注記 — 版間カナリアの公式間の食い違い〈P-H06〉、セッションの版束縛の公式記述〈P-H25〉ほか)/ 2026-10-06(ラボの最新化+ライブ検証の還元: P-A15 / P-R15・R16 / P-O16〜O21 / P-F17〜F19 / P-D09・D10 を [実測] で追加。P-H25 は同日の 2 構成で結果が割れたため両論に書き直し、P-O05 の「自動ランが evals.runs に出ない」を訂正、保護テーブル案の成立条件を 4 点に) / 2026-10-10(P-X24 を追加: 日本の環境での Copilot Studio の推論場所が公式間で食い違う。P-X05 に公式の課金レートを追記) / 2026-10-14(差分更新: 2026-10-06 以降の公式変更・公開記事から P-H30 / P-A16・A17 / P-N21 / P-R17 / P-M18・M19 / P-O22〜O26 / P-G12 / P-F20・F21 / P-C15〜C17 / P-D11 を追加。既存行は「※2026-10-14」で注記 — idle timeout 上限の両論〈P-H13〉、<code>azure-ai-agentserver-responses</code> 2.3.0 の flush 既定〈P-H20・H29〉、Routines の <code>api-version=v1</code> 400 の公式化〈P-A11〉、capability settings ページの 301〈P-N03・C06〉、Model router の Fireworks〈P-M06〉、gpt-4.1-nano の再延長と Grok の最低 6 か月〈P-M07〉、Voice Live の処理スコープ表記〈P-M08・D09〉、既定ストリーミングの末尾漏れ〈P-G04〉、On Your Data の廃止日当日〈P-R12〉ほか)<br>機能・レイヤー別に「<strong>症状 → 原因 → 設計上の対処 → 出典</strong>」を索引化したもの。出典は <strong>[公式]</strong>(Microsoft Learn・公式ブログ・公式サンプル)/ <strong>[実測]</strong>(本リポジトリの labs)/ <strong>[記事]</strong>(第三者の公開記事。サイト名と公開年月を併記)の 3 種(<a href="index.html#出典の格付け-本セット固有のルール">README の格付け</a>)。<br><strong>読み方の注意:</strong> [記事] は執筆時点の挙動であり、特に hosted agents は <strong>2025-11 初回プレビュー → 2026-04 新基盤プレビュー → 2026-06〜07 GA</strong> と短期間で基盤が入れ替わっている。<strong>2026-04 以前の記事は旧基盤(<code>agent.yaml</code>・<code>az cognitiveservices agent</code>・<code>from_agent_framework()</code>)前提</strong>で、現行では手順が変わっているものがある(該当行に「旧基盤」と明記)。ID(P-xx)は提案書・設計書から参照するためのもので、行の追加は末尾に足す(振り直さない)。</p></blockquote>
+<blockquote><p><strong>最終更新:</strong> 2026-09-04(初版。公開記事の実在確認 2026-09-04)/ 2026-09-26(月次更新: 全外部 URL の生存確認〈410 が 2 件 → リンク切れ付記、リダイレクト 5 件 → 新 URL〉、[公式] 前提の再確認〈Routines GA・hosted agent の idle timeout / サブネット容量表・egress controls 登場 等を「※2026-09-26」で注記〉、2026-09-04 以降の公開記事・issue から P-H23 / P-A12 / P-N20 / P-M15 / P-G11 / P-F13 / P-F14 を追加) / 2026-09-29(P-A11 に Routines の <code>Foundry-Features</code> 値〈V2Preview〉の変化を「※2026-09-29」で注記。P-F03 に MAF 1.13 / 1.19 でのヘッダー注入の変化を注記 — labs 最新化チェックの結果) / 2026-09-30(Port 15 のライブ検証から P-H24 / P-O12 / P-C12 を追加、P-I01 に再現を付記。P-O12 は公式の trace-data / deploy-hosted-agent と突き合わせ、選択肢を architecture 09 §3.6 に接続) / 2026-09-30(foundry-probes probe 10 の実測から P-H25 を追加、P-H24 の「版更新は未確認」を解消) / 2026-10-06(2026-09-29 以降の公式変更・公開記事・issue から P-H26〜H28 / P-A13・A14 / P-I13 / P-M16・M17 / P-O13〜O15 / P-F15・F16 / P-C13・C14 / P-D08 を追加。トレース本文の専用テーブル〈AppGenAIContent〉は 2026-10-06 の japaneast 実測〈二重書き〉と公式の移行日を両論で記載。既存行は「※2026-10-06」で注記 — 版間カナリアの公式間の食い違い〈P-H06〉、セッションの版束縛の公式記述〈P-H25〉ほか)/ 2026-10-06(ラボの最新化+ライブ検証の還元: P-A15 / P-R15・R16 / P-O16〜O21 / P-F17〜F19 / P-D09・D10 を [実測] で追加。P-H25 は同日の 2 構成で結果が割れたため両論に書き直し、P-O05 の「自動ランが evals.runs に出ない」を訂正、保護テーブル案の成立条件を 4 点に) / 2026-10-10(P-X24 を追加: 日本の環境での Copilot Studio の推論場所が公式間で食い違う。P-X05 に公式の課金レートを追記) / 2026-10-14(差分更新: 2026-10-06 以降の公式変更・公開記事から P-H30 / P-A16・A17 / P-N21 / P-R17 / P-M18・M19 / P-O22〜O26 / P-G12 / P-F20・F21 / P-C15〜C17 / P-D11 を追加。既存行は「※2026-10-14」で注記 — idle timeout 上限の両論〈P-H13〉、<code>azure-ai-agentserver-responses</code> 2.3.0 の flush 既定〈P-H20・H29〉、Routines の <code>api-version=v1</code> 400 の公式化〈P-A11〉、capability settings ページの 301〈P-N03・C06〉、Model router の Fireworks〈P-M06〉、gpt-4.1-nano の再延長と Grok の最低 6 か月〈P-M07〉、Voice Live の処理スコープ表記〈P-M08・D09〉、既定ストリーミングの末尾漏れ〈P-G04〉、On Your Data の廃止日当日〈P-R12〉ほか) / 2026-11-22(差分更新〈2026-10-14 以降+Ignite 2026〉: P-H31〜H33 / P-A18〜A22 / P-I14〜I16 / P-N22〜N25 / P-R18・R19 / P-M20〜M25 / P-O27〜O31 / P-G13〜G16 / P-F22・F23 / P-C18・C19 / P-X25〜X27 / P-D12〜D15 の 43 件を追加〈[記事] は Qiita 2 件、ほかは [公式]〉。既存 41 件に「※2026-11-22」で注記 — idle timeout 240 分で確定〈P-H13〉、long-running resilience GA〈P-H18〉、プロトコルライブラリ 2.4.0 の BREAKING〈P-H20〉、shared subnet IPs GA〈P-N05〉、egress controls GA〈P-N07〉、M365 公開に Bot Service 不要〈P-N12・X07・C14〉、会話データの 60 日保持〈P-A04〉、Foundry IQ の改称と <code>2026-10-01</code> の GA〈P-R08〉、Modified Abuse Monitoring の縮小〈P-G08〉、MAF の上限解消と MCP 2.x 必須〈P-F05・F14〉、外部エージェント GA〈P-O01〉、Voice Live の SIP preview〈P-D06〉ほか) / 2026-11-22 訂正(Foundry IQ: ユーザートークンを渡さないときの KB の挙動は Learn のページで食い違うので両論に。閉域取り込みの tier を S2 / S3 / L1 / L2 と明記)<br>機能・レイヤー別に「<strong>症状 → 原因 → 設計上の対処 → 出典</strong>」を索引化したもの。出典は <strong>[公式]</strong>(Microsoft Learn・公式ブログ・公式サンプル)/ <strong>[実測]</strong>(本リポジトリの labs)/ <strong>[記事]</strong>(第三者の公開記事。サイト名と公開年月を併記)の 3 種(<a href="index.html#出典の格付け-本セット固有のルール">README の格付け</a>)。<br><strong>読み方の注意:</strong> [記事] は執筆時点の挙動であり、特に hosted agents は <strong>2025-11 初回プレビュー → 2026-04 新基盤プレビュー → 2026-06〜07 GA</strong> と短期間で基盤が入れ替わっている。<strong>2026-04 以前の記事は旧基盤(<code>agent.yaml</code>・<code>az cognitiveservices agent</code>・<code>from_agent_framework()</code>)前提</strong>で、現行では手順が変わっているものがある(該当行に「旧基盤」と明記)。ID(P-xx)は提案書・設計書から参照するためのもので、行の追加は末尾に足す(振り直さない)。</p></blockquote>
 <h2 id="使い方">使い方</h2>
 <ul>
 <li><strong>設計レビュー前:</strong> 採用する構成のシナリオ(<a href="01-scenario-playbook.html">01</a>)が参照する P-ID を列挙し、「対処」欄が設計・見積もりに入っているかを確認する</li>
@@ -158,7 +158,7 @@ footer {
 <tr>
 <td>P-H11</td>
 <td>ポータル Workflow の Agent ノードから hosted agent を呼ぶと "Hosted agents can only be called through the agent endpoint"</td>
-<td>hosted agent は専用エンドポイント経由でのみ呼べる。Workflow の Agent ノード非対応(Workflows 自体 2026-12-01 廃止)</td>
+<td>hosted agent は専用エンドポイント経由でのみ呼べる。Workflow の Agent ノード非対応(Workflows 自体 2026-12-01 廃止) ※2026-11-22: 廃止日 2026-12-01 は workflow ページ(11-09 更新)・GA 一覧表(11-17)とも不変で、残り 9 日。移行ガイドは「YAML 定義は hosted agent としてデプロイすれば実行を継続できる」と明記 → 廃止前に YAML をエクスポートする</td>
 <td>オーケストレーションは MAF workflow / A2A / HTTP ノードで組む</td>
 <td><a href="https://learn.microsoft.com/en-us/answers/questions/5920501/azure-ai-foundry-workflow-fails-when-invoking-host">記事: Q&amp;A 2026-06</a></td>
 </tr>
@@ -172,22 +172,22 @@ footer {
 <tr>
 <td>P-H13</td>
 <td>「常時起動しないと遅い」と思い込んで keep-warm を積む</td>
-<td>cold start は <strong>+数秒</strong>(port 11 のライブ実測でサンドボックスの再起動は約 7 秒、probe 10 でも休止明け 7.0 秒 / 起動中 0.7 秒)。idle timeout は <strong>2〜60 分</strong>で設定可(既定 15 分。※2026-09-26: hosted agents 概念ページ ms.date 2026-09-11 版で下限が「2」。旧記載は 5〜60 分)、30 日無活動で恒久削除。<code>$HOME</code> / <code>/files</code> 配下だけ永続 <strong>※2026-10-14: 上限が両論になった</strong>。REST 仕様(azure-rest-api-specs PR #46925、2026-10-06 マージ)は <code>idle_timeout_seconds</code> の上限を 3,600 秒 → 14,400 秒(240 分)に引き上げ(下限 120 秒・既定 900 秒は不変)、azd <code>azure.ai.agents</code> 拡張 1.0.0-beta.19(2026-10-08)も 240 分まで受け付ける。一方 Learn の hosted-agents は「2 through 60 minutes」のまま。azd 側の PR は「60 分超の値はサービス側の対応がデプロイされてから有効」と明記しており、サービスが 60 分超を受理するかは未確認</td>
-<td>keep-warm 不要。バッチ・cron 型では発火ごとに cold を踏む前提。ファイルは <code>$HOME</code> に書く ※2026-10-14: 60 分を超える idle timeout を前提にした設計(長い休止をまたぐ会話の温存など)は、設定値が受理されて実際に効くかを実測してから</td>
+<td>cold start は <strong>+数秒</strong>(port 11 のライブ実測でサンドボックスの再起動は約 7 秒、probe 10 でも休止明け 7.0 秒 / 起動中 0.7 秒)。idle timeout は <strong>2〜60 分</strong>で設定可(既定 15 分。※2026-09-26: hosted agents 概念ページ ms.date 2026-09-11 版で下限が「2」。旧記載は 5〜60 分)、30 日無活動で恒久削除。<code>$HOME</code> / <code>/files</code> 配下だけ永続 <strong>※2026-10-14: 上限が両論になった</strong>。REST 仕様(azure-rest-api-specs PR #46925、2026-10-06 マージ)は <code>idle_timeout_seconds</code> の上限を 3,600 秒 → 14,400 秒(240 分)に引き上げ(下限 120 秒・既定 900 秒は不変)、azd <code>azure.ai.agents</code> 拡張 1.0.0-beta.19(2026-10-08)も 240 分まで受け付ける。一方 Learn の hosted-agents は「2 through 60 minutes」のまま。azd 側の PR は「60 分超の値はサービス側の対応がデプロイされてから有効」と明記しており、サービスが 60 分超を受理するかは未確認 ※2026-11-22: 両論は解消 — hosted-agents(ms.date 2026-11-16)が「2 through 240 minutes (4 hours)」に改訂され、devblogs 2026-11-18 も idle timeout 2 分〜4 時間を GA と明記。<strong>上限 240 分で確定</strong>。ただし memory snapshots(preview)を有効にした版は idle 明けに <code>$HOME</code> も残らない(P-H31)</td>
+<td>keep-warm 不要。バッチ・cron 型では発火ごとに cold を踏む前提。ファイルは <code>$HOME</code> に書く ※2026-10-14: 60 分を超える idle timeout を前提にした設計(長い休止をまたぐ会話の温存など)は、設定値が受理されて実際に効くかを実測してから ※2026-11-22: 240 分までは前提にしてよい。idle で止まるまでの待機時間も課金される(P-H14)ので、長い timeout はコストと引き換え</td>
 <td><a href="../../../../labs/maf-ports/ports/hn-briefing-hosted/README.md#検証結果2026-10-06-ライブ">実測: port 11 ライブ 2026-10-06</a> / <a href="../../../../labs/foundry-probes/probes/10-hosted-version-continuity/NOTES.md">実測: foundry-probes probe 10</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/hosted-agents">公式</a> / <a href="https://acro-engineer.hatenablog.com/entry/2026/08/20/120000">記事: Acroquest 2026-08</a></td>
 </tr>
 <tr>
 <td>P-H14</td>
 <td>compute 請求が想定より高い / 単価が読めない</td>
-<td>課金はセッション数 × サンドボックスサイズ(0.5/1/2 vCPU)。<strong>オーバーサイジングは同時実行数の倍率で効く</strong>。記事時点では単価未公開のケースも</td>
-<td>単セッション基準でサイズを決め CPU 70% 目安で見直す。見積もりは「hosted compute + モデル + ACR + App Insights」の 4 項目、compute は実測前提と明記</td>
+<td>課金はセッション数 × サンドボックスサイズ(0.5/1/2 vCPU)。<strong>オーバーサイジングは同時実行数の倍率で効く</strong>。記事時点では単価未公開のケースも ※2026-11-22: hosted-agents(2026-11-16)は課金を「セッションに割り当てた CPU / メモリ × 稼働時間」(使用率ではない)と書き、<strong>idle で止まるまでの待機時間も課金</strong>され、<code>stop</code> で課金が終わると明記。Copilot harness(prompt agent、preview)のサンドボックスは別の課金で 2026-12-01 に始まる(P-A18)</td>
+<td>単セッション基準でサイズを決め CPU 70% 目安で見直す。見積もりは「hosted compute + モデル + ACR + App Insights」の 4 項目、compute は実測前提と明記 ※2026-11-22: idle timeout を延ばす設計(最大 240 分)は待機分の課金を見積もりに入れ、会話の終わりが分かる用途は <code>stop</code> を呼ぶ</td>
 <td><a href="https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/hosted-agents">公式</a> / <a href="https://startdebugging.net/2026/06/deploy-a-microsoft-agent-framework-agent-to-foundry-hosted-agents/">記事: 個人ブログ 2026-06</a> / <a href="https://acro-engineer.hatenablog.com/entry/2026/08/20/120000">記事: Acroquest 2026-08</a></td>
 </tr>
 <tr>
 <td>P-H15</td>
 <td>記事どおりに <code>agent.yaml</code> / <code>az cognitiveservices agent</code> / <code>from_agent_framework(agent).run()</code> で組んだら動かない</td>
 <td><strong>2026-04 以前の記事は旧基盤前提</strong>。旧基盤は 2026-08-20 でサポート終了。<code>agent.yaml</code> → <code>azure.yaml</code> 統合、フレームワーク別アダプタ <code>azure-ai-agentserver-agentframework</code> / <code>-langgraph</code> → MAF は <code>agent-framework-foundry-hosting</code> + <code>ResponsesHostServer</code>、それ以外はプロトコルライブラリ <code>azure-ai-agentserver-responses</code> / <code>-invocations</code> を直接(※2026-09-26 訂正: 旧記載の <code>azure-ai-agentserver-*</code> 一括は不正確。<code>-core</code> / <code>-responses</code> / <code>-invocations</code> は現行基盤のライブラリ)、コンテナプロトコル <code>&quot;v1&quot;</code> → <code>&quot;1.0.0&quot;</code> → 2.0.0</td>
-<td>記事の日付を必ず見る。移行差分は <a href="../../architecture/html/10-migration-antipatterns.html#2-0-最優先-hosted-agent-初期プレビュー基盤-新基盤-期限-2026-08-20">architecture 10 §2.0</a></td>
+<td>記事の日付を必ず見る。移行差分は <a href="../../architecture/html/10-migration-antipatterns.html#2-0-最優先-hosted-agent-初期プレビュー基盤-新基盤-期限-2026-08-20">architecture 10 §2.0</a> ※2026-11-22: <code>az cognitiveservices agent</code> は 2027-02-28 後の最初の CLI リリースで削除予定(P-C01)</td>
 <td><a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/migrate-hosted-agent-preview">公式: 移行ガイド</a> / <a href="https://zenn.dev/nttdata_tech/articles/248570e83f160a">記事: Zenn NTT DATA 2026-04(旧基盤。<code>kind: hosted</code> を 2 か所に書く罠)</a> / <a href="https://github.com/microsoft/agent-framework/issues/5274">記事: agent-framework issue 2026-04</a></td>
 </tr>
 <tr>
@@ -201,15 +201,15 @@ footer {
 <td>P-H17</td>
 <td>Invocations ハンドラのインメモリ状態がコンテナ再起動で消える。LangGraph の MemorySaver が本番で消える</td>
 <td>Invocations はプラットフォーム管理の会話履歴がない。セッション compute はアイドルでデプロビジョン</td>
-<td>状態は Cosmos DB 等に外部化。LangGraph は durable checkpointer 必須。※2026-09-26 追記: プラットフォーム側に <strong>durable state store(プレビュー、hosted agent 専用)</strong>があり、フレームワークのチェックポイント・ユーザー単位パーティションを保持できる(既定 30 日のアイドル失効)。プレビュー不使用の案件では従来どおり自前ストア</td>
+<td>状態は Cosmos DB 等に外部化。LangGraph は durable checkpointer 必須。※2026-09-26 追記: プラットフォーム側に <strong>durable state store(プレビュー、hosted agent 専用)</strong>があり、フレームワークのチェックポイント・ユーザー単位パーティションを保持できる(既定 30 日のアイドル失効)。プレビュー不使用の案件では従来どおり自前ストア ※2026-11-22: durable state store は concepts/agent-state-store(ms.date 2026-11-18)でライフサイクルの表記がなくなった(GA とも preview とも書かれていない。hosted agents 本体は GA)— GA 限定の案件では採用前に確認する。ストア名は識別子兼パーティションで変更できない</td>
 <td><a href="https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/agent-state-store">公式: state store(preview)</a> / <a href="https://startdebugging.net/2026/06/deploy-a-microsoft-agent-framework-agent-to-foundry-hosted-agents/">記事: 個人ブログ 2026-06</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/how-to/develop/langchain-hosted-agents">公式: LangGraph hosted</a></td>
 </tr>
 <tr>
 <td>P-H18</td>
 <td>hosted agent 上の長時間 MAF workflow がクラッシュ時に先頭から再実行される</td>
 <td>チェックポイントと応答永続化のタイミング差(調査中の issue)</td>
-<td>中間出力を意図的に yield する。独自チェックポイントストアを併用。※2026-09-26 追記: 公式に「long-running hosted agent の resilience(プレビュー)」があり、プロセス消失時は<strong>ハンドラ先頭から再入</strong>(決定的リプレイではない)と明記。進捗マーカー・冪等キーで「どこまで済んだか」をアプリが判定する設計が前提。※2026-10-06: .NET の resilient background(<code>ResilientBackground = true</code>)で、ツール呼び出しとその結果の間でプロセスが落ちると、復旧時に結果のない function_call が履歴に残り <code>No tool output found for function call</code> で応答が失敗する報告(open)。耐障害テストに「ツール実行中のクラッシュ」を入れる</td>
-<td><a href="https://github.com/microsoft/agent-framework/issues/7809">記事: agent-framework issue 2026-08</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/long-running-agent-resilience">公式: resilience(preview)</a> / <a href="https://github.com/microsoft/agent-framework/issues/9033">記事: agent-framework issue 2026-10(open)</a></td>
+<td>中間出力を意図的に yield する。独自チェックポイントストアを併用。※2026-09-26 追記: 公式に「long-running hosted agent の resilience(プレビュー)」があり、プロセス消失時は<strong>ハンドラ先頭から再入</strong>(決定的リプレイではない)と明記。進捗マーカー・冪等キーで「どこまで済んだか」をアプリが判定する設計が前提。※2026-10-06: .NET の resilient background(<code>ResilientBackground = true</code>)で、ツール呼び出しとその結果の間でプロセスが落ちると、復旧時に結果のない function_call が履歴に残り <code>No tool output found for function call</code> で応答が失敗する報告(open)。耐障害テストに「ツール実行中のクラッシュ」を入れる ※2026-11-22: long-running resilience は <strong>GA</strong> になった(devblogs 2026-10-28・11-18、Learn の 10 ページから preview の定型文が消えた。最小版は Python <code>azure-ai-agentserver-core</code> / <code>-responses</code> ≥ 2.0.0・<code>-invocations</code> ≥ 1.0.0、.NET も ≥ 1.0.0)。回復の仕組み(保存済みのバックグラウンド応答だけ・ハンドラの再実行・副作用の重複防止はアプリ側)は不変なので、本行の対処は変わらない</td>
+<td><a href="https://github.com/microsoft/agent-framework/issues/7809">記事: agent-framework issue 2026-08</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/long-running-agent-resilience">公式: resilience(preview)</a> / <a href="https://github.com/microsoft/agent-framework/issues/9033">記事: agent-framework issue 2026-10(open)</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/long-running-agent-reference">公式: long-running-agent-reference</a></td>
 </tr>
 <tr>
 <td>P-H19</td>
@@ -221,8 +221,8 @@ footer {
 <tr>
 <td>P-H20</td>
 <td>「プレリリース不使用」ポリシーの案件で hosted agent の公式ホスティングライブラリを使えない</td>
-<td>MAF 用の公式ホスティングライブラリ <code>agent-framework-foundry-hosting</code> はプレリリース版のみ <strong>※2026-10-14:</strong> <code>azure-ai-agentserver-responses</code> は 2.3.0(PyPI 2026-10-12)が stable になり、<strong>テレメトリ送出の既定が変わった</strong>(<code>AGENTSERVER_FLUSH_MODE</code> が async → background。CHANGELOG は「要求の完了はテレメトリの到達を保証しない。background 送出にはサスペンド / 停止前のドレイン時間が要る」と明記)。<code>agent-framework-foundry-hosting</code> は 1.0.0b261008(2026-10-08)でもプレリリースのまま。プロトコルライブラリを第一候補にする判断は変わらないが、2.3.0 に上げるとトレースの届き方が変わる</td>
-<td>フレームワーク非依存の公式プロトコルライブラリ(下記、stable)でコンテナ内サーバーを書き、デプロイは <code>azure-ai-projects</code>(GA)の <code>create_version_from_code</code>(probe 10 は Agent Server SDK だけの最小エージェントをこの形で REMOTE_BUILD している)。<strong>※2026-09-26: MAF 用の <code>agent-framework-foundry-hosting</code> は依然プレリリースのみ(1.0.0b260918、さらに API 再設計の beta が予告 = issue #8742)だが、フレームワーク非依存の公式プロトコルライブラリ <code>azure-ai-agentserver-responses</code> 2.0.0(2026-08-11)/ <code>-invocations</code> 1.0.0(2026-08-10)/ <code>-core</code> 2.0.0(2026-08-06)は PyPI で stable。</strong>こちらを第一候補にする。<strong>※2026-10-06:</strong> <code>agent-framework-foundry-hosting</code> は 1.0.0b261002(2026-10-02)でも<strong>プレリリースのまま</strong>で、要求単位のエージェントファクトリ・永続 / サンドボックス分離セッション等の <strong>[BREAKING]</strong> 変更が入った(予告されていた再設計)。プレリリース不使用ポリシーでの判断は変わらない。プレリリースは直接指定しなくても依存経由で混入する(P-H29) ※2026-10-14: 2.3.0 以降で従来どおり要求ごとにテレメトリを送り切るには <code>AGENTSERVER_FLUSH_MODE=async</code> を明示する。トレースが欠けるときの切り分け項目に「flush の既定」を加える(サンプラーの間引き P-O16 とは別の原因)</td>
+<td>MAF 用の公式ホスティングライブラリ <code>agent-framework-foundry-hosting</code> はプレリリース版のみ <strong>※2026-10-14:</strong> <code>azure-ai-agentserver-responses</code> は 2.3.0(PyPI 2026-10-12)が stable になり、<strong>テレメトリ送出の既定が変わった</strong>(<code>AGENTSERVER_FLUSH_MODE</code> が async → background。CHANGELOG は「要求の完了はテレメトリの到達を保証しない。background 送出にはサスペンド / 停止前のドレイン時間が要る」と明記)。<code>agent-framework-foundry-hosting</code> は 1.0.0b261008(2026-10-08)でもプレリリースのまま。プロトコルライブラリを第一候補にする判断は変わらないが、2.3.0 に上げるとトレースの届き方が変わる ※2026-11-22: <code>agent-framework-foundry-hosting</code> は 1.0.0b261112 でもプレリリースのまま。プロトコルライブラリは <code>azure-ai-agentserver-core</code> 2.3.0 / <code>-responses</code> 2.4.0 / <code>-invocations</code> 1.3.0 が stable(PyPI 10-30)。<strong>responses 2.4.0 は task runtime の有効化をプロトコル単位に変えた BREAKING</strong>(core の <code>set_resilient_tasks_enabled</code> だけでは Responses を有効化しない)と、ローカルの in-memory / file-backed の応答・履歴をユーザーキーで分割する変更を含む</td>
+<td>フレームワーク非依存の公式プロトコルライブラリ(下記、stable)でコンテナ内サーバーを書き、デプロイは <code>azure-ai-projects</code>(GA)の <code>create_version_from_code</code>(probe 10 は Agent Server SDK だけの最小エージェントをこの形で REMOTE_BUILD している)。<strong>※2026-09-26: MAF 用の <code>agent-framework-foundry-hosting</code> は依然プレリリースのみ(1.0.0b260918、さらに API 再設計の beta が予告 = issue #8742)だが、フレームワーク非依存の公式プロトコルライブラリ <code>azure-ai-agentserver-responses</code> 2.0.0(2026-08-11)/ <code>-invocations</code> 1.0.0(2026-08-10)/ <code>-core</code> 2.0.0(2026-08-06)は PyPI で stable。</strong>こちらを第一候補にする。<strong>※2026-10-06:</strong> <code>agent-framework-foundry-hosting</code> は 1.0.0b261002(2026-10-02)でも<strong>プレリリースのまま</strong>で、要求単位のエージェントファクトリ・永続 / サンドボックス分離セッション等の <strong>[BREAKING]</strong> 変更が入った(予告されていた再設計)。プレリリース不使用ポリシーでの判断は変わらない。プレリリースは直接指定しなくても依存経由で混入する(P-H29) ※2026-10-14: 2.3.0 以降で従来どおり要求ごとにテレメトリを送り切るには <code>AGENTSERVER_FLUSH_MODE=async</code> を明示する。トレースが欠けるときの切り分け項目に「flush の既定」を加える(サンプラーの間引き P-O16 とは別の原因) ※2026-11-22: 2.4.0 に上げるときは resilient task の有効化を Responses 側でも明示し、file-backed ストアの既存データが利用者別のパーティションに自動では移らない点を確認する</td>
 <td><a href="../../../../labs/foundry-probes/probes/10-hosted-version-continuity/NOTES.md">実測: foundry-probes probe 10(Agent Server SDK だけで REMOTE_BUILD)</a> / <a href="../../../../labs/maf-ports/ports/hn-briefing-hosted/README.md">実測: port 11(MAF ホスティングはプレリリース 1.0.0b261002)</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/migrate-hosted-agent-preview">公式: 移行ガイド(プロトコルライブラリ)</a> / <a href="https://pypi.org/project/azure-ai-agentserver-responses/">PyPI: azure-ai-agentserver-responses</a> / <a href="https://github.com/microsoft/agent-framework/issues/8742">記事: agent-framework issue 2026-09</a></td>
 </tr>
 <tr>
@@ -285,7 +285,7 @@ footer {
 <td>P-H29</td>
 <td>hosted agent をコードのリモートビルド(REMOTE_BUILD)でデプロイすると、手元(uv.lock)でテストした組と違う<strong>プレリリース版</strong>がコンテナに入る(例: <code>azure-ai-agentserver-responses</code> 2.3.0b2)</td>
 <td>リモートビルドは pip で依存を解決する。pip は依存指定に<strong>プレ版を含む下限</strong>(<code>agent-framework-foundry-hosting</code> の <code>azure-ai-agentserver-responses&gt;=2.2.0b1</code>)があると、そのパッケージのプレ版を許可する。uv は安定版 2.2.0 を選ぶので食い違う(2.3.0b1 は 2026-09-29 公開)</td>
-<td>コンテナの requirements に上限(<code>&gt;=2.2.0,&lt;2.3</code>)を付け、<code>pip install --dry-run --report</code> の解決結果を uv.lock と突き合わせるテストを置く ※2026-10-14: <code>azure-ai-agentserver-responses</code> 2.3.0 が 2026-10-12 に stable になったので、現時点では pip・uv とも 2.3.0 を選び食い違いは一時的に消える。ただし <code>agent-framework-foundry-hosting</code> 1.0.0b261008 の依存は引き続き <code>&gt;=2.2.0b1</code>(プレ版を許容)なので、次のプレ版(2.4.0b1 は <code>FileResponseStore</code> の保存先を利用者別に変える BREAKING を予告)が出れば同じことが起きる。上限 <code>&lt;2.3</code> を外すときは、2.3.0 の flush の既定変更(P-H20)も合わせて判断する</td>
+<td>コンテナの requirements に上限(<code>&gt;=2.2.0,&lt;2.3</code>)を付け、<code>pip install --dry-run --report</code> の解決結果を uv.lock と突き合わせるテストを置く ※2026-10-14: <code>azure-ai-agentserver-responses</code> 2.3.0 が 2026-10-12 に stable になったので、現時点では pip・uv とも 2.3.0 を選び食い違いは一時的に消える。ただし <code>agent-framework-foundry-hosting</code> 1.0.0b261008 の依存は引き続き <code>&gt;=2.2.0b1</code>(プレ版を許容)なので、次のプレ版(2.4.0b1 は <code>FileResponseStore</code> の保存先を利用者別に変える BREAKING を予告)が出れば同じことが起きる。上限 <code>&lt;2.3</code> を外すときは、2.3.0 の flush の既定変更(P-H20)も合わせて判断する ※2026-11-22: <code>-responses</code> 2.4.0 も stable(10-30)。hosting 1.0.0b261112 の依存範囲がプレ版を許容するかは PyPI のメタデータで確認し、上限を外すなら 2.4.0 の BREAKING(P-H20)も合わせて判断する</td>
 <td><a href="../../../../labs/maf-ports/ports/hn-briefing-hosted/README.md">実測: port 11(2026-10-06)</a></td>
 </tr>
 <tr>
@@ -294,6 +294,27 @@ footer {
 <td>2026-10-13 に改訂された公式 4 ページ(isolate-sessions-per-user / multiplex-session-users / pass-isolation-keys / invoke-hosted-agent。<strong>新機能ではなく文書の整理</strong>で、分離モデル自体は 2026-09 から同じ)が境界を明文化した: ① 既定は<strong>呼び出し元の Entra トークン単位</strong>で会話・セッション・保存データ・セッションの <code>$HOME</code> が分かれる ② 信頼できる中間層が <code>x-ms-user-identity</code> で利用者を委任すると、境界は「委任あり / なし」の間だけで、<strong>委任された利用者どうしはプラットフォームが隔てない</strong>(アプリが 2 人を同じセッション ID に送れば互いのデータが見える)③ 意図的に 1 セッションを複数の利用者で共有する multiplex では、会話履歴(他人の <code>previous_response_id</code> での継続・<code>context.get_history()</code>)は要求者ごとに分かれるが、<strong>コンテナが自分で保存するデータは自動では分かれない</strong> ④ プロジェクトの <strong>Foundry User</strong> を持つ管理者・自動化は、利用者を問わず全セッションを一覧・管理できる(ファイルや会話内容の読み取りまで含むかは記載なし。Port 11 の実測では Routine〈agent identity〉が作った応答を開発者の ID で GET すると 403 — P-A13)。中間層が送るのは <code>x-ms-user-identity</code> で、<code>x-agent-user-id</code> はプラットフォームがユーザー解決後にコンテナへ注入するヘッダー</td>
 <td>セッション ID の割り当ては中間層がサーバー側の認証済み ID から作る(ブラウザ由来の値を使わない)。multiplex ではコンテナ側の保存キーを <code>(agent_session_id, user_id)</code> にし、同時セッション上限に合わせて利用者をセッションプール(sticky / hash / round-robin / group。公式サンプルあり)に割り当てる。中間層の ID には組み込みロールにないカスタム data action <code>UserIdentityImpersonation/action</code> を付ける(ないと 403)。本番プロジェクトでは「Foundry User を持つ開発者は全利用者のセッションを一覧・操作できる」前提で権限を分ける(本書の推論)。受入試験は 2 人の利用者で「同じセッションに入れたときに相手の保存データが見えないか」まで確かめる。azd での試験の注意は P-C15、MAF ホスティングの既定ストアの分割は P-F20</td>
 <td><a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/isolate-sessions-per-user">公式: isolate-sessions-per-user</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/multiplex-session-users">公式: multiplex-session-users</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/invoke-hosted-agent">公式: invoke-hosted-agent</a></td>
+</tr>
+<tr>
+<td>P-H31</td>
+<td>memory snapshots(preview)を有効にした版で、idle から再開したセッションの <code>$HOME</code>・ローカルファイル・プロセスメモリが消えている / 版が <code>failed</code> のまま動かない / 再開後に DB 接続やトークンのキャッシュが使えない</td>
+<td>memory snapshots(use-hosted-agent-memory-snapshots ms.date 2026-11-14、preview)は<strong>版の準備時点の初期化済みプロセスを取り込み、新しいセッションをそこから復元する</strong>仕組みで、セッションのチェックポイントではない。有効にしたセッションは idle で中断 → 再開すると <strong><code>$HOME</code>・ローカルファイル・プロセスメモリが残らない</strong>(通常のセッションは <code>$HOME</code> / <code>/files</code> が残る = P-H13 と逆)。初回の取り込みに失敗すると版は <code>failed</code> になり、通常のコールドスタートには黙って切り替わらない。ライブ接続・資格情報のキャッシュはスナップショットに入ったまま復元される</td>
+<td>版ごとに有効化する(既存の版は編集できないので新しい版を作る)。準備は非同期なので版が <code>active</code> になるまで呼ばない。<code>$HOME</code> の永続性に頼るエージェントでは有効にせず、状態は state store 等の外部に置く。接続・資格情報は before-snapshot / after-restore フックで張り直す(after-restore の失敗は <code>session_restore_failed</code>)。起動短縮の効果は <code>x-ms-debug-latency-enabled: true</code> で返る <code>x-ms-debug-latency-container-readiness-ms</code> で測ってから採否を決める。private CA trust と併用する構成は一部の経路が未対応(P-N23)</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/use-hosted-agent-memory-snapshots">公式: use-hosted-agent-memory-snapshots(preview)</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/optimize-hosted-agent-latency">公式: optimize-hosted-agent-latency</a> / <a href="https://devblogs.microsoft.com/foundry/hosted-agents-foundry-agent-service-ignite-2026/">公式ブログ: Hosted agents at Ignite 2026</a></td>
+</tr>
+<tr>
+<td>P-H32</td>
+<td>hosted agent を voice agent の会話エンジンにする新方式(<code>voice_conversation_engine</code>)に切り替えたら、azd の検証で拒否される / SDK を上げたのに会話エンジンとして呼ばれない</td>
+<td>voice-first-with-hosted-agent(ms.date 2026-11-12)で新プロトコル <code>voice_conversation_engine</code> 1.0.0(<code>azure-ai-projects</code> 2.10.0 の <code>AgentEndpointProtocol.VOICE_CONVERSATION_ENGINE</code>。コンテナは <code>/voice_conversation_engine</code> で Voice Live Bridge Protocol 1.0 のテキストと制御イベントを受ける)が加わった。ページは <strong>azd <code>azure.ai.agents</code> 1.0.0-beta.23 の検証が旧 <code>invocations_ws</code> を要求して新方式のターゲットを拒否する</strong>と明記し、さらに<strong>リージョンとサブスクリプションで <code>voice_conversation_engine</code> ルートが有効</strong>であることを前提にしている(SDK を上げるだけでは有効にならない)。拡張 1.2.0 の CHANGELOG は「voice conversation engines をプレビューフラグなしで」とするが、検証が直ったのかは要確認</td>
+<td>既存の <code>invocations_ws</code>+Bridge メタデータのエージェントはそのまま動き移行は不要(両方を宣言して併用も可)なので、急いで切り替えない。新方式にするなら azd の版を固定し、対象リージョン × サブスクリプションでルートが有効かを先に確かめる。Pipecat / LiveKit 等の自前音声パイプラインが <code>invocations_ws</code> を直接使う構成は 1 MB フレーム・約 30 分切断の制約が残り、会話エンジン方式はこれを置き換えない</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/foundry/how-to/voice-first-with-hosted-agent">公式: voice-first-with-hosted-agent</a> / <a href="https://github.com/Azure/azure-dev/blob/main/cli/azd/extensions/azure.ai.agents/CHANGELOG.md">公式: azure.ai.agents CHANGELOG</a></td>
+</tr>
+<tr>
+<td>P-H33</td>
+<td>hosted agent の受信 A2A で、続きの依頼(<code>contextId</code> / <code>taskId</code> 付き)やタスクの状態取得(<code>GetTask</code>)が <code>HOSTED_AGENT_NOT_SUPPORTED</code> で失敗する / 版を指定しない呼び出しが v0.3 扱いになる</td>
+<td>hosted-agents(ms.date 2026-11-16)は <strong>hosted agent の A2A エンドポイントは v1.0 のみ・<code>contextId</code> / <code>taskId</code> を付けない単発の <code>SendMessage</code> のみ・<code>GetTask</code> 不可</strong>と明記した(prompt agent 等の受信 A2A〈v1.0 GA / v0.3 preview、P-A06〉より狭い)。版を指定しない要求は v0.3 として扱われる</td>
+<td>要求ごとに <code>A2A-Version: 1.0</code> を付ける。hosted agent を A2A の相手にするなら 1 往復で完結するタスクに設計し、複数ターンの文脈は呼び出し元で持つか Responses プロトコルで呼ぶ。多段の A2A 連携が要るなら受け側を prompt agent か自前ホストにする</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/hosted-agents">公式: hosted-agents</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/enable-agent-to-agent-endpoint">公式: enable-agent-to-agent-endpoint</a></td>
 </tr>
 </tbody></table></div>
 <h2 id="b-agent-service-コア">B. Agent Service コア</h2>
@@ -328,8 +349,8 @@ footer {
 <tr>
 <td>P-A04</td>
 <td>会話が消えない / <code>store=False</code> にしたら会話にも残らない / アカウントエンドポイント経由で 404</td>
-<td>Conversations に TTL なし。<code>store=False</code> は会話継続も切る。Conversations はプロジェクトエンドポイント経由のみ</td>
-<td>明示削除するまで残る前提で、会話の削除(TTL 管理)をアプリ側に持つ</td>
+<td>Conversations に TTL なし。<code>store=False</code> は会話継続も切る。Conversations はプロジェクトエンドポイント経由のみ ※2026-11-22: limits-quotas-regions(2026-11-18 版で新記載)が会話データの保持を 60 日と明記した(basic は自動削除、standard は <code>run-state-v1</code> の既定 TTL 60 日・変更可。P-A19)。本行の「TTL なし」は 2026-08〜09 時点の実測と公式記述の範囲</td>
+<td>明示削除するまで残る前提で、会話の削除(TTL 管理)をアプリ側に持つ ※2026-11-22: 60 日より前に消す要件は従来どおり自前の削除が要る。60 日を超えて残す要件は写しを自前で持つ(P-A19)</td>
 <td><a href="../../../../labs/foundry-probes/probes/01-conversations/NOTES.md">実測: probe 01</a></td>
 </tr>
 <tr>
@@ -343,7 +364,7 @@ footer {
 <td>P-A06</td>
 <td>同一 Foundry 内のエージェント同士を A2A で繋ぐと <code>Failed to fetch agent card: 401</code>。Connected Agents が新 Foundry にない</td>
 <td>Foundry ホストのエージェントは<strong>公開 A2A サーバーとして設計されていない</strong>(A2A は外部エージェント呼び出し専用)。Connected Agents は新 Foundry に移植されず</td>
-<td>Foundry 内マルチエージェントは MAF workflow(コード)。A2A 公開が要るなら自前ホスト(Functions / ACA)。<strong>※2026-09-26: 前提が変化。</strong>Foundry エージェント(Responses プロトコルの prompt agent 等)を <strong>incoming A2A エンドポイントとして公開可能</strong>になった(A2A v1.0 = GA / v0.3 = preview、agent card は <code>…/protocols/a2a/agentCard/v1.0</code>。設定は REST / SDK のみでポータル未対応)。認証は Entra 必須(キー・匿名不可)で、呼び出し側 ID に <strong>Foundry Agent Consumer</strong> 等のロールが要る(401 の典型原因)。<strong>バージョン未指定だと preview の v0.3 が返る</strong>ので本番は <code>A2A-Version: 1.0</code> を明示。タスク / コンテキストは最終書き込みから 60 日保持</td>
+<td>Foundry 内マルチエージェントは MAF workflow(コード)。A2A 公開が要るなら自前ホスト(Functions / ACA)。<strong>※2026-09-26: 前提が変化。</strong>Foundry エージェント(Responses プロトコルの prompt agent 等)を <strong>incoming A2A エンドポイントとして公開可能</strong>になった(A2A v1.0 = GA / v0.3 = preview、agent card は <code>…/protocols/a2a/agentCard/v1.0</code>。設定は REST / SDK のみでポータル未対応)。認証は Entra 必須(キー・匿名不可)で、呼び出し側 ID に <strong>Foundry Agent Consumer</strong> 等のロールが要る(401 の典型原因)。<strong>バージョン未指定だと preview の v0.3 が返る</strong>ので本番は <code>A2A-Version: 1.0</code> を明示。タスク / コンテキストは最終書き込みから 60 日保持 ※2026-11-22: hosted agent の受信 A2A は v1.0 のみ・単発の <code>SendMessage</code> のみ・<code>GetTask</code> 不可(P-H33)</td>
 <td><a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/enable-agent-to-agent-endpoint">公式: incoming A2A</a> / <a href="https://learn.microsoft.com/en-us/answers/questions/5774138/how-to-set-permission-for-microsoft-foundry-to-cal">記事: Q&amp;A 2026-02</a> / <a href="https://github.com/orgs/microsoft-foundry/discussions/312">記事: GitHub discussion 2026-02</a> / <a href="https://learn.microsoft.com/en-in/answers/questions/5908461/foundry-no-more-connected-agents">記事: Q&amp;A 2026-06</a></td>
 </tr>
 <tr>
@@ -419,9 +440,44 @@ footer {
 <tr>
 <td>P-A17</td>
 <td>「Browser Automation が GA になった」と聞いてストリーミングのイベント解析をツールの GA 名にそろえたら、ページの例と型名が合わない / 閉域案件に入れようとしたら構成できない</td>
-<td>ツールページ(ms.date 2026-10-06・Learn 更新 10-13)は h1 から「(preview)」を外して「generally available」と明記し、ツール型の例も GA 名(<code>browser_automation</code> / <code>BrowserAutomationTool</code>。<code>azure-ai-projects</code> 2.8.0 の GA 型と一致)になったが、<strong>同じページのストリーミング例が拾うイベント型は <code>browser_automation_preview_call</code> のまま</strong>。移行ガイドの対応表は「Yes (Public Preview)」、TOC は「(preview)」で表記が割れ(GA 一覧表に個別行なし)、configure-private-link(2026-09-29 版)の閉域表は <strong>Not supported(Under development)</strong> のまま</td>
-<td>イベント解析は GA 名・preview 名の両方を受ける実装にし、SDK 更新時に回帰試験する。提案書のステータスは「ページ本文・SDK = GA / 移行表・TOC = preview」の両論で書き、閉域案件では使わない。Foundry では toolbox 経由で Playwright Workspaces のリモート MCP サーバーがブラウザを実行する構成になり、hosted agent のクイックスタートは Playwright Workspace Contributor の付与先を project MI とエージェントの ID の両様に書いているので、付与先も PoC で確かめる</td>
-<td><a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/browser-automation">公式: browser-automation</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/browser-automation-hosted-agent-quickstart">公式: browser-automation-hosted-agent-quickstart</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/how-to/configure-private-link">公式: configure-private-link</a></td>
+<td>ツールページ(ms.date 2026-10-06・Learn 更新 10-13)は h1 から「(preview)」を外して「generally available」と明記し、ツール型の例も GA 名(<code>browser_automation</code> / <code>BrowserAutomationTool</code>。<code>azure-ai-projects</code> 2.8.0 の GA 型と一致)になったが、<strong>同じページのストリーミング例が拾うイベント型は <code>browser_automation_preview_call</code> のまま</strong>。移行ガイドの対応表は「Yes (Public Preview)」、TOC は「(preview)」で表記が割れ(GA 一覧表に個別行なし)、configure-private-link(2026-09-29 版)の閉域表は <strong>Not supported(Under development)</strong> のまま ※2026-11-22: 閉域の記述が割れた — configure-private-link の表は Browser Automation を <strong>Supported</strong> に変えた一方、toolbox-network-isolation は Not supported のまま。devblogs 2026-10-19・11-18 は GA を明言し、セッション録画(opt-in)・action batching・Live View は GA、BYO ブラウザープロキシ・Key Vault の secret management・CAPTCHA 対応は preview。ストリーミングのイベント型 <code>browser_automation_preview_call</code> の記述はページから消えた。概要ページの Limitations は「<strong>prompt agent に Key Vault の資格情報を渡すと、現状モデルが値を参照できる</strong>」のまま</td>
+<td>イベント解析は GA 名・preview 名の両方を受ける実装にし、SDK 更新時に回帰試験する。提案書のステータスは「ページ本文・SDK = GA / 移行表・TOC = preview」の両論で書き、閉域案件では使わない。Foundry では toolbox 経由で Playwright Workspaces のリモート MCP サーバーがブラウザを実行する構成になり、hosted agent のクイックスタートは Playwright Workspace Contributor の付与先を project MI とエージェントの ID の両様に書いているので、付与先も PoC で確かめる ※2026-11-22: 閉域は「公式の表が割れている」ので未対応扱いを続け、PoC で確かめるまで提案しない。資格情報を扱う画面操作は hosted / コード側で隠す構成にし、prompt agent に資格情報を渡さない</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/browser-automation">公式: browser-automation</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/browser-automation-hosted-agent-quickstart">公式: browser-automation-hosted-agent-quickstart</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/how-to/configure-private-link">公式: configure-private-link</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/toolbox-network-isolation">公式: toolbox-network-isolation</a></td>
+</tr>
+<tr>
+<td>P-A18</td>
+<td>Microsoft Copilot harness(preview)の prompt agent で、モデル呼び出しやシェルは成功するのに生成ファイルが返らない(アップロードだけ 403)/ Shell 以外のハーネスツールを OFF にしたのにファイルを書き換えられた / 12 月から請求が増えた</td>
+<td>harness(use-tools-skills-copilot-harness・limits-quotas-regions 2026-11-18、public preview)は prompt agent の実行ランタイムを Microsoft 運用のエージェントループとサンドボックスに切り替えるもので、<strong>生成ファイルを返すにはエージェント ID(<code>instance_identity.principal_id</code>)にプロジェクトの Foundry User を別途付与</strong>する必要がある。<strong>Shell を有効にすると、他のハーネスツールを OFF にしてもセキュリティ境界にならない</strong>と明記。ハーネスツールの承認ポリシーはサービス側の管理で、<code>require_approval</code> が効くのは自前の MCP ツールだけ。ワークスペースは会話単位。対応は 22 リージョン(Japan East 可、<strong>Japan West・East US 2 不可</strong>)、BYOM・Foundry Memory 不可、harness は作成時のみ選べる(既存エージェントは切り替えられない)、呼び出しはエージェントのエンドポイント限定。<strong>2026-12-01 にサンドボックスの従量課金が始まる</strong>(vCPU 時間・GiB 時間。それまで harness の実行は無料)</td>
+<td>作成手順にエージェント ID への Foundry User の付与を入れる。Shell を使うかどうかを権限設計の単位にし(Shell = 任意のコマンド実行とみなす)、承認が要る操作は自前の MCP ツールにして <code>require_approval</code> を掛ける。成果物は会話をまたいで残らないので Foundry Files 等に保存する。PoC で使っている場合は 12-01 以降の費用を見積もり直す(<a href="../../proposal/html/02-cost-estimation.html">proposal 02</a>)。egress の RAI ポリシー(Network ルール)は harness の実行環境にも適用できるが、Azure Policy による統制は hosted 専用。持ち込み時の詰まりどころは P-A22</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/use-tools-skills-copilot-harness">公式: use-tools-skills-copilot-harness(preview)</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/limits-quotas-regions">公式: limits-quotas-regions</a> / <a href="https://devblogs.microsoft.com/foundry/microsoft-copilot-harness-in-foundry/">公式ブログ: Copilot harness 2026-10-28</a></td>
+</tr>
+<tr>
+<td>P-A19</td>
+<td>2 か月前の会話の続きを頼むと 404 / 監査で 3 か月前の会話を Foundry から取り出せない</td>
+<td>limits-quotas-regions(2026-11-18 版で新記載)は<strong>会話データの保持を明記</strong>した: basic 構成は Microsoft 管理の Cosmos DB に conversations / items / responses を <strong>60 日</strong>保存して自動削除(期限切れの会話は 404)、standard 構成は自前 Cosmos DB の <code>run-state-v1</code> コンテナで<strong>既定 TTL 60 日(変更可)</strong>。削除後は復元できない。対象は会話データで、ファイル・vector store は別</td>
+<td>長期保存が要件なら、会話の写しを自前のストアに持つか、standard 構成で TTL を延ばす。「Conversations に TTL がない」前提(P-A04)で組んだ削除設計は、60 日の自動削除と自前の削除ジョブの関係を整理し直す。利用者に「いつまで続きを頼めるか」を UI か利用規約で示す</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/limits-quotas-regions">公式: limits-quotas-regions</a></td>
+</tr>
+<tr>
+<td>P-A20</td>
+<td>ルーチンが呼ぶエージェントのエンドポイント認可を AgentBlueprint(preview)に切り替えたら、ルーチンの配信が失敗する</td>
+<td>use-routines(2026-11-17 更新)と agent-endpoint-authorization(ms.date 2026-11-18)は、<strong>ルーチンの配信はプレビューの AgentBlueprint エンドポイント認可に対応しない</strong>と明記。AgentBlueprint スキームと、エージェント ID が利用者の代理で動く委任(<code>AgentOnBehalfOfUser</code>)はいずれもプレビュー</td>
+<td>ルーチンから呼ぶエージェントには AzureRbac(旧名 Entra)スキームを残す。認可スキームの PATCH は配列ごと置き換わる(P-I08 の注記)ので、スキームを足すときに既存の AzureRbac を消さない</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/use-routines">公式: use-routines</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/agent-endpoint-authorization">公式: agent-endpoint-authorization</a></td>
+</tr>
+<tr>
+<td>P-A21</td>
+<td>Image generation ツール・deep research の公式の例どおりに組んだら動かない(必須とされたモデルがデプロイできない・呼べない)</td>
+<td><strong>ツールのページが、リタイア済みのモデルを必須のまま載せている</strong>: Image generation(preview、ms.date 08-21・Learn 更新 10-21)は <code>gpt-image-1</code> を必須とするが、gpt-image-1 はリタイア表(11-18 版)で <strong>2026-10-28 にリタイア到来</strong>。web search ページの deep research の例も <code>o3-deep-research</code>+<code>web_search_preview</code> の直付けのままで、o3-deep-research は <strong>2026-11-19 に到来</strong>(classic の Deep Research ツールも)。後継(gpt-image-1.5 / gpt-image-2 系、gpt-5.6-sol)でツールが動くかの記載はない</td>
+<td>ツールの必須モデルはリタイア表と突き合わせてから採用する(ページの日付が新しくても必須モデルの記述が古いことがある)。後継モデルでの動作は PoC で確かめ、確認できるまで提案書に「ツールの対応モデルは要確認」と書く。gpt-5.6-sol は Batch・Regional Standard で提供されない(P-M21)</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/image-generation">公式: image-generation</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/web-search">公式: web-search</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/model-retirement-schedule">公式: model-retirement-schedule</a></td>
+</tr>
+<tr>
+<td>P-A22</td>
+<td>GitHub Copilot で作ったカスタムエージェント・スキルの構成を Copilot harness(preview)に持ち込んだら、カスタムエージェントを名前で呼べない / ローカル CLI(playwright-cli 等)を使うスキルが動かない / スクリーンショットが手元に届かない</td>
+<td>(Qiita 2026-11-19 の検証。Japan East・<code>azure-ai-projects&gt;=2.9.0</code>)スキル(SKILL.md を Skills API に登録)とリモート MCP はそのまま動いたが、① <code>.agent.md</code> のようなカスタムエージェントを登録する方法がなく、組み込みの <code>general-purpose</code> サブエージェントにスキルを読ませる形に置き換えた(サブエージェントごとのモデル指定も見つからない)② サンドボックスに Node.js がなく、自分で入れてもブラウザの起動に必要な OS ライブラリが足りず playwright が起動しない(Python 3・pip・curl は使え、外部のサイトにも出られた)③ Browser Automation(Playwright Workspace)のスクリーンショットは手元に直接返らない。公式もサンドボックスの CPU / メモリ / idle は設定不可としている</td>
+<td>持ち込む前に「スキルが使うコマンド・ランタイム」を棚卸しし、ローカル CLI への依存は Foundry のツール(Browser Automation 等)か hosted agent に置き換える。画像などの成果物は Foundry Files に保存して返す設計にする。サンドボックスが外部に出られる点は egress の統制(RAI ポリシーの Network ルール)と合わせて設計する(P-A18)</td>
+<td><a href="https://qiita.com/shyamagu/items/8a796c4a36a8db5cdb28">記事: Qiita 2026-11</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/use-tools-skills-copilot-harness">公式: use-tools-skills-copilot-harness</a></td>
 </tr>
 </tbody></table></div>
 <h2 id="c-id-と-rbac">C. ID と RBAC</h2>
@@ -523,6 +579,27 @@ footer {
 <td>最小権限の設計で「プロジェクトだけ」にしない: モデルを呼ぶ評価では、評価を投げる ID(実行者・CI のワークロード ID)と継続・定期評価のプロジェクト MI の Foundry User をアカウントスコープで付ける。トレース評価の追加ロールは P-O14、BYO ストレージ(Entra 認証)はプロジェクト MI に Storage Blob Data Contributor。P-I09 の 3 層と合わせて最初から付与し、付与後は数分待ってから再試行(P-I02) <strong>※2026-10-06 ライブ(port 9):</strong> アカウントスコープの Foundry User と、ルーブリック評価器の <code>pass_threshold</code> の明示(P-O19)の両方をそろえて、ルーブリック込みのクラウド評価が完走した(50 秒・ジャッジ 15 回・約 5.5 万トークン)。2026-07 の PermissionDenied は、アカウントスコープの不足が重なっていた可能性が高い</td>
 <td><a href="https://learn.microsoft.com/en-us/azure/foundry/observability/how-to/evaluation-permissions">公式: evaluation-permissions</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/concepts/rbac-foundry">公式: rbac-foundry(Deployment type-specific permissions)</a> / <a href="../../../../labs/maf-ports/ports/critique-loop/README.md">実測(手順の訂正): port 9 critique-loop の runbook §5.1 をアカウントスコープに訂正。2026-07 にルーブリック評価(<code>score_model</code>)が PermissionDenied になった原因の仮説 — ライブで確認予定</a></td>
 </tr>
+<tr>
+<td>P-I14</td>
+<td>エージェントの作成・更新だけを任せたつもりの開発者・自動化の ID が、エージェントを介さずにモデルを直接呼べる(推論のコスト・監査の対象が想定より広い)</td>
+<td>rbac-foundry の Notes and limitations に「<strong><code>agents/write</code> を持つ主体は、エージェントを参照しない要求も含めてプロジェクトの Responses エンドポイント経由でモデルデプロイを呼べる</strong>」と明記された(カスタムロール例の説明も「model invocation through the project Responses endpoint」を含む。追加時期は未確定)</td>
+<td>「エージェントを作れる = モデルを呼べる」前提で権限を設計する。推論を止めたい主体には agents の data action を与えない。コストの上限・監査はエージェント単位だけでなくプロジェクト / デプロイ単位でも掛ける(cost controls はプロジェクト・デプロイ単位も選べる = P-M25)</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/foundry/concepts/rbac-foundry">公式: rbac-foundry</a></td>
+</tr>
+<tr>
+<td>P-I15</td>
+<td>エージェントスコープでロールを分けたのに、別の呼び出し元がアップロードしたファイルを参照できてしまう</td>
+<td>rbac-foundry の Agent-scope role assignments 節(Important)は「<strong>エージェントスコープの割り当てはプロジェクトのファイルを分離しない</strong>。ファイルはプロジェクトのリソースで、file ID に呼び出し元単位のアクセス制御はなく、prompt agent を呼べる主体はプロジェクト内の任意の file ID を <code>input_file</code> で参照できる」と書く(追加時期は未確定)</td>
+<td>呼び出し元どうしでファイルを共有させたくなければ、プロジェクトを信頼境界として分ける。file ID を利用者に返さない・推測されないことに頼らない。マルチテナント(S-06)でテナント単位にプロジェクトを分ける根拠になる</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/foundry/concepts/rbac-foundry">公式: rbac-foundry</a></td>
+</tr>
+<tr>
+<td>P-I16</td>
+<td>Foundry Owner / Foundry User なのに Manage &gt; Cost や Fleet のコストが空(利用量は出る)/ 当日の急増がコストに出ない / 11 月より前のエージェント別コストが 0</td>
+<td>cost-management-permissions・analyze-costs-cost-management(2026-11-09)は「<strong>Foundry ロールにはコストデータの閲覧が含まれない</strong>」と明記(Cost Management はリソースではなく RG / サブスクリプションで認可を判定する)。利用量は数分で出るが<strong>コストは 8〜24 時間遅れる</strong>。エージェント名のタグ(<code>agent.name</code>)は <strong>2026-11 以降の利用から</strong>付与され、それ以前のエージェント利用は直接のモデルコストとして計上される。内訳はタグ付きの課金だけなので、プロジェクト / エージェント / デプロイ別の合計は全体より小さくなる</td>
+<td>コストを見る人に <strong>Cost Management Reader</strong> を別に付ける(プロジェクトのコストは Foundry リソースを含む RG、エージェント・デプロイ別やサブスクリプション横断はサブスクリプション。そのスコープの Foundry 以外の支出も見える点を合意する)。急増の検知は利用量(Fleet・Operations)で行い、コストは翌日に確定値として見る。11 月より前とのエージェント別の比較はしない。「値が出ない = 0」と読まない</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/foundry/concepts/cost-management-permissions">公式: cost-management-permissions</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/how-to/analyze-costs-cost-management">公式: analyze-costs-cost-management</a></td>
+</tr>
 </tbody></table></div>
 <h2 id="d-ネットワークと閉域">D. ネットワークと閉域</h2>
 <div class="tablewrap"><table><thead><tr>
@@ -563,14 +640,14 @@ footer {
 <tr>
 <td>P-N05</td>
 <td>data proxy の 5xx / hosted agent セッション作成失敗 / 新規プロジェクトのプロビジョニング失敗</td>
-<td><strong>委任サブネットの IP 枯渇</strong>。1 セッション = 1 IP(既定)、/27 で約 17、/26 で約 50。使用率はポータルに出ない。※2026-09-26: networking deep dive(ms.date 2026-09-07 版)の容量表は <strong>/27 ≈ 20・/26 ≈ 50・/25 ≈ 100・/24 ≈ 250 セッション</strong>(上限はサブスクリプション×リージョンのセッションクォータが別に効く)。hosted agent 側の兆候は <strong>セッション作成・再開時の HTTP 429 <code>subnet_exhausted</code></strong> と明記。1 アカウントのプロジェクト数も低負荷で約 250、高負荷では約 25 まで落ちる</td>
-<td>/24 推奨(<strong>/27 は本番に使わない</strong>と公式明記。プラットフォーム更新時は新旧インフラ並走で一時的に IP 消費が増える)。同時セッション要件から逆算し使用率 80% 未満で設計。5xx と 429 <code>subnet_exhausted</code> を枯渇アラートに。1:10 への拡張はサポート依頼</td>
-<td><a href="https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/agents-networking-deep-dive">公式: networking deep dive</a> / <a href="../../architecture/html/09-operations.html">公式: architecture 09</a></td>
+<td><strong>委任サブネットの IP 枯渇</strong>。1 セッション = 1 IP(既定)、/27 で約 17、/26 で約 50。使用率はポータルに出ない。※2026-09-26: networking deep dive(ms.date 2026-09-07 版)の容量表は <strong>/27 ≈ 20・/26 ≈ 50・/25 ≈ 100・/24 ≈ 250 セッション</strong>(上限はサブスクリプション×リージョンのセッションクォータが別に効く)。hosted agent 側の兆候は <strong>セッション作成・再開時の HTTP 429 <code>subnet_exhausted</code></strong> と明記。1 アカウントのプロジェクト数も低負荷で約 250、高負荷では約 25 まで落ちる ※2026-11-22: <strong>shared subnet IPs が GA</strong>(devblogs 2026-11-18、全員に既定で有効)— セッションは VM 分離のまま IP を共有し、計画上の容量は /27 = 7,500・/26 = 15,000・/25 = 30,000・/24 = 60,000 セッション(アカウント内の全プロジェクト合計、保証値ではない)。実際の同時実行は<strong>サブスクリプション × リージョンの同時セッションクォータ(既定 2,000 / 1,000)</strong>で決まり、サブネットを大きくしても増えない。プロジェクト単位のネットワーク部品は引き続き IP を消費し、枯渇の兆候(5xx・429 <code>subnet_exhausted</code>)も同じ</td>
+<td>/24 推奨(<strong>/27 は本番に使わない</strong>と公式明記。プラットフォーム更新時は新旧インフラ並走で一時的に IP 消費が増える)。同時セッション要件から逆算し使用率 80% 未満で設計。5xx と 429 <code>subnet_exhausted</code> を枯渇アラートに。1:10 への拡張はサポート依頼 ※2026-11-22: 見積もりの律速は「1 セッション = 1 IP」からセッションクォータに移った。本番 /24 以上の推奨(アップグレード時の新旧並走)は不変。prompt agent はプロジェクトあたり約 10 IP の固定プールで、この表の対象外</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/agents-networking-deep-dive">公式: networking deep dive</a> / <a href="../../architecture/html/09-operations.html">公式: architecture 09</a> / <a href="https://devblogs.microsoft.com/foundry/hosted-agents-foundry-agent-service-ignite-2026/">公式ブログ: Hosted agents at Ignite 2026</a></td>
 </tr>
 <tr>
 <td>P-N06</td>
 <td>「閉域なのに外に出る」— Bing / Web search / SharePoint Grounding</td>
-<td>閉域でも<strong>パブリック経路</strong>で通信し、Web search は DPA 対象外。egress サブネットを完全にバイパスする(Firewall の 443 許可で制御できない)</td>
+<td>閉域でも<strong>パブリック経路</strong>で通信し、Web search は DPA 対象外。egress サブネットを完全にバイパスする(Firewall の 443 許可で制御できない) ※2026-11-22: web search は直付け = Web IQ / toolbox 経由 = Grounding with Bing に分かれ、DPA 非適用などの条項は Bing 側の注記(P-R18)。閉域でも公開経路なのは不変(web-overview「Web grounding tools don't respect VPN or private endpoints」)</td>
 <td>規制業種では Azure Policy で禁止。必要なら社内キュレーション済み情報を AI Search に</td>
 <td><a href="https://learn.microsoft.com/en-us/azure/foundry/how-to/configure-private-link">公式</a> / <a href="../../architecture/html/07-usecase-regulated-edge.html#3-閉域で使えない機能の一覧-設計の出発点">公式: architecture 07 §3</a> / <a href="https://qiita.com/ManabuYamamoto/items/498e9c2cf0ba2744a3ba">記事: Qiita 2026-06</a></td>
 </tr>
@@ -578,15 +655,15 @@ footer {
 <td>P-N07</td>
 <td>Firewall 配下でエージェント通信が壊れる / Agent Service 宛の固定 IP・サービスタグが見つからない</td>
 <td><strong>FW の TLS 検査(自己署名証明書)がエージェント通信を壊す</strong>。Agent Service 単独のサービスタグは未公開</td>
-<td>TLS 検査除外ルール。アプリケーションルール(FQDN・ワイルドカード)+ DNS プロキシ + ログを見ながら許可リストを反復更新。「IP 固定」は要求されても出来ない。※2026-09-26 追記: <strong>hosted agent 限定</strong>で「network egress controls」(<strong>プレビュー</strong>、2026-09-24 発表。RAI ポリシーの <code>egressPolicy</code> にホスト名単位の Allow / Deny / Transform / Rewrite、Audit → Enforce の 2 段、最大 480 ルール)が登場。サンドボックス内のプロキシが TLS を検査するため CA をランタイムが注入し約 30 日でローテーション(CA のピン留め・イメージ同梱は不可)。<strong>Azure Firewall の置き換えではなく補完</strong>で、サービスタグ / IP 範囲ルールは未対応。prompt agent・モデルデプロイには効かない。※2026-10-06: hosted agent は Agent 365 への観測エクスポート(<code>agent365.svc.cloud.microsoft</code>)も送る。止め方と許可の絞り方は P-H27</td>
+<td>TLS 検査除外ルール。アプリケーションルール(FQDN・ワイルドカード)+ DNS プロキシ + ログを見ながら許可リストを反復更新。「IP 固定」は要求されても出来ない。※2026-09-26 追記: <strong>hosted agent 限定</strong>で「network egress controls」(<strong>プレビュー</strong>、2026-09-24 発表。RAI ポリシーの <code>egressPolicy</code> にホスト名単位の Allow / Deny / Transform / Rewrite、Audit → Enforce の 2 段、最大 480 ルール)が登場。サンドボックス内のプロキシが TLS を検査するため CA をランタイムが注入し約 30 日でローテーション(CA のピン留め・イメージ同梱は不可)。<strong>Azure Firewall の置き換えではなく補完</strong>で、サービスタグ / IP 範囲ルールは未対応。prompt agent・モデルデプロイには効かない。※2026-10-06: hosted agent は Agent 365 への観測エクスポート(<code>agent365.svc.cloud.microsoft</code>)も送る。止め方と許可の絞り方は P-H27 ※2026-11-22: egress controls は <strong>GA</strong>(Transform ルールを除く。安定版 api-version 2026-09-01。add-hosted-agent-guardrails 11-11・devblogs 11-18)。パスでの一致・ホストのワイルドカードが使え、Copilot harness の実行環境にも適用できる。GA 版のページから「サービスタグ / IP 範囲ルールは未提供」の記述が消えた(提供されたかは要確認)。secret 参照ヘッダーと Azure Policy による統制は preview で日本リージョンなし、IaC の落とし穴は P-N25。「Azure Firewall の補完」の位置づけは不変。TLS 検査と Entra の通信は P-N23</td>
 <td><a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/add-hosted-agent-guardrails">公式: hosted agent guardrails / egress(preview)</a> / <a href="https://devblogs.microsoft.com/foundry/egress-controls-hosted-agent/">公式ブログ 2026-09-24</a> / <a href="https://qiita.com/ManabuYamamoto/items/498e9c2cf0ba2744a3ba">記事: Qiita 2026-06</a> / <a href="https://learn.microsoft.com/ja-jp/answers/questions/5845924/foundry-agent-service-fw">記事: Q&amp;A(日本語) 2026-04</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/how-to/configure-private-link">公式: FQDN 一覧</a></td>
 </tr>
 <tr>
 <td>P-N08</td>
 <td>VNet が消せない(<code>serviceAssociationLinks</code>)/ purge が 500 / 削除が Accepted のまま</td>
-<td>削除順序は <strong>Foundry → purge(約 20 分)→ VNet</strong>。purge には <code>deletedAccounts/delete</code> 権限。接続・エージェント・vector store が残っていると Accepted で止まる</td>
-<td>使い捨て環境でも削除手順を runbook 化。名前にランダムサフィックス(同名再作成は soft delete で不可)</td>
-<td><a href="../../architecture/html/07-usecase-regulated-edge.html#その他の運用上の制約">公式: architecture 07 §3</a> / <a href="https://learn.microsoft.com/en-us/answers/questions/5947792/unable-to-purge-soft-deleted-microsoft-foundry-acc">記事: Q&amp;A 2026-07</a> / <a href="https://learn.microsoft.com/en-us/answers/questions/5695052/unable-to-delete-azure-ai-foundry-stuck-in-accepte">記事: Q&amp;A 2026-01</a></td>
+<td>削除順序は <strong>Foundry → purge(約 20 分)→ VNet</strong>。purge には <code>deletedAccounts/delete</code> 権限。接続・エージェント・vector store が残っていると Accepted で止まる ※2026-11-22: 同じサブネットで Foundry アカウントを作り直すと <code>DelegatedSubnetInUse</code> になる — 削除はソフト削除で、エージェント環境は purge されるまでサブネット(<code>legionservicelink</code>)を持ち続ける(devblogs 2026-11-21)</td>
+<td>使い捨て環境でも削除手順を runbook 化。名前にランダムサフィックス(同名再作成は soft delete で不可) ※2026-11-22: <code>az cognitiveservices account list-deleted</code> で残っているアカウントを確かめて purge(Cognitive Services Contributor か、サブスクリプションの Contributor が必要。永久削除)し、<code>serviceAssociationLinks</code> が空になってから再利用する。開発ループでは「アカウントごとに別のエージェントサブネット」が簡単</td>
+<td><a href="../../architecture/html/07-usecase-regulated-edge.html#その他の運用上の制約">公式: architecture 07 §3</a> / <a href="https://learn.microsoft.com/en-us/answers/questions/5947792/unable-to-purge-soft-deleted-microsoft-foundry-acc">記事: Q&amp;A 2026-07</a> / <a href="https://learn.microsoft.com/en-us/answers/questions/5695052/unable-to-delete-azure-ai-foundry-stuck-in-accepte">記事: Q&amp;A 2026-01</a> / <a href="https://devblogs.microsoft.com/foundry/hosted-agents-private-network-setup/">公式ブログ: devblogs 2026-11-21</a></td>
 </tr>
 <tr>
 <td>P-N09</td>
@@ -613,7 +690,7 @@ footer {
 <td>P-N12</td>
 <td>PNA Disabled で Teams / M365 に公開できない</td>
 <td>ポータル公開不可。REST の <code>enable_m365_public_endpoint</code> で送信元 IP フィルタ付きの公開 Activity 経路を作る = <strong>完全閉域にはならない</strong></td>
-<td>「閉域 Foundry × Teams 公開」はデータ所在・監査の合意事項に加える ※2026-10-14: publish-copilot-virtual-network(ms.date 2026-10-06)が PNA の有無を問わない REST 公開手順に再構成された(<code>enable_m365_public_endpoint</code> は PNA 無効時のみ必要)。受信経路は<strong>公衆インターネット経由</strong>で、Foundry が送信元 IP を Bot Service / Microsoft 365 の範囲で照合 → チャネルトークン検証 → 認可、の順。公式は「送信元 IP の範囲は複数テナントで共用されうるので IP 制限は多層防御の 1 つにすぎない」と明記している。PNA 無効でポータル公開が 403 になる場合は、アプリパッケージの ZIP(<code>POST .../microsoft365/zip?api-version=v1</code>)を取得して <strong>M365 管理センターでアップロード</strong>する代替がトラブル表にある。閉域の合意事項には「受信は公衆インターネット経由・IP 範囲は共用」まで書く。ゲストユーザーは呼び出せない(P-X08)</td>
+<td>「閉域 Foundry × Teams 公開」はデータ所在・監査の合意事項に加える ※2026-10-14: publish-copilot-virtual-network(ms.date 2026-10-06)が PNA の有無を問わない REST 公開手順に再構成された(<code>enable_m365_public_endpoint</code> は PNA 無効時のみ必要)。受信経路は<strong>公衆インターネット経由</strong>で、Foundry が送信元 IP を Bot Service / Microsoft 365 の範囲で照合 → チャネルトークン検証 → 認可、の順。公式は「送信元 IP の範囲は複数テナントで共用されうるので IP 制限は多層防御の 1 つにすぎない」と明記している。PNA 無効でポータル公開が 403 になる場合は、アプリパッケージの ZIP(<code>POST .../microsoft365/zip?api-version=v1</code>)を取得して <strong>M365 管理センターでアップロード</strong>する代替がトラブル表にある。閉域の合意事項には「受信は公衆インターネット経由・IP 範囲は共用」まで書く。ゲストユーザーは呼び出せない(P-X08) ※2026-11-22: publish-copilot / publish-copilot-virtual-network(ms.date 2026-11-12)で<strong>別途の Azure Bot Service リソースは不要</strong>になった(REST は <code>performBotRegistration: true</code> でエージェント ID と Activity エンドポイントを Teams Graph に直接登録)。PNA 無効時の受信経路(<code>enable_m365_public_endpoint</code>・公衆インターネット経由・送信元 IP の照合)の説明は不変</td>
 <td><a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/publish-copilot">公式</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/publish-copilot-virtual-network">公式: publish-copilot-virtual-network(REST 公開)</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/troubleshoot-publish-copilot">公式: troubleshoot-publish-copilot</a></td>
 </tr>
 <tr>
@@ -672,6 +749,34 @@ footer {
 <td>閉域の Search を使うなら <strong>standard setup + VNet 注入</strong>を前提にする(「public access を一時的に開ければ繋がる」を回避策にしない)。キーレス認証のロールは接続の認証種別に合わせて付与先を確かめ、PoC の受入試験に「PE 付き Search への検索が通ること」を入れる。プロジェクトの capability host と接続メタデータは P-N03</td>
 <td><a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/ai-search">公式: ai-search(Limitations)</a></td>
 </tr>
+<tr>
+<td>P-N22</td>
+<td>VNet 注入した hosted agent のデプロイは成功するのに、ポータルの Agents ページが回り続けて <code>Timeout of 60000ms exceeded</code>。API は 400 <code>invalid_configuration</code>「Listing agents timed out after 8s while reading the agent index」</td>
+<td>(devblogs 2026-11-21 の 5 項目チェック)エージェントサブネットのデータプロキシが <strong>BYO Cosmos DB に時間内に届かない</strong>。多いのは DNS で、<code>privatelink.documents.azure.com</code> ゾーンが<strong>エージェントサブネットのある VNet にリンクされていない</strong>(ハブ VNet にだけリンク)、アカウントとリージョンごとの A レコードがない、カスタム DNS がゾーンを 168.63.129.16 に転送していない(オンプレの DNS からは届かない)。もう 1 つは Entra のサインイン経路(P-N23)。Key Vault(<code>privatelink.vaultcore.azure.net</code>)・App Insights(AMPLS)が公開 IP に解決される場合も同じ。ピア VNet(ハブ)の PE は使えるが、データ転送コストが増えうる</td>
+<td>① <code>az cognitiveservices account show --query properties.networkInjections</code> でエージェントサブネットを特定し、<code>Microsoft.App/environments</code> 委任・/27 以上(本番 /24 以上)・RFC 1918・ピア VNet と重ならない・Foundry リソース 1 つ専用・<code>legionservicelink</code> を確認 ② Cosmos の PE(Sql)と承認状態 ③ private DNS ゾーンのリンク先が<strong>エージェントサブネットの VNet</strong>か ④ 同じ VNet の VM から <code>nslookup &lt;account&gt;.documents.azure.com</code> が PE の IP を返すか ⑤ UDR が PE へのピアリング経路を上書きしていないか。層別の切り分けには新設の troubleshoot-hosted-agent-networking(診断エージェントで DNS → TCP → TLS → HTTP)も使える。この順序を閉域の runbook に入れる</td>
+<td><a href="https://devblogs.microsoft.com/foundry/hosted-agents-private-network-setup/">公式ブログ: devblogs 2026-11-21「five checks when the Agents page times out」</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/troubleshoot-hosted-agent-networking">公式: troubleshoot-hosted-agent-networking</a></td>
+</tr>
+<tr>
+<td>P-N23</td>
+<td>FW で TLS 検査をしている閉域で、FW の CA を private CA trust(preview)に登録したのに、エージェント一覧・会話一覧のタイムアウトが止まらない</td>
+<td>private-certificate-authority(ms.date 2026-11-18)は「<strong>private CA trust はエージェントサブネットからのプラットフォーム自身の Entra ID・マネージド ID の通信には適用されない</strong>。FW がその通信を TLS 検査すると、CA を追加しても一覧の取得などが失敗・タイムアウトしうる」と明記(devblogs 2026-11-21 も再現で確認)。private CA trust の用途は、自前 VNet の閉域プロジェクトのデータプロキシ経由のツール・toolbox・BYOM ゲートウェイと、hosted のコードからの直接 HTTPS(新しいセッションから)。ソースコードデプロイのリモートビルド(私設 CA の社内パッケージフィード)・相互 TLS・memory snapshot から復元したセッションの一部経路は未対応で、ポータルにも設定がない</td>
+<td><code>login.microsoftonline.com</code>・<code>{region}.login.microsoft.com</code>・<code>control-{region}.identity.azure.net</code> を <strong>TLS 検査から除外</strong>し、FW で許可する(マネージド ID の FQDN は Container Apps の FW ガイダンスか <code>AzureActiveDirectory</code> サービスタグ。エージェントサブネットに NSG を置くなら同じタグの送信許可)。private CA trust は「社内 CA の API・MCP に証明書検証を有効にしたまま繋ぐ」用途に限り、TLS 検査の回避策と混同しない。CA は Key Vault の<strong>シークレット</strong>(証明書オブジェクトではない)に PEM で置き、版を固定して参照する。社内フィードを使うビルドは依存を同梱するかカスタムイメージにする</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/private-certificate-authority">公式: private-certificate-authority(preview)</a> / <a href="https://devblogs.microsoft.com/foundry/hosted-agents-private-network-setup/">公式ブログ: devblogs 2026-11-21</a></td>
+</tr>
+<tr>
+<td>P-N24</td>
+<td>DNS は PE の IP を正しく返すのに、hosted agent から BYO リソースへの接続が <code>No route to host</code>(<code>EHOSTUNREACH</code>)になる</td>
+<td>virtual-networks・agents-networking-deep-dive(2026-11 版)に新しい制限が加わった: <strong>プライベートエンドポイントを <code>192.168.0.0/24</code> に置かない</strong> — hosted のサンドボックス内部ネットワークと重なる。VNet / ピア VNet と重なってはいけない予約範囲として <code>169.254.0.0/16</code>・<code>172.30.0.0/16</code>・<code>172.31.0.0/16</code>・<code>192.0.2.0/24</code>・<code>0.0.0.0/8</code>・<code>127.0.0.0/8</code>・<code>100.100.0.0/17</code> 等も列挙(configure-private-link の <code>172.17.0.0/16</code> 不可も継続)</td>
+<td>顧客の既存のアドレス計画に 192.168.0.0/24 の PE がないかを閉域のヒアリングで確認し、あれば PE を範囲外へ移して private DNS を更新する。新規の閉域設計では予約範囲の一覧を IP 計画のチェックリストに入れる</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/virtual-networks">公式: virtual-networks</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/agents-networking-deep-dive">公式: agents-networking-deep-dive</a> / <a href="https://devblogs.microsoft.com/foundry/hosted-agents-private-network-setup/">公式ブログ: devblogs 2026-11-21</a></td>
+</tr>
+<tr>
+<td>P-N25</td>
+<td>hosted agent の egress controls(2026-11 に GA)を IaC 化したら、デプロイ後のポリシーから egress 規則が消えている / egress だけのポリシーが HTTP 400 / Key Vault の資格情報をヘッダーに注入したいのに日本リージョンで設定できない / Azure Policy を Enforce にしたのに動いているセッションが従わない</td>
+<td><span class="badge ga">GA</span> 版(add-hosted-agent-guardrails ms.date 2026-11-11)は<strong>安定版 api-version <code>2026-09-01</code></strong> で RAI policy の <code>egressPolicy</code> を扱う。<strong><code>az group export</code> 等で古い api-version(例 2026-07-01)のテンプレートを出すと egress 規則が落ち</strong>、コンテンツフィルターだけが残る。egress だけのポリシーでも <code>contentFilters</code> は必須(ないと 400)。GA は Transform ルール以外で、<strong>secret 参照ヘッダー(<code>valueRef.secretRef</code>)は preview・Canada Central / Spain Central のみ・Key Vault の公開エンドポイントが必須</strong>(PE・顧客 VNet 経由の解決は非対応)、<strong>Azure Policy による egress 統制は preview・Canada Central / Spain Central / Korea Central のみ</strong>(データプレーンの割当て変更の反映は 30〜60 分、既存の版は非準拠と報告されるだけで削除・修復されない)。動いているセッションは開始時のポリシーを使い続ける</td>
+<td>IaC は Bicep / ARM の <code>2026-09-01</code>(<code>accounts@2026-09-01</code> / <code>raiPolicies@2026-09-01</code>)で書き、稼働中の <code>egressPolicy</code> を GET して写す。egress 専用でも <code>contentFilters</code> を置く。日本リージョンの案件では「資格情報はプロキシが注入する」「組織のポリシーで強制する」を前提にしない(静的ヘッダーに資格情報を入れるのは公式が禁止)。Enforce に切り替えたら新しい版をデプロイし、新しいセッションで試験する。RAI ポリシーへの書き込み権限はエージェントの更新権限と同等に扱う(公式)。Azure Firewall の補完という位置づけは GA 後も同じ(P-N07)</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/add-hosted-agent-guardrails">公式: add-hosted-agent-guardrails</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/configure-hosted-agent-secret-references">公式: configure-hosted-agent-secret-references(preview)</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/govern-hosted-agent-egress-azure-policy">公式: govern-hosted-agent-egress-azure-policy(preview)</a></td>
+</tr>
 </tbody></table></div>
 <h2 id="e-rag-とナレッジ">E. RAG とナレッジ</h2>
 <div class="tablewrap"><table><thead><tr>
@@ -719,15 +824,15 @@ footer {
 <tr>
 <td>P-R07</td>
 <td>「部署によって見える文書が違う」を AI Search ツールで実現できない</td>
-<td>Agents の AI Search ツールは <code>x-ms-query-source-authorization</code>(ユーザー別セキュリティトリミング)を渡す手段がない(issue は untriaged)。Foundry IQ の MCP ヘッダーも<strong>エージェント定義単位</strong>でリクエスト単位ではない。<strong>※2026-09-26: Foundry IQ 側は変化。</strong>foundry-iq-connect(2026-09-17 更新)で、エージェント定義に structured input を宣言し MCP ツールのヘッダーを <code>{{placeholder}}</code> で参照すれば、<code>x-ms-query-source-authorization</code> を<strong>リクエストごとに</strong>呼び出し側から渡せる(project connection に束ねた MCP ツールが対象。クエリ時の権限適用自体はプレビュー)。<strong>トークンを渡さないと権限付きソースは未フィルタで全件返る</strong>(fail-open)点に注意。Agents の AI Search ツールでの手段がないことは変わらず</td>
-<td>権限差のある RAG は「自前 Responses 呼び出し + AI Search セキュリティフィルタ」か Foundry IQ の ACL 同期対応ソース(※2026-09-26: Foundry IQ を使う場合は structured input でユーザートークンを毎回渡し、「トークン欠落時に全件返らないか」を受入テストに入れる)。詳細は <a href="../../architecture/html/04-usecase-chat-rag.html#ドキュメントレベルアクセス制御の-4-方式">architecture 04 の 4 方式</a></td>
-<td><a href="https://github.com/Azure/azure-sdk-for-python/issues/44454">記事: sdk issue 2025-12(open)</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/foundry-iq-connect">公式: foundry-iq-connect(per-request headers)</a> / <a href="https://jannikreinhard.com/foundry-iq-knowledge-bases/">記事: 個人ブログ 2026-08</a></td>
+<td>Agents の AI Search ツールは <code>x-ms-query-source-authorization</code>(ユーザー別セキュリティトリミング)を渡す手段がない(issue は untriaged)。Foundry IQ の MCP ヘッダーも<strong>エージェント定義単位</strong>でリクエスト単位ではない。<strong>※2026-09-26: Foundry IQ 側は変化。</strong>foundry-iq-connect(2026-09-17 更新)で、エージェント定義に structured input を宣言し MCP ツールのヘッダーを <code>{{placeholder}}</code> で参照すれば、<code>x-ms-query-source-authorization</code> を<strong>リクエストごとに</strong>呼び出し側から渡せる(project connection に束ねた MCP ツールが対象。クエリ時の権限適用自体はプレビュー)。<strong>トークンを渡さないときの挙動は Learn のページで食い違う</strong>(foundry-iq-connect は未フィルタで全件返す、retrieve と query-time ACL のページは ACL 付きの文書を返さない。2026-11-22 確認)ので、渡し忘れを前提にしない。Agents の AI Search ツールでの手段がないことは変わらず ※2026-11-22: foundry-iq-connect(KB の MCP エンドポイントの例は <code>2026-11-01-preview</code>)は、<strong>呼び出し主体がユーザーなら Agent Service が <code>x-ms-query-source-authorization</code> をそのユーザーの文脈で自動設定</strong>し、ユーザーを直接表さない呼び出しではアプリが structured inputs でトークンを渡す、と整理した上で「トークンがないと権限付きソースはフィルターされずに結果を返す」と書く。一方、agentic-retrieval-how-to-retrieve(11-09)は「ネイティブの権限フィルターを有効にしたインデックスでは公開の許可だけを残し、未フィルタでは返さない」、query-time ACL のページ(11-06)は「ACL で保護された内容は返さない」と書き、Learn の中で食い違う(2026-11-22 確認)。SharePoint (indexed) ナレッジソースは GA になり、権限はインデックス時点の値(親スコープの継承権限の変更は明示的な再同期が必要)</td>
+<td>権限差のある RAG は「自前 Responses 呼び出し + AI Search セキュリティフィルタ」か Foundry IQ の ACL 同期対応ソース(※2026-09-26: Foundry IQ を使う場合は structured input でユーザートークンを毎回渡し、「トークン欠落時に全件返らないか」を受入テストに入れる)。詳細は <a href="../../architecture/html/04-usecase-chat-rag.html#ドキュメントレベルアクセス制御の-4-方式">architecture 04 の 4 方式</a> ※2026-11-22: サービス主体・バッチ・ルーチンなどユーザーを表さない経路でトークンが渡ることを受入試験で確かめる。SharePoint の権限変更には再同期の運用を決める</td>
+<td><a href="https://github.com/Azure/azure-sdk-for-python/issues/44454">記事: sdk issue 2025-12(open)</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/foundry-iq-connect">公式: foundry-iq-connect(per-request headers)</a> / <a href="https://jannikreinhard.com/foundry-iq-knowledge-bases/">記事: 個人ブログ 2026-08</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/foundry-iq-connect">公式: foundry-iq-connect</a> / <a href="https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/foundry-iq-sharepoint-indexed-knowledge-source-is-now-generally-available/4573317">公式ブログ: Tech Community 2026-11-18(SharePoint indexed GA)</a></td>
 </tr>
 <tr>
 <td>P-R08</td>
 <td>Foundry IQ で「GA」と聞いて提案したらポータル面・answer synthesis・query planning がプレビュー。SharePoint ソースが検証できない。KB のソース数上限に当たる</td>
-<td><strong>Partial GA(API は GA、ポータルは Preview)</strong>。SharePoint ソースはエンドユーザーに M365 Copilot ライセンス。ソース最大 10 / KB とソースは同一 Search サービス。reasoning effort で取得文書数が大きく変わる(medium 22 件 vs minimal 8 件)。Web ソース(Bing)は境界外 + 別課金。自動生成インデックスを手編集すると同期が壊れる。C# / JS SDK 未対応(Python + REST)</td>
-<td>機能単位で GA / プレビューを確認(<a href="../../architecture/html/04-usecase-chat-rag.html#a5-複数ソース横断・高精度-foundry-iq-agentic-retrieval">architecture 04 A5</a>)。「効果レベル × ソース数 × クエリ数」でコスト試算。閉域・所在要件では Web ソース無効化。※2026-10-06: remote SharePoint ソースの支払いは、利用者ごとに <strong>Copilot アドオンライセンスか Retrieval API の従量課金(preview)</strong>のどちらか。従量課金でも、テナントに最低 1 つの Copilot ライセンスが有効化の前から利用中ずっと必要(agentic-knowledge-source-how-to-sharepoint-remote 2026-10-01 版)</td>
+<td><strong>Partial GA(API は GA、ポータルは Preview)</strong>。SharePoint ソースはエンドユーザーに M365 Copilot ライセンス。ソース最大 10 / KB とソースは同一 Search サービス。reasoning effort で取得文書数が大きく変わる(medium 22 件 vs minimal 8 件)。Web ソース(Bing)は境界外 + 別課金。自動生成インデックスを手編集すると同期が壊れる。C# / JS SDK 未対応(Python + REST) ※2026-11-22: 状況が変わった — Search のデータプレーン安定版 <strong><code>2026-10-01</code> で LLM クエリプランニング・answer synthesis・low / medium effort・messages・SSE・引用・File / indexed Azure SQL / indexed SharePoint ナレッジソースが GA</strong>(auto effort・remote SharePoint / Fabric / MCP / Work IQ ソースは preview。新しい preview は <code>2026-11-01-preview</code>)。GA 一覧表は「Partial GA(API-level GA; portal access remains Preview)」のまま。名称は <strong>Azure AI Search → Foundry IQ (Azure AI Search)</strong> に改称(<code>Microsoft.Search</code>・<code>*.search.windows.net</code>・API 版・RBAC ロール名・課金メーター名は不変)</td>
+<td>機能単位で GA / プレビューを確認(<a href="../../architecture/html/04-usecase-chat-rag.html#a5-複数ソース横断・高精度-foundry-iq-agentic-retrieval">architecture 04 A5</a>)。「効果レベル × ソース数 × クエリ数」でコスト試算。閉域・所在要件では Web ソース無効化。※2026-10-06: remote SharePoint ソースの支払いは、利用者ごとに <strong>Copilot アドオンライセンスか Retrieval API の従量課金(preview)</strong>のどちらか。従量課金でも、テナントに最低 1 つの Copilot ライセンスが有効化の前から利用中ずっと必要(agentic-knowledge-source-how-to-sharepoint-remote 2026-10-01 版) ※2026-11-22: 機能単位の確認は「API 版ごと」になった — GA の範囲で組むなら <code>2026-10-01</code> を使い、preview の機能(auto effort・remote ソース・ナレッジグラフ・Microsoft Retriever 1)は別に扱う。preview 版から 2026-10-01 へは「GA の契約がユースケースを満たす場合だけ」移行するよう公式が注意している。改称に伴う IaC・スクリプトの変更は不要</td>
 <td><a href="https://learn.microsoft.com/ja-jp/azure/foundry/agents/concepts/foundry-iq-faq">公式: FAQ</a> / <a href="https://blog.cloudnative.co.jp/articles/foundry-iq-hands-on/">記事: クラウドネイティブ 2026-07</a> / <a href="https://jannikreinhard.com/foundry-iq-knowledge-bases/">記事: 個人ブログ 2026-08</a> / <a href="https://www.docswell.com/s/m-taka596/5DMJG6-foundryIQ-20260418">記事: ドクセル(MVP) 2026-04</a></td>
 </tr>
 <tr>
@@ -755,7 +860,7 @@ footer {
 <td>P-R12</td>
 <td>Azure OpenAI On Your Data の既存提案書がそのまま使えない</td>
 <td><strong>2026-10-14 廃止</strong>。新モデルのオンボード停止(GPT-4o 系のみ)。OYD 固有仕様(チャンク 1,024、strictness / topNDocuments、<code>tools</code> と <code>data_sources</code> 併用時は data_sources 無視)は Agent Service + Foundry IQ に写像できない</td>
-<td>2026-10 までに移行計画。チャンク / 厳密度の挙動差を再評価する前提で見積もる <strong>※2026-10-14: 本日が廃止日</strong>。use-your-data ページ(updated_at 2026-09-11)は当日も「will be retired on October 14, 2026」の未来形のままで、廃止後の挙動(API が即エラーになるか等)の記載はない。残っている依存は即時の切り替えが必要。同じ日とされていた gpt-4.1-nano のリタイアは 2027-04-14 に戻った(P-M07)</td>
+<td>2026-10 までに移行計画。チャンク / 厳密度の挙動差を再評価する前提で見積もる <strong>※2026-10-14: 本日が廃止日</strong>。use-your-data ページ(updated_at 2026-09-11)は当日も「will be retired on October 14, 2026」の未来形のままで、廃止後の挙動(API が即エラーになるか等)の記載はない。残っている依存は即時の切り替えが必要。同じ日とされていた gpt-4.1-nano のリタイアは 2027-04-14 に戻った(P-M07) ※2026-11-22: ページは「retired on October 14, 2026, and is no longer supported」と過去形になった(廃止済み)</td>
 <td><a href="https://learn.microsoft.com/ja-jp/azure/foundry-classic/openai/concepts/use-your-data">公式</a> / <a href="../../architecture/html/10-migration-antipatterns.html#1-確定済み廃止スケジュールと設計への影響">公式: architecture 10 §1</a></td>
 </tr>
 <tr>
@@ -783,7 +888,7 @@ footer {
 <td>P-R16</td>
 <td>ナレッジベースの MCP 応答を解析するコードが、Search の api-version を上げたら壊れた / どのソースが答えたか分からない</td>
 <td><strong>ナレッジベース MCP の応答の形とツールの入力スキーマは preview API の版に結び付いている</strong>: <code>2026-05-01-preview</code> は引数 <code>queries</code>・参照 URI が <code>mcp://searchindex/&lt;doc id&gt;</code>(インデックス名なし)、<code>2026-08-01-preview</code> は引数 <code>query_variants</code>・参照ごとにインデックス URI と <code>sourceData.domain</code>、<code>_meta.agenticReasoningTokens</code> が付く。生成されたサブクエリはどちらも返らない</td>
-<td>api-version を固定し、上げるときは MCP 応答の解析を回帰テストに入れる。「どのソースが答えたか」は <code>2026-08-01-preview</code> 以降なら参照の URI から取れる</td>
+<td>api-version を固定し、上げるときは MCP 応答の解析を回帰テストに入れる。「どのソースが答えたか」は <code>2026-08-01-preview</code> 以降なら参照の URI から取れる ※2026-11-22: foundry-iq-connect の KB MCP エンドポイントの例とトラブルシュートは <code>api-version=2026-11-01-preview</code> に更新された。上げる場合も同じく回帰テストを通す</td>
 <td><a href="../../../../labs/maf-ports/ports/db-routing-iq/README.md">実測: port 10(2026-10-06)</a></td>
 </tr>
 <tr>
@@ -791,7 +896,21 @@ footer {
 <td>Foundry IQ のナレッジベースで retrieve が 401 / 502 になる。SharePoint のナレッジソースで「部署」「文書種別」のようなカスタム列で絞り込めない</td>
 <td>(Tech Community 2026-10-08 の実装記事)① キー認証を無効にした Search では、<strong>検索サービスの MI に <code>Cognitive Services User</code> を付けないと retrieve が 401</strong> ② LLM のクエリプランナーが不正なフィルター(引用符抜け・文字列型の項目を Boolean 扱い)を生成すると <strong>retrieve が 502</strong> ③ ネイティブの SharePoint ナレッジソースは<strong>カスタム列(メタデータ)を取り込まない</strong>。記事は新機能・新 API 版を含まない(query hints〈preview〉・<code>baseFilter</code>・<code>filterAddOn</code> は <code>2026-08-01-preview</code> から Learn にある)</td>
 <td>Search の MI のロールを Bicep に含める。フィルター指示にフィールド型と許容値を明記し、アプリ側で retrieve の失敗を処理する(502 を「検索結果なし」に丸めない)。メタデータで絞る要件はカスタムインデックス(searchIndex ナレッジソース)にして、全チャンクに親文書のメタデータを別フィールドで持たせる(記事の計測で上位 5 件の正解数 26 → 39〜41 / 50)。カスタムインデックスは SharePoint の権限を継承しないので、ACL を取り込みと検索に持ち込む(P-R07)</td>
-<td><a href="https://techcommunity.microsoft.com/t5/microsoft-foundry-blog/when-the-answer-isn-t-in-the-document-metadata-aware-agentic-rag/ba-p/4562237">記事: Tech Community 2026-10</a></td>
+<td><a href="https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/when-the-answer-isn%E2%80%99t-in-the-document-metadata-aware-agentic-rag-with-foundry-iq/4562237">記事: Tech Community 2026-10</a></td>
+</tr>
+<tr>
+<td>P-R18</td>
+<td>web search を toolbox に入れたエージェントと prompt agent に直付けしたエージェントで、データの扱い(DPA・地理境界)の説明が食い違う / <code>external_web_access=False</code> でライブのアクセスを止めたつもりになっていた</td>
+<td>web-search(ms.date 2026-11-10)・web-overview(10-31)で <strong>general web search の提供元が経路で分かれた</strong> — prompt agent / Responses API への直付けは <strong>Web IQ</strong>、<strong>toolbox に入れた web search(<code>WebSearchToolboxTool</code>)は従来どおり Grounding with Bing Search</strong>。データ境界の注記も経路で違い、Web IQ は「Web IQ の利用規約に従い Azure のコンプライアンス境界外で処理されうる」、<strong>DPA 非適用・地理境界外への転送・GCC 等の高度なコミットメントの放棄が明記されているのは Grounding with Bing 側</strong>(toolbox 経由・Custom search)。<code>external_web_access</code> は「<strong>Foundry Agent Service は常に false として扱い、true にしてもライブのインターネットアクセスは有効にならない</strong>」と明記された(2026-09 の記述から変化)。Web IQ の toolbox 対応は coming soon</td>
+<td>規制業種の提案では、web search を<strong>直付けか toolbox 経由か</strong>まで書いて適用条項を確認する(同じ「Web search」でも契約条件が違う)。<code>external_web_access</code> に頼った制御は外し、使わせないなら管理者の無効化(<code>OpenAI.BlockedTools.web_search</code>)か Azure Policy で止める。閉域でも公開経路で外に出る点(P-N06)は変わらない</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/web-search">公式: web-search</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/web-overview">公式: web-overview</a></td>
+</tr>
+<tr>
+<td>P-R19</td>
+<td>Foundry IQ(Azure AI Search)の Serverless で組んだ PoC を閉域の本番に持っていこうとしたら、indexed ナレッジソースの取り込みを閉域にできない / インデクサーがまとめて止まる</td>
+<td>Serverless(Search Learn = GA / Azure ブログ = 2026-12 GA の両論。「Developer tier」の表記は消えた)は<strong>インデクサーをマルチテナント実行環境でしか動かせず、private 接続そのものが非対応</strong>(shared private link の private 実行環境・outbound SPL なし)。<strong>private ingestion は適格な Dedicated のみ</strong>(各 knowledge source のページは S2 / S3 / L1 / L2 と明記。Basic・S1 は不可。2026-11-22 確認)で、Serverless と Dedicated は相互に移行できない。インデクサーはサービス全体で<strong>累積実行時間 48 時間 / 24 時間(UTC)窓</strong>のクォータを共有し(2026-10-14 時点の記録は 24 時間)、使い切ると実行中のインデクサーは約 5 分以内に止まり新規実行は一時エラーになる(埋め込み・GenAI Prompt・CU スキルは消費が速い)。有償の Serverless はインデクサーの実行も CU を消費する</td>
+<td>閉域の取り込みが要る本番は、最初から Dedicated で PoC する(tier は作り直し前提)。Serverless はインデクサーの累積時間を見積もりと監視に入れる(1 回の実行は 2 時間まで、<code>2026-10-01</code> で残量を取得できる)。Japan West も 2026-11 版で Serverless ✅</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/search/search-indexer-high-density-serverless-overview">公式: search-indexer-high-density-serverless-overview</a> / <a href="https://learn.microsoft.com/en-us/azure/search/search-limits-quotas-capacity">公式: search-limits</a> / <a href="https://learn.microsoft.com/en-us/azure/search/search-sku-tier">公式: search-sku-tier</a></td>
 </tr>
 </tbody></table></div>
 <h2 id="f-モデル-クォータ-コスト">F. モデル / クォータ / コスト</h2>
@@ -813,7 +932,7 @@ footer {
 <td>P-M03</td>
 <td>「日本国内処理」要件で最新モデルが使えない。Data Zone を「国内」と誤解する</td>
 <td>新モデルは Global → Data Zone → 地理(Standard)の順で提供され、<strong>Japan East に Standard がない世代が続く</strong>(GPT-5.1 / 5.2 は Data Zone / Global のみの時期あり)。Data Zone APAC は複数リージョン(豪・日・韓・星・印)にまたがる。地理内処理の意味論は Standard のみ。Regional Standard のクォータは Data Zone より桁違いに小さい(Tier 4 で 50K TPM vs 6M)</td>
-<td>要件定義で「モデル × デプロイ種別 × クォータ」の対応表を提示。国内処理必須ならモデル世代を 1〜2 世代落とす覚悟。リージョン非依存(設定駆動)で実装し、モデル到来を <code>resourceSkus</code> API / Azure Updates で監視。<strong>※2026-09-26: 価格差が開いた。</strong>2026-09-01 から Global 比で <strong>Regional(日本)+35%・APAC Data Zone(新設)+20%</strong>(従量課金は 2026-09-01 以降に出たモデルから適用、PTU は既存も対象)。「国内処理」「APAC 内処理」の要件はモデル世代だけでなく単価の割増として見積もりに載せる</td>
+<td>要件定義で「モデル × デプロイ種別 × クォータ」の対応表を提示。国内処理必須ならモデル世代を 1〜2 世代落とす覚悟。リージョン非依存(設定駆動)で実装し、モデル到来を <code>resourceSkus</code> API / Azure Updates で監視。<strong>※2026-09-26: 価格差が開いた。</strong>2026-09-01 から Global 比で <strong>Regional(日本)+35%・APAC Data Zone(新設)+20%</strong>(従量課金は 2026-09-01 以降に出たモデルから適用、PTU は既存も対象)。「国内処理」「APAC 内処理」の要件はモデル世代だけでなく単価の割増として見積もりに載せる ※2026-11-22: 「Data Zone APAC でよい」案件の GPT-6 世代は、<strong>6.1-sol / 6.1-terra / 6.2-astra / 6.2-sol の Data Zone Standard(APAC 5 リージョン、japaneast を含む)</strong>が選べるようになった(Astra / Sol / Luna は APAC なし)。非 OpenAI では Microsoft-Decision-1.1 が APAC Data Zone(japaneast / japanwest を含む)。一方 <strong>managed compute(2026-11-20 GA)の Data Zone は US / EU のみで、日本は Global のみ</strong>。国内(geography 型)での提供はモデルごとに region 表で確認する</td>
 <td><a href="https://learn.microsoft.com/en-us/azure/foundry/foundry-models/concepts/deployment-types">公式: deployment types</a> / <a href="https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/microsoft-foundry-model-deployment-pricing-update/4535385">公式: Foundry Blog 価格改定 2026-07(2026-09-01 適用)</a> / <a href="https://zenn.dev/headwaters/articles/30b6d6a033fb63">記事: Zenn ヘッドウォータース 2025-12</a> / <a href="https://learn.microsoft.com/ja-jp/answers/questions/5834686/azure-ai-foundry">記事: Q&amp;A(日本語) 2026-03</a> / <a href="https://learn.microsoft.com/en-us/answers/questions/5818245/azure-openai-regional-standard-quotas">記事: Q&amp;A 2026-03(Regional クォータ)</a> / <a href="../../architecture/html/03-decision-guide.html#g1-データ・規制ゲート">公式: architecture 03 G1</a></td>
 </tr>
 <tr>
@@ -834,14 +953,14 @@ footer {
 <td>P-M06</td>
 <td>Model router が既定でいきなり Grok(xAI)にルーティングする。大きいプロンプトで失敗する</td>
 <td>既定プールに非 OpenAI モデルを含む。実効コンテキストは最小モデルに律速</td>
-<td>「Model subset」で対象モデルを明示。データガバナンス要件のある環境で無設定デプロイしない。<code>response.model</code> で監査。※2026-10-06 ライブ(probe 05): 絞り込みなしでは 7 件中 3 件が Grok(残りは gpt-5.6-luna / gpt-5.6-terra / gpt-5.4)— GPT-5.6 系がプールに入っても非 OpenAI へ流れる。<code>Foundry-Features: ModelRouterControls=V1Preview</code> の <code>routing_trace</code>(プレビュー)はアカウントの <code>openai/v1</code> で返り、ルーティングの監査に使える <strong>※2026-10-14: 既定プールに Fireworks のモデルが入った</strong>。What's new in model router(2026-10-06 版)によると 2026-10 にプールが 35 モデルへ拡大 — gpt-6-astra・Claude 3 種(fable-5-1 / opus-5 / sonnet-5。事前デプロイ必須)・grok-4.6 に加え、Fireworks の <code>FW-GLM-5.3</code> / <code>FW-GLM-5.3-Flash</code> / <code>FW-Kimi-K3</code> が入り、事前デプロイが要るのは Claude だけと明記。Fireworks の推論は Microsoft 施設外の Fireworks GPU 上・US のみ。Fireworks を有効化していないサブスクリプションで既定プールから流れるかは記載なし → データの処理場所を限定したい案件は model subset で明示的に絞る(Grok と同じ対策)</td>
+<td>「Model subset」で対象モデルを明示。データガバナンス要件のある環境で無設定デプロイしない。<code>response.model</code> で監査。※2026-10-06 ライブ(probe 05): 絞り込みなしでは 7 件中 3 件が Grok(残りは gpt-5.6-luna / gpt-5.6-terra / gpt-5.4)— GPT-5.6 系がプールに入っても非 OpenAI へ流れる。<code>Foundry-Features: ModelRouterControls=V1Preview</code> の <code>routing_trace</code>(プレビュー)はアカウントの <code>openai/v1</code> で返り、ルーティングの監査に使える <strong>※2026-10-14: 既定プールに Fireworks のモデルが入った</strong>。What's new in model router(2026-10-06 版)によると 2026-10 にプールが 35 モデルへ拡大 — gpt-6-astra・Claude 3 種(fable-5-1 / opus-5 / sonnet-5。事前デプロイ必須)・grok-4.6 に加え、Fireworks の <code>FW-GLM-5.3</code> / <code>FW-GLM-5.3-Flash</code> / <code>FW-Kimi-K3</code> が入り、事前デプロイが要るのは Claude だけと明記。Fireworks の推論は Microsoft 施設外の Fireworks GPU 上・US のみ。Fireworks を有効化していないサブスクリプションで既定プールから流れるかは記載なし → データの処理場所を限定したい案件は model subset で明示的に絞る(Grok と同じ対策) ※2026-11-22: Model router のプールは 45 モデル(Book of News は 50 と記載)。Fireworks は<strong>有効化したサブスクリプションでだけ</strong>ルーティングされると明記された(10-14 の「記載なし」を解消)。Claude・Auto・Azure Policy の扱いと所在要件は P-M22。router のルーティング料が別に掛かる</td>
 <td><a href="../../../../labs/foundry-probes/probes/05-model-router/NOTES.md">実測: probe 05</a> / <a href="https://futurework.blog/2026/05/28/model-router-with-claude-opus-4-7-and-mai-image-2e-in-microsoft-foundry/">記事: 個人ブログ(MVP) 2026-05</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/foundry-models/whats-new-model-router">公式: What's new in model router</a></td>
 </tr>
 <tr>
 <td>P-M07</td>
 <td>モデルのリタイアで 1 年以内に再検証が発生</td>
 <td>リタイア間隔はモデル系列で 12〜18 か月(Azure OpenAI の GA は 18 か月、Anthropic / DeepSeek / Fireworks / Mistral AI の GA は 12 か月 — model-retirements)。Fireworks 系は 15 日前通知</td>
-<td>提案の温度感は「リリースから 18 か月・安全側 12 か月」。運用契約に「モデル移行対応」を含めるかを契約論点に。※2026-10-06: リタイア表は往復改訂される(Claude 4.5 系は 2026-10-19 → 11-15 / 11-24 / 11-30 に延長〈2026-09-28 版〉、gpt-4.1-nano は 10-14 のまま)。延長を当てにせず、最新の表で期限を管理する <strong>※2026-10-14:</strong> gpt-4.1-nano は 2026-10-14 → 2027-04-14 に戻った(2026-09-07 = 2027-04-14 → 09-26 = 2026-10-14 → 10-14 = 2027-04-14 の 3 度目の往復。期限当日の直前まで動いた前例)。xAI の Grok には「<strong>Grok 4.7 以降の GA モデルは最低 6 か月提供</strong>」の条項が新設された(model-retirements・sold・grok how-to、2026-10-06)。18 か月 / 12 か月より短い下限なので、Grok を必須の経路に置く場合は後継への移行を 6 か月単位で見込む。Fireworks にはリタイア表にない期限もある(P-M18)</td>
+<td>提案の温度感は「リリースから 18 か月・安全側 12 か月」。運用契約に「モデル移行対応」を含めるかを契約論点に。※2026-10-06: リタイア表は往復改訂される(Claude 4.5 系は 2026-10-19 → 11-15 / 11-24 / 11-30 に延長〈2026-09-28 版〉、gpt-4.1-nano は 10-14 のまま)。延長を当てにせず、最新の表で期限を管理する <strong>※2026-10-14:</strong> gpt-4.1-nano は 2026-10-14 → 2027-04-14 に戻った(2026-09-07 = 2027-04-14 → 09-26 = 2026-10-14 → 10-14 = 2027-04-14 の 3 度目の往復。期限当日の直前まで動いた前例)。xAI の Grok には「<strong>Grok 4.7 以降の GA モデルは最低 6 か月提供</strong>」の条項が新設された(model-retirements・sold・grok how-to、2026-10-06)。18 か月 / 12 か月より短い下限なので、Grok を必須の経路に置く場合は後継への移行を 6 か月単位で見込む。Fireworks にはリタイア表にない期限もある(P-M18) ※2026-11-22: リタイア表 11-18 版で、<strong>「到来」扱いだった日付が後から延びた</strong>(MAI-Image-2.5 系 10-01 → 11-24、Kimi-K2.7-Code 10-03 → 2027-04-16、model-router 旧 2 版 → 2027-01-27、gpt-chat-latest 06-24 → 11-17)。gpt-4o 2024-05-13 は 2027-01-14 に延長され後継は gpt-5.1(<strong>Standard 系のみ自動アップグレード、PTU と Batch は手動</strong>)、Claude 4.5 の haiku / opus は 2027-02-22(sonnet-4-5 は 11-30 のまま)。Cohere-embed-v3 は 11-15 に Deprecated・2027-02-15 リタイアで、<strong>Embed V5 への移行は再埋め込みが必要</strong>。gpt-6.1-terra は GA から 12 か月(2027-10-26)。o-series の後継が Batch / Regional にない件は P-M21。Fireworks のモデル別の日付はリタイア表から fireworks-model-catalog に移った</td>
 <td><a href="../../features/html/02-models.html">公式: features 02</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/model-retirements">公式: model-retirements</a></td>
 </tr>
 <tr>
@@ -921,6 +1040,48 @@ footer {
 <td>Bing 系ツールを使うエージェントは、キャッシュ割引なしの入力単価で見積もる(<a href="../../proposal/html/02-cost-estimation.html">proposal 02</a>)。Bing 系はもともと別課金・DPA 対象外・境界外送信(P-N06)なので、Bing を使う処理と使わない処理でエージェントを分ける構成も比べる(本書の判断)。キャッシュの効き方は応答の usage のキャッシュ済み入力トークンで確かめる</td>
 <td><a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/bing-tools">公式: bing-tools(既知事項)</a></td>
 </tr>
+<tr>
+<td>P-M20</td>
+<td>Chat Completions で function calling しているアプリのモデルを GPT-6 系に上げたら、tools を含む要求が失敗する</td>
+<td>reasoning(2026-11-20 版)の「Tool calling with reasoning models」は、<strong>Astra・6.1-sol・6.2 系は function tools を Responses API でしか使えず <code>reasoning_effort: none</code> も非対応</strong>、<strong>Sol・Luna・6.1-terra は Chat Completions で tools を送るなら毎回 <code>reasoning_effort: none</code> が必須</strong>(effort を送らなくても既定は none ではないので失敗する)と明記。features が 2026-09-26 以降に書いていた「2026-09-11 の更新で制約は撤廃」は現行ページと合わず、2026-11-22 に撤回した。GPT-5.6 系も Chat Completions × function tools は effort を送らないか <code>none</code> のときだけ可で、low〜xhigh を指定すると失敗する</td>
+<td>tool calling を伴うアプリは Responses API に寄せてからモデルを上げる。Chat Completions のまま使うなら Sol / Luna / 6.1-terra に限り、要求ごとに <code>reasoning_effort: none</code> を付ける(推論の効果は失う)。モデル更改の回帰試験に「ツールを呼ぶ要求」を必ず入れる。ライブラリが勝手に付けるパラメーターにも注意(P-M01)</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/reasoning">公式: reasoning</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/foundry-models/concepts/models-sold-directly-by-azure">公式: models-sold-directly-by-azure</a></td>
+</tr>
+<tr>
+<td>P-M21</td>
+<td>o3-mini / o4-mini を Batch・Regional Standard(japaneast 等)で使っていた構成が、2026-11-19 のリタイアで後継に移せない / gpt-4o の PTU が自動で上がらない</td>
+<td>リタイア表(11-18 版)の脚注 4: o-series の後継に指名された <strong>gpt-5.6-sol / terra は Batch・Regional Standard では提供されず、gpt-5.6-sol は Global Provisioned のカバレッジも限定的</strong>。後継は「その deployment type・リージョンで提供される場合に限る」とし、代替の出発点として <strong>Global / US Data Zone の Batch → gpt-5.4 / gpt-5.4-mini、EU Data Zone の Batch → gpt-4.1 / gpt-4.1-mini、Regional Standard → gpt-5.1、Provisioned → リージョンの提供状況を確認</strong>を挙げる(同等性は未検証)。gpt-4o 2024-05-13(2027-01-14 に延長、後継 gpt-5.1)も自動アップグレードは Standard 系だけで、<strong>PTU と Batch は手動移行</strong></td>
+<td>リタイアの計画では「後継が自分の deployment type × リージョンにあるか」を最初に確認する(model-migration の Assess フェーズ)。Batch・Regional・PTU の経路は手動移行と再評価を見積もりに入れ、脚注の代替候補は自分のワークロードで評価してから選ぶ。代替に挙がる gpt-4.1 系も 2027-04-14 にリタイアする</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/model-retirement-schedule">公式: model-retirement-schedule</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/foundry-models/concepts/model-migration">公式: model-migration</a></td>
+</tr>
+<tr>
+<td>P-M22</td>
+<td>「データは Data Zone 内で処理」の要件で Model router を使っていたら、Claude や Auto のルーティングが要件の外に出ていた / Azure Policy で許可モデルを絞ったのに router が別のモデルに流す</td>
+<td>Model router(2026-11 改訂)は、<strong>Claude を router 経由で使う場合は Global Standard の version 1(Hosted on Anthropic infrastructure)だけが対象</strong>で、ポータル既定の Hosted on Azure(version 2)は使われず、<strong>Data Zone Standard の router は Claude にルーティングしない</strong>。<strong>Auto(preview)は常に Global Standard として処理</strong>。Fireworks は有効化したサブスクリプションでだけ流れる。<strong>Azure Policy は作成・更新時の評価だけで、要求時のルーティング先は絞らない</strong>(FAQ・model-router-policy)。課金はルーティング料(入力トークンあたり)+選ばれたモデルの利用料</td>
+<td>所在要件のある案件は、Data Zone の router デプロイ+model subset で承認モデルに絞り、Auto は管理者設定で止める(<code>modelAllowList</code> を空にする)か承認モデルに限る。デプロイ名を <code>auto</code> にすると Auto の通信がそのデプロイに吸われる点に注意。実際の行き先は <code>response.model</code> と routing metadata で監査する(P-M06)。見積もりにはルーティング料を別の行で置く(<a href="../../proposal/html/02-cost-estimation.html">proposal 02</a>)</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/model-router-faq">公式: model-router-faq</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/how-to/model-router-policy">公式: model-router-policy</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/model-router-models">公式: model-router-models</a></td>
+</tr>
+<tr>
+<td>P-M23</td>
+<td>Baseten / fal のモデル(preview)を「Foundry のモデルだから Microsoft の契約条件で使える」と説明していた</td>
+<td>Baseten on Foundry の privacy FAQ は「<strong>Microsoft の Product Terms・DPA は Baseten の利用に適用されない</strong>」「Microsoft のデータ所在・コンプライアンス要件、SLA、Copyright Commitment も適用されない」と明記(データは Baseten の DPA・利用規約の下で処理)。fal も「Microsoft 施設外で稼働し、Product Terms・DPA・認証は適用されない」(Learn の Important)。同じ「Microsoft 施設外の推論」でも <strong>Fireworks は Microsoft のサブプロセッサとして DPA が適用</strong>(EU Data Boundary 対象外・US のみ)で、契約上の扱いが分かれた。Baseten のデプロイは Global Standard と US Data Zone のみ、<strong>pay-per-token のリタイア予告は 30 日</strong></td>
+<td>提案書では、モデルの調達経路(Azure 直販 / Fireworks / Baseten・fal / Claude の Anthropic 基盤)ごとに適用される契約・所在を書き分ける。日本のデータ所在要件がある案件では Baseten / fal を候補から外す。有効化(サブスクリプションの Preview features 登録)を誰が承認するかを統制に入れる</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/foundry/how-to/baseten/privacy-compliance-faq">公式: Baseten privacy FAQ</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/how-to/fal-ai-models/enable-fal-models">公式: enable-fal-models</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/how-to/fireworks/privacy-compliance-faq">公式: Fireworks privacy FAQ</a></td>
+</tr>
+<tr>
+<td>P-M24</td>
+<td>GPT-5.6 / GPT-6 系に切り替えたら、プロンプトキャッシュを効かせているのに入力コストが下がらない・かえって上がった / PTU の使用率が想定より高い</td>
+<td>prompt-caching(11-06 本文更新)は <strong>GPT-5.6 以降のモデルはキャッシュの読込割引に加えて書込にも課金</strong>(GPT-5.6 より前は書込無料)と明記。TTL は 30 分(既定)か 12 時間で、<strong>12 時間キャッシュの書込の課金は 2026-11-01 の利用分から</strong>。GPT-6 以降の PTU ではキャッシュの読込・書込とも normalized token の重みで容量を消費し(12 時間書込の重みは 2.5)、旧来の <code>prompt_cache_retention</code> は GPT-5.6 以降では非適用。可変部分が先頭にあるプロンプトは書込ばかり増えて読込が効かない</td>
+<td>見積もりに「キャッシュヒット率」だけでなく「書込量 × 書込単価」を入れる(応答の <code>usage.cache_write_tokens</code> で実測)。固定部分を前・可変部分を後ろに置き、明示ブレークポイントを固定部分の直後に置く。キャッシュが効かない用途は explicit モードでブレークポイントを置かず書込課金を避ける。12 時間 TTL は再利用の間隔が 30 分を超えるときだけ使う。Bing 系ツールを付けるとそもそもヒットしない(P-M19)。PTU の容量は P-M16 の式に書込の重みを足して見積もる</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/prompt-caching">公式: prompt-caching</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/provisioned-throughput-sizing">公式: provisioned-throughput-sizing</a></td>
+</tr>
+<tr>
+<td>P-M25</td>
+<td>Foundry の cost controls(preview)で予算を設定したのに、上限を超えても止まらない利用がある / 予算超過で突然 429 が返る / cost control を付けたプロジェクトを削除できない</td>
+<td>cost-controls・create-cost-controls(ms.date 2026-11-18、public preview)は予算超過の要求を <strong>HTTP 429+<code>x-ms-budget-cause: budget_exceeded</code></strong> でブロックするが、<strong>対象は GPT と o-series のみ</strong>(Claude・DeepSeek 等は対象外)、<strong>PTU・ツール料金(web search 等)・hosted agent のコンピュートは数えない</strong>、model router は完全には数えられない、新しい GPT モデルは価格が入るまで約 1 週間計上されない(後追いの計上もしない)。変更の反映は最大 15 分、しきい値をまたぐ要求自体は完了しうる、<strong>時間内に判定できなければ要求は通る(fail-open)</strong>、プロジェクトの cost control は数えるがブロックしない(ブロックはリソースの cost control)、<strong>cost control を持つプロジェクトは削除できない</strong>。Spending は課金と突合しない推定(ネゴシエート価格のスナップショットか小売価格)</td>
+<td>「上限保証」には使わず、APIM / AI Gateway のトークン上限(429 / 403、<code>x-ms-budget-cause</code> なし = P-X16)と併用して多層にする。アプリは <code>x-ms-budget-cause</code> で予算のブロックとレート制限を区別して利用者に返す。対象外の課金(PTU・ツール・hosted・Claude)は Azure の予算アラートで別に見る。使い捨て環境に cost control を付けると削除手順が止まるので、終了日と削除の順序を runbook に入れる。Event Grid のアラートはしきい値超過中に要求ごとに再送されるので重複を除く</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/foundry/concepts/cost-controls">公式: cost-controls(preview)</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/how-to/create-cost-controls">公式: create-cost-controls</a></td>
+</tr>
 </tbody></table></div>
 <h2 id="g-観測と評価">G. 観測と評価</h2>
 <div class="tablewrap"><table><thead><tr>
@@ -933,9 +1094,9 @@ footer {
 <tr>
 <td>P-O01</td>
 <td>自前オーケストレーション(ACA / App Service)のエージェントが Foundry のダッシュボードに出ない</td>
-<td>Foundry はマネージドエージェントしか見えない</td>
-<td>OTel GenAI セマンティック規約で計装し App Insights 側で集計。「Foundry のダッシュボードを見せる」が要件かを事前確認</td>
-<td><a href="../../architecture/html/03-decision-guide.html#g3-制御ゲート">公式: architecture 03 G3</a></td>
+<td>Foundry はマネージドエージェントしか見えない ※2026-11-22: 前提が緩和された — <strong>外部エージェントの登録(LangGraph / LangChain / CrewAI 等)が GA</strong>(2026-11-18)になり、GA 一覧表の Tracing も「GA for prompt, hosted, and external agents」。OTel の <code>gen_ai.agent.id</code> で登録すれば、自前オーケストレーションのエージェントもトレース表示・Insights・スケジュール型のトレース評価の対象になる</td>
+<td>OTel GenAI セマンティック規約で計装し App Insights 側で集計。「Foundry のダッシュボードを見せる」が要件かを事前確認 ※2026-11-22: 「Foundry のダッシュボードを見せる」要件は外部エージェントの登録で満たせる。人手評価・レッドチーミング・イベント起動の継続評価は非対応(P-O30)</td>
+<td><a href="../../architecture/html/03-decision-guide.html#g3-制御ゲート">公式: architecture 03 G3</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/register-external-agent">公式: register-external-agent</a></td>
 </tr>
 <tr>
 <td>P-O02</td>
@@ -968,7 +1129,7 @@ footer {
 <tr>
 <td>P-O07</td>
 <td>「日本リージョンで閉域 + 安全性評価 + レッドチーミング」が同時に成立しない</td>
-<td>Agent playground 評価は APAC 全滅。リスク &amp; 安全性評価器は APAC では Australia East のみ。AI Red Teaming は East US 2 / North Central US のみ。バッチ評価は Japan East / West 可</td>
+<td>Agent playground 評価は APAC 全滅。リスク &amp; 安全性評価器は APAC では Australia East のみ。AI Red Teaming は East US 2 / North Central US のみ。バッチ評価は Japan East / West 可 ※2026-11-22: cloud red teaming の対応リージョンは 4 つで記述が統一された(日本なし)。新しい <strong>safety rubric 評価器(preview)は Americas 11・Europe 10 リージョンのみで日本は対象外</strong>。一方 <strong>Insights(GA)は Japan East / West を含む 31 リージョン</strong>。data generation の表から Japan West が見当たらなくなった(要確認、P-O31)</td>
 <td>評価データが国外リージョンに出る点をデータ所在方針に明記(<a href="../../architecture/html/07-usecase-regulated-edge.html#7-評価とレッドチーミングのリージョン制約-日本案件で必ず効く">architecture 07 §7</a>)</td>
 <td><a href="https://learn.microsoft.com/en-us/azure/foundry/concepts/evaluation-regions-limits-virtual-network">公式</a></td>
 </tr>
@@ -1032,7 +1193,7 @@ footer {
 <td>P-O16</td>
 <td>トレースが歯抜けになる(<code>workflow.run</code>・一部の <code>executor.process</code>・<code>invoke_agent</code> が欠ける)。ローカル再現では 87 本中 27 本しか残らない</td>
 <td><strong>azure-monitor-opentelemetry 1.8.x の既定サンプラーはレート制限型(5 スパン / 秒)</strong>(1.8.9 / 1.8.10 で確認。1.8.6 以降という報告あり)。ワークフロー開始直後のスパンの山が間引かれ、親が残っても子は独立に再サンプリングされる</td>
-<td><code>configure_azure_monitor(..., sampling_ratio=1.0)</code> か <code>OTEL_TRACES_SAMPLER=always_on</code>(<code>microsoft.rate_limited</code> を指定した場合は kwargs の <code>sampling_ratio</code> が勝つ)。「トレース配線は 2 行」ではなく <strong>3 行目(サンプリング)が要る</strong>。全件送るなら取り込み量(コスト)も見直す。トレースは間引かれうるので監査の証跡の代わりにしない(アプリ側の監査ログは影響を受けない)</td>
+<td><code>configure_azure_monitor(..., sampling_ratio=1.0)</code> か <code>OTEL_TRACES_SAMPLER=always_on</code>(<code>microsoft.rate_limited</code> を指定した場合は kwargs の <code>sampling_ratio</code> が勝つ)。「トレース配線は 2 行」ではなく <strong>3 行目(サンプリング)が要る</strong>。全件送るなら取り込み量(コスト)も見直す。トレースは間引かれうるので監査の証跡の代わりにしない(アプリ側の監査ログは影響を受けない) ※2026-11-22: MAF Python 1.25.0 でワークフローのスパン名が <strong><code>invoke_workflow</code></strong> に変わったので、<code>workflow.run</code> で絞る KQL・アラートは修正が要る(P-F22)</td>
 <td><a href="../../../../labs/maf-ports/ports/trend-analysis/README.md#検証結果2026-10-06-ライブ">実測: port 1(2026-10-06 ライブ)</a> / <a href="../../../../labs/maf-ports/ports/corrective-rag/README.md">実測: port 4(2026-10-06)</a></td>
 </tr>
 <tr>
@@ -1060,8 +1221,8 @@ footer {
 <td>P-O20</td>
 <td>継続評価のルールを作ったのに自動ランがほとんど出ない</td>
 <td><strong><code>sampling_rate</code> は割合ではなく百分率</strong>(SDK の docstring: "Percentage (0-100]"。2.4.0〜2.8.0 で同じ)。<code>1.0</code> は <strong>1%</strong> で、型が float なので気づきにくい。省略すれば 100</td>
-<td>全件なら省略か <code>100</code>。設定値の単位をレビュー項目にする。直すと 1 応答 = 1 ランが 16 秒以内に出た</td>
-<td><a href="../../../../labs/foundry-probes/probes/09-continuous-eval/NOTES.md">実測: probe 09 再実測(2026-10-06)</a></td>
+<td>全件なら省略か <code>100</code>。設定値の単位をレビュー項目にする。直すと 1 応答 = 1 ランが 16 秒以内に出た ※2026-11-22: 新しい continuous-scheduled-evaluation のサンプルは <code>ContinuousEvaluationRuleAction(max_hourly_runs=100)</code>(既定の上限 100 run / 時、超過分はスキップ)だけを使い、<code>sampling_rate</code> は出てこない(扱いは要確認)。全件評価を前提にするなら、トラフィックが 100 応答 / 時を超えるかを見積もる</td>
+<td><a href="../../../../labs/foundry-probes/probes/09-continuous-eval/NOTES.md">実測: probe 09 再実測(2026-10-06)</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/observability/how-to/continuous-scheduled-evaluation">公式: continuous-scheduled-evaluation</a></td>
 </tr>
 <tr>
 <td>P-O21</td>
@@ -1087,7 +1248,7 @@ footer {
 <tr>
 <td>P-O24</td>
 <td>トレース評価(デプロイ済みエージェントの会話・やり取りの評価)を Learn の手順どおりに組んだら、<code>azure-ai-projects</code> 2.8.0 の型・データソース名と合わない。同じプロジェクトで 2 つの版の手順が混ざる</td>
-<td>cloud-evaluation-deployed-conversations(2026-10-07 版)は「preview のトレース評価には <code>azure-ai-projects==2.7.0</code> / <code>@azure/ai-projects@2.7.0</code> を使え」と版を固定し、データソース <code>azure_ai_trace_data_source_preview</code> を使う。一方 SDK 2.8.0 のサンプルは GA の <code>azure_ai_trace_data_source</code> に移行済みで、evaluate-agent・traces→dataset・合成データセットのページは &gt;=2.8.0 を要求する</td>
+<td>cloud-evaluation-deployed-conversations(2026-10-07 版)は「preview のトレース評価には <code>azure-ai-projects==2.7.0</code> / <code>@azure/ai-projects@2.7.0</code> を使え」と版を固定し、データソース <code>azure_ai_trace_data_source_preview</code> を使う。一方 SDK 2.8.0 のサンプルは GA の <code>azure_ai_trace_data_source</code> に移行済みで、evaluate-agent・traces→dataset・合成データセットのページは &gt;=2.8.0 を要求する ※2026-11-22: 要求版がさらに割れた — 新しいページ群(Insights・HITL・safety / task-level rubric・外部エージェント・継続 / スケジュール評価)は <code>azure-ai-projects&gt;=2.11.0</code>、トレース評価(deployed-conversations)は依然 <code>==2.7.0</code> 固定の preview 手順。合成シードの「2.8.0 では不可」の注記は 2.10.0 で解消済みなのに残っている</td>
 <td>評価パイプラインはワークフローごとに SDK の版を分けて固定するか、SDK リポジトリのサンプル(2.8.0)を正とする。MAF の <code>agent-framework-foundry</code> 1.14 系と同居する環境は <code>azure-ai-projects&lt;2.8.0</code> に縛られる(P-F14)。トレース評価の時間窓は 15 分以上が必須(会話の両端に 5 分の非アクティブ緩衝)、<code>end_time</code> は取り込み遅延を見込んで +600 秒が推奨、会話 ID 指定の既定ルックバックは 168 時間</td>
 <td><a href="https://learn.microsoft.com/en-us/azure/foundry/observability/how-to/cloud-evaluation-deployed-conversations">公式: cloud-evaluation-deployed-conversations</a></td>
 </tr>
@@ -1101,9 +1262,44 @@ footer {
 <tr>
 <td>P-O26</td>
 <td>トレースは見えるのに、👍 / 👎 の注釈(トレース注釈、preview)を保存できない。Reader ロールを足しても直らない</td>
-<td>trace-annotations(ms.date 2026-09-30、preview)は「閲覧と書き込みは別の認可」と明記している。注釈は OpenTelemetry の <code>gen_ai.evaluation.result</code> イベントとして App Insights(<code>customEvents</code>)に書き込むので、書き込み先・書き込む ID・認証方式の問題になる。Entra 認証で取り込むなら、送信する ID に <strong>Monitoring Metrics Publisher</strong> が要る</td>
+<td>trace-annotations(ms.date 2026-09-30、preview)は「閲覧と書き込みは別の認可」と明記している。注釈は OpenTelemetry の <code>gen_ai.evaluation.result</code> イベントとして App Insights(<code>customEvents</code>)に書き込むので、書き込み先・書き込む ID・認証方式の問題になる。Entra 認証で取り込むなら、送信する ID に <strong>Monitoring Metrics Publisher</strong> が要る ※2026-11-22: 注釈は Human in the loop(注釈 → 評価データセット → golden dataset、preview)の入口になった。注釈を書き込めないとデータセット化もできないので、書き込み権限の設計は HITL の前提条件(P-O31)</td>
 <td>注釈を送るアプリ(end_user 注釈)とポータルの利用者(builder 注釈)ごとに、書き込み先の App Insights と送信する ID のロールを設計に入れる。集計の KQL は <code>customEvents</code> を読むが、<code>gen_ai.evaluation.explanation</code> は機微コンテンツ保護の対象属性で、移行が効いた環境ではポインタに置き換わる可能性がある(ページに言及なし — 要確認。P-O14)</td>
 <td><a href="https://learn.microsoft.com/en-us/azure/foundry/observability/how-to/trace-annotations">公式: trace-annotations</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/observability/how-to/log-end-user-feedback">公式: log-end-user-feedback</a></td>
+</tr>
+<tr>
+<td>P-O27</td>
+<td><code>azure-ai-projects</code> を 2.11.0 に上げたら Insights(・Voice Agents)のコードが動かない / Insights のスキャンが走らない・hosted agent で権限エラー</td>
+<td>Insights は 2.11.0 で GA になり、<strong><code>.beta.agent_insight_monitors</code> → <code>.agent_insight_monitors</code> に移動</strong>、<code>create()</code> / <code>update()</code> / <code>begin_create_run()</code> / <code>update_insight()</code> は型付きのリクエストモデルではなくフラットな引数か JSON ボディを受け取り、<code>list_insights()</code> のフィルタは <code>categories</code> / <code>severities</code> / <code>statuses</code>(リスト)に改名した = <strong>破壊的変更</strong>(voice agents も <code>.beta.voice_agents</code> → <code>.voice_agents</code> とテレフォニー型の改名)。前提は <strong>GPT-5 以降の GPT モデルのデプロイ</strong>(ジャッジは GPT のみ)+ App Insights 接続、利用者のロールは prompt agent なら Foundry User・<strong>hosted agent なら Foundry Project Manager</strong>、利用者とプロジェクト MI に App Insights の Monitoring Reader(<code>AppGenAIContent</code> が Protected なら Privileged Monitoring Data Reader も)。GA 一覧表には Insights の行がない</td>
+<td>2.11.0 への更新は Insights・Voice のコードの書き換えとして見積もる。ジャッジ用の GPT-5 以降のデプロイとロールを構築手順に入れる。Insights の提案は「修正案は検証の出発点で、自動では適用されない」と書く(insights → agent optimizer はプレビュー)</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/foundry/observability/how-to/agent-insights">公式: agent-insights</a> / <a href="https://pypi.org/project/azure-ai-projects/">PyPI: azure-ai-projects</a></td>
+</tr>
+<tr>
+<td>P-O28</td>
+<td>CI の <code>azd ai agent eval</code> が動かなくなった / Learn のクイックスタートどおりにしたら別の拡張だと言われる / 拡張を上げたのに既存の評価定義が新しい形式に変わらない</td>
+<td>azd の評価は <code>azure.ai.agents</code> 拡張の <code>azd ai agent eval</code> から、<strong>独立した <code>azure.ai.evaluations</code> 拡張の <code>azd ai eval</code>(preview、azd 1.33.0 以上、設定は <code>azure.eval.yaml</code>)</strong>に移った(beta.22 で旧コマンドを移管)。GA の <code>microsoft.foundry</code> 拡張には含まれず別途インストールが要る。<strong>quickstart-evaluate-hosted-agent(updated_at 11-17)は旧 <code>azd ai agent eval</code>・0.1.40-preview のまま</strong>でページ間が不一致。保存済みのマッピングは不変で、拡張を上げても既存の評価定義は置き換わらない。azd は終了コードを潰すので、ゲート違反と運用エラーはメッセージで区別する必要がある。A2A / Activity・長時間実行・ストリーミングのエージェントはターゲット評価できない</td>
+<td>CI のスクリプトを <code>azd extension install azure.ai.evaluations</code> → <code>azd ai eval</code> に直し、拡張の版を固定する(P-C16・C18)。新しい形式に移るなら明示 ID を外して <code>azd ai eval create</code> で新しい定義を作る(旧 run は旧 ID で参照できる)。ゲートの判定は終了コードだけに頼らず出力を解析する。ターゲット評価できないプロトコルのエージェントはトレース評価で代替する</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/foundry/observability/how-to/azure-developer-cli-evaluation">公式: azure-developer-cli-evaluation(preview)</a> / <a href="https://github.com/Azure/azure-dev/blob/main/cli/azd/extensions/azure.ai.agents/CHANGELOG.md">公式: azure.ai.agents CHANGELOG</a></td>
+</tr>
+<tr>
+<td>P-O29</td>
+<td>評価のジャッジに Microsoft-Decision-1.1(GA)を選んだら使えない / 決定モデル judge の判定に理由文がなく、Agent optimizer の改善案が出ない / 同じ入力で判定が変わる</td>
+<td>decision-model-judge(ms.date 2026-11-17、preview)は「<strong>Microsoft-Decision-1.1 isn't supported as an evaluation judge. Use Microsoft-Decision-1 instead.</strong>」と明記(Azure ブログ 11-17・Tech Community 11-18 は 1.1 も judge に使えると書く → 両論。本リポジトリは Learn に従う)。<strong>Decision-1 はモデル自体が preview で 2027-02-04 にリタイア</strong>(後継の記載なし)。制約は、コンテキスト 32,768 トークン・テキストと JSON のみ・理由文を返さない(<code>reason</code> は定型文)・完全には決定的でない(Tech Community の社内計測で同じ入力 2 回の判定の変化 1.8%)・実行には Foundry User を<strong>リソーススコープ</strong>で。名前の似た <strong>Azure OpenAI Decisions API(gpt-6-luna)は別モデル・別 API</strong></td>
+<td>judge に採用するなら Decision-1 のリタイア日と 1.1 の judge 対応を追跡し、生成 judge に戻せる構成にしておく。結果の <code>decision_model.probabilities</code> を見て、閾値付近だけ人か生成 judge で再評価する。Agent optimizer を駆動する評価器には理由文を返す生成 judge を使う(公式推奨)。提案書では「Microsoft-Decision-1.1(判定モデル)」と「Azure OpenAI Decisions API(Luna)」を書き分ける</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/foundry/observability/how-to/decision-model-judge">公式: decision-model-judge(preview)</a> / <a href="https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/microsoft-decision-1-as-a-judge-in-foundry-evaluations/4572676">公式ブログ: Tech Community 2026-11-20</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/model-retirement-schedule">公式: model-retirement-schedule</a></td>
+</tr>
+<tr>
+<td>P-O30</td>
+<td>LangGraph / CrewAI 等の外部エージェントを Foundry に登録(GA)したのに、人手評価・レッドチーミングの対象に選べない / 継続評価のルールを作っても動かない / 呼び出しをブロックできない</td>
+<td>register-external-agent(ms.date 2026-11-11)・Tech Community 11-18 で<strong>外部エージェントの登録・トレース表示・Insights・本番トレースの評価は GA</strong> だが、Current limitations に<strong>人手評価と AI red teaming のターゲット化は非対応</strong>とあり、continuous-scheduled-evaluation は<strong>外部エージェントにはイベント起動の継続評価が使えず、スケジュール型のトレース評価(<code>agent_id</code> = <code>otel_agent_id</code>)を使え</strong>と書く。照合キーはトップレベルの <code>invoke_agent</code> スパンの <code>gen_ai.agent.id</code>。<strong>登録はトラフィックを中継せず、ゲートウェイによるブロックも提供しない</strong></td>
+<td>外部エージェントの品質管理はスケジュール型のトレース評価で組み、<code>gen_ai.agent.id</code> を計装の必須項目にする(<code>microsoft-opentelemetry</code> ディストロ)。人手評価・レッドチーミングが要件なら、その部分だけ Foundry のエージェントか別の仕組みで行う。止める統制が要るなら APIM / AI Gateway を前段に残す(Control Plane のカスタムエージェントからの移行は P-X27)</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/register-external-agent">公式: register-external-agent</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/observability/how-to/continuous-scheduled-evaluation">公式: continuous-scheduled-evaluation</a> / <a href="https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/external-agents-in-microsoft-foundry-are-now-generally-available/4572630">公式ブログ: Tech Community 2026-11-18(external agents GA)</a></td>
+</tr>
+<tr>
+<td>P-O31</td>
+<td>トレースに注釈を付けてから「Add to dataset」/ traces→dataset のジョブを投げたら、空のデータセットができる / 注釈の期待出力から作ったルーブリックの次元が多すぎて拒否される</td>
+<td>traces-to-dataset(ms.date 11-10)は「<strong>App Insights の取り込みに 30〜90 秒かかるので、トラフィックの直後にジョブを投げると空の時間窓になる</strong>」と注意。Human in the loop(注釈 → 評価データセット → golden dataset、preview)の生成行は <code>rubric_dimensions</code> が<strong>最大 20・重みなし</strong>で、rubric の生成と会話単位のデータ生成は <code>azure-ai-projects&gt;=2.11.0</code>。data generation の対応リージョン表(11-17)から Japan West が見当たらなくなった(10-01 の拡大で追加と記録していたもの。要確認)</td>
+<td>ジョブは取り込みの遅延を見込んで投げる(時間窓の終端に余裕を取る)。golden dataset を作る運用(誰が注釈を付け、誰が golden を承認するか)を体制に入れる(<a href="../../proposal/html/01-hearing-sheet.html">proposal 01</a>)。Japan West で HITL のデータセット化を使う設計は、対応リージョンを確認してから</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/foundry/observability/how-to/traces-to-dataset">公式: traces-to-dataset</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/observability/how-to/human-in-the-loop">公式: human-in-the-loop(preview)</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/concepts/evaluation-regions-limits-virtual-network">公式: evaluation-regions-limits-virtual-network</a></td>
 </tr>
 </tbody></table></div>
 <h2 id="h-ガードレール">H. ガードレール</h2>
@@ -1152,7 +1348,7 @@ footer {
 <tr>
 <td>P-G06</td>
 <td>Claude / 埋め込み / マネージドコンピュート / Voice Live にフィルタが効かない・変えられない</td>
-<td>モデル種別でフィルタ適用が不均一。Voice Live のフィルタは組込みで変更・無効化不可(カスタムは BYO model)</td>
+<td>モデル種別でフィルタ適用が不均一。Voice Live のフィルタは組込みで変更・無効化不可(カスタムは BYO model) ※2026-11-22: managed compute は GA(2026-11-20)になったが、組み込みの Content Safety がデータ経路にないことは変わらない</td>
 <td>Content Safety API をアプリ / APIM 側で。音声はテキスト化後の経路で</td>
 <td><a href="../../architecture/html/index.html#全案件に共通する前提-foundry-が-やってくれないこと">公式: architecture README</a> / <a href="https://learn.microsoft.com/en-us/azure/ai-services/speech-service/voice-live-faq">公式: Voice Live FAQ</a> / <a href="https://zenn.dev/headwaters/articles/9a8a72fa41b5a6">記事: Zenn ヘッドウォータース 2026-04</a></td>
 </tr>
@@ -1166,9 +1362,9 @@ footer {
 <tr>
 <td>P-G08</td>
 <td>修正済み不正使用監視(人手レビュー除外)を申請できない / 承認されたのに効いていない</td>
-<td><strong>アカウントチーム付きマネージド顧客のみ</strong>申請可。承認 ≠ 設定(リソース単位の ContentLogging を確認)</td>
-<td>非マネージド契約(CSP 小規模等)の顧客には申請経路がない点を提案前に確認。承認後は全サブスクリプションの棚卸しスクリプトを運用に</td>
-<td><a href="https://learn.microsoft.com/en-au/answers/questions/5609842/urgent-clarification-on-disabling-abuse-monitoring">記事: Q&amp;A 2025-11</a> / <a href="https://zenn.dev/circlemouth/articles/azure-settings">記事: Zenn 2024-09</a></td>
+<td><strong>アカウントチーム付きマネージド顧客のみ</strong>申請可。承認 ≠ 設定(リソース単位の ContentLogging を確認) ※2026-11-22: <strong>2026-11-01 以降に提供開始したモデルは Modified Abuse Monitoring の対象外になる</strong>(abuse-monitoring・data-privacy・limited-access に「What's changing with Modified Abuse Monitoring」節が追加)。対象外になる日付はモデルごとに 30 日前以上に通知され、既存の承認がある顧客も Microsoft の新しいデータ保持・アクセス・安全監視の方式に従う(中身は未公表)。2026-11-01 より前のモデルは不変。gpt-6.2-sol / -astra(11-17)が該当する</td>
+<td>非マネージド契約(CSP 小規模等)の顧客には申請経路がない点を提案前に確認。承認後は全サブスクリプションの棚卸しスクリプトを運用に ※2026-11-22: 「Microsoft 側にプロンプトを保存させない」前提の提案は、採用モデルの提供開始日を確認し、対象外の告知を監視する。新しいモデルに上げると前提が崩れうることを、契約・所在の説明に入れる(<a href="../../proposal/html/03-japan-compliance.html">proposal 03</a>)</td>
+<td><a href="https://learn.microsoft.com/en-au/answers/questions/5609842/urgent-clarification-on-disabling-abuse-monitoring">記事: Q&amp;A 2025-11</a> / <a href="https://zenn.dev/circlemouth/articles/azure-settings">記事: Zenn 2024-09</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/abuse-monitoring">公式: abuse-monitoring</a></td>
 </tr>
 <tr>
 <td>P-G09</td>
@@ -1187,9 +1383,9 @@ footer {
 <tr>
 <td>P-G11</td>
 <td>hosted agent に RAI ポリシー(ガードレール)を付けたのに何もフィルタされない。デプロイ成功・HTTP 200・「ポリシー付与済み」と表示され、エラーも警告も出ない</td>
-<td>hosted agent のガードレールには<strong>無言で素通り(fail-open)になる経路が 3 つ</strong>ある(公式 add-hosted-agent-guardrails ms.date 2026-09-24 に明記): ① <strong>Invocations プロトコルで <code>invocations_moderation</code> を省略</strong>するとポリシーは不活性で要求・応答とも未スクリーニング(本文の形をエージェントが決めるため、どこがテキストかをプラットフォームが知らない)② <strong>存在しないポリシー ID を指定</strong>しても作成成功・active 表示のまま無フィルタ ③ ストリームセレクタの <code>text_field</code> は<strong>フィールド名でありパス式ではない</strong>(<code>$.content</code> と書くと一致せず、その要素は未スクリーニング)。azd agents 拡張(1.0.0-beta.12 以降)の README・スキーマ説明・テストデータの例自体が <code>textField: $.delta</code> と書いており、写すと③を踏む(issue open)。<code>rai_config</code> 自体を省くとガードレールなし</td>
+<td>hosted agent のガードレールには<strong>無言で素通り(fail-open)になる経路が 3 つ</strong>ある(公式 add-hosted-agent-guardrails ms.date 2026-09-24 に明記): ① <strong>Invocations プロトコルで <code>invocations_moderation</code> を省略</strong>するとポリシーは不活性で要求・応答とも未スクリーニング(本文の形をエージェントが決めるため、どこがテキストかをプラットフォームが知らない)② <strong>存在しないポリシー ID を指定</strong>しても作成成功・active 表示のまま無フィルタ ③ ストリームセレクタの <code>text_field</code> は<strong>フィールド名でありパス式ではない</strong>(<code>$.content</code> と書くと一致せず、その要素は未スクリーニング)。azd agents 拡張(1.0.0-beta.12 以降)の README・スキーマ説明・テストデータの例自体が <code>textField: $.delta</code> と書いており、写すと③を踏む(issue open)。<code>rai_config</code> 自体を省くとガードレールなし ※2026-11-22: activity プロトコル(M365 公開向け)も <code>rai_policy_name</code> だけで、入力・出力に加えて <strong>M365 への送信アクティビティ(POST / PUT)</strong>まで検査される(add-hosted-agent-guardrails 11-11)。概念ページ hosted-agent-guardrails(2026-10-13)で、出力モデレーションの <strong>Default(同期で保留してから返す)/ Asynchronous filter(先に流して後から止める)</strong> の 2 モードが RAI policy の設定として明記された。invocations_ws はモデレーション非対応のまま</td>
 <td>Invocations では <code>invocations_moderation</code> を必須のレビュー項目にし(Python は <code>azure-ai-projects</code> 2.7.0 以上)、<code>text_field</code> は素のフィールド名(<code>delta</code> / <code>content</code>)で書く。デプロイ前にアカウント上のポリシー一覧と <code>rai_policy_name</code> の末尾を突合。受入条件は「既知の違反文を入出力それぞれに流してブロックされるか」の E2E テスト(設定が付いていることの確認では足りない)。※2026-10-06: Terraform(AzAPI)の公式手順では、hosted agent の <code>rai_policy_name</code> に<strong>ポリシーの完全な ARM リソース ID</strong> を渡し(モデルデプロイはポリシー名)、既存のガードレールが前提条件(deploy-hosted-agent-terraform)。名前だけを写す間違いに注意(P-C13)</td>
-<td><a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/add-hosted-agent-guardrails">公式: hosted agent guardrails</a> / <a href="https://github.com/Azure/azure-dev/issues/10130">記事: azure-dev issue 2026-09(open)</a></td>
+<td><a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/add-hosted-agent-guardrails">公式: hosted agent guardrails</a> / <a href="https://github.com/Azure/azure-dev/issues/10130">記事: azure-dev issue 2026-09(open)</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/hosted-agent-guardrails">公式: hosted-agent-guardrails</a></td>
 </tr>
 <tr>
 <td>P-G12</td>
@@ -1197,6 +1393,34 @@ footer {
 <td>content-streaming(2026-10-13 公開版)に「既定のストリーミングでも、<strong>応答の最後の区切りはガードレール適用前に返ることがある</strong>」と注記された — gpt-4o デプロイと補完側のブロック型カスタムブロックリストの試験で、<strong>末尾約 15〜30 語</strong>に入った禁止語が届いた(後ろに文が続けばストリームの途中でブロックされる)。同じページの「既定では返す前に完全に検査される」という記述とも食い違う。どの記述が 10-13 の変更分かは、公開ドキュメントリポジトリが 404 のため特定できない</td>
 <td>禁止語・個人情報の流出が許されない画面は<strong>非ストリーミング</strong>にするか、<strong>ストリームの最終区切りをアプリ側で再検査</strong>してから表示を確定する(公式の推奨もこの 2 つ)。受入試験に「禁止語を応答の末尾に置かせるケース」を入れ、ストリーミングと非ストリーミングの両方で確かめる。非同期フィルタ(約 1,000 字遅れ)ではさらに強く同じ対策が要る(P-G04)</td>
 <td><a href="https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/content-streaming">公式: content-streaming</a></td>
+</tr>
+<tr>
+<td>P-G13</td>
+<td>ガードレールのブロッキングレベルを「High = 重大度 High だけブロック」と読んで設定したら、最も厳しい設定になっていた / 入力側のフィルターを Off にするのに申請が要ると思っていた</td>
+<td>guardrails-overview のリスク表が 10-14 公開版で書き直されていた(本リポジトリは前回見落とし): 表の名前が「Severity levels」→「<strong>Blocking levels</strong>」になり、<strong>Low = High のみブロック(最も緩い)/ Medium = Medium 以上 / High = Low 以上をブロック(最も厳しい)</strong>と定義された。「Off」は<strong>出力側だけが承認制</strong>(Modified Guardrails の承認顧客)で、<strong>入力側の Off は全顧客が選べる</strong>(旧版は両方とも承認制と読めた)</td>
+<td>設定値は「どの重大度からブロックされるか」で書き、レビューで「Low = 緩い / High = 厳しい」を確認する。入力側を Off にする運用は、出力側の検査と評価で担保する前提で顧客の安全方針に明記する</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/foundry/guardrails/guardrails-overview">公式: guardrails-overview</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/content-filter-severity-levels">公式: content-filter-severity-levels</a></td>
+</tr>
+<tr>
+<td>P-G14</td>
+<td>本番のガードレールの判定(ブロック・重大度)が急に変わった / 同じ入力がリージョンによってブロックされたりされなかったりする</td>
+<td>Content Safety の What's new「<strong>October 2026 Content Safety Model Update</strong>」(2026-11-06 版): テキストの 4 有害カテゴリと Prompt Shields(直接 / 間接攻撃)の分類器を更新(中・仏・独・伊・葡の攻撃検出の学習拡充、リスク分類体系の更新による再ラベル、誤判定への対応、感度の調整)し、<strong>Spain Central をカナリアに段階展開中</strong>。展開中はリージョン間で結果が一時的に異なりうる。日本リージョンへの到達時期は未記載。PII・Task adherence・egress・Spotlighting・ブロックリスト・保護素材・画像は対象外。9 月に予告されて削除された更新の後継</td>
+<td>代表的な入力(誤検知が問題になった文例・日本語の攻撃文例)の回帰セットをリリース手順に入れ、分類器の更新告知のたびに再試験する。Prompt Shields の攻撃検出モデルは主に英語で学習・評価されている(公式)ので、日本語での試験は必須。判定の変化はフィードバックフォームで報告する(技術サポートではない)</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/ai-services/content-safety/whats-new">公式: Content Safety whats-new</a></td>
+</tr>
+<tr>
+<td>P-G15</td>
+<td>Groundedness detection(接地性検出)を本番のガードレールに組み込む提案をしていた / Content Safety のコンテナー・Embedded SDK でオンプレ・オフライン構成を組んでいた</td>
+<td>Content Safety の <strong>preview 6 機能が 2027-04-30 に廃止予定</strong>: Groundedness detection(Content Safety と Foundry ガードレールの Groundedness を含む)・Custom categories (rapid)(テキスト・画像)・Analyze Multimodal・接続 / 非接続コンテナー(Text・Image・Prompt Shields)・Embedded Content Safety SDK(whats-new・overview 2026-11-06、guardrails-overview 11-02 にも注記)。Prompt Shields・有害性・保護素材・PII・Task adherence・ブロックリストは対象外</td>
+<td>接地性は Foundry の評価(Groundedness 評価器)か自前の検証に寄せ、実行時のブロックに使う設計はやめる。公式の代替は、rapid → ブロックリスト+分類モデル、Multimodal → Analyze Image+OCR+Analyze Text、コンテナー・Embedded → クラウドの REST API。オフライン要件の案件は代替がない点を顧客と合意する</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/ai-services/content-safety/whats-new">公式: Content Safety whats-new</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/guardrails/guardrails-overview">公式: guardrails-overview</a></td>
+</tr>
+<tr>
+<td>P-G16</td>
+<td>GPT の出力にテキスト透かしを付けたはずが、フェイルオーバー先・ステージングのデプロイの応答に付いていない / ゲートウェイ経由だと付かない</td>
+<td>テキスト透かし(gpt-6.2-sol / -astra。enable-text-watermarking-gpt-models)は<strong>デプロイ単位</strong>の ARM プロパティ <code>properties.textWatermarking</code>(<code>Disabled</code> = 既定 / <code>RequestControlled</code> = ヘッダー <code>x-ms-oai-enable-text-watermark: true</code> の要求だけ / <code>AlwaysEnabled</code>)で、<strong>同じリソースの別デプロイ・フェイルオーバー・ステージング・ロールバック用のデプロイには自動で広がらない</strong>。<code>RequestControlled</code> ではプロキシ・ゲートウェイ・リトライの経路がヘッダーを落とすと付かない。透かしは機械検出用で目視では確認できず、性能に影響しうると注記されている</td>
+<td>透かしが要件(透明性規制への対応など)なら、全デプロイに IaC で同じ設定を入れ、ゲートウェイのヘッダー転送を試験する。検出 API(<code>provenance:detect</code>、送信は 10 秒に 1 要求)で受入確認する。来歴が付くことと義務を満たすことは別(<a href="../../proposal/html/03-japan-compliance.html">proposal 03</a> §6)</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/foundry/responsible-ai/content-safety/enable-text-watermarking-gpt-models">公式: enable-text-watermarking-gpt-models</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/responsible-ai/content-safety/provenance-disclosure">公式: provenance-disclosure</a></td>
 </tr>
 </tbody></table></div>
 <h2 id="i-maf-とフレームワーク">I. MAF とフレームワーク</h2>
@@ -1239,7 +1463,7 @@ footer {
 <td>P-F05</td>
 <td>mcp 2.0 が入ると接続時 AttributeError(<code>InitializeResult.protocolVersion</code>)。async の azure-search-documents が落ちる</td>
 <td>agent-framework の上限要求は推移的依存で強制されない。<code>aiohttp</code> 未宣言</td>
-<td><code>mcp&gt;=1.24,&lt;2</code> を明示、<code>aiohttp</code> を追加</td>
+<td><code>mcp&gt;=1.24,&lt;2</code> を明示、<code>aiohttp</code> を追加 ※2026-11-22: MAF Python 1.23.0 で MCP 連携が MCP SDK 2.x 前提になり、<code>agent-framework-foundry-hosting</code> 1.0.0b261022 以降は <code>mcp&gt;=2.2.0,&lt;3</code> — <strong><code>mcp&lt;2</code> の固定は MAF 1.23 以降と両立しない</strong>。上げるときは MCP クライアントの書き換えが要る(P-F22)</td>
 <td><a href="../../../../labs/maf-ports/ports/github-mcp/README.md">実測: port 6・4</a></td>
 </tr>
 <tr>
@@ -1295,7 +1519,7 @@ footer {
 <td>P-F14</td>
 <td><code>azure-ai-projects</code> を 2.5 以上に上げると依存解決できない / CI の <code>pip check</code> だけが落ちる(<code>azure-ai-projects 2.7.0 has requirement openai&gt;=3.0.0, but you have openai 2.x</code>)</td>
 <td>2.5.0 で <code>openai&gt;=3.0.0</code> が無条件の必須依存になった。一方 litellm・llama-index-llms-openai 等は <code>openai&lt;3</code> を要求しており同居できない。uv の override で openai を固定すると衝突がロック時に見えず、<code>pip check</code> でだけ発覚する</td>
-<td>他の LLM ライブラリと同居する環境では <code>azure-ai-projects&lt;2.5</code> に上限を付ける(Apache Airflow が 2026-09-23 に採用した回避)か、Foundry SDK を別プロセス / 別サービスに分離。SDK 更新は「依存移行」として lockfile・独自 HTTP クライアント・CI ランタイム(Python 3.10 以上)をまとめて見直す。<strong>※2026-10-06: 逆向きの上限も出た。</strong><code>agent-framework-foundry</code> 1.14.0(2026-10-02)は <code>azure-ai-projects&gt;=2.2.0,&lt;2.8.0</code> を要求し、2.8.0(2026-10-05。Agent Optimization・data generation・evaluator の生成ジョブの API が GA)と同居できない(PyPI のメタデータで確認)。MAF と新しい Foundry SDK の機能を同じ環境で使うなら、MAF 側の上限更新を待つか別プロセスに分ける</td>
+<td>他の LLM ライブラリと同居する環境では <code>azure-ai-projects&lt;2.5</code> に上限を付ける(Apache Airflow が 2026-09-23 に採用した回避)か、Foundry SDK を別プロセス / 別サービスに分離。SDK 更新は「依存移行」として lockfile・独自 HTTP クライアント・CI ランタイム(Python 3.10 以上)をまとめて見直す。<strong>※2026-10-06: 逆向きの上限も出た。</strong><code>agent-framework-foundry</code> 1.14.0(2026-10-02)は <code>azure-ai-projects&gt;=2.2.0,&lt;2.8.0</code> を要求し、2.8.0(2026-10-05。Agent Optimization・data generation・evaluator の生成ジョブの API が GA)と同居できない(PyPI のメタデータで確認)。MAF と新しい Foundry SDK の機能を同じ環境で使うなら、MAF 側の上限更新を待つか別プロセスに分ける ※2026-11-22: MAF 側の上限は解消した — <code>agent-framework-foundry</code> 1.16.1 で <code>azure-ai-projects&lt;2.10.0</code>、<strong>1.16.2(11-12)で <code>&lt;3</code></strong>。2.11.0(Insights・voice・external agents の GA API)と同居できる。<code>openai&gt;=3</code> と他の LLM ライブラリの衝突(本行の主題)は変わらない。廃止済みの <code>azure-ai-inference</code> 1.0.0b9 への必須依存は残る</td>
 <td><a href="https://github.com/apache/airflow/pull/73627">記事: apache/airflow PR 2026-09</a> / <a href="https://devblogs.microsoft.com/foundry/whats-new-in-microsoft-foundry-july-august-2026/">公式: 7・8 月号(Runtime requirements)</a> / <a href="https://pypi.org/project/azure-ai-projects/">PyPI: azure-ai-projects</a></td>
 </tr>
 <tr>
@@ -1347,6 +1571,20 @@ footer {
 <td>実行中の会話への割り込み(steering)が要件なら、当面は Agent Server SDK(<code>azure-ai-agentserver-responses</code>)を直接使う構成にする。MAF ホスティングの版上げで解除されたかは、ページと CHANGELOG で確認してから戻す</td>
 <td><a href="https://learn.microsoft.com/en-us/agent-framework/hosting/foundry-hosted-agent">公式: agent-framework hosting/foundry-hosted-agent</a></td>
 </tr>
+<tr>
+<td>P-F22</td>
+<td>MAF(Python)を 1.22〜1.26 に上げたら、Python 3.10 の環境で入らない / MCP ツールの接続コードが例外になる / ワークフローのトレースを絞る KQL・アラートが 0 件になる / 旧メモリ API の非推奨警告が出る</td>
+<td>依存と API が段階的に変わった(python-2026-significant-changes・PyPI): <strong>1.25.0 から Python 3.11 以上が必須</strong>。<strong>1.23.0 で MCP 連携が MCP SDK 2.x の高水準 <code>Client</code> ライフサイクルへ</strong>移り(呼び出し側所有の <code>mcp.Client</code> を <code>mcp_client=</code> で渡す型、<code>MCPWebsocketTool</code> は使用時に例外、MCP Tasks 非対応)、<code>agent-framework-foundry-hosting</code> 1.0.0b261022 以降は <code>mcp&gt;=2.2.0,&lt;3</code>。AG-UI エンドポイントは <code>single_user=True</code> か <code>authorization_scope_resolver</code> の明示が必須。<strong>1.25.0 でワークフローのスパン名が OpenTelemetry GenAI 規約の <code>invoke_workflow</code> に変わり、<code>workflow.run</code> で絞るクエリは要修正</strong>、フレームワーク所有の MCP 要求に既定 30 秒のタイムアウト。<strong>1.26.0 で旧メモリ API(<code>MemoryContextProvider</code> / <code>MemoryFileStore</code> / <code>MemoryStore</code> 等)が 2026-12-31 以降に削除予定</strong>(移行先 <code>FileMemoryProvider</code> は保存形式が違い互換ではない)。一方 <code>agent-framework-foundry</code> 1.16.2 で <code>azure-ai-projects&lt;3</code> に緩和され、P-F14 の上限は解消した</td>
+<td>更新は「依存の移行」として扱い、Python 3.11 への実行環境の更新・MCP 2.x への書き換え・KQL / アラートのスパン名の修正・メモリの移行を 1 つの作業として見積もる。<code>mcp&lt;2</code> を固定している環境(P-F05)は MAF 1.23 以降と両立しない。<code>pip install agent-framework</code> は alpha / beta の統合も入れるので、本番はパッケージ単位で stable のものだけを指定する</td>
+<td><a href="https://learn.microsoft.com/en-us/agent-framework/support/upgrade/python-2026-significant-changes">公式: python-2026-significant-changes</a> / <a href="https://pypi.org/project/agent-framework/">PyPI: agent-framework</a></td>
+</tr>
+<tr>
+<td>P-F23</td>
+<td>MAF を 1.22 以降に上げてローリング更新したら、旧版のワーカーがセッション・履歴を読めずにエラーになる / ロールバックしたら会話が壊れた</td>
+<td>1.22.0 は Content に <code>hosted</code> / <code>merge_mode</code> の直列化を導入し、<strong>旧ランタイムは新しいレコードを読めない</strong>(upgrade ガイドは同じセッション・履歴ストアで新旧のワーカーを混在させないよう注意。ワークショップの 1.13 → 1.23 更新記事も「新しい記録を旧版が読めない(1.22)」を挙げる)。Durable Extension(Python <code>agent-framework-azurefunctions</code> / <code>-durabletask</code> ほか)は 2026-11-09 に stable になったが、Learn の導入手順は <code>--pre</code> のまま。hosting/azure-functions のページは hosting/durable-extension へ 301 で移設された</td>
+<td>共有ストアを使うワーカーは一斉に切り替える(新旧でストアを分けたブルーグリーンか、メンテナンス窓で全台を更新)。ロールバック手順に「新形式のレコードが書かれた後は旧版に戻せない」を入れる。Durable Extension は stable 版を明示して指定し、schema-v2 の状態移行手順(durable-extension)を確認する</td>
+<td><a href="https://learn.microsoft.com/en-us/agent-framework/support/upgrade/python-2026-significant-changes">公式: python-2026-significant-changes</a> / <a href="https://learn.microsoft.com/en-us/agent-framework/hosting/durable-extension">公式: durable-extension</a> / <a href="https://qiita.com/nohanaga/items/0b55a722445a0981f373">記事: Qiita 2026-11(ワークショップの 1.13 → 1.23 更新)</a></td>
+</tr>
 </tbody></table></div>
 <h2 id="j-iac-cli-ci-cd">J. IaC / CLI / CI-CD</h2>
 <div class="tablewrap"><table><thead><tr>
@@ -1359,9 +1597,9 @@ footer {
 <tr>
 <td>P-C01</td>
 <td><code>az foundry</code> で自動化する見積もりが崩れる</td>
-<td>専用 CLI なし。<code>az cognitiveservices agent</code> は表記揺れ(Agent Service 文書は削除済み扱い、CLI リファレンスには現存)。主線は azd(プレビュー)+ <code>az rest</code></td>
-<td>自動化は Bicep / Terraform(基盤)+ SDK / REST(データプレーン)前提</td>
-<td><a href="../../architecture/html/10-migration-antipatterns.html#a9-az-cli-で自動化できる前提で見積もる">公式: architecture 10 A9</a></td>
+<td>専用 CLI なし。<code>az cognitiveservices agent</code> は表記揺れ(Agent Service 文書は削除済み扱い、CLI リファレンスには現存)。主線は azd(プレビュー)+ <code>az rest</code> ※2026-11-22: <strong><code>az cognitiveservices agent</code> は Deprecated(CLI 2.92.0)で、2027-02-28 後の最初の Azure CLI リリースで削除</strong>と CLI リファレンスに明記。azd の Foundry 拡張群は 2026-11-05 に GA(<code>microsoft.foundry</code> 1.0、azd 1.37.0 以上)</td>
+<td>自動化は Bicep / Terraform(基盤)+ SDK / REST(データプレーン)前提 ※2026-11-22: CI/CD の標準の CLI は azd(+ SDK / REST)。az の agent コマンドを使うスクリプトは期限前に置き換える(P-C18)</td>
+<td><a href="../../architecture/html/10-migration-antipatterns.html#a9-az-cli-で自動化できる前提で見積もる">公式: architecture 10 A9</a> / <a href="https://learn.microsoft.com/en-us/cli/azure/cognitiveservices/agent">公式: az cognitiveservices agent</a></td>
 </tr>
 <tr>
 <td>P-C02</td>
@@ -1437,8 +1675,8 @@ footer {
 <td>P-C14</td>
 <td>Activity プロトコル(Teams / M365 公開)を持つ hosted agent の <code>azd deploy</code> が「Resolving Activity bot configuration」で毎回 <code>botservice: multiple Azure Bots are bound to the same MsaAppID</code> で失敗する(実際には 1 つしかない)</td>
 <td>Bot Service の一覧 API がすべての Bot を 2 回ずつ返し(全 API バージョンで再現)、azd の <code>azure.ai.agents</code> 拡張(1.0.0-beta.17 / 18)が重複を除かずに判定している(open、2026-10-06 起票)</td>
-<td>エラーの提案(「Bot を 1 つだけ残せ」)に従って<strong>本番の Bot を消さない</strong>。Resource Graph で MsaAppID に紐づく Bot の実数を確かめて誤診を避け、拡張の修正版を待つか版を固定する。CI の失敗の分類に入れておく</td>
-<td><a href="https://github.com/Azure/azure-dev/issues/10333">記事: azure-dev issue 2026-10(open)</a></td>
+<td>エラーの提案(「Bot を 1 つだけ残せ」)に従って<strong>本番の Bot を消さない</strong>。Resource Graph で MsaAppID に紐づく Bot の実数を確かめて誤診を避け、拡張の修正版を待つか版を固定する。CI の失敗の分類に入れておく ※2026-11-22: 公開側は別途の Azure Bot Service リソースが不要になった(publish-copilot 11-12、<code>performBotRegistration: true</code>)。issue は 2026-11-22 時点で open のまま。azd の拡張(1.x)がこの変更後も Bot の構成を解決するかは未確認なので、版を固定して確かめる</td>
+<td><a href="https://github.com/Azure/azure-dev/issues/10333">記事: azure-dev issue 2026-10(open)</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/publish-copilot">公式: publish-copilot</a></td>
 </tr>
 <tr>
 <td>P-C15</td>
@@ -1451,7 +1689,7 @@ footer {
 <td>P-C16</td>
 <td>azd の拡張を更新したら、それまで通っていたエージェント定義・toolbox・routine の定義が拒否される(<code>AGENT_DEFINITION_PATH</code>・入れ子の <code>config:</code>・snake_case のプロパティ)。クイックスタートどおりの <code>azd ai agent init -m</code> で非推奨と言われる</td>
 <td><code>azure.ai.agents</code> 1.0.0-beta.18(2026-09-30)は<strong>エージェント定義を azure.yaml(または明示のルート <code>$ref</code>)に必須化</strong>し、<code>AGENT_DEFINITION_PATH</code>・入れ子の <code>config:</code>・旧 AgentManifest を拒否する破壊的変更。beta.19(10-08)は prompt-memory / GitHub Copilot ツールセットのプロパティ名を camelCase に改名(snake_case は拒否)し、同じ日の <code>azure.ai.toolboxes</code> beta.10・<code>azure.ai.routines</code> beta.9 も記述プロパティを camelCase に統一した。<code>azd ai agent init</code> のテンプレート指定は <code>--template</code> / <code>-t</code> が正式で、<code>--manifest</code> / <code>-m</code> は非推奨の別名(Learn のクイックスタートや MAF の get-started の例は <code>-m</code> のまま)。beta.19 は invocations のモデレーション設定で <code>textField</code> を必須にした(未指定だと出力のスクリーニングが黙って飛ばされていた不具合の修正)</td>
-<td>azd 本体と拡張の版をチームとパイプラインで固定し(P-H16)、上げるときは定義を azure.yaml 形式・camelCase に直してから。手順書と CI のスクリプトは <code>-t</code> に直す。invocations のモデレーションを設定している定義は <code>textField</code> を確認し、<strong>出力のスクリーニングが実際に効いているか</strong>を再試験する(旧版では無言でスキップされていた可能性がある — P-G11 と同じ型の落とし穴)</td>
+<td>azd 本体と拡張の版をチームとパイプラインで固定し(P-H16)、上げるときは定義を azure.yaml 形式・camelCase に直してから。手順書と CI のスクリプトは <code>-t</code> に直す。invocations のモデレーションを設定している定義は <code>textField</code> を確認し、<strong>出力のスクリーニングが実際に効いているか</strong>を再試験する(旧版では無言でスキップされていた可能性がある — P-G11 と同じ型の落とし穴) ※2026-11-22: 拡張は 1.0.0(11-05)で GA になったが、その前後にも破壊的変更がある(P-C18)。beta.18 / 19 の変更に加えて確認する</td>
 <td><a href="https://github.com/Azure/azure-dev/blob/main/cli/azd/extensions/azure.ai.agents/CHANGELOG.md">公式: azure.ai.agents 拡張 CHANGELOG</a> / <a href="https://github.com/Azure/azure-dev/releases">公式: azure-dev releases</a></td>
 </tr>
 <tr>
@@ -1460,6 +1698,20 @@ footer {
 <td>管理 API <code>2026-09-01-preview</code> の<strong>自動生成 DNS ラベル(preview)</strong>: 作成時にラベルの再利用スコープ(<code>NoReuse</code> / <code>SubscriptionReuse</code> / <code>TenantReuse</code>。作成後は変更不可)を選ぶと、エンドポイントが <code>https://&lt;service-name&gt;-&lt;label&gt;.sg.search.windows.net/</code> になる(サービス名と ARM リソース ID は変わらない)</td>
 <td>エンドポイントはサービス名から組み立てず、管理 API の応答の <code>properties.endpoint</code>(Bicep の出力)を読む形にする(AI Search ツールの接続の target・ナレッジベースの MCP URL・アプリの設定)。閉域の private DNS ゾーンへの影響は記載がないので、ラベル付きで作る場合は PE の名前解決を PoC で確かめる</td>
 <td><a href="https://learn.microsoft.com/en-us/azure/search/search-manage-rest">公式: search-manage-rest</a> / <a href="https://learn.microsoft.com/en-us/azure/search/whats-new">公式: Azure AI Search What's new</a></td>
+</tr>
+<tr>
+<td>P-C18</td>
+<td>azd の Foundry 拡張が GA(1.x)になったので上げたら、<code>toolbox</code> の定義・<code>azd ai agent eval</code>・harness / voice / 長時間 invoke のコマンドが通らない / <code>image</code> を指定したのにレジストリが作られる</td>
+<td>azd の <code>azure.ai.agents</code> 拡張は <strong>1.0.0(2026-11-05)で Preview / Beta 表記を外した</strong>(<code>microsoft.foundry</code> 1.0 ほか、いずれも azd 1.37.0 以上)が、その前後に破壊的変更がある: beta.22 で単数形の <code>toolbox</code> を廃して <code>toolboxes</code> に、<strong>harness / voice / 長時間 invoke のプレビューを <code>AZD_ALPHA_ENABLE_AGENTS_MANAGED_HARNESS</code> / <code>_VOICE</code> / <code>_LONG_RUNNING=true</code> の個別 opt-in に</strong>、旧 <code>azd ai agent eval</code> を <code>azure.ai.evaluations</code> 拡張の <code>azd ai eval</code> へ(P-O28)。1.0.0 で開発者向けの RBAC 警告は <code>AZD_ALPHA_ENABLE_AGENTS_RBAC_WARNINGS=true</code> が必要になり、<code>image</code> だけではレジストリの作成を省略しなくなった。1.2.0(11-17)で voice / prompt-voice はフラグ不要、既定のモデルデプロイ容量が 50 → 250。<strong>Learn の各ページはまだ beta.22 / beta.23 前提のものが多い</strong></td>
+<td>azd 本体と各拡張の版を手順書・CI で固定し(P-C16)、上げるときは CHANGELOG の BREAKING を確認して、定義(<code>toolboxes</code>)・環境変数(<code>AZD_ALPHA_ENABLE_AGENTS_*</code>)・評価コマンドを直す。既定のデプロイ容量 250 はクォータを食うので、共有サブスクリプションでは明示的に指定する。チームの環境構築は Foundry Dev Pack(2026-11-18 GA)でそろえられる</td>
+<td><a href="https://github.com/Azure/azure-dev/blob/main/cli/azd/extensions/azure.ai.agents/CHANGELOG.md">公式: azure.ai.agents CHANGELOG</a> / <a href="https://devblogs.microsoft.com/foundry/the-foundry-dev-pack-is-here-build-foundry-agents-your-way/">公式ブログ: Foundry Dev Pack 2026-11-18</a></td>
+</tr>
+<tr>
+<td>P-C19</td>
+<td>.NET の <code>Azure.AI.Projects</code> を 2.0.x から 3.0.0(GA、2026-11-21)に上げたら、警告をエラー扱いにしている CI でビルドが落ちる</td>
+<td>3.0.0 は、2.0.x で属性なしに出荷していた Insights / MemoryStores / RedTeams / Schedules 系の型、一部の評価型(<code>PromptBasedEvaluatorDefinition</code> / <code>CodeBasedEvaluatorDefinition</code> / <code>EvalResult</code> 等)、<code>AIProjectClient</code> の <code>Insights</code> / <code>MemoryStores</code> / <code>RedTeams</code> / <code>Schedules</code> プロパティに <strong><code>[Experimental(&quot;AAIP001&quot;)]</code> を後付け</strong>した(BREAKING)。ほかに <code>ModelCredentialRequest</code> → <code>ModelCredentialContent</code>、<code>*On</code> → <code>*At</code> の時刻プロパティの改名、<code>DatasetReference</code> → <code>Evaluation.VersionedDatasetReference</code> など。sdk-overview の .NET 版の表はまだ 2.0.0 (GA) のまま</td>
+<td>3.0.0 への更新は改名の書き換えを含む作業として見積もり、使う実験的 API の範囲だけ <code>AAIP001</code> を抑止する(プロジェクト全体では抑止しない)。.NET で評価器生成・データ生成・Agent optimization を使う案件は、3.0.0 で安定版に入ったので「プレリリース前提」の制約を外せる</td>
+<td><a href="https://www.nuget.org/packages/Azure.AI.Projects">NuGet: Azure.AI.Projects</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/how-to/develop/sdk-overview">公式: sdk-overview</a></td>
 </tr>
 </tbody></table></div>
 <h2 id="k-copilot-studio-m365-apim-業務連携">K. Copilot Studio / M365 / APIM / 業務連携</h2>
@@ -1515,8 +1767,8 @@ footer {
 <tr>
 <td>P-X07</td>
 <td>Teams 公開後、<code>Microsoft.BotService/botServices/write</code> の 403 / 手動作成した Bot Service がドロップダウンに出ない / 開発者名 32 文字超で失敗</td>
-<td>Foundry ロールに Bot Service 権限は付かない。発行ダイアログが作った Bot Service のみ認識。<strong>Bot Service は Global ロケーション固定</strong></td>
-<td>Azure Bot Service Contributor + <code>Microsoft.BotService</code> プロバイダー登録。データ所在要件がある案件では Bot Service Global の説明と代替(自前 Bot)を用意</td>
+<td>Foundry ロールに Bot Service 権限は付かない。発行ダイアログが作った Bot Service のみ認識。<strong>Bot Service は Global ロケーション固定</strong> ※2026-11-22: publish-copilot(ms.date 2026-11-12)は「Foundry が直接公開の際に Teams の Bot 登録を処理するので、別途の Azure Bot Service リソースは不要」と書き、旧前提条件(<code>Microsoft.BotService/botServices/write</code> 等の権限・プロバイダー登録・Bot Service の自動作成)が消えた。本行の 403・ドロップダウンの症状は旧方式のもの</td>
+<td>Azure Bot Service Contributor + <code>Microsoft.BotService</code> プロバイダー登録。データ所在要件がある案件では Bot Service Global の説明と代替(自前 Bot)を用意 ※2026-11-22: 新規の公開は Bot Service の権限・リソースを前提にしない。データ所在の説明から「Bot Service は Global」を外せるかは、登録先(Teams Graph)の所在を確認してから</td>
 <td><a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/publish-copilot">公式</a> / <a href="https://learn.microsoft.com/en-ca/answers/questions/5868380/ai-foundry-finds-no-azure-bot-service-when-trying">記事: Q&amp;A 2026-04</a></td>
 </tr>
 <tr>
@@ -1638,6 +1890,27 @@ footer {
 <td>国内処理が要件なら Microsoft に書面で確認し、試験環境で「Move data across regions」をオフにして既定モデル・生成回答・Bing の可否を実測する。確認までは「保存は国内、推論は国外の可能性あり」と説明(<a href="../../proposal/html/03-japan-compliance.html#2-データ所在-全規制共通の土台">proposal 03 §2</a>)</td>
 <td><a href="https://learn.microsoft.com/en-us/power-platform/admin/geographical-availability-copilot">公式: Move data across regions</a> / <a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-select-agent-model">公式: Select a primary AI model</a></td>
 </tr>
+<tr>
+<td>P-X25</td>
+<td>利用者ごとの OAuth が要る社内 API を OpenAPI ツールで繋ごうとしたら、OAuth の identity passthrough が使えない(toolbox に入れても不可)</td>
+<td>openapi(ms.date 11-17)の Limitations に「<strong>OpenAPI ツールは OAuth identity passthrough(OAuth2 接続)に非対応</strong> — toolbox に入れても不可で、同じ toolbox の MCP ツールの OAuth 対応は OpenAPI に及ばない」と明記(2026-09 に features が記録した azd の <code>--auth-type oauth2</code> 接続の記述とは食い違う)。認証は anonymous(<code>authType: None</code> の接続作成が必須)/ API key / project MI の 3 種で、<strong>toolbox 内の OpenAPI は常に project MI</strong>。Foundry アカウントの MI は、既存サブスクリプションで prompt agent に直付けした OpenAPI だけの互換扱い</td>
+<td>利用者本人の権限で呼ぶ API は MCP サーバーにして、toolbox の利用者委任(P-H26)で繋ぐ前提にする。OpenAPI ツールはサービスの ID(project MI か API キー)で呼ぶ用途に限り、Foundry アカウントの MI を使っている既存構成は project MI へ移す</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/openapi">公式: openapi</a></td>
+</tr>
+<tr>
+<td>P-X26</td>
+<td>APIM / AI Gateway 配下のプロジェクトで MCP ツールを追加したのに、ゲートウェイに経路が作られない / Foundry の画面から APIM を新しく紐付けられない / トークン上限を Foundry の画面で変えられない</td>
+<td>(1) model-context-protocol・mcp-authentication(ms.date 11-17)・govern-tools(11-06): <strong>AI Gateway / API Management 経由の MCP は Foundry による自動登録が廃止された</strong> — 以前はポータルで追加すると Foundry がゲートウェイへの登録と経路付けを行ったが、現在は<strong>ゲートウェイ側で MCP ルートを先に作り、ゲートウェイ経由の完全な URL を Foundry のツールに入力</strong>する(Foundry はエンドポイントを書き換えない)。<strong>既存のツールも個別に更新が必要</strong>。(2) 新しいリソース型の <strong>Azure AI Gateway</strong>(<code>Microsoft.ApiManagement/aigateways</code>)が加わり、Foundry UI での APIM の紐付け(旧プレビュー)は新規作成できず、トークン上限は読み取り専用になった。AI Gateway 本体のステータスは Learn・Tech Community = GA / GA 一覧表 = Preview の両論</td>
+<td>ゲートウェイを使う構成は、MCP ルートと URL の管理をゲートウェイ側の IaC に移し、Foundry のツール定義には完成した URL を入れる。自動登録で作った既存のツールは棚卸しして更新する。トークン上限はゲートウェイ側(<code>llm-token-limit</code> 等、P-X16)で管理する。ステータスは両論で提案書に書く</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/model-context-protocol">公式: model-context-protocol</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/control-plane/govern-tools">公式: govern-tools</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/ai-gateway">公式: ai-gateway</a></td>
+</tr>
+<tr>
+<td>P-X27</td>
+<td>Foundry Control Plane に AI Gateway 経由で登録する「カスタムエージェント」を追加しようとしたら追加できない / 外部エージェントへ移行したら呼び出しが通らなくなった</td>
+<td>register-custom-agent(10-28)・migrate-custom-to-external-agent(10-27): <strong>Control Plane のカスタムエージェントは 2027-05-07 に非推奨化され、新規追加は既に不可</strong>。評価・観測・最適化の用途は external agents(2026-11-18 GA)へ、同じ OpenTelemetry の <code>gen_ai.agent.id</code> で <code>ExternalAgentDefinition</code> を登録し直す(<code>azure-ai-projects&gt;=2.11.0</code>)。<strong>external の登録はトラフィックを中継せず、ゲートウェイによるブロックも提供しない</strong>ので、移行中に元のカスタムエージェントの登録と APIM の API を消すと呼び出し経路が切れる、と明記</td>
+<td>移行は「観測・評価の登録だけを external へ移し、呼び出し経路(APIM)は残す」2 段で計画する。APIM の API を消すのは呼び出し元の切り替えが済んでから。2027-05-07 を期限表に入れる。GA になった外部エージェントの制約(人手評価・レッドチーミング・イベント起動の継続評価が非対応)は P-O30</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/foundry/control-plane/migrate-custom-to-external-agent">公式: migrate-custom-to-external-agent</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/control-plane/register-custom-agent">公式: register-custom-agent</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/register-external-agent">公式: register-external-agent</a></td>
+</tr>
 </tbody></table></div>
 <h2 id="l-文書処理と音声">L. 文書処理と音声</h2>
 <div class="tablewrap"><table><thead><tr>
@@ -1685,9 +1958,9 @@ footer {
 <tr>
 <td>P-D06</td>
 <td>電話連携(ACS)で音が壊れる / 接続が切れる</td>
-<td>Voice Live は 24 kHz、ACS は 16 kHz でリサンプリング必須。SIP 非対応(ACS か既存 PBX が別途)。接続断に指数バックオフ + ping</td>
-<td>電話連携はサンプルフォーマット変換・再接続・監視を初期スコープに。※2026-10-06: 新しい voice agents(preview、<code>kind: voice</code>)は <strong>Teams Phone extensibility と Twilio の組込みテレフォニー</strong>(着信・発信)を持つ(Teams Phone 側は ACS・Event Grid・アプリ登録の設定を伴い、通常の Teams / M365 公開では代わりにならない — Microsoft 社員の記事)。Voice Live のテレフォニー連携先の一覧には Vonage が追加。Voice Live API を直接使う構成で SIP 直結がないことは変わらない</td>
-<td><a href="https://clouddev.blog/Azure/AI/Voice-Live-API/building-voice-agents-with-azure-communication-services-voice-live-api-and-azure-ai-agent-service/">記事: 個人ブログ 2026-03</a> / <a href="https://www.loxsia.com/column/voice-live-api/">記事: 国内ベンダー 2026-08</a> / <a href="../../architecture/html/08-usecase-specialized.html#テレフォニー統合-sip-非対応の回避">公式: architecture 08 E1</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/migrate-from-voice-live">公式: migrate-from-voice-live(組込みテレフォニー)</a> / <a href="https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/voice-agents-in-foundry-agent-service-architecture-trust-boundaries-and-real-aud/4560813">記事: Tech Community 2026-10(Microsoft 社員)</a></td>
+<td>Voice Live は 24 kHz、ACS は 16 kHz でリサンプリング必須。SIP 非対応(ACS か既存 PBX が別途)。接続断に指数バックオフ + ping ※2026-11-22: 訂正 —「SIP 非対応」は古くなった。Voice Live の <strong>SIP 直結が public preview</strong>(voice-live-sip ms.date 2026-10-20。SIP over TLS+SRTP、署名付き webhook、転送・切断・発信を HTTPS で制御)。ただしリソース単位のオンボーディングが必要で、<strong>対応リージョンは East US 2 / France Central / Southeast Asia / Sweden Central / West US / West US 2(日本なし)</strong>。FAQ は「SIP is currently not supported」のままで両論。voice agents にも SIP 接続(preview)がある</td>
+<td>電話連携はサンプルフォーマット変換・再接続・監視を初期スコープに。※2026-10-06: 新しい voice agents(preview、<code>kind: voice</code>)は <strong>Teams Phone extensibility と Twilio の組込みテレフォニー</strong>(着信・発信)を持つ(Teams Phone 側は ACS・Event Grid・アプリ登録の設定を伴い、通常の Teams / M365 公開では代わりにならない — Microsoft 社員の記事)。Voice Live のテレフォニー連携先の一覧には Vonage が追加。Voice Live API を直接使う構成で SIP 直結がないことは変わらない ※2026-11-22: 日本の案件では引き続き ACS(番号か direct routing)経由が現実的</td>
+<td><a href="https://clouddev.blog/Azure/AI/Voice-Live-API/building-voice-agents-with-azure-communication-services-voice-live-api-and-azure-ai-agent-service/">記事: 個人ブログ 2026-03</a> / <a href="https://www.loxsia.com/column/voice-live-api/">記事: 国内ベンダー 2026-08</a> / <a href="../../architecture/html/08-usecase-specialized.html#テレフォニー統合-sip-非対応の回避">公式: architecture 08 E1</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/migrate-from-voice-live">公式: migrate-from-voice-live(組込みテレフォニー)</a> / <a href="https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/voice-agents-in-foundry-agent-service-architecture-trust-boundaries-and-real-aud/4560813">記事: Tech Community 2026-10(Microsoft 社員)</a> / <a href="https://learn.microsoft.com/en-us/azure/ai-services/speech-service/voice-live-sip">公式: voice-live-sip(preview)</a></td>
 </tr>
 <tr>
 <td>P-D07</td>
@@ -1699,15 +1972,15 @@ footer {
 <tr>
 <td>P-D08</td>
 <td>音声エージェント(voice agents、preview)で最初の発話が長く待たされる / Foundry のモニタでは遅延がサブ秒なのに、利用者は 1 秒以上待たされると感じる / WebRTC で繋ぐと自前デプロイのモデルが拒否される</td>
-<td>① 新しい音声エージェント接続の確立に <strong>3.72〜12.37 秒</strong>かかった(Microsoft 社員の 300 ターンの実音声計測、2026-09-26)② Foundry の音声エージェントのモニタ(Overall latency)は <strong>VAD が発話終了と判定した後</strong>から最初の音声までを測る。利用者の体感は話し終えた時点からで、無音待ち(計測では 500 ms 設定)と配信を含む(典型値: マネージドの gpt-realtime-2.1 で体感 1.47 秒 / モニタ 0.88 秒。テキストモデルを gpt-5 にした cascaded 構成は体感 3.45 秒)③ 音声エージェントの WebRTC は自前デプロイ(self-deployed)のモデルと hosted conversation engine に非対応(公式)</td>
+<td>① 新しい音声エージェント接続の確立に <strong>3.72〜12.37 秒</strong>かかった(Microsoft 社員の 300 ターンの実音声計測、2026-09-26)② Foundry の音声エージェントのモニタ(Overall latency)は <strong>VAD が発話終了と判定した後</strong>から最初の音声までを測る。利用者の体感は話し終えた時点からで、無音待ち(計測では 500 ms 設定)と配信を含む(典型値: マネージドの gpt-realtime-2.1 で体感 1.47 秒 / モニタ 0.88 秒。テキストモデルを gpt-5 にした cascaded 構成は体感 3.45 秒)③ 音声エージェントの WebRTC は自前デプロイ(self-deployed)のモデルと hosted conversation engine に非対応(公式) ※2026-11-22: voice agents は Learn・SDK・ブログで <strong>GA</strong>(GA 一覧表は「Agents — Voice Live = Preview」のまま → 両論)。WebRTC は引き続き preview で、制御リレーはセッション 1 時間・制御チャネルの無通信 5 分・制御フレーム 256 KiB が上限(connect-voice-agent-webrtc)。閉域の電話チャネルの制約は P-D12</td>
 <td>会話の開始前に接続を張る(着信応答の前・画面表示時)か「接続中」を見せる。SLO は利用者側の時計(話し終え → 最初の音声)で定義し、モニタの値と混同しない。テキストモデルの選定は遅延に直結する(gpt-5 で 2 倍超)。経路(WebSocket / WebRTC / 電話)ごとに個別に検証する ※2026-10-14: configure-voice-agent(ms.date 2026-10-10)で toolbox をコードで添付できるようになり、<strong>遅延対策として、まず tool search なしで試し、tool search は主にツールが 10〜15 個を超える大きな toolbox で使え</strong>と明記された(tool search は voice 側ではなく toolbox の版で設定する。往復が 1 回増える点は P-A14 と同じ)。③ の WebRTC の制約は現行の migrate-from-voice-live(2026-10-06 版)から消え、「Model, region, network, and transport restrictions still apply」という一般表現だけになった(解消か記述の移動かは要確認)。料金ページ(voice-agent-pricing)にあるトレースの推定コスト属性は請求記録ではない(<a href="../../proposal/html/02-cost-estimation.html">proposal 02</a>)</td>
-<td><a href="https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/voice-agents-in-foundry-agent-service-architecture-trust-boundaries-and-real-aud/4560813">記事: Tech Community 2026-10(Microsoft 社員、300 ターン実測)</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/migrate-from-voice-live">公式: migrate-from-voice-live</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/configure-voice-agent">公式: configure-voice-agent</a></td>
+<td><a href="https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/voice-agents-in-foundry-agent-service-architecture-trust-boundaries-and-real-aud/4560813">記事: Tech Community 2026-10(Microsoft 社員、300 ターン実測)</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/migrate-from-voice-live">公式: migrate-from-voice-live</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/configure-voice-agent">公式: configure-voice-agent</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/connect-voice-agent-webrtc">公式: connect-voice-agent-webrtc</a></td>
 </tr>
 <tr>
 <td>P-D09</td>
 <td>Voice Live にドキュメントの表にないモデル × 書き起こしの組合せを送ってもエラーにならない。Japan East のリソースで動いたので国内処理だと思っていた</td>
 <td><code>session.updated</code> は送った書き起こし設定をそのまま返し、表にない組合せ(gpt-realtime-2.1-mini + <code>azure-speech</code>)も受理された — <strong>受理されても動作の保証にはならない</strong>。実効モデル名は <code>gpt-realtime-2.1-mini-global-standard</code> で、Japan East のリソースでも <strong>Global standard 処理</strong>(P-M08)</td>
-<td>表どおりの組合せだけを使う。処理場所は <code>session.updated</code> の実効モデル名で確かめ、提案書にはリソースのリージョンではなくデプロイ種別で書く。ネイティブ音声モデルは応答が長く(受信音声が約 3.8 倍)、決定論の次質問から外れたので、決定論のフローはコア側に残す ※2026-10-14: regions の Voice Live タブが処理スコープの表記になり(P-M08)、Japan East の <code>gpt-realtime-2.1-mini</code> は Global と表に明記された(本行の実測と一致)。HD voices・mai-transcribe-2 も Japan East では Global。提案書には LLM・書き起こし・音声合成の処理スコープを別々に書く</td>
+<td>表どおりの組合せだけを使う。処理場所は <code>session.updated</code> の実効モデル名で確かめ、提案書にはリソースのリージョンではなくデプロイ種別で書く。ネイティブ音声モデルは応答が長く(受信音声が約 3.8 倍)、決定論の次質問から外れたので、決定論のフローはコア側に残す ※2026-10-14: regions の Voice Live タブが処理スコープの表記になり(P-M08)、Japan East の <code>gpt-realtime-2.1-mini</code> は Global と表に明記された(本行の実測と一致)。HD voices・mai-transcribe-2 も Japan East では Global。提案書には LLM・書き起こし・音声合成の処理スコープを別々に書く ※2026-11-22: Voice Live を使わない Fast transcription は「リソースのリージョンまたはデータゾーン内で処理」と明記された(P-D13)。録音ファイルの書き起こしは Voice Live と分けて説明できる</td>
 <td><a href="../../../../labs/maf-ports/ports/claim-voice-live/README.md">実測: port 12(2026-10-06 ライブ)</a></td>
 </tr>
 <tr>
@@ -1724,9 +1997,37 @@ footer {
 <td>音声のネイティブリージョンを使い(日本語の音声なら日本のリージョン)、よく使われる音声を選ぶ(FAQ の推奨)。429 は間隔を空けて再試行し、リージョン × 音声の組を負荷試験で確かめてから本番の音声を決める。クォータ申請だけを対策にしない</td>
 <td><a href="https://learn.microsoft.com/en-us/azure/ai-services/speech-service/faq-tts">公式: faq-tts</a></td>
 </tr>
+<tr>
+<td>P-D12</td>
+<td>閉域(VNet 注入・PNA 無効)のプロジェクトで voice agents(2026-11 に GA)を作ったのに、Teams Phone / Twilio / SIP の電話番号を割り当てられない・発信できない / 通話後の配信が Event Grid に届かない</td>
+<td>voice agents の各ページ(configure-voice-agent ほか ms.date 2026-11-10〜19)に、<strong>閉域プロジェクト(VNet 注入、または Foundry リソースの公衆ネットワークアクセス無効)では電話番号チャネル(Teams Phone extensibility / Twilio / SIP)と発信・キャンペーンは非対応</strong>と明記された。post-call delivery(preview)は<strong>プライベートエンドポイント専用の Event Grid トピックに非対応</strong>。voice agents のステータスは Learn・SDK(<code>azure-ai-projects</code> 2.11.0)・ブログ = GA、GA 一覧表「Agents — Voice Live」= Preview の両論で、GPT-Live・inline subagents・SIP・campaigns・post-call delivery・WebRTC・監視 / 評価はプレビュー</td>
+<td>閉域が前提の案件で電話窓口を作るなら、電話を受けるプロジェクトを非閉域に分けるか、Voice Live API(GA)+ ACS を自前で組む(本リポジトリの推論)。閉域の要件(どの通信を閉じるか)と電話の要件をヒアリングで同時に確認する。GA の範囲(realtime の定義・Teams Phone / Twilio・単発の発信・system tools・delegate subagent)とプレビューの範囲を機能ごとに書き分ける</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/configure-voice-agent">公式: configure-voice-agent</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/limits-quotas-regions">公式: limits-quotas-regions</a> / <a href="https://devblogs.microsoft.com/foundry/whats-new-in-foundry-agent-service-at-ignite-2026/">公式ブログ: What's new in Foundry Agent Service at Ignite 2026</a></td>
+</tr>
+<tr>
+<td>P-D13</td>
+<td>日本のリソースで、リアルタイム STT の多言語の後処理(Multilingual post-stream refinement)を使う設計にしていたら Japan East で使えない / 録音ファイルの文字起こしと Voice Live で処理場所の説明が食い違う</td>
+<td>Speech の regions(ms.date 2026-11-20)で、2026-10 に GA になった <strong>Multilingual post-stream refinement の Japan East が ✅ → 空欄</strong>になった(提供は Central India / East US / North Europe / Southeast Asia / West US / West US 2。ja-JP ロケール自体は対応、Monolingual は Japan East / West とも ✅)。処理場所は機能で違い、<strong>Fast transcription(標準モデル・LLM Speech・MAI-Transcribe-2)は「Speech リソースのリージョンまたはデータゾーン内で処理」</strong>と data-privacy-security(11-20)が明記する一方、Voice Live は機能ごとの処理スコープで Global がありうる(P-M08・D09)。LLM Speech と MAI-Transcribe は日本リージョンに未提供で、Japan East の Fast transcription は標準モデル</td>
+<td>国内処理が要件なら、録音ファイルの文字起こしは Japan East の Fast transcription(標準モデル)で説明する。多言語の後処理が要るなら Southeast Asia 等のリソースが必要になり、国内処理と両立しないことを合意する。MAI-Transcribe-2-Streaming(preview)は 2026-12-04 にリタイアするので PoC に使わない</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/ai-services/speech-service/regions">公式: Speech regions</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/responsible-ai/speech-service/speech-to-text/data-privacy-security">公式: data-privacy-security(STT)</a></td>
+</tr>
+<tr>
+<td>P-D14</td>
+<td>Content Understanding に入れた文書を「処理が終われば Microsoft 側に残らない」と説明していた</td>
+<td>CU の data-privacy(ページ日付 2026-10-21、Learn 更新 11-17)が「<strong>入力文書・中間表現・最終結果を Microsoft 管理のストレージに最長 24 時間保持して自動削除</strong>、Delete Result 操作で前倒し削除可」に変わった(2026-09 版は「入力と中間表現は処理中のみ保存し、出力だけ 24 時間保持」)。<code>prebuilt-read</code> / <code>prebuilt-layout</code> はリクエスト単位の <code>processingLocation</code>(geography〈例: Japan〉/ data zone / global)で処理場所を指定できるが、それ以外のコンテンツ抽出は接続した LLM デプロイの種別に従ってリージョン外で処理されうる</td>
+<td>個人情報・機微文書を CU に入れる案件は、24 時間の保持と Delete Result による前倒し削除をパイプラインに入れ、所在の説明(<a href="../../proposal/html/03-japan-compliance.html">proposal 03</a>)を更新する。国内処理が要件なら <code>processingLocation</code> を明示し、LLM を使う抽出は接続するデプロイの種別まで含めて説明する</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/foundry/responsible-ai/content-understanding/data-privacy">公式: Content Understanding data-privacy</a></td>
+</tr>
+<tr>
+<td>P-D15</td>
+<td>CLU / CQA(質問応答)で作る FAQ ボット・意図分類を、新規案件にもそのまま提案していた</td>
+<td>Azure Language の <strong>legacy 7 機能(キーフレーズ抽出・感情分析 / オピニオンマイニング・カスタムテキスト分類・CLU・CQA・オーケストレーションワークフロー・要約)は 2029-03-31 にリタイア</strong>と、各機能の overview・question-answering/overview(Learn 更新 11-17)・SDK 概要に記載されている(本リポジトリは前回まで見落とし)。<strong>エンティティリンクは出典で日付が食い違う</strong>(entity-linking overview = 2028-09-01 / Tech Community = 2028-09-20 / SDK 概要 = 2029-03-31)。継続するのは Language detection・PII・Text Analytics for health・Prebuilt NER・Custom NER。Language Studio は 2027-03-20 廃止、CQA の作成先は引き続き Foundry (classic)</td>
+<td>新規の FAQ ボット・意図分類は Foundry のモデル(+ Foundry IQ)で組み、CLU / CQA を使う既存資産の案件には期限を明記した移行計画を付ける(<a href="01-scenario-playbook.html#s-11-廃止期限駆動の移行案件">01 S-11</a>)。エンティティリンクは早い日付(2028-09-01)で計画する。Conversation PII は日本語非対応のまま</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/ai-services/language-service/question-answering/overview">公式: question-answering overview</a> / <a href="https://learn.microsoft.com/en-us/azure/ai-services/language-service/entity-linking/overview">公式: entity-linking overview</a> / <a href="https://learn.microsoft.com/en-us/azure/foundry/how-to/develop/sdk-overview">公式: sdk-overview</a></td>
+</tr>
 </tbody></table></div>
 <h2 id="公開記事が見当たらなかったトピック-2026-09-04-時点-2026-09-26-再確認">公開記事が見当たらなかったトピック(2026-09-04 時点、2026-09-26 再確認)</h2>
-<p>「記事がないから安全」ではなく「先例がないので自分で実測する必要がある」領域。案件で踏んだら本索引に追記する。2026-09-26 の再確認では、Routines(creator identity の azd 未対応 → P-A12)とエージェント向けガードレール(ストリーム出力モデレーションの無言スキップ → P-G11)に issue レベルの先例が出た。VNet 注入 × <strong>hosted agent</strong> の構築体験記は引き続き見当たらない(2026-09 の Tech Community 記事は prompt agent + ネットワーク注入の例 → P-N03 に反映)。2026-10-06 の確認では、Toolbox(既定版の昇格忘れ → P-A14)・評価(evals / generation job のハマり → P-O15)・音声エージェントの実測(P-D08)・Terraform での hosted agent 管理(P-C13)・APIM のトークン制限の超過(P-X16)に先例が出た。2026-10-14 の確認では、Foundry IQ のナレッジベースの retrieve の 401 / 502 と SharePoint ナレッジソースのカスタム列(P-R17)に先例が出た(RAG 行の「Foundry IQ の MCP エンドポイント固有エラー」は引き続き見当たらない)。</p>
+<p>「記事がないから安全」ではなく「先例がないので自分で実測する必要がある」領域。案件で踏んだら本索引に追記する。2026-09-26 の再確認では、Routines(creator identity の azd 未対応 → P-A12)とエージェント向けガードレール(ストリーム出力モデレーションの無言スキップ → P-G11)に issue レベルの先例が出た。VNet 注入 × <strong>hosted agent</strong> の構築体験記は引き続き見当たらない(2026-09 の Tech Community 記事は prompt agent + ネットワーク注入の例 → P-N03 に反映)。2026-10-06 の確認では、Toolbox(既定版の昇格忘れ → P-A14)・評価(evals / generation job のハマり → P-O15)・音声エージェントの実測(P-D08)・Terraform での hosted agent 管理(P-C13)・APIM のトークン制限の超過(P-X16)に先例が出た。2026-10-14 の確認では、Foundry IQ のナレッジベースの retrieve の 401 / 502 と SharePoint ナレッジソースのカスタム列(P-R17)に先例が出た(RAG 行の「Foundry IQ の MCP エンドポイント固有エラー」は引き続き見当たらない)。2026-11-22 の確認(Zenn のトピック <code>microsoftfoundry</code> / <code>azureaifoundry</code> / <code>agentframework</code> と Qiita のタグ <code>MicrosoftFoundry</code> / <code>AzureAIFoundry</code> / <code>AgentFramework</code> の 10-14 以降の投稿)では、Copilot harness への持ち込み(P-A22)と MAF の版上げ(P-F23)に先例が出た。<strong>VNet 注入 × hosted agent の詰まりどころは devblogs 2026-11-21 の Microsoft の PM による 5 項目チェックで公式の整理が出た</strong>(P-N22・N23)が、第三者の構築体験記は引き続き見当たらない。</p>
 <div class="tablewrap"><table><thead><tr>
 <th>領域</th>
 <th>見当たらないもの</th>
@@ -1776,6 +2077,7 @@ footer {
 <li>2026-09-26 月次更新: 外部 URL 約 220 件を <code>curl -L</code> で一括確認(200: 216 / 410: 2 → 行は残して「リンク切れ」付記 / 429: 7 = 再試行で 1 件 200、残り 6 件は個人ブログのボット対策で WebFetch により全件実在確認)。Q&amp;A の URL 正規化リダイレクト 4 件と Zenn のユーザー名変更 1 件は新 URL へ差し替え、P-N03 の転載記事(argonsys)は Tech Community の原文 URL に差し替え。Tech Community は Windows 系 UA なら本文を取得できるようになったため、上記「タイトルだけ確認」3 本のうち 2 本を再取得: <a href="https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/troubleshooting-microsoft-foundry-accessing-on%E2%80%91premises-apis-over-private-networ/4498549">Troubleshooting on-premises APIs</a> は P-N03 に出典追加、<a href="https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/building-production-ready-ai-agents-in-microsoft-foundry-10-lessons-learned/4544174">10 Lessons Learned</a> は具体的な症状・原因の記述がないため不採用(掲載基準 (2) に該当しない)。<a href="https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/design-the-network-before-you-deploy-best-practices-for-microsoft-foundry-standa/4537860">Design the Network Before You Deploy</a> は依然ログインリダイレクトで未検証</li>
 <li>2026-10-06 の差分更新: 追加・注記した外部 URL(Tech Community 4 件・Zenn 3 件・GitHub issue 5 件・Learn 20 ページ超)はすべて <code>curl -L</code> で 200 を確認(Tech Community は Windows 系 UA で本文 HTML を取得、公開日は <code>datePublished</code>。Zenn は API で本文を取得)。Tech Community の記事はいずれも Microsoft 社員の投稿で、製品発表ではない計測・手順の記事として [記事] に分類した</li>
 <li>2026-10-14 の差分更新: 公開ドキュメントリポジトリ(MicrosoftDocs/azure-ai-docs)が 404 になり、Learn の差分を Git で追えなくなったため、features 側の Learn 巡回(docs/survey/tools/learn_crawl.py。<code>updated_at</code> と本文の比較、include だけの変更は ja-jp 版の更新や Web アーカイブとの差分で検出)の結果を出典にした。追加・注記した外部 URL(Learn 約 40 ページ・GitHub 4 件・Tech Community 1 件)は <code>curl -L</code> で 200 を確認(github.com の issue 1 件は一時的な 500 のため <code>gh api</code> で実在と状態〈2026-10-09 クローズ〉を確認)。今回の追加は大半が [公式] で、[記事] は Tech Community の Foundry IQ の実装記事(P-R17)だけ</li>
+<li>2026-11-22 の差分更新: features の 2026-11-22 差分(Learn 巡回 1,994 ページ・Ignite 2026 の Book of News・devblogs / Tech Community / Azure ブログ 46 本)を出典にした。追加・注記した行に含まれる外部 URL 150 件を <code>curl</code> で確認し、200 でないのは 3 種だけ — CLI リファレンス(<code>?view=azure-cli-latest</code> 付きへの 301)、GitHub の CHANGELOG(一時的な 429。別の時刻には 200)、<strong>github.com/microsoft/agent-framework の issue 4 件(リポジトリごと 404。<code>gh api</code> でも Not Found。移設か非公開化かは要確認)</strong>。同リポジトリへのリンクは本ページに 17 件あり、行は残してこの注記で扱う(features 08 も同じ 404 を要確認として記録)。<strong>github.com/microsoft-foundry/foundry-samples もリポジトリごと 404</strong>(<code>gh api</code> で Not Found。org と discussions は 200)で、本ページの 3 件(P-N 系のテンプレートと issue)も同じ扱い。Tech Community の SharePoint indexed GA 記事は 301 の転送先の URL で載せた。azure-dev issue #10333 は <code>gh api</code> で open を確認。[記事] の採用は Qiita の 2 本で、ほかの Zenn 4 本・Qiita の投稿は機能紹介・試行が中心で症状と原因の記述が具体的でないため掲載基準 (2) により不採用</li>
 <li>2026-09-26 に追加した行の出典は 2026-09-04 以降に公開・起票されたもの(GitHub issue / PR は起票日、Tech Community は公開日)。WebSearch・<code>gh search</code>(agent-framework / azure-sdk-for-python / azure-dev / foundry-samples)で候補を探し、本文を取得して症状・原因が具体的なものだけ収録</li>
 </ul>
 </main>

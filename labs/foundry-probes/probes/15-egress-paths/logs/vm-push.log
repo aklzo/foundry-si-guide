@@ -1,0 +1,50 @@
+Enable succeeded: 
+[stdout]
+{"ok": true}
+Python 3.12.3
+
+[stderr]
+Running as unit: probe-api.service; invocation ID: <hex-82>
+
+Enable succeeded: 
+[stdout]
+pushed
+
+[stderr]
+
+Enable succeeded: 
+[stdout]
+pushed
+
+[stderr]
+
+Enable succeeded: 
+[stdout]
+pushed
+
+[stderr]
+
+Enable succeeded: 
+[stdout]
+pushed
+
+[stderr]
+
+Enable succeeded: 
+[stdout]
+pushed
+
+[stderr]
+
+Enable succeeded: 
+[stdout]
+pushed
+
+[stderr]
+
+Enable succeeded: 
+[stdout]
+pushed
+
+[stderr]
+

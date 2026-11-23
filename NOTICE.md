@@ -31,10 +31,11 @@
   - `github-mcp` / `hn-briefing-hosted` / `critique-loop` / `governed-agent`: エージェント指示文の一部
 - `delegated-access-hosted`(Port 15)は上流を持たない新規パターン。
 
-## 2. Microsoft Learn ドキュメント(CC BY 4.0)
+## 2. Microsoft Learn ドキュメント
 
-- `docs/survey/` 以下の調査ドキュメント(features / architecture / proposal / casebook)と `docs/tech-selection-guide.md`、`labs/maf-ports/ports/corrective-rag/data/` の学習用要約は、Microsoft Learn の公開ドキュメントを要約・翻訳・再構成した内容を含む。
-- 原典: Microsoft Learn(© Microsoft)。ドキュメント本文は Creative Commons Attribution 4.0 International(<https://creativecommons.org/licenses/by/4.0/>)で提供されている。
+- `docs/survey/` 以下の調査ドキュメント(features / architecture / proposal / casebook)、`docs/events/` のイベント変更まとめ、`docs/tech-selection-guide.md`、`labs/maf-ports/ports/corrective-rag/data/` の学習用要約は、Microsoft Learn の公開ドキュメントを要約・翻訳・再構成した内容と短い引用を含む。
+- 原典: Microsoft Learn(© Microsoft)。Learn のドキュメントの一部は GitHub の公開リポジトリ(例: `MicrosoftDocs/azure-docs`)で Creative Commons Attribution 4.0 International(<https://creativecommons.org/licenses/by/4.0/>)として提供されている。Microsoft Foundry(`MicrosoftDocs/azure-ai-docs`)と Copilot Studio のドキュメントの公開リポジトリは、2026-11-23 時点で確認できない。
+- 製品の画面画像は転載しない。`docs/events/` では掲載ページへのリンクで示す。
 - 変更: 日本語への翻訳・要約、複数ページの統合、本リポジトリ独自の判断・注記の追加。各記述の出典ページは本文中の URL またはページ名と確認日で示す。本リポジトリの記述は Microsoft による確認・承認を受けたものではない。
 
 ## 3. Azure アーキテクチャアイコン

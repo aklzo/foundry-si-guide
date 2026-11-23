@@ -1,0 +1,150 @@
+### [2026-11-22 17:56:45 JST] egressprobe.py all P0 
+Enable succeeded: 
+[stdout]
+===== all P0 @ 2026-11-22T08:56:49Z
+[P0][T6 dns] api.ipify.org -> ['<public-ip-6>', '<public-ip-7>', '<public-ip-8>']
+[P0][T6 dns] ifconfig.me -> ['<public-ip-9>']
+[P0][T6 dns] github.com -> ['<public-ip-10>']
+[P0][T6 vm-egress] https://api.ipify.org?format=json -> 200 (0.2s) b'{"ip":"<public-ip-5>"}'
+[P0][T6 vm-egress] https://ifconfig.me/ip -> 200 (0.2s) b'<public-ip-5>'
+[P0][basic] HTTP 403 (0.1s) 403: Traffic is not from an approved private endpoint. text=''
+[P0][T1 a15-harness] HTTP 403 (0.0s) 403: Traffic is not from an approved private endpoint. shell_outputs=0
+[P0][T1 out] 
+[P0][T1 vm-log] []
+[P0][T2 openapi→ipify] HTTP 403 (0.0s) 403: Traffic is not from an approved private endpoint.
+[P0][T2 items] [] | text=''
+[P0][T3 mcp→learn] HTTP 403 (0.0s) 403: Traffic is not from an approved private endpoint.
+[P0][T3 items] [] | text=''
+[P0][T4 code_interp] HTTP 403 (0.0s) 403: Traffic is not from an approved private endpoint.
+[P0][T4 out] [] | text=''
+[P0][T5 web_search] HTTP 403 (0.0s) 403: Traffic is not from an approved private endpoint.
+[P0][T5 items] [] | text=''
+
+[stderr]
+
+### [2026-11-22 17:57:18 JST] done
+### [2026-11-22 18:04:28 JST] egressprobe.py all P0 
+Enable succeeded: 
+[stdout]
+===== all P0 @ 2026-11-22T09:04:34Z
+[P0][T6 dns] api.ipify.org -> ['<public-ip-6>', '<public-ip-7>', '<public-ip-8>']
+[P0][T6 dns] ifconfig.me -> ['<public-ip-9>']
+[P0][T6 dns] github.com -> ['<public-ip-10>']
+[P0][T6 vm-egress] https://api.ipify.org?format=json -> 200 (0.2s) b'{"ip":"<public-ip-5>"}'
+[P0][T6 vm-egress] https://ifconfig.me/ip -> 200 (0.2s) b'<public-ip-5>'
+[P0][basic] HTTP 200 (1.8s) route=project+agent_reference(agent endpoint 403)  text='PONG'
+[P0][T1 a15-harness] HTTP 403 (0.0s) 403: Traffic is not from an approved private endpoint. shell_outputs=0
+[P0][T1 out] 
+[P0][T1 vm-log] []
+[P0][T2 openapi→ipify] HTTP 200 (3.4s) route=project+agent_reference(agent endpoint 403) 
+[P0][T2 items] [{"type": "openapi_call", "status": "completed", "name": "ipecho_getEgressIp"}, {"type": "openapi_call_output", "status": "completed", "output": "{\n        \"response\": \"{\\n  \\\"ip\\\": \\\"<public-ip-11>\\\"\\n}\"\n      }", "name": "ipecho_getEgressIp"}] | text='<public-ip-11>'
+[P0][T3 mcp→learn] HTTP 429 (4.6s) route=project+agent_reference(agent endpoint 403) rate_limit_exceeded: Model deployment rate limit exceeded. Your requests to gpt-5.4-mini for gpt-5.4-mini in japaneast have exceeded token rate limit.. To request more quota, see https://learn.microsoft.com/en-us/azure/ai-services/openai/quo
+[P0][T3 items] [] | text=''
+[P0][T4 code_interp] HTTP 200 (21.9s) route=project+agent_reference(agent endpoint 403) 
+[P0][T4 out] [{"type": "code_interpreter_call", "status": "completed"}] | text='Raw output:\n\n```text\nhttps://api.ipify.org?format=json ERR URLError <urlopen error [Errno -3] Temporary failure in name resolution>\nhttp://10.40.2.10:8080/whoami ERR URLError <urlopen error timed out>\n```'
+[P0][T5 web_search] HTTP 200 (4.6s) route=project+agent_reference(agent endpoint 403) 
+[P0][T5 items] [{"type": "web_search_call", "status": "completed", "action": {"type": "search", "queries": ["Microsoft Ignite 2026 location city official"], "query": "Microsoft Ignite 2026 location city official"}}] | text='サンフランシスコです。 ([partner.microsoft.com](https://partner.microsoft.com/en-us/blog/article/ignite-2026-know-before-you-go))'
+
+[stderr]
+
+### [2026-11-22 18:05:32 JST] done
+### [2026-11-22 18:07:58 JST] egressprobe.py all P0 
+Enable succeeded: 
+[stdout]
+===== all P0 @ 2026-11-22T09:08:05Z
+[P0][T6 dns] api.ipify.org -> ['<public-ip-6>', '<public-ip-7>', '<public-ip-8>']
+[P0][T6 dns] ifconfig.me -> ['<public-ip-9>']
+[P0][T6 dns] github.com -> ['<public-ip-10>']
+[P0][T6 vm-egress] https://api.ipify.org?format=json -> 200 (0.2s) b'{"ip":"<public-ip-5>"}'
+[P0][T6 vm-egress] https://ifconfig.me/ip -> 200 (0.2s) b'<public-ip-5>'
+[P0][basic] HTTP 200 (3.3s) route=project+agent_reference(agent endpoint 403)  text='PONG'
+[P0][T1 a15-harness] HTTP 403 (0.0s) 403: Traffic is not from an approved private endpoint. shell_outputs=0
+[P0][T1 out] 
+[P0][T1 vm-log] []
+[P0][T2 openapi→ipify] HTTP 200 (6.7s) route=project+agent_reference(agent endpoint 403) 
+[P0][T2 items] [{"type": "openapi_call", "status": "completed", "name": "ipecho_getEgressIp"}, {"type": "openapi_call_output", "status": "completed", "output": "{\n        \"response\": \"{\\n  \\\"ip\\\": \\\"<public-ip-11>\\\"\\n}\"\n      }", "name": "ipecho_getEgressIp"}, {"type": "openapi_call", "status": "completed", "name": "ipecho2_getAllHeaders"}, {"type": "openapi_call_output", "status": "completed", "output": "{\n        \"response\": \"{\\n  \\\"ip_addr\\\": \\\"<public-ip-1>\\\",\\n  \\\"user_agent\\\": \\\"azure-agents\\\",\\n  \\\"port\\\": \\\"57498\\\",\\n  \\\"method\\\": \\\"GET\\\",\\n  \\\"encoding\\\": \\\"gzip, deflate\\\",\\n  \\\"mime\\\": \\\"*/*\\\",\\n  \\\"via\\\": \\\"1.1 google\\\",\\n  \\\"forwarded\\\": \\\"<public-ip-2>,<public-ip-3>,<public-ip-1>,<public-ip-9>\\\"\\n}\"\n      }", "name": "ipecho2_getAllHeaders"}] | text='Raw outputs:\n\n`getEgressIp`:\n```json\n{\n  "ip": "<public-ip-11>"\n}\n```\n\n`getAllHeaders`:\n```json\n{\n  "ip_addr": "<public-ip-1>",\n  "user_agent": "azure-agents",\n  "port": "57498",\n  "method": "GET",\n  "'
+[P0][T3 mcp→learn] HTTP 200 (6.7s) route=project+agent_reference(agent endpoint 403) 
+[P0][T3 items] [{"type": "mcp_list_tools", "server_label": "mslearn"}, {"type": "mcp_call", "status": "completed", "server_label": "mslearn", "name": "microsoft_docs_search"}] | text='Deep dive into Foundry Agent Service networking'
+[P0][T4 code_interp] HTTP 200 (18.6s) route=project+agent_reference(agent endpoint 403) 
+[P0][T4 out] [{"type": "code_interpreter_call", "status": "completed"}] | text='Raw output:\n\n```text\nhttps://api.ipify.org?format=json ERR URLError <urlopen error [Errno -3] Temporary failure in name resolution>\nhttp://10.40.2.10:8080/whoami ERR URLError <urlopen error timed out>\n```'
+[P0][T5 web_search] HTTP 200 (4.7s) route=project+agent_reference(agent endpoint 403) 
+[P0][T5 items] [{"type": "web_search_call", "status": "completed", "action": {"type": "search", "queries": ["Microsoft Ignite 2026 location city official"], "query": "Microsoft Ignite 2026 location city official"}}] | text='サンフランシスコ。 ([partner.microsoft.com](https://partner.microsoft.com/en-us/blog/article/ignite-2026-know-before-you-go))'
+
+[stderr]
+
+### [2026-11-22 18:23:04 JST] done
+### [2026-11-22 18:33:50 JST] egressprobe.py all P1 
+Enable succeeded: 
+[stdout]
+===== all P1 @ 2026-11-22T09:33:54Z
+[P1][T6 dns] api.ipify.org -> ['<public-ip-6>', '<public-ip-7>', '<public-ip-8>']
+[P1][T6 dns] ifconfig.me -> ['<public-ip-9>']
+[P1][T6 dns] github.com -> ['<public-ip-10>']
+[P1][T6 vm-egress] https://api.ipify.org?format=json -> 200 (0.2s) b'{"ip":"<public-ip-5>"}'
+[P1][T6 vm-egress] https://ifconfig.me/ip -> 200 (0.2s) b'<public-ip-5>'
+[P1][basic] HTTP 200 (2.6s) route=project+agent_reference(agent endpoint 403)  text='PONG'
+[P1][T1 a15-harness] HTTP 403 (0.0s) 403: Traffic is not from an approved private endpoint. shell_outputs=0
+[P1][T1 out] 
+[P1][T1 vm-log] []
+[P1][T2 openapi→ipify] HTTP 400 (16.9s) route=project+agent_reference(agent endpoint 403) tool_user_error: A user error occurred while executing a tool call.
+[P1][T2 items] [] | text=''
+[P1][T3 mcp→learn] HTTP 200 (6.4s) route=project+agent_reference(agent endpoint 403) 
+[P1][T3 items] [{"type": "mcp_list_tools", "server_label": "mslearn"}, {"type": "mcp_call", "status": "completed", "server_label": "mslearn", "name": "microsoft_docs_search"}] | text='**Deep dive into Foundry Agent Service networking**'
+[P1][T4 code_interp] HTTP 200 (17.7s) route=project+agent_reference(agent endpoint 403) 
+[P1][T4 out] [{"type": "code_interpreter_call", "status": "completed"}] | text='Raw output:\n\n```text\nhttps://api.ipify.org?format=json ERR URLError <urlopen error [Errno -3] Temporary failure in name resolution>\nhttp://10.40.2.10:8080/whoami ERR URLError <urlopen error timed out>\n```'
+[P1][T5 web_search] HTTP 200 (7.3s) route=project+agent_reference(agent endpoint 403) 
+[P1][T5 items] [{"type": "web_search_call", "status": "completed", "action": {"type": "search", "queries": ["Microsoft Ignite 2026 location city official"], "query": "Microsoft Ignite 2026 location city official"}}] | text='サンフランシスコ。 ([partner.microsoft.com](https://partner.microsoft.com/en-us/blog/article/ignite-2026-know-before-you-go))'
+
+[stderr]
+
+### [2026-11-22 18:36:23 JST] done
+### [2026-11-22 18:39:57 JST] egressprobe.py all P2 
+Enable succeeded: 
+[stdout]
+===== all P2 @ 2026-11-22T09:40:02Z
+[P2][T6 dns] api.ipify.org -> ['<public-ip-6>', '<public-ip-7>', '<public-ip-8>']
+[P2][T6 dns] ifconfig.me -> ['<public-ip-9>']
+[P2][T6 dns] github.com -> ['<public-ip-10>']
+[P2][T6 vm-egress] https://api.ipify.org?format=json -> 200 (0.2s) b'{"ip":"<public-ip-5>"}'
+[P2][T6 vm-egress] https://ifconfig.me/ip -> 200 (0.2s) b'<public-ip-5>'
+[P2][basic] HTTP 200 (2.4s) route=project+agent_reference(agent endpoint 403)  text='PONG'
+[P2][T1 a15-harness] HTTP 403 (0.0s) 403: Traffic is not from an approved private endpoint. shell_outputs=0
+[P2][T1 out] 
+[P2][T1 vm-log] []
+[P2][T2 openapi→ipify] HTTP 400 (16.9s) route=project+agent_reference(agent endpoint 403) tool_user_error: A user error occurred while executing a tool call.
+[P2][T2 items] [] | text=''
+[P2][T3 mcp→learn] HTTP 200 (3.9s) route=project+agent_reference(agent endpoint 403) 
+[P2][T3 items] [{"type": "mcp_list_tools", "server_label": "mslearn"}, {"type": "mcp_call", "status": "completed", "server_label": "mslearn", "name": "microsoft_docs_search"}] | text='Deep dive into Foundry Agent Service networking'
+[P2][T4 code_interp] HTTP 200 (18.5s) route=project+agent_reference(agent endpoint 403) 
+[P2][T4 out] [{"type": "code_interpreter_call", "status": "completed"}] | text='Raw output:\n```text\nhttps://api.ipify.org?format=json ERR URLError <urlopen error [Errno -3] Temporary failure in name resolution>\nhttp://10.40.2.10:8080/whoami ERR URLError <urlopen error timed out>\n```'
+[P2][T5 web_search] HTTP 200 (5.9s) route=project+agent_reference(agent endpoint 403) 
+[P2][T5 items] [{"type": "web_search_call", "status": "completed", "action": {"type": "search", "queries": ["Microsoft Ignite 2026 location city official"], "query": "Microsoft Ignite 2026 location city official"}}] | text='サンフランシスコ。 ([partner.microsoft.com](https://partner.microsoft.com/en-us/blog/article/ignite-2026-know-before-you-go))'
+
+[stderr]
+
+### [2026-11-22 18:42:30 JST] done
+### [2026-11-22 18:45:39 JST] egressprobe.py all P3 
+Enable succeeded: 
+[stdout]
+===== all P3 @ 2026-11-22T09:45:41Z
+[P3][T6 dns] api.ipify.org -> ['<public-ip-6>', '<public-ip-7>', '<public-ip-8>']
+[P3][T6 dns] ifconfig.me -> ['<public-ip-9>']
+[P3][T6 dns] github.com -> ['<public-ip-12>']
+[P3][T6 vm-egress] https://api.ipify.org?format=json -> 200 (0.2s) b'{"ip":"<public-ip-5>"}'
+[P3][T6 vm-egress] https://ifconfig.me/ip -> 200 (0.2s) b'<public-ip-5>'
+[P3][basic] HTTP 200 (4.4s) route=project+agent_reference(agent endpoint 403)  text='PONG'
+[P3][T1 a15-harness] HTTP 403 (0.0s) 403: Traffic is not from an approved private endpoint. shell_outputs=0
+[P3][T1 out] 
+[P3][T1 vm-log] []
+[P3][T2 openapi→ipify] HTTP 400 (45.1s) route=project+agent_reference(agent endpoint 403) invalid_configuration: Storage operation exceeded its 45-second deadline. [Request ID: <hex-81>]
+[P3][T2 items] [] | text=''
+[P3][T3 mcp→learn] HTTP 400 (63.0s) route=project+agent_reference(agent endpoint 403) tool_user_error: A user error occurred while executing a tool call.
+[P3][T3 items] [] | text=''
+[P3][T4 code_interp] HTTP 200 (19.3s) route=project+agent_reference(agent endpoint 403) 
+[P3][T4 out] [{"type": "code_interpreter_call", "status": "completed"}] | text='Raw output:\n\n```text\nhttps://api.ipify.org?format=json ERR URLError <urlopen error [Errno -3] Temporary failure in name resolution>\nhttp://10.40.2.10:8080/whoami ERR URLError <urlopen error timed out>\n```'
+[P3][T5 web_search] HTTP 200 (4.6s) route=project+agent_reference(agent endpoint 403) 
+[P3][T5 items] [{"type": "web_search_call", "status": "completed", "action": {"type": "search", "queries": ["Microsoft Ignite 2026 location city official"], "query": "Microsoft Ignite 2026 location city official"}}] | text='サンフランシスコ。 ([partner.microsoft.com](https://partner.microsoft.com/en-us/blog/article/ignite-2026-know-before-you-go))'
+
+[stderr]
+
+### [2026-11-22 18:49:43 JST] done

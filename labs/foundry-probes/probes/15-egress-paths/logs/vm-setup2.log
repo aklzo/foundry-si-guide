@@ -1,0 +1,9 @@
+### [2026-11-22 18:07:13 JST] egressprobe.py setup2 P0 
+Enable succeeded: 
+[stdout]
+===== setup2 P0 @ 2026-11-22T09:07:15Z
+[P0][setup2] a15-oapi v2 -> 200 (2.1s) 
+
+[stderr]
+
+### [2026-11-22 18:07:45 JST] done

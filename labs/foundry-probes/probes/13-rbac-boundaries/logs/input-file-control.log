@@ -1,0 +1,26 @@
+### [2026-11-22 14:55:37 JST] 対照(公開側・実行者): input_file に .txt を渡す
+uploaded assistant-<id-66>
+HTTP 200
+{
+  "metadata": {},
+  "top_logprobs": 0,
+  "temperature": 1,
+  "top_p": 0.98,
+  "service_tier": "default",
+  "prompt_cache_retention": "in_memory",
+  "model": "gpt-5.4-mini",
+  "reasoning": {
+    "effort": "none",
+    "context": "current_turn",
+    "mode": "standard"
+  },
+  "background": false,
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "tools": [],
+  
+The code word is **KIWI-5521**.

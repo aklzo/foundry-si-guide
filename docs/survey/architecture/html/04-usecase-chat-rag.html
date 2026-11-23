@@ -91,7 +91,7 @@ footer {
 <main>
 <h1 id="04-ユースケース編-a-社内ナレッジ検索・rag-チャット">04. ユースケース編 A — 社内ナレッジ検索・RAG チャット</h1><div class="toc"><strong>このページの内容</strong><ul><li><a href="#パターン一覧-先に全体像">パターン一覧(先に全体像)</a></li><li><a href="#a1-部門内-faq-チャット-file-search・最小構成">A1. 部門内 FAQ チャット(File Search・最小構成)</a></li><li><a href="#a2-全社ナレッジ検索-ai-search-自前索引・本番の標準形">A2. 全社ナレッジ検索(AI Search 自前索引・本番の標準形)</a></li><li><a href="#a3-既存-ai-search-資産の活用-ai-search-ツール直結">A3. 既存 AI Search 資産の活用(AI Search ツール直結)</a></li><li><a href="#a4-m365-sharepoint-が主データソース">A4. M365 / SharePoint が主データソース</a></li><li><a href="#a5-複数ソース横断・高精度-foundry-iq-agentic-retrieval">A5. 複数ソース横断・高精度(Foundry IQ / agentic retrieval)</a></li><li><a href="#rag-方式の比較-まとめ">RAG 方式の比較(まとめ)</a></li><li><a href="#要件別・決定表">要件別・決定表</a></li><li><a href="#品質を測る仕組み-どのパターンでも入れる">品質を測る仕組み(どのパターンでも入れる)</a></li></ul></div>
 <p><a href="index.html">← アーキテクチャ TOP</a></p>
-<blockquote><p><strong>最終更新:</strong> 2026-07-30(公式ドキュメントとの突合検証で訂正) / 2026-09-26(定期更新: File Search 閉域表記・S3 HD の Foundry IQ 対応・agentic retrieval 最新 preview API〈2026-08-01-preview〉・Foundry IQ のリクエスト単位ヘッダー・Work IQ の VNet/経路を一次情報で再確認) / 2026-09-29(KB の MCP エンドポイントが GA 版 <code>2026-04-01</code> でも使える〈extractive のみ〉ことを訂正反映)/ 2026-10-06(remote SharePoint の支払い方法の整理、Foundry IQ in Copilot Studio の GA〈Private Link 対応〉、<code>auto</code> reasoning effort の公表値を反映。ラボ実測から AI Search Free での agentic retrieval の動作と KB MCP 応答の API 版依存を追加) / 2026-10-14(On Your Data は本日が期限当日、Serverless / S3 HD のインデクサー実行モデル〈閉域取り込み不可・日次の累積実行時間クォータ〉、Search 管理 API の自動生成 DNS ラベル、AI Search ツールと private endpoint の Search、Foundry IQ の 401 / 502 の落とし穴、MAF の AI Search context provider、既定ストリーミングでも応答末尾がガードレール前に届きうる注記を追加)</p></blockquote>
+<blockquote><p><strong>最終更新:</strong> 2026-07-30(公式ドキュメントとの突合検証で訂正) / 2026-09-26(定期更新: File Search 閉域表記・S3 HD の Foundry IQ 対応・agentic retrieval 最新 preview API〈2026-08-01-preview〉・Foundry IQ のリクエスト単位ヘッダー・Work IQ の VNet/経路を一次情報で再確認) / 2026-09-29(KB の MCP エンドポイントが GA 版 <code>2026-04-01</code> でも使える〈extractive のみ〉ことを訂正反映)/ 2026-10-06(remote SharePoint の支払い方法の整理、Foundry IQ in Copilot Studio の GA〈Private Link 対応〉、<code>auto</code> reasoning effort の公表値を反映。ラボ実測から AI Search Free での agentic retrieval の動作と KB MCP 応答の API 版依存を追加) / 2026-10-14(On Your Data は本日が期限当日、Serverless / S3 HD のインデクサー実行モデル〈閉域取り込み不可・日次の累積実行時間クォータ〉、Search 管理 API の自動生成 DNS ラベル、AI Search ツールと private endpoint の Search、Foundry IQ の 401 / 502 の落とし穴、MAF の AI Search context provider、既定ストリーミングでも応答末尾がガードレール前に届きうる注記を追加) / 2026-11-22(features 差分更新〈10-14 以降+Ignite 2026〉の波及: Azure AI Search の「Foundry IQ (Azure AI Search)」への改称、Search 安定版 <code>2026-10-01</code> の GA 範囲〈LLM クエリ計画・answer synthesis・low / medium・File / indexed Azure SQL / indexed SharePoint ソース・SharePoint / ADLS Gen2 / Blob の文書レベル権限〉で旧記載「GA 構成と ACL 連携は両立しない」「GA 要件を満たすのはセキュリティフィルタだけ」を訂正、private ingestion の GA〈Dedicated のみ〉と取り込み時の trusted-service バイパス、Serverless の GA 両論とインデクサー累積実行クォータ 48 時間への訂正、KB 接続の fail-open の再明記、マネージド Foundry IQ・Microsoft Retriever 1・ナレッジグラフ〈preview〉、CU の 2,000 ページ化と入力文書の 24 時間保持、Groundedness detection の 2027-04-30 廃止、On Your Data の retired 表記、Web search の経路別の提供元、Cohere-embed-v3 の再埋め込み) / 2026-11-22 訂正(Foundry IQ: ユーザートークンを渡さないときの KB の挙動は Learn のページで食い違うので両論に。閉域取り込みの tier を S2 / S3 / L1 / L2 と明記)</p></blockquote>
 <p>Foundry 案件で最も数が多い類型。<strong>同じ「社内文書に答えるチャット」でも、権限要件・文書の性質・鮮度要件によって取るべきアーキテクチャが 5 通りに分かれる。</strong>本ページはその 5 パターンを、選択理由と地雷つきで整理する。</p>
 <h2 id="パターン一覧-先に全体像">パターン一覧(先に全体像)</h2>
 <div class="tablewrap"><table><thead><tr>
@@ -138,9 +138,10 @@ footer {
 </tr>
 </tbody></table></div>
 <p><strong>まず読むべき公式の選択ガイダンス</strong>(Azure AI Search の RAG 概要より):</p>
-<blockquote><p><strong>agentic retrieval を使うとき:</strong> クライアントがエージェントかチャットボット / 可能な限り高い関連性が必要 / クエリが複雑または会話的 / 引用とクエリ詳細を含む構造化レスポンスが欲しい / <strong>新規 RAG 実装</strong><br><strong>classic RAG を使うとき:</strong> <strong>GA 機能のみが必要</strong> / 単純さと速度が高度な関連性より優先 / <strong>既存のオーケストレーションコードを保持したい</strong> / <strong>クエリパイプラインのきめ細かい制御が必要</strong><br>そして「<strong>新規 RAG 実装は agentic retrieval から始めよ</strong>」。</p></blockquote>
-<p>ただし後述のとおり <strong>Foundry IQ / agentic retrieval は「ポータル経由だと全部プレビュー」</strong>という重大な条件が付く。SLA 条項を書く案件ではここが分岐点になる。</p>
-<blockquote><p><strong>⚠ 前提が 1 つ変わった:</strong> <strong>Azure OpenAI On Your Data は非推奨で、2026-10-14 にリタイアされる</strong>(use-your-data 2026-09-10 版で日付不変を確認、2026-09-26。<strong>2026-10-14 = 本日が期限当日</strong>。出典は「will be retired on October 14, 2026」の未来形のまま〈updated_at 2026-09-11〉で、廃止後の表記への更新は次回確認)。公式は「On Your Data のワークロードは <strong>Foundry Agent Service + Foundry IQ</strong> へ移行することを推奨する」と明記している。<strong>「オーケストレーターを挟まず、モデルが直接データストアを読む」構成は新規設計で選べない。</strong>本ページの 5 パターンはいずれもオーケストレーター型(エージェントまたは自アプリ)を前提にしている。</p></blockquote>
+<blockquote><p><strong>agentic retrieval を使うとき:</strong> クライアントがエージェントかチャットボット / 可能な限り高い関連性が必要 / クエリが複雑または会話的 / 引用とクエリ詳細を含む構造化レスポンスが欲しい / <strong>新規 RAG 実装</strong><br><strong>classic RAG を使うとき:</strong> <del><strong>GA 機能のみが必要</strong></del> <strong>ナレッジベースのオーケストレーションが要らない</strong>(2026-11-22: ms.date 11-09 版で書き換え。planning と answer synthesis が <code>2026-10-01</code> で GA になったため) / 単純さと速度が高度な関連性より優先 / <strong>既存のオーケストレーションコードを保持したい</strong> / <strong>クエリパイプラインのきめ細かい制御が必要</strong><br>そして「<strong>新規 RAG 実装は agentic retrieval から始めよ</strong>」。</p></blockquote>
+<p>ただし後述のとおり <strong>Foundry IQ / agentic retrieval は「ポータル経由だと全部プレビュー」</strong>という重大な条件が付く。SLA 条項を書く案件ではここが分岐点になる(<strong>2026-11-22 更新:</strong> ポータルの agentic retrieval は what-is-foundry-iq 2026-11-04 版でも preview のままだが、<strong>API 側は安定版 <code>2026-10-01</code> で GA 範囲が大きく広がった</strong> → <a href="#a5-複数ソース横断・高精度-foundry-iq-agentic-retrieval">A5</a>)。</p>
+<blockquote><p><strong>⚠ 前提が 1 つ変わった:</strong> <del>Azure OpenAI On Your Data は非推奨で、2026-10-14 にリタイアされる</del> <strong>リタイア済み</strong>(use-your-data が「retired on October 14, 2026, and is no longer supported」と過去形になった — 2026-11-22 確認)。公式は「On Your Data のワークロードは <strong>Foundry Agent Service + Foundry IQ</strong> へ移行することを推奨する」と明記している。<strong>「オーケストレーターを挟まず、モデルが直接データストアを読む」構成はもう選べない。</strong>本ページの 5 パターンはいずれもオーケストレーター型(エージェントまたは自アプリ)を前提にしている。</p></blockquote>
+<blockquote><p><strong>2026-11-22 — Azure AI Search は「Foundry IQ (Azure AI Search)」に改称された。</strong>Search の Learn は「The service, its features, and its capabilities are unchanged」と書き、<strong>リソースプロバイダー <code>Microsoft.Search</code>・エンドポイント <code>https://{service}.search.windows.net</code>・REST / SDK のパッケージ名と API 版・<code>Search Index Data Reader</code> 等の RBAC ロール・課金メーター名は旧名のまま</strong>。エージェントの「Azure AI Search ツール」も Learn・移行ガイドの対応表では「Foundry IQ (Azure AI Search)」ツールと呼ばれる(値「Yes (GA)」は不変)。本ページでは従来どおり「AI Search」と書くが、<strong>提案書・見積書では「Foundry IQ のインデックスを直接引く構成(A2 / A3)」と「Foundry IQ のナレッジベース〈KB API〉を使う構成(A5)」を書き分ける</strong>(同じ「Foundry IQ」でも GA の線引きとコストの出方が違う)(<a href="../../features/html/04-tools-knowledge.html">features 04</a>)。</p></blockquote>
 <hr>
 <h2 id="a1-部門内-faq-チャット-file-search・最小構成">A1. 部門内 FAQ チャット(File Search・最小構成)</h2>
 <p><strong>想定:</strong> 情シスや人事が持つ規程・マニュアル・FAQ を数百〜数千ファイル。全社員が同じ文書を見てよい。2〜4 週間で立ち上げたい。</p>
@@ -230,6 +231,7 @@ footer {
 </ul>
 <p><strong>ハイブリッド検索:</strong> RRF の定数 <strong>k = 60</strong>(ベクトル検索の近傍数 k とは別物)。<code>maxTextRecallSize</code> の既定は <strong>1,000</strong> で全文検索はそこで打ち切られる。<strong>セマンティックランカーを使うならベクトルクエリの <code>k</code> を 50 に設定して入力を最大化せよ</strong>というのが公式推奨。</p>
 <p><strong>ベクトルインデックスのクォータ(パーティション単位、ハードリミット):</strong> <strong>2024-04-03 以降に作成したサービス</strong>の場合、Basic 5GB / S1 35GB / S2 150GB / S3 300GB(それ以前に作成したサービス、および Israel Central / Qatar Central / Spain Central / South India は旧上限のまま)。「上限超過後のインデックス試行は失敗する」。緩和策はベクトル文書削除・次元削減・パーティション追加のみ。</p>
+<p><strong>埋め込みモデルのリタイアは「再埋め込み+再索引」になる(2026-11-22 追記):</strong> リタイア表 2026-11-18 版で <strong>Cohere-embed-v3 系は 2026-11-15 に Deprecated・2027-02-15 リタイア</strong>。後継の Embed V5 は埋め込み空間が変わるため<strong>ベクトルの再生成が必要</strong>で、AI Search 側に移行ページが新設された(<a href="../../features/html/02-models.html">features 02</a>)。埋め込みモデルもチャンク戦略と同じく準恒久的な選択なので、<strong>長期運用の索引は「埋め込みモデルの提供期間(GA から概ね 12〜18 か月)ごとに全件再埋め込み」の工数・Batch 費用・切替手順(新旧インデックスの並走とエイリアス切替)を最初から見積もる</strong>(本ドキュメントの判断)。</p>
 <h3 id="ドキュメントレベルアクセス制御の-4-方式">ドキュメントレベルアクセス制御の 4 方式</h3>
 <div class="tablewrap"><table><thead><tr>
 <th>方式</th>
@@ -244,20 +246,21 @@ footer {
 <tr>
 <td>POSIX 風 ACL / RBAC スコープ</td>
 <td>Entra プリンシパルと索引済み権限メタデータを照合</td>
-<td><span class="badge preview">プレビュー</span></td>
+<td><del>プレビュー</del> <strong>GA(2026-10-01)</strong>: ADLS Gen2 の ACL・コンテナ RBAC、標準 Blob のコンテナ RBAC の取り込みとクエリ時フィルタ、push API での ACL 取り込み</td>
 </tr>
 <tr>
 <td>Purview 秘密度ラベル</td>
 <td>インデクサがラベル抽出 → クエリ時に Purview ポリシー評価</td>
-<td><span class="badge preview">プレビュー</span></td>
+<td><span class="badge preview">プレビュー</span>(不変)</td>
 </tr>
 <tr>
 <td>SharePoint (M365) ACL</td>
 <td>SharePoint 権限を直接取り込み</td>
-<td><span class="badge preview">プレビュー</span></td>
+<td><del>プレビュー</del> <strong>GA(2026-10-01)</strong>: SharePoint の ACL 取り込みとクエリ時の権限フィルタ</td>
 </tr>
 </tbody></table></div>
-<p><strong>GA 要件を満たせるのはセキュリティフィルタだけ。</strong>カスタム ID システムや非 Microsoft のセキュリティ基盤を使う案件でも、これが公式推奨。</p>
+<p>(2026-11-22 更新: <a href="https://learn.microsoft.com/en-us/azure/search/search-document-level-access-overview">search-document-level-access-overview</a> 2026-11 版「SharePoint ACL ingestion and query-time permission filtering, ADLS Gen2 ACL/RBAC, and standard Blob container RBAC are generally available with the 2026-10-01 data plane REST API. Push ACL ingestion is also generally available. Microsoft Purview sensitivity label enforcement remains in preview.」。同ページは OneLake のソース権限〈preview〉を 5 番目の方式として追加)</p>
+<p><del><strong>GA 要件を満たせるのはセキュリティフィルタだけ。</strong></del> <strong>2026-11-22 訂正: GA で組める方式はセキュリティフィルタ・ADLS Gen2 / Blob の ACL・RBAC・SharePoint ACL の 4 つになった</strong>(GA 契約は <code>2026-10-01</code>。それより前の版・preview 版で組んだ索引は版を上げる移行が要る)。カスタム ID システムや非 Microsoft のセキュリティ基盤を使う案件、Entra 以外の ID で絞る案件は、引き続きセキュリティフィルタが公式推奨。ネイティブの権限取り込み(<code>ingestionPermissionOptions</code>)を有効にしたソースは、<strong>特殊なパースモード(json / jsonArray / jsonLines / delimitedText / text / markdown 等)を使えず</strong>、image serving(preview)も併用できない。</p>
 <p><strong>設計上の重要な制約:</strong></p>
 <ul>
 <li><strong>権限変更はインデックスに同期されて初めて反映される。</strong>Entra グループメンバーシップや ACL の変更は次回インデクサ実行後。</li>
@@ -320,12 +323,20 @@ footer {
 <td><strong>なし(全文書課金)</strong></td>
 </tr>
 </tbody></table></div>
-<p><strong>両スキル共通の罠:</strong> <strong>レイアウト処理に 5 分以上かかる文書はタイムアウトし、しかも課金される。</strong></p>
-<p><strong>⚠ ページ上限の逆転:</strong> Content Understanding は <strong>300 ページ</strong>、Document Intelligence Layout は <strong>2,000 ページ</strong>。超長尺 PDF は上流で分割するか DI Layout を使う。</p>
+<p><strong>タイムアウトの罠(2026-11-22 更新で両スキルを書き分け):</strong> <strong>Document Layout skill は処理に 5 分を超える文書がタイムアウトし、しかも課金される</strong>(skill ページ 2026-08-08 版)。<strong>Content Understanding skill は Search が分析完了を最大 8 分ポーリング</strong>し、窓内に終わらなければ skill-timeout のエンリッチメントエラーで当該文書の CU 出力が空になる(ファイルサイズのしきい値ではなく、8 分は変更不可。<strong>インデクサーの再実行・リセットは分析をやり直して再課金される</strong>、他スキルにある無料枠は CU skill には適用されない — skill ページ ms.date 2026-11-05)。Content Understanding のセマンティックチャンキングと AI 生成の画像説明は <code>2026-10-01</code> で GA。</p>
+<p><del><strong>⚠ ページ上限の逆転:</strong> Content Understanding は <strong>300 ページ</strong>、Document Intelligence Layout は <strong>2,000 ページ</strong>。超長尺 PDF は上流で分割するか DI Layout を使う。</del> <strong>2026-11-22 更新: 逆転は解消</strong> — Content Understanding の非同期 PDF / TIFF 分析の既定上限が <strong>300 → 2,000 ページ</strong>(全 API 版。同期は 5 ページのまま。What's new「October 2026」)で、DI Layout と同じになった。ただし CU skill では上の 8 分のポーリング窓が別に効くので、<strong>超長尺 PDF は代表ファイルで所要時間を測り、超えるなら上流で分割する</strong>(分割時は表・ページ番号・権限メタデータを各断片に引き継ぐ)。</p>
+<p><strong>CU のデータ保持が変わった(2026-11-22 追記):</strong> CU の data-privacy(ページ日付 2026-10-21)は「<strong>入力文書・中間表現・最終結果を Microsoft 管理ストレージに最長 24 時間保持して自動削除</strong>(Delete Result で前倒し削除可)」に変わった(2026-09 版は「入力と中間表現は処理中のみ、出力だけ 24 時間」)。社内規程の原本を CU で前処理する構成は、<strong>原本が最長 24 時間クラウド側に残る</strong>前提で情報管理部門と合意する。<code>prebuilt-read</code> / <code>prebuilt-layout</code> はリクエスト単位の <code>processingLocation</code>(geography / data zone / global)で処理場所を指定できるが、それ以外の抽出は接続した LLM デプロイの種別に従う(<a href="../../features/html/07-foundry-tools.html">features 07</a>)。</p>
 <h3 id="閉域構成での隠れた地雷">閉域構成での隠れた地雷</h3>
 <p><strong>インデクサの <code>executionEnvironment</code> を <code>&quot;Private&quot;</code> にしないと、マルチテナント実行にフォールバックして Private Endpoint を越えられず、「サイレントに失敗して空インデックス」になる。</strong>「Import data」ウィザードが生成するインデクサが該当する。<strong>indexed knowledge source の自動生成インデクサ</strong>は、configure-private-link(2026-08-14 版)では「private execution environment 非対応」のままだが、AI Search 側は <strong>2026-08-01-preview で blob / indexed SharePoint / indexed Azure SQL(migrate ページは indexed OneLake も列挙)の private ingestion を追加</strong>した(プレビュー。knowledge source 概要 2026-09-01 版は「indexed OneLake は private sync 非対応」と記載し食い違い)。<strong>GA API(2026-04-01)では閉域取り込みは使えない</strong>ので、Foundry IQ の自動生成パイプラインと閉域の相性が悪い点は変わらない(2026-09-26 確認: <a href="https://learn.microsoft.com/en-us/azure/search/agentic-knowledge-source-overview">knowledge source 概要</a> / <a href="https://learn.microsoft.com/en-us/azure/search/agentic-retrieval-how-to-migrate">migrate</a>)。</p>
+<p><strong>2026-11-22 更新 — private ingestion は <code>2026-10-01</code> で GA(Dedicated の S2 / S3 / L1 / L2 のみ)。ただし経路ごとに穴が残る:</strong></p>
+<ul>
+<li>knowledge source 概要(ms.date 11-09)「Private ingestion is generally available in REST API 2026-10-01 for <strong>Blob and ADLS Gen2, indexed Azure SQL, and indexed OneLake</strong> knowledge sources on <strong>eligible Dedicated services</strong>」。対象の tier は Blob・OneLake・Azure SQL の各 knowledge source のページが <strong>S2 / S3 / L1 / L2</strong> と明記している(Basic・S1 は不可。search-sku-tier〈ms.date 11-09〉も private pinning は S2 以上で S3 HD を除くと書く。2026-11-22 確認)。<strong>Serverless は private 実行環境・送信 shared private link に非対応</strong>(NSP は公開エンドポイントの制御で私設接続ではない)。<code>networkAccessMode</code> は作成時のみ。</li>
+<li><strong>SharePoint Online は shared private link の対象外で、ソース接続は常に公開経路</strong>(indexed SharePoint を GA で使えても、取り込みの送信は閉じられない)。</li>
+<li>私設 agentic retrieval チュートリアル(ms.date 11-04)は、<strong>取り込み時の埋め込み呼び出しが Foundry 側の trusted-service バイパスに依存する</strong>(<code>openai_account</code> の shared private link では運ばれず、バイパスを切ると 403「Public access is disabled」)と明記し、S3 HD / Serverless には適用不可。→ <strong>「Foundry の公開アクセスを完全に閉じ、例外も認めない」方針の顧客では、統合ベクトル化の取り込みがそのままでは成立しない</strong>。trusted-service の例外を認めてもらうか、埋め込みを自前の push パイプライン(VNet 内のワーカーから PE 経由で埋め込みを呼んで push)に寄せる。</li>
+<li>新設の <a href="https://learn.microsoft.com/en-us/azure/search/agentic-retrieval-network-security">agentic-retrieval-network-security</a>(ms.date 11-04)は、「agent → Search を私設化しても、ソースの取り込み・埋め込み・クエリ時のモデル呼び出し・リモートソース・資産ストレージの経路は保護されない」として<strong>経路別の棚卸し</strong>を求める(MI / RBAC はネットワーク分離ではない、NSP は Private Link ではない)。閉域の設計レビューではこの 5 経路を表にして 1 つずつ閉じ方を決める。</li>
+</ul>
 <p>インデクサの最大実行時間はパブリック実行環境で <strong>2 時間</strong>、プライベート実行環境で <strong>24 時間</strong>。</p>
-<p><strong>2026-10-14 追記 — Serverless / S3 HD のインデクサーは閉域取り込みができない(preview。<a href="https://learn.microsoft.com/en-us/azure/search/search-indexer-high-density-serverless-overview">search-indexer-high-density-serverless-overview</a> Learn 更新 2026-10-06):</strong> 両ティアのインデクサーは<strong>マルチテナント実行環境のみ</strong>で、shared private link による private 実行環境は使えない(S3 HD は NSP で受発信を制御、<strong>Serverless は private 接続そのものが非対応</strong>)。さらに<strong>サービス全体で 1 日(UTC 00:00 リセット)24 時間分の累積実行時間クォータ</strong>を全インデクサーが共有し、使い切ると実行中のインデクサーは約 5 分以内に止まり新規実行は一時エラーになる(埋め込み・GenAI Prompt・Content Understanding スキルは消費が速い)。→ <strong>PoC を Serverless で組んで本番を閉域にする場合は、ティアの作り直し(相互移行不可)を前提にする</strong>。大量の初回取り込みは日次クォータで何日に分かれるかを見積もる。</p>
+<p><strong>2026-10-14 追記 — Serverless / S3 HD のインデクサーは閉域取り込みができない(preview。<a href="https://learn.microsoft.com/en-us/azure/search/search-indexer-high-density-serverless-overview">search-indexer-high-density-serverless-overview</a> Learn 更新 2026-10-06):</strong> 両ティアのインデクサーは<strong>マルチテナント実行環境のみ</strong>で、shared private link による private 実行環境は使えない(S3 HD は NSP で受発信を制御、<strong>Serverless は private 接続そのものが非対応</strong>)。さらに<strong>サービス全体で 1 日(UTC 00:00 リセット)24 時間分の累積実行時間クォータ</strong>を全インデクサーが共有し、使い切ると実行中のインデクサーは約 5 分以内に止まり新規実行は一時エラーになる(埋め込み・GenAI Prompt・Content Understanding スキルは消費が速い)。→ <strong>PoC を Serverless で組んで本番を閉域にする場合は、ティアの作り直し(相互移行不可)を前提にする</strong>。大量の初回取り込みは日次クォータで何日に分かれるかを見積もる。<strong>2026-11-22 訂正:</strong> 累積実行時間クォータは <strong>24 時間窓(UTC)あたり 48 時間</strong>(search-limits ms.date 11-06 の「Cumulative indexer runtime per service」も S3 HD / Serverless = 48 hours。1 回の実行は 2 時間まで、残量は <code>2026-10-01</code> で取得可)。Serverless・S3 HD 上のインデクサー自体は <code>2026-10-01</code> で GA になったが、<strong>閉域取り込み不可の制約は不変</strong>。<strong>有償の Serverless はインデクサー実行も CU 時間を消費</strong>する(Dedicated・S3 HD・Free は対象外)ので、取り込みの多い PoC はコスト見積もりにも入れる。</p>
 <p><strong>2026-10-14 追記 — Search のエンドポイントをサービス名から組み立てない:</strong> 管理 API <code>2026-09-01-preview</code> の<strong>自動生成 DNS ラベル</strong>(preview)でサービスを作ると、エンドポイントが <code>https://&lt;service-name&gt;-&lt;label&gt;.sg.search.windows.net/</code> になる(ラベルの再利用スコープ <code>NoReuse</code> / <code>SubscriptionReuse</code> / <code>TenantReuse</code> は作成後変更不可。サービス名と ARM リソース ID は不変)。<code>https://&lt;name&gt;.search.windows.net</code> を前提にした IaC・接続作成(AI Search ツールの接続 target、KB の MCP URL)は、作成結果の <code>properties.endpoint</code> を読む形にしておく。<strong>閉域の private DNS ゾーンへの影響は記載なし(要確認)</strong>(<a href="../../features/html/04-tools-knowledge.html">features 04</a>)。</p>
 <hr>
 <h2 id="a3-既存-ai-search-資産の活用-ai-search-ツール直結">A3. 既存 AI Search 資産の活用(AI Search ツール直結)</h2>
@@ -355,6 +366,7 @@ footer {
 <li><strong>2026-10-14 追記:</strong> ai-search ツールページ(ms.date 2026-10-08)の Limitations に「<strong>VNet 注入なしで動くエージェントは、private endpoint 付きの Search に接続できないことがある。Search 側で public network access を有効にしても接続は保証されない</strong>」が追加された。<strong>Search に private endpoint を付けるなら、public access を残していてもエージェントは VNet 注入つきで作る</strong>。</li>
 <li>プライベート VNet では<strong>キー認証不可</strong>で、Entra のプロジェクトマネージド ID が必須(ただし同ページはキーレス認証の付与先を前提条件・Setup では「Foundry アカウントの system-assigned MI」、Limitations では「project managed identity」と書き分けている — 接続の認証種別に合わせて確認する)。</li>
 <li><strong>プライベート AI Search をエージェントツールに使う場合、新 Foundry ポータルで新規にエージェントを作る必要がある</strong>(classic ポータルの旧 Agent Service では非対応)。</li>
+<li><strong>2026-11-22 追記:</strong> ツール名は Learn・移行ガイドで「<strong>Foundry IQ (Azure AI Search)</strong>」ツールに改称(GA は不変)。configure-private-link のツール表でも行名が「Foundry IQ — Through private endpoint」に変わった(値は不変)。新設のツールガバナンス(Azure Policy の承認ツール+プロジェクトの <code>toolControls</code>、preview)で許可する種別の識別子は <code>azure_ai_search</code> のまま(<a href="05-usecase-agent-automation.html#b1-単一エージェント-基幹-api-参照系中心">05 B1</a>)。</li>
 </ul>
 <p><strong>⚠ 評価との相性(見落とされやすい):</strong> 公式にこう明記されている。</p>
 <blockquote><p><code>tool_call_accuracy</code> / <code>tool input accuracy</code> / <code>tool_output_utilization</code> / <code>tool_call_success</code> / <code>groundedness</code> の各評価器は、エージェントの会話に <strong>Azure AI Search / Bing Grounding / Bing Custom Search / SharePoint Grounding / Code Interpreter / Fabric Data Agent / Web Search</strong>(計 7 ツール)への呼び出しが含まれる場合は使うな。</p></blockquote>
@@ -374,28 +386,41 @@ footer {
 </ul>
 <p>実体は <strong>Microsoft 365 Copilot Retrieval API</strong> で、SharePoint 側のセマンティックインデックスと権限をそのまま使う。<strong>「ユーザーが見える文書しか答えない」を自前で作らなくてよい</strong>のが最大の価値。</p>
 <p><strong>Work IQ(M365 のメール・会議・チャットまで含める)を足す場合の追加条件(プレビュー):</strong> 接続は Work IQ Chat が A2A、Copilot Chat / Teams / Word / Outlook / SharePoint / OneDrive 等の個別オプションは MCP(toolbox 経由推奨)。<strong>Entra Global Administrator によるテナント同意(一度だけ、PIM で一時昇格推奨)が必須。BYO Entra アプリ(OBO)のみ。</strong>A2A を直接呼ぶ場合、<code>A2A-Version</code> 未指定だと v0.3 になる。<strong>VNet:</strong> BYO VNet アウトバウンド構成ではプロジェクト専用のデータプロキシ経由でルーティングされる(Work IQ 自体は公開 HTTPS エンドポイント <code>workiq.svc.cloud.microsoft</code>)。<strong>データレジデンシ:</strong> M365 側の取得はテナントの権限・レジデンシ構成に従うが、<strong>エンドツーエンドの処理は Copilot の課金構成と Foundry プロジェクトのリージョンにも依存する</strong>と明記された(2026-09-26 更新: <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/work-iq">work-iq</a> 2026-09-04 版。旧記載「VNet 統合非対応」「M365 テナントの構成に従う」から変化)。</p>
-<p><strong>代替案:</strong> ライセンスや OBO 制約が飲めない場合は、<strong>SharePoint の文書を AI Search に取り込み(indexed SharePoint / SharePoint ACL 方式)、A2 の構成にする。</strong>ただし SharePoint ACL 方式はプレビューで、<strong>親スコープ(サイト / ライブラリ / フォルダ)からの継承変更は明示的な <code>/resync</code> または <code>/resetdocs</code> が必要</strong>という運用上の罠がある。</p>
+<p><strong>2026-11-22 更新(Work IQ):</strong> work-iq(ms.date 11-09)は「<strong>標準 MCP ツール(<code>type: mcp</code>)で <code>https://workiq.svc.cloud.microsoft/mcp</code> に繋ぐ経路は GA</strong>、組み込みの <code>work_iq_preview</code>(A2A)と retrieve ツールは preview」と書き分けた(タイトルは「(preview)」のまま、devblogs 11-18 は「Work IQ and Fabric IQ integrations, in preview」→ 両論、GA 一覧表に行なし)。<strong>新規は MCP 経路で組み</strong>、既存の A2A 接続(<code>/a2a/</code>)と MCP(<code>/mcp</code>)は接続先 URL が別物なので流用時にターゲットを確認する。アプリのみの認証は引き続き不可、閉域は toolbox-network-isolation で Not supported のまま(<a href="../../features/html/04-tools-knowledge.html">features 04</a>)。</p>
+<p><strong>代替案:</strong> ライセンスや OBO 制約が飲めない場合は、<strong>SharePoint の文書を AI Search に取り込み(indexed SharePoint / SharePoint ACL 方式)、A2 の構成にする。</strong><del>ただし SharePoint ACL 方式はプレビューで、</del> <strong>親スコープ(サイト / ライブラリ / フォルダ)からの継承変更は明示的な <code>/resync</code> または <code>/resetdocs</code> が必要</strong>という運用上の罠がある。</p>
+<p><strong>2026-11-22 更新 — indexed SharePoint は GA になり、本番の SharePoint グラウンディングの起点が変わった:</strong> Tech Community「Foundry IQ SharePoint (indexed) knowledge source is now generally available」(2026-11-18)と knowledge source の各ページ(ms.date 11-09)で、<strong>SharePoint インデクサーと indexed SharePoint ナレッジソースが <code>2026-10-01</code> で GA</strong>(ドキュメントライブラリ・リスト・モダンページ・サブサイト。SharePoint のユーザー / Entra グループ / サイトグループの権限をチャンクまで持ち込み、取得時にユーザーのトークンで絞る)。一方 <strong>remote SharePoint(Retrieval API 経由)と SharePoint ツール(<code>sharepoint_grounding_preview</code>)は preview のまま</strong>(remote はプレビュー中は同時実行数に制限、表・画像・グラフを返さない)。→ <strong>SLA を書く本番は「indexed SharePoint(GA)+ A2 / A5」を起点にし、A4 は M365 Copilot 契約済みで権限透過を最優先する案件に限る</strong>(本ドキュメントの判断)。設計上の注意:</p>
+<ul>
+<li><strong>権限はインデックス時点の値</strong>で、既定のインデクサー実行は 24 時間ごと(<code>ingestionSchedule</code> で最短 5 分。間隔は失効の SLA ではない)。親スコープでの継承変更は上の再同期が要る。</li>
+<li><strong>SharePoint グループ権限を使う場合、1 つの生成インデックスが扱えるサイト URL は最大 5 つ</strong>(超えると書き込み拒否)。サイト数が多いなら knowledge source を分け、KB をまたぐルーティングはアプリで持つ。</li>
+<li><strong>SharePoint Online への取り込み経路は常に公開</strong>(shared private link の対象外)。閉域要件とは別に情報管理部門と合意する。</li>
+<li><code>contentExtractionMode: &quot;standard&quot;</code> で Content Understanding のレイアウト解析・セマンティックチャンク・画像抽出を使える(新設 search-how-to-use-content-understanding-sharepoint)。</li>
+<li>ネイティブの SharePoint ナレッジソースはカスタム列(メタデータ)を取り込まない点(下の A5「実装時に当たる失敗の形」)は不変。</li>
+</ul>
 <hr>
 <h2 id="a5-複数ソース横断・高精度-foundry-iq-agentic-retrieval">A5. 複数ソース横断・高精度(Foundry IQ / agentic retrieval)</h2>
 <p><strong>想定:</strong> Blob + OneLake + Web + SharePoint を横断。複数のエージェント / アプリで同じナレッジを共有したい。クエリが複雑・会話的。</p>
 <p><strong>構造:</strong> Knowledge base(最上位。どのソースを引くか、reasoning effort をどうするか)→ Knowledge source(indexed 型 / remote 型)→ agentic retrieval(クエリ分解 → 並列実行 → セマンティック再ランク → 統合)。</p>
 <p><img src="../images/a5-foundry-iq.png" alt="A5 Foundry IQ(agentic retrieval)のアーキテクチャ図" loading="lazy"></p>
 <p><strong>実体は Azure AI Search の agentic retrieval であり、Azure AI Search は必須。</strong>公称値は「従来の single-shot RAG より約 36% 高い応答品質」。</p>
+<blockquote><p><strong>2026-11-22 追記 — 「検索サービスを別途作らない」形がプレビューで出たが、本番の前提は BYO のまま:</strong> (1) <strong>マネージド Foundry IQ(Foundry プロジェクト内蔵)= 限定プレビュー</strong>(Tech Community 2026-11-18「Foundry IQ: now managed for you in every Foundry project」。申請制で開始し <strong>2026-12 に全 Foundry プロジェクトへ展開予定</strong>、Build &gt; Knowledge で「Managed by Foundry」を選び Upload files でファイルのナレッジソースを作る)。ブログ自身が「既存インデックス・パイプラインの再利用、独自スキーマ、検索リソースの構成制御が要るなら BYO の Foundry IQ (Azure AI Search)」と使い分けを書き、<strong>閉域・データ所在・リージョン・単価の記載がない</strong> → 閉域案件・データ所在要件のある案件は当面 BYO を前提にする(要確認)。(2) <strong>Microsoft Retriever 1(<code>microsoft-retriever-1</code>、preview)</strong> — 外部 LLM を繋がずにクエリ計画を行う検索特化モデル。<code>2026-11-01-preview</code> 必須・ポータル非対応・Standard Knowledge Retrieval プラン前提で、<strong>MR1 だけの KB は low / medium とナレッジソース選択に非対応</strong>。(3) <strong>ナレッジグラフ(entity graph / topic graph)・名前付き KB ツール = preview</strong>(<code>2026-11-01-preview</code> 必須)。いずれも GA の <code>2026-10-01</code> では使えないので、<strong>GA の KB と混ぜる場合は API 版をリソース単位で分けて扱う</strong>(<a href="../../features/html/04-tools-knowledge.html">features 04</a>)。</p></blockquote>
 <h3 id="foundry-iq-ga-は誤り-ga-プレビューは-rest-api-バージョンで切れている">⚠ 「Foundry IQ = GA」は誤り。GA / プレビューは REST API バージョンで切れている</h3>
 <blockquote><p>一部の agentic retrieval 機能は <strong>2026-04-01 REST API のプログラム的アクセスで一般提供されている。Azure portal と Microsoft Foundry portal は、すべての agentic retrieval 機能に対してプレビュー限定のアクセスを提供し続ける。</strong></p></blockquote>
 <p>(2026-09-26 確認: agentic-retrieval-overview 2026-09-16 版は「<strong>2026-04-01 は GA ナレッジソース種別 + minimal・extractive 取得の本番ワークロード向け</strong>。LLM クエリ計画・回答合成・minimal 以外の reasoning effort・マルチターン messages は <strong>2026-08-01-preview</strong>」と整理。最新プレビュー API は 2026-05-01-preview から <strong>2026-08-01-preview</strong> に進んだ)</p>
-<p>つまり <strong>ポータルで作った Foundry IQ 構成は全部プレビュー扱い。</strong>GA 構成が要るなら REST/SDK で <code>2026-04-01</code> を直接叩く必要がある。<strong>SLA 条項を書く案件ではここが最大の分岐点。</strong></p>
-<p><strong>ナレッジソース別の GA / プレビュー:</strong></p>
+<p>つまり <strong>ポータルで作った Foundry IQ 構成は全部プレビュー扱い。</strong>GA 構成が要るなら REST/SDK で GA 版(2026-11-22 時点の最新安定版は <strong><code>2026-10-01</code></strong>)を直接叩く必要がある。<strong>SLA 条項を書く案件ではここが最大の分岐点。</strong></p>
+<p><strong>2026-11-22 更新 — 安定版 <code>2026-10-01</code> で GA の範囲が広がった:</strong> agentic-retrieval-overview・migrate(ms.date 10-29)は「Use 2026-10-01 for the GA REST contract: <strong>minimal, low, and medium effort; model-backed planning and answer synthesis; citations; SSE; per-request source controls and limits; activity warnings; and KB CORS</strong>」と整理。<strong>プレビュー専用のまま</strong>なのは <code>auto</code> effort・<code>retrieveDefaults</code>・<code>neverQuerySource</code>・<code>resultsProcessing</code>・query hints・image serving と、新プレビュー版 <code>2026-11-01-preview</code> の Microsoft Retriever 1・名前付き KB ツール・GPT-6 系の KB モデル名・非同期ファイル取り込み。GA のモデルプロバイダーは <code>azureOpenAI</code> のみ、要求予算は <code>maxOutputSizeInTokens</code>(旧プレビューの <code>maxOutputSize</code> ではない)、minimal は messages 不可(semantic intents のみ)・low / medium はモデル必須で messages か intents の一方。migrate ガイドは「<strong>GA 契約がユースケースを満たす場合だけ</strong> preview から 2026-10-01 へ移せ」と注意しており、版を上げるときは定義を取り直してプレビュー専用フィールドを外す作業になる。</p>
+<p><strong>ナレッジソース別の GA / プレビュー(2026-11-22 更新):</strong></p>
 <div class="tablewrap"><table><thead><tr>
-<th>GA(2026-04-01)</th>
+<th>GA(2026-04-01 から)</th>
+<th>GA(2026-10-01 で追加)</th>
 <th>プレビュー</th>
 </tr></thead><tbody>
 <tr>
 <td><code>searchIndex</code>(既存インデックスをラップ)、<code>azureBlob</code>、<code>indexedOneLake</code>、<code>web</code>(Bing 経由)</td>
-<td><code>azureSql</code>、<code>file</code>、<code>indexedSharePoint</code>、<code>remoteSharePoint</code>、<code>fabricDataAgent</code>、<code>fabricOntology</code>、<code>mcpServer</code>、<code>workIQ</code></td>
+<td><code>file</code>、<code>azureSql</code>(indexed)、<code>indexedSharePoint</code></td>
+<td><code>remoteSharePoint</code>、<code>fabricDataAgent</code>、<code>fabricOntology</code>、<code>mcpServer</code>、<code>workIQ</code></td>
 </tr>
 </tbody></table></div>
-<p><strong>GA 版で失われる機能:</strong> <code>ingestionPermissionOptions</code> が非サポート = <strong>ドキュメントレベル権限を使うならプレビュー API(2026-05-01-preview 以降。2026-09-26 時点の最新は 2026-08-01-preview)が必須。「GA 構成 かつ ACL 連携」は現時点で両立しない。</strong>さらに GA では <code>outputMode</code> / <code>answerInstructions</code> / <code>retrievalInstructions</code> / retrieval reasoning effort も削除される。</p>
+<p><strong>GA 版で失われる機能(2026-04-01 時点の記述):</strong> <code>ingestionPermissionOptions</code> が非サポート = <strong>ドキュメントレベル権限を使うならプレビュー API(2026-05-01-preview 以降。2026-09-26 時点の最新は 2026-08-01-preview)が必須。「GA 構成 かつ ACL 連携」は現時点で両立しない。</strong>さらに GA では <code>outputMode</code> / <code>answerInstructions</code> / <code>retrievalInstructions</code> / retrieval reasoning effort も削除される。→ <strong>2026-11-22 訂正: <code>2026-10-01</code> では両立する。</strong>indexed SharePoint の <code>ingestionPermissionOptions: [&quot;userIds&quot;, &quot;groupIds&quot;]</code> による SharePoint ACL の取り込みとクエリ時フィルタ、ADLS Gen2 / Blob の ACL・RBAC が GA で、reasoning effort(minimal / low / medium)と answer synthesis も GA 契約に戻った。<strong>preview のまま残るのは Purview 秘密度ラベル(<code>ingestionPermissionOptions</code> の <code>sensitivityLabel</code>)と image serving</strong>(権限取り込みを有効にしたソースでは image serving を併用できない)。「GA 構成で ACL 連携」を提案するなら、API 版 <code>2026-10-01</code> の固定と、権限同期の遅れ(インデックス時点の権限で絞る)を前提条件として書く。</p>
 <h3 id="retrieval-reasoning-effort-コスト・レイテンシ・精度のダイヤル">Retrieval reasoning effort(コスト・レイテンシ・精度のダイヤル)</h3>
 <div class="tablewrap"><table><thead><tr>
 <th>レベル</th>
@@ -419,7 +444,7 @@ footer {
 <td><code>medium</code></td>
 <td>計画 + 反復検索</td>
 <td>10,000</td>
-<td>L3 分類器で 1 回だけ再試行。<strong>対応リージョン限定(Japan East は対応)</strong></td>
+<td>L3 分類器で 1 回だけ再試行。<strong>対応リージョン限定(Japan East は対応、Japan West は一覧にない。agentic-retrieval-how-to-set-retrieval-reasoning-effort ms.date 11-09)</strong></td>
 </tr>
 <tr>
 <td><code>auto</code>(2026-09-26 追記)</td>
@@ -428,24 +453,25 @@ footer {
 <td><strong>2026-08-01-preview 必須</strong>(旧 API は 400)、knowledge base にモデル必須、agentic retrieval 対応全リージョンで利用可。公表値(Tech Community 2026-09-30、GPT-5.4 mini で計画): <strong>medium の証拠再現率の 97.6% を、クエリ計画トークン 46.9% 減で達成、1,000 クエリあたりコスト 34.7% 減</strong>(ベンダー測定。ステータスは同記事でも「August 2026 preview」)</td>
 </tr>
 </tbody></table></div>
-<p><code>low</code> / <code>medium</code> / <code>auto</code> はいずれもプレビュー(GA の 2026-04-01 は minimal 相当の抽出型のみ)。<code>minimal</code> は 1 knowledge base あたり knowledge source 最大 10(reasoning effort ページ 2026-08-17 版)。</p>
+<p><del><code>low</code> / <code>medium</code> / <code>auto</code> はいずれもプレビュー(GA の 2026-04-01 は minimal 相当の抽出型のみ)。</del> <strong>2026-11-22 更新: <code>low</code> / <code>medium</code> は安定版 <code>2026-10-01</code> で GA、<code>auto</code> だけがプレビュー</strong>(<code>2026-08-01-preview</code> 以降の preview 版が必要。GA 契約に <code>auto</code> を送ると拒否される)。<code>auto</code> は Microsoft Retriever 1 を組み合わせると「minimal → MR1 の深い検索 → 外部モデル(medium)」と段階的に上げる(<code>2026-11-01-preview</code>、初回パスに乗るのは indexed 系ソースのみ)。<code>minimal</code> は 1 knowledge base あたり knowledge source 最大 10(reasoning effort ページ 2026-08-17 版)。</p>
 <p><strong>クエリ時の既定値:</strong> <code>maxRuntimeInSeconds</code> = 90 秒、<code>maxOutputSizeInTokens</code> = 5,000 トークン。<strong>⚠ この上限を超えた文書はサイレントに応答から落ちる</strong>(activity ログに警告が出るだけ)。</p>
 <p><strong>その他の注意:</strong> retrieve は knowledge source のセマンティック構成は使うが、<strong>元インデックスの scoring profile を適用しない。</strong></p>
 <h3 id="ティアと課金">ティアと課金</h3>
 <ul>
 <li><strong>S3 HD の扱いが変わった(2026-09-26 更新):</strong> search-limits 2026-08-04 版では S3 HD のナレッジソース / ナレッジベース上限が 0(= agentic retrieval 不可)だったが、<strong>2026-09-16 版で「1 パーティションあたり 1,000 またはサービスあたり 3,000」に変更</strong>(1 KB あたり knowledge source 10)。ただし「<strong>一部の古い S3 HD サービスは非対応</strong>」の脚注があり、S3 HD のインデクサ対応はプレビュー(マルチテナント実行のみ・shared private link 非対応・約 1GB 規模向け)。<strong>既存 S3 HD で Foundry IQ を使う前に、そのサービスで knowledge base を作成できるか実機確認する</strong>(<a href="https://learn.microsoft.com/en-us/azure/search/search-limits-quotas-capacity">search-limits-quotas-capacity</a>)。</li>
 <li><strong>Free ティアでも agentic retrieval は動く(2026-10-06 追記):</strong> 公式の上限表は Free を knowledge source / knowledge base 各 3・1 KB あたり 3 とし(Basic は 15〈2024-04-03 以前の作成は 5〉、S1 以上は 50〜)(<a href="https://learn.microsoft.com/en-us/azure/search/search-limits-quotas-capacity">search-limits-quotas-capacity</a>)、<strong>[実測] <a href="../../../../labs/maf-ports/ports/db-routing-iq/README.md">Port 10 db-routing-iq</a>(2026-10-06): Japan East の AI Search Free でナレッジベース作成・LLM のクエリ計画・4 問のルーティングが動いた</strong>(小規模・同時 1 要求のみ。セマンティックランカーの無料枠・スロットリングを超えた場合は未検証)。→ <strong>PoC は Free から始められる</strong>。本番のティアは上限(KB・ソース数)・SLA・レプリカ(ゾーン分散は Standard 以上+レプリカ 3 — <a href="09-operations.html#2-6-可用性ゾーンと-sla">09 §2.6</a>)で決める</li>
-<li>課金は AI Search 側の<strong>トークン課金</strong>(<code>knowledgeRetrieval</code> プロパティ。<strong>無料枠は月 5,000 万トークン</strong>)+ Azure OpenAI 側のクエリ計画・回答合成トークン。公式試算例(2,000 リクエスト・3 サブクエリ・50 チャンク再ランク)で <strong>約 $4.32</strong>。</li>
+<li>課金は AI Search 側の<strong>トークン課金</strong>(<code>knowledgeRetrieval</code> プロパティ。<strong>無料枠は月 5,000 万トークン</strong>)+ Azure OpenAI 側のクエリ計画・回答合成トークン。公式試算例(2,000 リクエスト・3 サブクエリ・50 チャンク再ランク)で <strong>約 $4.32</strong>。<strong>2026-11-22 追記:</strong> Free 既定の <code>knowledgeRetrieval</code> プランは<strong>月次トークン枠を超えると HTTP 402</strong> になる(有償は <code>standard</code> プランへ切替 — enable-disable ページ)。PoC で枠を使い切ると retrieve が止まるので、本番前に <code>standard</code> へ切り替えておく。</li>
+<li><strong>Serverless のステータスは両論(2026-11-22 追記):</strong> Search の What's new「November 2026」は「Serverless is now generally available alongside Dedicated pricing」、search-sku-tier(ms.date 11-09)も全 Serverless サービスに読み書き SLA があると書く一方、<strong>Azure ブログ(2026-11-17「Introducing the new Microsoft IQ」)は「Generally available in December 2026, Foundry IQ Serverless」</strong>と 12 月 GA と書く(GA 一覧表に行なし)。課金は 2026-09-13 から開始済み、呼称は「Serverless tier」(Developer tier 表記は消滅)、他ティアとの相互移行不可。上限はサービスあたり KB・ナレッジソース各 10,000、インデックス 10 GB、検索 50 QPS / インデックス、同時要求 4 / サービス(search-limits 11-06)。リージョンは Japan East に加え <strong>Japan West も ✅</strong>(search-region-support 11-03)。<strong>閉域取り込み不可(上の「閉域構成での隠れた地雷」)は GA 後も不変</strong>なので、閉域本番は Dedicated を選ぶ。</li>
 <li><strong>⚠ 移行時の落とし穴:</strong> 2026-04-01 以降 <code>semanticSearch</code> と <code>knowledgeRetrieval</code> は分離され、<strong>旧 <code>semanticSearch=standard</code> の同意は <code>knowledgeRetrieval</code> に引き継がれない。</strong></li>
 </ul>
 <h3 id="エージェントからの接続と-その制約">エージェントからの接続と、その制約</h3>
-<p>Foundry Agent Service との接続は <strong>MCP 経由</strong>(<code>knowledge_base_retrieve</code> ツールのみ)。<del>MCP エンドポイントはプレビュー API 必須</del> → <strong>2026-09-29 訂正: KB の MCP エンドポイント自体は GA 版 <code>2026-04-01</code> でも使える</strong>(agentic-retrieval-how-to-retrieve 2026-09-04 版〈Learn 更新 09-17〉:「By using 2026-04-01, retrieval is always minimal and extractive, and the connection returns grounding data only」。合成回答が要るなら <code>2026-08-01-preview</code>)。ただし <strong>Foundry Agent Service 側の接続(<code>RemoteTool</code> 接続)はプレビュー</strong>で、foundry-iq-connect(2026-08-07 版、2026-09-17 更新)の例は Python / REST が <code>2026-08-01-preview</code>、C# のみ <code>2026-05-01-preview</code> のまま(詳細は <a href="../../features/html/04-tools-knowledge.html">features 04</a>)。つまり「MCP の API 版を GA に揃える」ことはできるが、「Agent Service から KB を呼ぶ構成全体を GA にする」ことはまだできない。</p>
+<p>Foundry Agent Service との接続は <strong>MCP 経由</strong>(<code>knowledge_base_retrieve</code> ツールのみ)。<del>MCP エンドポイントはプレビュー API 必須</del> → <strong>2026-09-29 訂正: KB の MCP エンドポイント自体は GA 版 <code>2026-04-01</code> でも使える</strong>(agentic-retrieval-how-to-retrieve 2026-09-04 版〈Learn 更新 09-17〉:「By using 2026-04-01, retrieval is always minimal and extractive, and the connection returns grounding data only」。合成回答が要るなら <code>2026-08-01-preview</code>)。ただし <strong>Foundry Agent Service 側の接続(<code>RemoteTool</code> 接続)はプレビュー</strong>で、foundry-iq-connect(2026-08-07 版、2026-09-17 更新)の例は Python / REST が <code>2026-08-01-preview</code>、C# のみ <code>2026-05-01-preview</code> のまま(詳細は <a href="../../features/html/04-tools-knowledge.html">features 04</a>)。2026-11-22 確認: ms.date 11-09 版の例は MCP を <code>2026-11-01-preview</code> で呼び、<code>RemoteTool</code> 接続は preview のまま。GA 版で MCP を使えるのは <code>2026-04-01</code>(常に minimal・抽出のみ)だけで、<code>2026-10-01</code> での MCP の利用は記載がない。つまり「MCP の API 版を GA に揃える」ことはできるが、「Agent Service から KB を呼ぶ構成全体を GA にする」ことはまだできない。<strong>2026-11-22 更新:</strong> foundry-iq-connect(ms.date 11-09)の例・トラブルシュートは KB の MCP エンドポイント <code>api-version=2026-11-01-preview</code> に更新された。<code>RemoteTool</code> 接続は preview のまま、Usage support は Python + REST のみで不変(C# 例は 2026-05-01-preview のまま)。名前付き KB ツール(preview)を Agent Service から許可する設定は同ページが <code>allowed_tools</code> に <code>knowledge_base_retrieve</code> を含める前提のままで要確認。</p>
 <p><strong>ユーザー単位の権限透過(2026-09-26 更新):</strong> 以前の版は「Foundry Agent Service は MCP ツールのリクエスト単位ヘッダーをサポートしない → remote SharePoint でユーザー単位の権限透過をやるなら Azure OpenAI Responses API を使え」と明記していたが、<strong>foundry-iq-connect の現行版(2026-09-17 更新)ではこの制約の記述が消え、代わりに「エージェント定義で structured input を宣言し、MCP ツールのヘッダーに <code>{{placeholder}}</code> として参照すれば呼び出しごとに値を差し替えられる」手順が載った</strong>(project connection に紐づく MCP ツールで有効)。ユーザーのトークンを <code>x-ms-query-source-authorization</code> ヘッダーで渡すと、ACL 付き indexed ソース・remote SharePoint がユーザー単位でフィルタされる。</p>
-<blockquote><p><strong>⚠ 静かに漏れる罠:</strong> 「<strong>トークンを渡さないと、権限が有効なソースもフィルタされずに結果を返す</strong>」と明記されている。ヘッダー未設定は「失敗」ではなく「全件返却」になるので、<strong>呼び出し側でトークン必須チェックを入れる。</strong><br><br>出典: <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/foundry-iq-connect">foundry-iq-connect「Enforce permissions with per-request headers」</a>(query-time ACL 自体はプレビュー)</p></blockquote>
+<blockquote><p><strong>⚠ 静かに漏れる罠:</strong> foundry-iq-connect は「<strong>トークンを渡さないと、権限が有効なソースもフィルタされずに結果を返す</strong>」と書く。この記述どおりなら、ヘッダー未設定は「失敗」ではなく「全件返却」になるので、<strong>呼び出し側でトークン必須チェックを入れる。</strong><br><br>出典: <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/foundry-iq-connect">foundry-iq-connect「Enforce permissions with per-request headers」</a>(query-time ACL 自体はプレビュー)<br><br><strong>2026-11-22 更新(foundry-iq-connect ms.date 11-09):</strong> <strong>呼び出し主体がユーザーなら Agent Service が <code>x-ms-query-source-authorization</code> をそのユーザー文脈で自動設定</strong>し、ユーザーを直接表さない呼び出し(サービス主体・Routines・バッチ・アプリのワークロード ID が代理で呼ぶ構成)では、アプリが structured inputs でユーザーのトークンを渡す — その上で「<strong>トークンがないと権限付きソースはフィルターされずに結果を返す</strong>(fail-open)」と再び書いた。<br><br><strong>2026-11-22 訂正 — Learn のページ同士で食い違う:</strong> Search 側の <a href="https://learn.microsoft.com/en-us/azure/search/agentic-retrieval-how-to-retrieve">agentic-retrieval-how-to-retrieve</a>(ms.date 11-09)は「ネイティブの権限フィルターを有効にしたインデックスでは、<code>x-ms-query-source-authorization</code> を省くと公開の許可だけを残し、未フィルタでは返さない」、<a href="https://learn.microsoft.com/en-us/azure/search/search-query-access-control-rbac-enforcement">query-time ACL のページ</a>(11-06)は「ユーザートークンを省くと ACL で保護された内容は返さない」と書く。どちらが実際の挙動かは公式から決められないので、<strong>「GA になったから安全」とも「トークンなしなら必ず全件返る」とも決めず、トークンが届かない経路で何が返るかを受入試験で確かめる</strong>。受入試験では (a) 利用者本人の呼び出し、(b) アプリの ID 経由、(c) Routines などの無人実行、の 3 経路それぞれで「見えてはいけない文書が返らない」ことを確認し、(c) で絞れないなら権限付きソースを KB から外すか呼び出しを拒否する。</p></blockquote>
 <p><strong>2026-10-14 追記 — 実装時に当たる失敗の形(Tech Community「Metadata-Aware Agentic RAG with Foundry IQ」2026-10-08。新機能・新 API 版は含まない):</strong> (1) <strong>ネイティブの SharePoint ナレッジソースは SharePoint のカスタム列(メタデータ)を取り込まない</strong> → メタデータで絞るならカスタムインデックスを作って <code>searchIndex</code> ナレッジソースとして公開し、全チャンクに親文書のメタデータを持たせる(この場合 SharePoint の権限は継承されないので ACL を取り込みと検索に自分で持ち込む)。(2) キー認証を無効にした Search では、<strong>検索サービスのマネージド ID に <code>Cognitive Services User</code> を付けないと retrieve が 401</strong>。(3) LLM のクエリプランナーが不正なフィルター(引用符抜け・型違い)を作ると <strong>retrieve が 502</strong> — フィールド型と許容値をフィルター指示に明記し、アプリ側で retrieve の失敗を処理する。</p>
 <p><strong>MCP 応答の形は preview API 版に結び付いている([実測] <a href="../../../../labs/maf-ports/ports/db-routing-iq/README.md">Port 10 db-routing-iq</a>、2026-10-06):</strong> <code>2026-08-01-preview</code> の KB MCP 応答は参照ごとにインデックス URI と <code>sourceData.domain</code>、<code>_meta.agenticReasoningTokens</code> を返すので、<strong>どのナレッジソースが答えたかは MCP 応答から分かる</strong>(生成されたサブクエリは返らない)。<code>2026-05-01-preview</code> ではツール引数が <code>queries</code>、参照 URI が <code>mcp://searchindex/...</code>(インデックス名なし)だった。→ 応答を解析して出典表示・ルーティング検証をするコードは API 版を固定し、版を上げるときに回帰テストする</p>
 <p><strong>逆に価値になる点:</strong> knowledge base は <strong>MCP 経由なので Foundry Agent Service 以外(Microsoft Agent Framework / LangGraph / 自作アプリ)からも同じナレッジを使える。</strong>「ナレッジ層だけ Foundry IQ、オーケストレーションは自前」という組合せが成立する。<strong>2026-10-14 追記:</strong> MAF 側には Python の <strong><code>AzureAISearchContextProvider</code></strong>(<code>agent-framework-azure-ai-search</code>。semantic モード=既存インデックスのハイブリッド検索 / agentic モード=KB のクエリ計画)があり、<code>query_source_credential</code> に利用者の資格情報を渡すと <code>x-ms-query-source-authorization</code> で ID を転送し、トークンが取れなければ ID なしで再試行せず失敗する(<strong>fail closed</strong> — 上の「静かに漏れる罠」と逆の既定)。ただしパッケージは 1.0.0b261002(beta、<code>--pre</code> 必須)で、権限トリミングと agentic の合成回答は preview 版 <code>azure-search-documents</code> が前提なので、GA 部品だけで組む案件の経路にはまだならない</p>
-<p><strong>2026-10-06 追記 — Copilot Studio からの接続は GA:</strong> Tech Community「Foundry IQ in Microsoft Copilot Studio is now generally available」(2026-10-01)で、<strong>Copilot Studio のエージェントに Foundry IQ の knowledge base をつなぐ統合が GA</strong>になった。認証は API キー / クライアント証明書 / サービスプリンシパル / Entra ID 統合認証、<strong>Azure AI Search の Foundry IQ サブリソースへの Private Endpoint + Power Platform の VNet サポート(委任サブネット)で、Search のパブリックアクセスを無効にしたまま接続できる</strong>。activity トレースで取得結果を確認できる。<strong>「対話の入口は Copilot Studio、ナレッジ層は Foundry IQ」を GA 部品で組める</strong>(Copilot Studio → Foundry <strong>エージェント</strong>への接続〈プレビュー〉とは別物 — <a href="11-decision-frameworks.html">11 §2</a>)。ただし Foundry IQ 側の GA / プレビューの線引き(上の REST API 版)はそのまま効くので、取得方式(minimal・extractive か LLM 計画か)とナレッジソース種別の GA 可否は別途確認する。Learn 側(Copilot Studio のドキュメント)での GA 表記は未確認</p>
+<p><strong>2026-10-06 追記 — Copilot Studio からの接続は GA:</strong> Tech Community「Foundry IQ in Microsoft Copilot Studio is now generally available」(2026-10-01)で、<strong>Copilot Studio のエージェントに Foundry IQ の knowledge base をつなぐ統合が GA</strong>になった。認証は API キー / クライアント証明書 / サービスプリンシパル / Entra ID 統合認証、<strong>Azure AI Search の Foundry IQ サブリソースへの Private Endpoint + Power Platform の VNet サポート(委任サブネット)で、Search のパブリックアクセスを無効にしたまま接続できる</strong>。activity トレースで取得結果を確認できる。<strong>「対話の入口は Copilot Studio、ナレッジ層は Foundry IQ」を GA 部品で組める</strong>(Copilot Studio → Foundry <strong>エージェント</strong>への接続〈プレビュー〉とは別物 — <a href="11-decision-frameworks.html">11 §2</a>)。ただし Foundry IQ 側の GA / プレビューの線引き(上の REST API 版)はそのまま効くので、取得方式(minimal・extractive か LLM 計画か)とナレッジソース種別の GA 可否は別途確認する。Learn 側(Copilot Studio のドキュメント)での GA 表記は未確認。<strong>2026-11-22 要確認:</strong> what-is-foundry-iq(ms.date 11-04)と Copilot Studio 側ページ(updated 11-12)は、Copilot Studio からの接続を「<strong>Microsoft Copilot harness で作ったエージェントのみ・1 エージェント 1 接続</strong>」(Copilot Credits の従量課金)と書く。10-06 に記録した GA の範囲が新ハーネスのエージェントに限られると読めるので、既存の Copilot Studio エージェントで使う前提の提案は対象エージェントの種類を確認する( <a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/agents-experience/foundry-iq-connect" title="https://learn.microsoft.com/en-us/microsoft-copilot-studio/agents-experience/foundry-iq-connect">foundry-iq-connect</a> )</p>
 <hr>
 <h2 id="rag-方式の比較-まとめ">RAG 方式の比較(まとめ)</h2>
 <div class="tablewrap"><table><thead><tr>
@@ -479,9 +505,9 @@ footer {
 <tr>
 <td>ドキュメントレベル ACL</td>
 <td><strong>不可</strong></td>
-<td>可(GA: セキュリティフィルタ)</td>
+<td>可(GA: セキュリティフィルタ、<code>2026-10-01</code> から SharePoint / ADLS Gen2 / Blob の ACL・RBAC も GA)</td>
 <td>可</td>
-<td><strong>GA 版では不可</strong>(preview 必須)</td>
+<td><code>2026-10-01</code> で GA(indexed SharePoint・Blob・ADLS Gen2。Purview ラベルは preview。トークン未設定は全件返却)</td>
 </tr>
 <tr>
 <td>複数ソース横断</td>
@@ -493,9 +519,9 @@ footer {
 <tr>
 <td>閉域(VNet)</td>
 <td>公式表は PE 経由で対応(2026-08-14 版〜)。<strong>Blob 上のファイル連携は非対応</strong></td>
-<td>可</td>
+<td>可(取り込みは Dedicated の private 実行環境。SharePoint Online は公開経路)</td>
 <td>可(Standard セットアップ)</td>
-<td>MCP 経由で可</td>
+<td>MCP 経由で可(private ingestion は <code>2026-10-01</code> で GA、Dedicated の S2 以上のみ。埋め込みは trusted-service バイパス依存)</td>
 </tr>
 <tr>
 <td>エージェント評価器</td>
@@ -522,7 +548,7 @@ footer {
 <p><strong>「マネージドを選んで失うもの」を一覧化しておくと提案時に説明しやすい:</strong></p>
 <ul>
 <li><strong>File Search で失うもの:</strong> チャンク制御、埋め込みモデル・次元選択、メタデータ / フィルタ、<strong>ドキュメントレベルアクセス制御(原理的に不可)</strong>、ハイブリッド重み・RRF・リランク閾値、コーパスの分離、コスト可視性、ポータビリティ、表形式データ対応。</li>
-<li><strong>Foundry IQ で失うもの:</strong> <strong>GA 構成の自由度</strong>(ポータル経由は全プレビュー)、インデックススキーマ制御(自動生成物は名前変更不可・直接編集非推奨)、<strong>ユーザー単位認可の簡便さ</strong>(Agent Service 経由は structured input でトークンを毎回注入する実装が要り、渡し忘れると未フィルタ。2026-09-26 更新)、応答の完全性(<code>maxOutputSizeInTokens</code> 超過分がサイレントに落ちる)、既存 scoring profile。</li>
+<li><strong>Foundry IQ で失うもの:</strong> <strong>GA 構成の自由度</strong>(ポータル経由は全プレビュー。API は <code>2026-10-01</code> で計画・合成・low / medium・主要ソースの ACL まで GA になったが、<code>auto</code>・remote SharePoint・Fabric / MCP / Work IQ ソース・Purview ラベル・Microsoft Retriever 1 は preview — 2026-11-22 更新)、インデックススキーマ制御(自動生成物は名前変更不可・直接編集非推奨)、<strong>ユーザー単位認可の簡便さ</strong>(Agent Service 経由は structured input でトークンを毎回注入する実装が要り、渡し忘れたときの挙動は Learn のページで食い違う〈未フィルタ / ACL 付きは返さない〉。2026-09-26 更新)、応答の完全性(<code>maxOutputSizeInTokens</code> 超過分がサイレントに落ちる)、既存 scoring profile。</li>
 <li><strong>自前で失うもの:</strong> 引用の配管、クエリ計画・分解(公称 36% の品質差)、クエリ書き換え、ACL 同期実装、リトライ / スロットリング制御、リランキング。<strong>ただし「自前 = 全部自前」ではない</strong> — インデクサ + 統合ベクトル化を使えば取り込み運用の大半はマネージドのまま残る。</li>
 </ul>
 <hr>
@@ -539,13 +565,13 @@ footer {
 </tr>
 <tr>
 <td>データレジデンシ / CMK / 閉域が必須</td>
-<td><strong>A2</strong>(Standard セットアップ + 自前索引)。Web グラウンディングは排除</td>
-<td>File Search は閉域で Blob 上のファイル連携が非対応(公式表記は PE 経由で対応に変更済み)、Web は DPA 対象外</td>
+<td><strong>A2</strong>(Standard セットアップ + 自前索引、Search は Dedicated)。Web グラウンディングは排除</td>
+<td>File Search は閉域で Blob 上のファイル連携が非対応(公式表記は PE 経由で対応に変更済み)、Web は DPA 対象外(2026-11-22: 直付けの web search は Web IQ〈Azure コンプライアンス境界外で処理されうる〉、toolbox 経由は Grounding with Bing〈DPA 非適用〉で、どちらの経路も境界外)。取り込み時の埋め込みが trusted-service バイパスに依存する点・SharePoint Online の取り込みが公開経路になる点を先に合意する</td>
 </tr>
 <tr>
 <td>ユーザーごとに見える文書が違う</td>
-<td><strong>A2 + セキュリティフィルタ(GA)</strong></td>
-<td><span class="badge ga">GA</span> 要件を満たす唯一の方式</td>
+<td><strong>A2 + セキュリティフィルタ(GA)</strong>、または <code>2026-10-01</code> の ACL 取り込み(SharePoint / ADLS Gen2 / Blob、GA)</td>
+<td><del>GA 要件を満たす唯一の方式</del> 2026-11-22: ACL 取り込みも GA に。Entra 以外の ID・非 Microsoft のソースならセキュリティフィルタ</td>
 </tr>
 <tr>
 <td>チャンク戦略を業務文書構造に合わせたい</td>
@@ -561,6 +587,11 @@ footer {
 <td>SharePoint が唯一のソース / M365 Copilot 契約済</td>
 <td><strong>A4</strong></td>
 <td>権限透過が自動。ただし OBO 必須</td>
+</tr>
+<tr>
+<td>SharePoint が主ソースで SLA を書く本番(2026-11-22 追加)</td>
+<td><strong>A2 / A5 + indexed SharePoint(GA)</strong></td>
+<td>SharePoint ツール・remote SharePoint は preview。権限はインデックス時点の値で同期間隔ぶん遅れる</td>
 </tr>
 <tr>
 <td>複数ソース横断(Blob + OneLake + Web)</td>
@@ -593,6 +624,6 @@ footer {
 <li><strong>リランキングの原則:</strong> 「<strong>cross-encoder のスコアは相対値であり絶対値ではない。順序付けに使い、閾値判定に使うな。</strong>」</li>
 <li>「言語モデルの応答は非決定的なので、<strong>単一の目標値ではなく目標レンジを使うことを検討せよ。</strong>」</li>
 </ul>
-<p><strong>実行時のガードレール(RAG 固有):</strong> Prompt Shields の間接攻撃検出(<strong>最大 5 文書・合計 10,000 文字</strong>)は、top-50 の取得結果を 1 回では検査できない。<strong>分割呼び出しかインデックス前サニタイズが必要。</strong>Groundedness detection は<strong>ストリーミングのみ・英語のみ・対応 4 リージョン(Central US / East US / France Central / Canada East)のみ</strong>という制約がある。<strong>2026-10-14 追記:</strong> content-streaming(2026-10-13 公開版)は、<strong>既定(バッファあり)のストリーミングでも応答の最後の区切り(試験では末尾約 15〜30 語)がガードレール適用前に届きうる</strong>と注記した。社内文書の機微語をブロックリストで止める設計は、ストリーミングなら最終区切りをアプリ側で再検査するか非ストリーミングにする(<a href="06-usecase-customer-facing.html#プロンプトインジェクションと安全性">06 C1</a>)。</p>
+<p><strong>実行時のガードレール(RAG 固有):</strong> Prompt Shields の間接攻撃検出(<strong>最大 5 文書・合計 10,000 文字</strong>)は、top-50 の取得結果を 1 回では検査できない。<strong>分割呼び出しかインデックス前サニタイズが必要。</strong>Groundedness detection は<strong>ストリーミングのみ・英語のみ・対応 4 リージョン(Central US / East US / France Central / Canada East)のみ</strong>という制約がある。<strong>2026-11-22 追記: Groundedness detection は 2027-04-30 に廃止予定</strong>(Content Safety の API と Foundry ガードレールの Groundedness リスクの両方。Content Safety の preview 6 機能の一括廃止 — whats-new 2026-11-06 版)。接地性の担保は<strong>評価(Groundedness 評価器、<a href="09-operations.html">09 §4</a>)か自前の検証</strong>で設計し、ガードレールに Groundedness を入れた既存構成は棚卸しする。<strong>Content Safety の分類器は 2026-10 更新を段階展開中</strong>(4 有害カテゴリと Prompt Shields の直接 / 間接攻撃。Spain Central から順次、展開中はリージョン間で結果が一時的に異なりうる)なので、間接攻撃の検出結果が急に変わったら代表データで再試験する。Content Safety の region-availability は「Foundry のガードレールはテキストの先頭 1,000 文字をモデレーションする」とも書いており、長い取得結果をそのまま検査に回す設計への影響は要確認(<a href="../../features/html/06-safety-guardrails.html">features 06</a>)。<strong>2026-10-14 追記:</strong> content-streaming(2026-10-13 公開版)は、<strong>既定(バッファあり)のストリーミングでも応答の最後の区切り(試験では末尾約 15〜30 語)がガードレール適用前に届きうる</strong>と注記した。社内文書の機微語をブロックリストで止める設計は、ストリーミングなら最終区切りをアプリ側で再検査するか非ストリーミングにする(<a href="06-usecase-customer-facing.html#プロンプトインジェクションと安全性">06 C1</a>)。</p>
 </main>
 <footer>このHTMLは docs/survey/architecture/*.md から docs/survey/tools/md2html.py で自動生成されています。編集はMarkdown側で行ってください。</footer></body></html>

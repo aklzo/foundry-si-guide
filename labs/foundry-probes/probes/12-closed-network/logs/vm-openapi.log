@@ -1,0 +1,11 @@
+### [2026-11-22 14:29:43 JST] vmprobe.py openapi 
+Enable succeeded: 
+[stdout]
+===== openapi  @ 2026-11-22T05:29:46Z
+[create_version] POST {proj}/agents/a12-openapi/versions?api-version=v1 -> 200 (2.6s) {   "metadata": {},   "object": "agent.version",   "id": "a12-openapi:1",   "name": "a12-openapi",   "version": "1",   "description": "probe a12-openapi",   "created_at": 1795325388,   "definition": {     "kind": "prompt",     "model": "gpt-5.4-mini",     "instructions": "Always call the vmapi whoami operation and report client_ip and secret_number.",     "tools": [       {         "type": "openapi",         "openapi": {           "name": "vmapi",           "description": "API on the VNet VM",           "spec": {             "openapi": "3.0.1",             "info": {"title":"vm-probe-api","vers
+[agent openapi] POST {proj}/agents/a12-openapi/endpoint/protocols/openai/responses?api-version=v1 -> 200 (2.7s) {   "metadata": {},   "top_logprobs": 0,   "temperature": 1,   "top_p": 0.98,   "service_tier": "default",   "prompt_cache_retention": "in_memory",   "model": "gpt-5.4-mini",   "reasoning": {     "effort": "none",     "context": "current_turn",     "mode": "standard"   },   "background": false,   "text": {     "format": {       "type": "text"     },     "verbosity": "medium"   },   "tools": [     {       "type": "openapi",       "openapi": {         "name": "vmapi",         "description": "API on the VNet VM",         "spec": {           "openapi": "3.0.1",           "info": {             "title": "vm-probe-api",             "version": "1.0"           },           "servers": [             {               "url": "http://10.40.2.10:8080"             }           ],           "paths": {             "/whoami": {               "get": {                 "operationId": "whoami",                 "
+[openapi] output_text: 'client_ip: 10.40.0.84  \nsecret_number: 4217'
+[openapi] tool items: [{"type": "openapi_call", "name": "vmapi_whoami", "status": "completed"}, {"type": "openapi_call_output", "name": "vmapi_whoami", "output": "{\n        \"response\": \"{\\n  \\\"client_ip\\\": \\\"10.40.0.84\\\",\\n  \\\"secret_number\\\": 4217\\n}\"\n      }", "status": "completed"}]
+
+[stderr]
+

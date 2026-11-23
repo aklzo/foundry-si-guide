@@ -1,0 +1,54 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8"><meta name="figure-size" content="1600x675"><link rel="stylesheet" href="../../tools/figure.css"><style>
+.tbl{display:grid;grid-template-columns:110px repeat(6,1fr);gap:6px;height:620px;grid-template-rows:84px 74px 1fr 0.8fr 1.15fr}
+.h{background:var(--panel);border-radius:10px;padding:8px 10px;font-weight:800;font-size:23px;line-height:1.2;display:flex;flex-direction:column;justify-content:center}
+.h.new{background:var(--accent-bg);color:var(--accent)}
+.h .tag{font-size:15px;font-weight:800;color:var(--accent)}
+.r{background:var(--fg);color:#fff;border-radius:10px;padding:8px 12px;font-weight:700;font-size:22px;display:flex;align-items:center;justify-content:center}
+.c{border:2px solid var(--border);border-radius:10px;padding:8px 10px;font-size:21px;line-height:1.35}
+.ok{border-color:var(--ga);background:#f3fbf5}
+.ng{border-color:var(--dep);background:var(--dep-bg)}
+.mid{border-color:var(--preview);background:#fffcea}
+.na{color:var(--muted)}
+.mark{font-weight:800;font-size:22px;margin-right:4px}
+.c .pill{margin-bottom:4px}
+</style></head><body><div class="tbl">
+<div></div>
+<div class="h">prompt agent</div>
+<div class="h new"><span class="tag">NEW</span>Copilot harness</div>
+<div class="h new"><span class="tag">GA と発表</span>voice agent</div>
+<div class="h">hosted agent</div>
+<div class="h new"><span class="tag">NEW・予定</span>自社 AKS に配置</div>
+<div class="h"><span class="tag">GA に</span>外部エージェント</div>
+
+<div class="r">状態</div>
+<div class="c ok"><span class="pill ga">GA</span></div>
+<div class="c mid"><span class="pill preview">Preview</span></div>
+<div class="c mid"><span class="pill ann">発表 GA</span><span class="pill doc">公式一覧 Preview</span></div>
+<div class="c ok"><span class="pill ga">GA</span></div>
+<div class="c na"><span class="pill soon">12 月上旬 Preview 予定</span></div>
+<div class="c ok"><span class="pill ga">GA</span></div>
+
+<div class="r">料金</div>
+<div class="c">モデルとツールの従量だけ</div>
+<div class="c mid">+実行環境 0.0994 USD/vCPU 時ほか(12-01 から)</div>
+<div class="c">音声トークン・接続時間・モデル</div>
+<div class="c mid">+CPU・メモリの時間課金(約 17 円/vCPU 時)</div>
+<div class="c">自社 AKS の費用</div>
+<div class="c">観測・評価の分だけ</div>
+
+<div class="r">日本</div>
+<div class="c ok"><span class="mark">○</span>East・West</div>
+<div class="c ng"><span class="mark">△</span>East のみ</div>
+<div class="c ok"><span class="mark">○</span>East・West</div>
+<div class="c ok"><span class="mark">○</span>East・West</div>
+<div class="c na">自社で選ぶ</div>
+<div class="c na">—</div>
+
+<div class="r">閉域</div>
+<div class="c ok"><span class="mark">○</span>VNet 注入で動く<br><span class="small">Memory は不可</span></div>
+<div class="c mid"><span class="mark">△</span>VNet 注入で動いた(実測)<br><span class="small">公開側にも出る。NSG・UDR・egress controls で止める</span></div>
+<div class="c ng"><span class="mark">△</span>電話・SIP・発信が使えない</div>
+<div class="c mid"><span class="mark">△</span>VNet 注入はアカウント作成時だけ</div>
+<div class="c na">自社のネットワーク</div>
+<div class="c na">Foundry の外で動く</div>
+</div></body></html>

@@ -1,0 +1,1444 @@
+===== memory setup @ 2026-11-22T05:17:06Z
+[ops create memory store] POST {pubproj}/memory_stores?api-version=v1 -> 200 (1.0s) {   "object": "memory_store",   "id": "memstore_<token-6>",   "created_at": 1795324626,   "updated_at": 1795324626,   "name": "ms13",   "description": "probe 13 B6",   "metadata": {},   "definition": {     "kind": "default",     "chat_model": "gpt-5.4-mini",     "embedding_model": "text-embedding-3-small",     "options": {       "user_profile_enabled": true,       "chat_summary_enabled": true,       "default_ttl_seconds": 0     }   } }
+   full: {
+  "object": "memory_store",
+  "id": "memstore_<token-6>",
+  "created_at": 1795324626,
+  "updated_at": 1795324626,
+  "name": "ms13",
+  "description": "probe 13 B6",
+  "metadata": {},
+  "definition": {
+    "kind": "default",
+    "chat_model": "gpt-5.4-mini",
+    "embedding_model": "text-embedding-3-small",
+    "options": {
+      "user_profile_enabled": true,
+      "chat_summary_enabled": true,
+      "default_ttl_seconds": 0
+    }
+  }
+}
+[ops create a13-mem] POST {pubproj}/agents/a13-mem/versions?api-version=v1 -> 200 (2.3s) {   "metadata": {},   "object": "agent.version",   "id": "a13-mem:1",   "name": "a13-mem",   "version": "1",   "description": "probe a13-mem",   "created_at": 1795324629,   "definition": {     "kind": "prompt",     "model": "gpt-5.4-mini",     "instructions": "You remember facts about the user. When asked, answer from memory only; say UNKNOWN if not remembered.",     "tools": [       {         "type": "memory_search_preview",         "memory_store_name": "ms13",         "scope": "{{$userId}}",         "update_delay": 1       }     ]   },   "draft": false,   "status": "active",   "instance_iden
+   full: {
+  "metadata": {},
+  "object": "agent.version",
+  "id": "a13-mem:1",
+  "name": "a13-mem",
+  "version": "1",
+  "description": "probe a13-mem",
+  "created_at": 1795324629,
+  "definition": {
+    "kind": "prompt",
+    "model": "gpt-5.4-mini",
+    "instructions": "You remember facts about the user. When asked, answer from memory only; say UNKNOWN if not remembered.",
+    "tools": [
+      {
+        "type": "memory_search_preview",
+        "memory_store_name": "ms13",
+        "scope": "{{$userId}}",
+        "update_delay": 1
+      }
+    ]
+  },
+  "draft": false,
+  "status": "active",
+  "instance_identity": {
+    "principal_id": "<guid-62>",
+    "client_id": "<guid-62>"
+  },
+  "blueprint": {
+    "principal_id": "<guid-63>",
+    "client_id": "<guid-64>"
+  },
+  "blueprint_reference": {
+    "type": "ManagedAgentIdentityBlueprint",
+    "blueprint_id": "a13-mem-bb157"
+  },
+  "agent_guid": "<guid-65>"
+}
+===== memory write @ 2026-11-22T05:52:24Z
+[ac1 write (x-memory-user-id: user-alice)] POST {pubproj}/agents/a13-mem/endpoint/protocols/openai/responses?api-version=v1 -> 200 (3.5s) {   "metadata": {},   "top_logprobs": 0,   "temperature": 1,   "top_p": 0.98,   "service_tier": "default",   "prompt_cache_retention": "in_memory",   "model": "gpt-5.4-mini",   "reasoning": {     "effort": "none",     "context": "current_turn",     "mode": "standard"   },   "background": false,   "text": {     "format": {       "type": "text"     },     "verbosity": "medium"   },   "tools": [     {       "type": "memory_search",       "memory_store_name": "ms13",       "scope": "kRo9t4zECH_m-ykGKHHlpjRzhLOxRmq8jMsDUcYwiPE"     }   ],   "tool_choice": "auto",   "truncation": "disabled",   "id": "resp_<id-84>",   "object": "response",   "status": "completed",   "created_at": 1795326744,   "completed_at": 1795326747,   "error": null,   "incomplete_details": null,   "output": [     {       "type": "memory_command_preview_call",       "id": "fc_029b0
+   full: {
+  "metadata": {},
+  "top_logprobs": 0,
+  "temperature": 1,
+  "top_p": 0.98,
+  "service_tier": "default",
+  "prompt_cache_retention": "in_memory",
+  "model": "gpt-5.4-mini",
+  "reasoning": {
+    "effort": "none",
+    "context": "current_turn",
+    "mode": "standard"
+  },
+  "background": false,
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "tools": [
+    {
+      "type": "memory_search",
+      "memory_store_name": "ms13",
+      "scope": "kRo9t4zECH_m-ykGKHHlpjRzhLOxRmq8jMsDUcYwiPE"
+    }
+  ],
+  "tool_choice": "auto",
+  "truncation": "disabled",
+  "id": "resp_<id-84>",
+  "object": "response",
+  "status": "completed",
+  "created_at": 1795326744,
+  "completed_at": 1795326747,
+  "error": null,
+  "incomplete_details": null,
+  "output": [
+    {
+      "type": "memory_command_preview_call",
+      "id": "fc_<token-9>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a13-mem",
+        "version": "1"
+      },
+      "response_id": "resp_<id-84>",
+      "call_id": "call_<id-109>",
+      "arguments": "{\"action\":\"remember\",\"content\":\"The user likes dragon fruit.\"}",
+      "status": "completed"
+    },
+    {
+      "type": "memory_command_preview_call_output",
+      "id": "fco_<token-10>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a13-mem",
+        "version": "1"
+      },
+      "response_id": "resp_<id-84>",
+      "call_id": "call_<id-109>",
+      "output": "",
+      "status": "completed"
+    },
+    {
+      "type": "message",
+      "id": "msg_<id-110>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a13-mem",
+        "version": "1"
+      },
+      "response_id": "resp_<id-84>",
+      "phase": "final_answer",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "覚えておきました。",
+          "annotations": [],
+          "logprobs": []
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "type": "memory_search_call",
+      "id": "memupdateo_<token-11>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a13-mem",
+        "version": "1"
+      },
+      "response_id": "resp_<id-84>",
+      "error": null,
+      "search_id": "<hex-33>",
+      "superseded_by": null,
+      "update_id": "<guid-66>",
+      "usage": {
+        "embedding_tokens": 28,
+        "input_tokens": 0,
+        "input_tokens_details": {
+          "cached_tokens": null,
+          "reasoning_tokens": null
+        },
+        "output_tokens": 0,
+        "output_tokens_details": {
+          "cached_tokens": null,
+          "reasoning_tokens": null
+        },
+        "total_tokens": 28
+      },
+      "status": "in_progress",
+      "memories": []
+    }
+  ],
+  "instructions": "You remember facts about the user. When asked, answer from memory only; say UNKNOWN if not remembered.",
+  "usage": {
+    "input_tokens": 380,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0
+    },
+    "output_tokens": 38,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 418
+  },
+  "parallel_tool_calls": true,
+  "agent_reference": {
+    "type": "agent_reference",
+    "name": "a13-mem",
+    "version": "1"
+  },
+  "content_filters": [
+    {
+      "blocked": false,
+      "source_type": "prompt",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "jailbreak": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 1765,
+        "check_offset": 0
+      }
+    },
+    {
+      "blocked": false,
+      "source_type": "completion",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "protected_material_text": {
+          "filtered": false,
+          "detected": false
+        },
+        "protected_material_code": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 76,
+        "check_offset": 0
+      }
+    }
+  ]
+}
+[ac1 write (ヘッダーなし = TID/OID)] POST {pubproj}/agents/a13-mem/endpoint/protocols/openai/responses?api-version=v1 -> 200 (2.5s) {   "metadata": {},   "top_logprobs": 0,   "temperature": 1,   "top_p": 0.98,   "service_tier": "default",   "prompt_cache_retention": "in_memory",   "model": "gpt-5.4-mini",   "reasoning": {     "effort": "none",     "context": "current_turn",     "mode": "standard"   },   "background": false,   "text": {     "format": {       "type": "text"     },     "verbosity": "medium"   },   "tools": [     {       "type": "memory_search",       "memory_store_name": "ms13",       "scope": "kRo9t4zECH_m-ykGKHHlpjRzhLOxRmq8jMsDUcYwiPE"     }   ],   "tool_choice": "auto",   "truncation": "disabled",   "id": "resp_<id-85>",   "object": "response",   "status": "completed",   "created_at": 1795326747,   "completed_at": 1795326749,   "error": null,   "incomplete_details": null,   "output": [     {       "type": "memory_command_preview_call",       "id": "fc_093ce
+   full: {
+  "metadata": {},
+  "top_logprobs": 0,
+  "temperature": 1,
+  "top_p": 0.98,
+  "service_tier": "default",
+  "prompt_cache_retention": "in_memory",
+  "model": "gpt-5.4-mini",
+  "reasoning": {
+    "effort": "none",
+    "context": "current_turn",
+    "mode": "standard"
+  },
+  "background": false,
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "tools": [
+    {
+      "type": "memory_search",
+      "memory_store_name": "ms13",
+      "scope": "kRo9t4zECH_m-ykGKHHlpjRzhLOxRmq8jMsDUcYwiPE"
+    }
+  ],
+  "tool_choice": "auto",
+  "truncation": "disabled",
+  "id": "resp_<id-85>",
+  "object": "response",
+  "status": "completed",
+  "created_at": 1795326747,
+  "completed_at": 1795326749,
+  "error": null,
+  "incomplete_details": null,
+  "output": [
+    {
+      "type": "memory_command_preview_call",
+      "id": "fc_<token-12>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a13-mem",
+        "version": "1"
+      },
+      "response_id": "resp_<id-85>",
+      "call_id": "call_<id-111>",
+      "arguments": "{\"action\":\"remember\",\"content\":\"The user's cat is named Mochi.\"}",
+      "status": "completed"
+    },
+    {
+      "type": "memory_command_preview_call_output",
+      "id": "fco_<token-13>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a13-mem",
+        "version": "1"
+      },
+      "response_id": "resp_<id-85>",
+      "call_id": "call_<id-111>",
+      "output": "",
+      "status": "completed"
+    },
+    {
+      "type": "message",
+      "id": "msg_<id-112>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a13-mem",
+        "version": "1"
+      },
+      "response_id": "resp_<id-85>",
+      "phase": "final_answer",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "覚えておきました。モチですね。",
+          "annotations": [],
+          "logprobs": []
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "type": "memory_search_call",
+      "id": "memupdateo_<token-14>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a13-mem",
+        "version": "1"
+      },
+      "response_id": "resp_<id-85>",
+      "error": null,
+      "search_id": "<hex-34>",
+      "superseded_by": null,
+      "update_id": "<guid-67>",
+      "usage": {
+        "embedding_tokens": 26,
+        "input_tokens": 0,
+        "input_tokens_details": {
+          "cached_tokens": null,
+          "reasoning_tokens": null
+        },
+        "output_tokens": 0,
+        "output_tokens_details": {
+          "cached_tokens": null,
+          "reasoning_tokens": null
+        },
+        "total_tokens": 26
+      },
+      "status": "in_progress",
+      "memories": [
+        {
+          "memory_id": "<hex-35>",
+          "updated_at": 1795326746,
+          "scope": "kRo9t4zECH_m-ykGKHHlpjRzhLOxRmq8jMsDUcYwiPE",
+          "content": " The user likes dragon fruit.",
+          "kind": "user_profile"
+        },
+        {
+          "memory_id": "<hex-35>",
+          "updated_at": 1795326746,
+          "scope": "kRo9t4zECH_m-ykGKHHlpjRzhLOxRmq8jMsDUcYwiPE",
+          "content": " The user likes dragon fruit.",
+          "kind": "user_profile"
+        }
+      ]
+    }
+  ],
+  "instructions": "You remember facts about the user. When asked, answer from memory only; say UNKNOWN if not remembered.",
+  "usage": {
+    "input_tokens": 395,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0
+    },
+    "output_tokens": 44,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 439
+  },
+  "parallel_tool_calls": true,
+  "agent_reference": {
+    "type": "agent_reference",
+    "name": "a13-mem",
+    "version": "1"
+  },
+  "content_filters": [
+    {
+      "blocked": false,
+      "source_type": "prompt",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "jailbreak": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 1760,
+        "check_offset": 0
+      }
+    },
+    {
+      "blocked": false,
+      "source_type": "completion",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "protected_material_text": {
+          "filtered": false,
+          "detected": false
+        },
+        "protected_material_code": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 142,
+        "check_offset": 0
+      }
+    }
+  ]
+}
+===== memory read @ 2026-11-22T05:54:32Z
+[read rd + x-memory-user-id: user-alice(他人の値)] POST {pubproj}/agents/a13-mem/endpoint/protocols/openai/responses?api-version=v1 -> 200 (2.8s) {   "metadata": {},   "top_logprobs": 0,   "temperature": 1,   "top_p": 0.98,   "service_tier": "default",   "prompt_cache_retention": "in_memory",   "model": "gpt-5.4-mini",   "reasoning": {     "effort": "none",     "context": "current_turn",     "mode": "standard"   },   "background": false,   "text": {     "format": {       "type": "text"     },     "verbosity": "medium"   },   "tools": [     {       "type": "memory_search",       "memory_store_name": "ms13",       "scope": "<token-8>"     }   ],   "tool_choice": "auto",   "truncation": "disabled",   "id": "resp_<id-113>",   "object": "response",   "status": "completed",   "created_at": 1795326873,   "completed_at": 1795326875,   "error": null,   "incomplete_details": null,   "output": [     {       "type": "message",       "id": "msg_<id-114>
+   full: {
+  "metadata": {},
+  "top_logprobs": 0,
+  "temperature": 1,
+  "top_p": 0.98,
+  "service_tier": "default",
+  "prompt_cache_retention": "in_memory",
+  "model": "gpt-5.4-mini",
+  "reasoning": {
+    "effort": "none",
+    "context": "current_turn",
+    "mode": "standard"
+  },
+  "background": false,
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "tools": [
+    {
+      "type": "memory_search",
+      "memory_store_name": "ms13",
+      "scope": "<token-8>"
+    }
+  ],
+  "tool_choice": "auto",
+  "truncation": "disabled",
+  "id": "resp_<id-113>",
+  "object": "response",
+  "status": "completed",
+  "created_at": 1795326873,
+  "completed_at": 1795326875,
+  "error": null,
+  "incomplete_details": null,
+  "output": [
+    {
+      "type": "message",
+      "id": "msg_<id-115>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a13-mem",
+        "version": "1"
+      },
+      "response_id": "resp_<id-113>",
+      "phase": "final_answer",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "UNKNOWN",
+          "annotations": [],
+          "logprobs": []
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "type": "memory_search_call",
+      "id": "memupdateo_<token-15>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a13-mem",
+        "version": "1"
+      },
+      "response_id": "resp_<id-113>",
+      "error": null,
+      "search_id": "<hex-36>",
+      "superseded_by": null,
+      "update_id": "<guid-68>",
+      "usage": {
+        "embedding_tokens": 31,
+        "input_tokens": 0,
+        "input_tokens_details": {
+          "cached_tokens": null,
+          "reasoning_tokens": null
+        },
+        "output_tokens": 0,
+        "output_tokens_details": {
+          "cached_tokens": null,
+          "reasoning_tokens": null
+        },
+        "total_tokens": 31
+      },
+      "status": "in_progress",
+      "memories": []
+    }
+  ],
+  "instructions": "You remember facts about the user. When asked, answer from memory only; say UNKNOWN if not remembered.",
+  "usage": {
+    "input_tokens": 312,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0
+    },
+    "output_tokens": 5,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 317
+  },
+  "parallel_tool_calls": true,
+  "agent_reference": {
+    "type": "agent_reference",
+    "name": "a13-mem",
+    "version": "1"
+  },
+  "content_filters": [
+    {
+      "blocked": false,
+      "source_type": "prompt",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "jailbreak": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 1763,
+        "check_offset": 0
+      }
+    },
+    {
+      "blocked": false,
+      "source_type": "completion",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "protected_material_text": {
+          "filtered": false,
+          "detected": false
+        },
+        "protected_material_code": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 74,
+        "check_offset": 0
+      }
+    }
+  ]
+}
+[memory] rd + x-memory-user-id: user-alice(他人の値): 'UNKNOWN'
+[memory] tool items: [{"type": "memory_search_call", "error": null, "status": "in_progress"}]
+[read rd ヘッダーなし(対照)] POST {pubproj}/agents/a13-mem/endpoint/protocols/openai/responses?api-version=v1 -> 200 (1.9s) {   "metadata": {},   "top_logprobs": 0,   "temperature": 1,   "top_p": 0.98,   "service_tier": "default",   "prompt_cache_retention": "in_memory",   "model": "gpt-5.4-mini",   "reasoning": {     "effort": "none",     "context": "current_turn",     "mode": "standard"   },   "background": false,   "text": {     "format": {       "type": "text"     },     "verbosity": "medium"   },   "tools": [     {       "type": "memory_search",       "memory_store_name": "ms13",       "scope": "<token-8>"     }   ],   "tool_choice": "auto",   "truncation": "disabled",   "id": "resp_<id-116>",   "object": "response",   "status": "completed",   "created_at": 1795326875,   "completed_at": 1795326877,   "error": null,   "incomplete_details": null,   "output": [     {       "type": "message",       "id": "msg_<id-117>
+   full: {
+  "metadata": {},
+  "top_logprobs": 0,
+  "temperature": 1,
+  "top_p": 0.98,
+  "service_tier": "default",
+  "prompt_cache_retention": "in_memory",
+  "model": "gpt-5.4-mini",
+  "reasoning": {
+    "effort": "none",
+    "context": "current_turn",
+    "mode": "standard"
+  },
+  "background": false,
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "tools": [
+    {
+      "type": "memory_search",
+      "memory_store_name": "ms13",
+      "scope": "<token-8>"
+    }
+  ],
+  "tool_choice": "auto",
+  "truncation": "disabled",
+  "id": "resp_<id-116>",
+  "object": "response",
+  "status": "completed",
+  "created_at": 1795326875,
+  "completed_at": 1795326877,
+  "error": null,
+  "incomplete_details": null,
+  "output": [
+    {
+      "type": "message",
+      "id": "msg_<id-118>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a13-mem",
+        "version": "1"
+      },
+      "response_id": "resp_<id-116>",
+      "phase": "final_answer",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "UNKNOWN",
+          "annotations": [],
+          "logprobs": []
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "type": "memory_search_call",
+      "id": "memupdateo_<token-16>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a13-mem",
+        "version": "1"
+      },
+      "response_id": "resp_<id-116>",
+      "error": null,
+      "search_id": "<hex-37>",
+      "superseded_by": null,
+      "update_id": "<guid-69>",
+      "usage": {
+        "embedding_tokens": 31,
+        "input_tokens": 0,
+        "input_tokens_details": {
+          "cached_tokens": null,
+          "reasoning_tokens": null
+        },
+        "output_tokens": 0,
+        "output_tokens_details": {
+          "cached_tokens": null,
+          "reasoning_tokens": null
+        },
+        "total_tokens": 31
+      },
+      "status": "in_progress",
+      "memories": []
+    }
+  ],
+  "instructions": "You remember facts about the user. When asked, answer from memory only; say UNKNOWN if not remembered.",
+  "usage": {
+    "input_tokens": 312,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0
+    },
+    "output_tokens": 5,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 317
+  },
+  "parallel_tool_calls": true,
+  "agent_reference": {
+    "type": "agent_reference",
+    "name": "a13-mem",
+    "version": "1"
+  },
+  "content_filters": [
+    {
+      "blocked": false,
+      "source_type": "prompt",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "jailbreak": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 1763,
+        "check_offset": 0
+      }
+    },
+    {
+      "blocked": false,
+      "source_type": "completion",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "protected_material_text": {
+          "filtered": false,
+          "detected": false
+        },
+        "protected_material_code": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 74,
+        "check_offset": 0
+      }
+    }
+  ]
+}
+[memory] rd ヘッダーなし(対照): 'UNKNOWN'
+[memory] tool items: [{"type": "memory_search_call", "error": null, "status": "in_progress"}]
+[read ac1 + 自分の値(対照)] POST {pubproj}/agents/a13-mem/endpoint/protocols/openai/responses?api-version=v1 -> 200 (2.0s) {   "metadata": {},   "top_logprobs": 0,   "temperature": 1,   "top_p": 0.98,   "service_tier": "default",   "prompt_cache_retention": "in_memory",   "model": "gpt-5.4-mini",   "reasoning": {     "effort": "none",     "context": "current_turn",     "mode": "standard"   },   "background": false,   "text": {     "format": {       "type": "text"     },     "verbosity": "medium"   },   "tools": [     {       "type": "memory_search",       "memory_store_name": "ms13",       "scope": "kRo9t4zECH_m-ykGKHHlpjRzhLOxRmq8jMsDUcYwiPE"     }   ],   "tool_choice": "auto",   "truncation": "disabled",   "id": "resp_<id-119>",   "object": "response",   "status": "completed",   "created_at": 1795326877,   "completed_at": 1795326879,   "error": null,   "incomplete_details": null,   "output": [     {       "type": "message",       "id": "msg_<id-120>
+   full: {
+  "metadata": {},
+  "top_logprobs": 0,
+  "temperature": 1,
+  "top_p": 0.98,
+  "service_tier": "default",
+  "prompt_cache_retention": "in_memory",
+  "model": "gpt-5.4-mini",
+  "reasoning": {
+    "effort": "none",
+    "context": "current_turn",
+    "mode": "standard"
+  },
+  "background": false,
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "tools": [
+    {
+      "type": "memory_search",
+      "memory_store_name": "ms13",
+      "scope": "kRo9t4zECH_m-ykGKHHlpjRzhLOxRmq8jMsDUcYwiPE"
+    }
+  ],
+  "tool_choice": "auto",
+  "truncation": "disabled",
+  "id": "resp_<id-119>",
+  "object": "response",
+  "status": "completed",
+  "created_at": 1795326877,
+  "completed_at": 1795326879,
+  "error": null,
+  "incomplete_details": null,
+  "output": [
+    {
+      "type": "message",
+      "id": "msg_<id-121>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a13-mem",
+        "version": "1"
+      },
+      "response_id": "resp_<id-119>",
+      "phase": "final_answer",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "好きな果物はドラゴンフルーツ、飼い猫の名前は Mochi です。",
+          "annotations": [],
+          "logprobs": []
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "type": "memory_search_call",
+      "id": "memupdateo_<token-17>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a13-mem",
+        "version": "1"
+      },
+      "response_id": "resp_<id-119>",
+      "error": null,
+      "search_id": "<hex-38>",
+      "superseded_by": null,
+      "update_id": "<guid-70>",
+      "usage": {
+        "embedding_tokens": 31,
+        "input_tokens": 0,
+        "input_tokens_details": {
+          "cached_tokens": null,
+          "reasoning_tokens": null
+        },
+        "output_tokens": 0,
+        "output_tokens_details": {
+          "cached_tokens": null,
+          "reasoning_tokens": null
+        },
+        "total_tokens": 31
+      },
+      "status": "in_progress",
+      "memories": [
+        {
+          "memory_id": "<hex-35>",
+          "updated_at": 1795326747,
+          "scope": "kRo9t4zECH_m-ykGKHHlpjRzhLOxRmq8jMsDUcYwiPE",
+          "content": "The user likes dragon fruit.",
+          "kind": "user_profile"
+        },
+        {
+          "memory_id": "<hex-39>",
+          "updated_at": 1795326749,
+          "scope": "kRo9t4zECH_m-ykGKHHlpjRzhLOxRmq8jMsDUcYwiPE",
+          "content": "The user's cat is named Mochi.",
+          "kind": "user_profile"
+        },
+        {
+          "memory_id": "<hex-39>",
+          "updated_at": 1795326749,
+          "scope": "kRo9t4zECH_m-ykGKHHlpjRzhLOxRmq8jMsDUcYwiPE",
+          "content": "The user's cat is named Mochi.",
+          "kind": "user_profile"
+        },
+        {
+          "memory_id": "<hex-40>",
+          "updated_at": 1795326749,
+          "scope": "kRo9t4zECH_m-ykGKHHlpjRzhLOxRmq8jMsDUcYwiPE",
+          "content": "User stated on November 22, 2026 that the user’s pet cat is named Mochi; acknowledgment confirmed the cat name as Mochi.",
+          "kind": "chat_summary"
+        },
+        {
+          "memory_id": "<hex-41>",
+          "updated_at": 1795326747,
+          "scope": "kRo9t4zECH_m-ykGKHHlpjRzhLOxRmq8jMsDUcYwiPE",
+          "content": "The user stated on November 22, 2026 that a favorite fruit is dragon fruit (ドラゴンフルーツ). The assistant acknowledged and confirmed the note.",
+          "kind": "chat_summary"
+        },
+        {
+          "memory_id": "<hex-35>",
+          "updated_at": 1795326747,
+          "scope": "kRo9t4zECH_m-ykGKHHlpjRzhLOxRmq8jMsDUcYwiPE",
+          "content": "The user likes dragon fruit.",
+          "kind": "user_profile"
+        }
+      ]
+    }
+  ],
+  "instructions": "You remember facts about the user. When asked, answer from memory only; say UNKNOWN if not remembered.",
+  "usage": {
+    "input_tokens": 403,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0
+    },
+    "output_tokens": 28,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 431
+  },
+  "parallel_tool_calls": true,
+  "agent_reference": {
+    "type": "agent_reference",
+    "name": "a13-mem",
+    "version": "1"
+  },
+  "content_filters": [
+    {
+      "blocked": false,
+      "source_type": "prompt",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "jailbreak": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 1763,
+        "check_offset": 0
+      }
+    },
+    {
+      "blocked": false,
+      "source_type": "completion",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "protected_material_text": {
+          "filtered": false,
+          "detected": false
+        },
+        "protected_material_code": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 482,
+        "check_offset": 0
+      }
+    }
+  ]
+}
+[memory] ac1 + 自分の値(対照): '好きな果物はドラゴンフルーツ、飼い猫の名前は Mochi です。'
+[memory] tool items: [{"type": "memory_search_call", "error": null, "status": "in_progress"}]
+[read ac1 ヘッダーなし(TID/OID)] POST {pubproj}/agents/a13-mem/endpoint/protocols/openai/responses?api-version=v1 -> 200 (1.8s) {   "metadata": {},   "top_logprobs": 0,   "temperature": 1,   "top_p": 0.98,   "service_tier": "default",   "prompt_cache_retention": "in_memory",   "model": "gpt-5.4-mini",   "reasoning": {     "effort": "none",     "context": "current_turn",     "mode": "standard"   },   "background": false,   "text": {     "format": {       "type": "text"     },     "verbosity": "medium"   },   "tools": [     {       "type": "memory_search",       "memory_store_name": "ms13",       "scope": "kRo9t4zECH_m-ykGKHHlpjRzhLOxRmq8jMsDUcYwiPE"     }   ],   "tool_choice": "auto",   "truncation": "disabled",   "id": "resp_<id-122>",   "object": "response",   "status": "completed",   "created_at": 1795326879,   "completed_at": 1795326880,   "error": null,   "incomplete_details": null,   "output": [     {       "type": "message",       "id": "msg_<id-86>
+   full: {
+  "metadata": {},
+  "top_logprobs": 0,
+  "temperature": 1,
+  "top_p": 0.98,
+  "service_tier": "default",
+  "prompt_cache_retention": "in_memory",
+  "model": "gpt-5.4-mini",
+  "reasoning": {
+    "effort": "none",
+    "context": "current_turn",
+    "mode": "standard"
+  },
+  "background": false,
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "tools": [
+    {
+      "type": "memory_search",
+      "memory_store_name": "ms13",
+      "scope": "kRo9t4zECH_m-ykGKHHlpjRzhLOxRmq8jMsDUcYwiPE"
+    }
+  ],
+  "tool_choice": "auto",
+  "truncation": "disabled",
+  "id": "resp_<id-122>",
+  "object": "response",
+  "status": "completed",
+  "created_at": 1795326879,
+  "completed_at": 1795326880,
+  "error": null,
+  "incomplete_details": null,
+  "output": [
+    {
+      "type": "message",
+      "id": "msg_<id-123>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a13-mem",
+        "version": "1"
+      },
+      "response_id": "resp_<id-122>",
+      "phase": "final_answer",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "好きな果物は**ドラゴンフルーツ**、飼い猫の名前は**Mochi**です。",
+          "annotations": [],
+          "logprobs": []
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "type": "memory_search_call",
+      "id": "memupdateo_<token-18>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a13-mem",
+        "version": "1"
+      },
+      "response_id": "resp_<id-122>",
+      "error": null,
+      "search_id": "<hex-42>",
+      "superseded_by": null,
+      "update_id": "<guid-71>",
+      "usage": {
+        "embedding_tokens": 31,
+        "input_tokens": 0,
+        "input_tokens_details": {
+          "cached_tokens": null,
+          "reasoning_tokens": null
+        },
+        "output_tokens": 0,
+        "output_tokens_details": {
+          "cached_tokens": null,
+          "reasoning_tokens": null
+        },
+        "total_tokens": 31
+      },
+      "status": "in_progress",
+      "memories": [
+        {
+          "memory_id": "<hex-35>",
+          "updated_at": 1795326747,
+          "scope": "kRo9t4zECH_m-ykGKHHlpjRzhLOxRmq8jMsDUcYwiPE",
+          "content": "The user likes dragon fruit.",
+          "kind": "user_profile"
+        },
+        {
+          "memory_id": "<hex-39>",
+          "updated_at": 1795326749,
+          "scope": "kRo9t4zECH_m-ykGKHHlpjRzhLOxRmq8jMsDUcYwiPE",
+          "content": "The user's cat is named Mochi.",
+          "kind": "user_profile"
+        },
+        {
+          "memory_id": "<hex-39>",
+          "updated_at": 1795326749,
+          "scope": "kRo9t4zECH_m-ykGKHHlpjRzhLOxRmq8jMsDUcYwiPE",
+          "content": "The user's cat is named Mochi.",
+          "kind": "user_profile"
+        },
+        {
+          "memory_id": "<hex-40>",
+          "updated_at": 1795326749,
+          "scope": "kRo9t4zECH_m-ykGKHHlpjRzhLOxRmq8jMsDUcYwiPE",
+          "content": "User stated on November 22, 2026 that the user’s pet cat is named Mochi; acknowledgment confirmed the cat name as Mochi.",
+          "kind": "chat_summary"
+        },
+        {
+          "memory_id": "<hex-41>",
+          "updated_at": 1795326747,
+          "scope": "kRo9t4zECH_m-ykGKHHlpjRzhLOxRmq8jMsDUcYwiPE",
+          "content": "The user stated on November 22, 2026 that a favorite fruit is dragon fruit (ドラゴンフルーツ). The assistant acknowledged and confirmed the note.",
+          "kind": "chat_summary"
+        },
+        {
+          "memory_id": "<hex-35>",
+          "updated_at": 1795326747,
+          "scope": "kRo9t4zECH_m-ykGKHHlpjRzhLOxRmq8jMsDUcYwiPE",
+          "content": "The user likes dragon fruit.",
+          "kind": "user_profile"
+        }
+      ]
+    }
+  ],
+  "instructions": "You remember facts about the user. When asked, answer from memory only; say UNKNOWN if not remembered.",
+  "usage": {
+    "input_tokens": 403,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0
+    },
+    "output_tokens": 32,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 435
+  },
+  "parallel_tool_calls": true,
+  "agent_reference": {
+    "type": "agent_reference",
+    "name": "a13-mem",
+    "version": "1"
+  },
+  "content_filters": [
+    {
+      "blocked": false,
+      "source_type": "prompt",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "jailbreak": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 1763,
+        "check_offset": 0
+      }
+    },
+    {
+      "blocked": false,
+      "source_type": "completion",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "protected_material_text": {
+          "filtered": false,
+          "detected": false
+        },
+        "protected_material_code": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 488,
+        "check_offset": 0
+      }
+    }
+  ]
+}
+[memory] ac1 ヘッダーなし(TID/OID): '好きな果物は**ドラゴンフルーツ**、飼い猫の名前は**Mochi**です。'
+[memory] tool items: [{"type": "memory_search_call", "error": null, "status": "in_progress"}]
+[ops low-level search_memories(scope=user-alice)] POST {pubproj}/memory_stores/ms13:search_memories?api-version=v1 -> 200 (0.9s) {   "search_id": "<hex-22>",   "memories": [],   "usage": {     "embedding_tokens": 5,     "input_tokens": 0,     "input_tokens_details": {       "cached_tokens": 0     },     "output_tokens": 0,     "output_tokens_details": {       "reasoning_tokens": 0     },     "total_tokens": 5   },   "error": null }
+   full: {
+  "search_id": "<hex-22>",
+  "memories": [],
+  "usage": {
+    "embedding_tokens": 5,
+    "input_tokens": 0,
+    "input_tokens_details": {
+      "cached_tokens": 0
+    },
+    "output_tokens": 0,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 5
+  },
+  "error": null
+}
+[ops low-level items:list(scope=user-alice)] POST {pubproj}/memory_stores/ms13/items:list?api-version=v1 -> 200 (0.3s) {   "data": [],   "first_id": "",   "last_id": "",   "has_more": false,   "object": "list" }
+   full: {
+  "data": [],
+  "first_id": "",
+  "last_id": "",
+  "has_more": false,
+  "object": "list"
+}
+[rd low-level search_memories(scope=user-alice)] POST {pubproj}/memory_stores/ms13:search_memories?api-version=v1 -> 403 (0.2s) {   "error": {     "code": "UserError",     "severity": null,     "message": "Identity(object id: <guid-11>) does not have permissions for Microsoft.CognitiveServices/accounts/AIServices/agents/read actions. Please refer to https://learn.microsoft.com/en-us/azure/foundry/concepts/rbac-foundry to fix the permissions issue.",     "messageFormat": null,     "messageParameters": null,     "referenceCode": null,     "detailsUri": null,     "target": null,     "details": [],     "innerError": {       "code": "ForbiddenError",       "innerError": null     },     "debugInfo"
+   full: {
+  "error": {
+    "code": "UserError",
+    "severity": null,
+    "message": "Identity(object id: <guid-11>) does not have permissions for Microsoft.CognitiveServices/accounts/AIServices/agents/read actions. Please refer to https://learn.microsoft.com/en-us/azure/foundry/concepts/rbac-foundry to fix the permissions issue.",
+    "messageFormat": null,
+    "messageParameters": null,
+    "referenceCode": null,
+    "detailsUri": null,
+    "target": null,
+    "details": [],
+    "innerError": {
+      "code": "ForbiddenError",
+      "innerError": null
+    },
+    "debugInfo": null,
+    "additionalInfo": null
+  },
+  "correlation": {
+    "operation": "<hex-43>",
+    "request": "4129b21378854715"
+  },
+  "environment": "japaneast",
+  "location": "japaneast",
+  "time": "2026-11-22T05:54:42.5298693+00:00",
+  "componentName": null,
+  "statusCode": 403
+}
+[rd low-level items:list(scope=user-alice)] POST {pubproj}/memory_stores/ms13/items:list?api-version=v1 -> 403 (0.1s) {   "error": {     "code": "UserError",     "severity": null,     "message": "Identity(object id: <guid-11>) does not have permissions for Microsoft.CognitiveServices/accounts/AIServices/agents/read actions. Please refer to https://learn.microsoft.com/en-us/azure/foundry/concepts/rbac-foundry to fix the permissions issue.",     "messageFormat": null,     "messageParameters": null,     "referenceCode": null,     "detailsUri": null,     "target": null,     "details": [],     "innerError": {       "code": "ForbiddenError",       "innerError": null     },     "debugInfo"
+   full: {
+  "error": {
+    "code": "UserError",
+    "severity": null,
+    "message": "Identity(object id: <guid-11>) does not have permissions for Microsoft.CognitiveServices/accounts/AIServices/agents/read actions. Please refer to https://learn.microsoft.com/en-us/azure/foundry/concepts/rbac-foundry to fix the permissions issue.",
+    "messageFormat": null,
+    "messageParameters": null,
+    "referenceCode": null,
+    "detailsUri": null,
+    "target": null,
+    "details": [],
+    "innerError": {
+      "code": "ForbiddenError",
+      "innerError": null
+    },
+    "debugInfo": null,
+    "additionalInfo": null
+  },
+  "correlation": {
+    "operation": "<hex-44>",
+    "request": "35e011fc82b112ce"
+  },
+  "environment": "japaneast",
+  "location": "japaneast",
+  "time": "2026-11-22T05:54:42.5961677+00:00",
+  "componentName": null,
+  "statusCode": 403
+}
+[ac1 low-level search_memories(scope=user-alice)] POST {pubproj}/memory_stores/ms13:search_memories?api-version=v1 -> 403 (0.2s) {   "error": {     "code": "UserError",     "severity": null,     "message": "Identity(object id: <guid-9>) does not have permissions for Microsoft.CognitiveServices/accounts/AIServices/agents/read actions. Please refer to https://learn.microsoft.com/en-us/azure/foundry/concepts/rbac-foundry to fix the permissions issue.",     "messageFormat": null,     "messageParameters": null,     "referenceCode": null,     "detailsUri": null,     "target": null,     "details": [],     "innerError": {       "code": "ForbiddenError",       "innerError": null     },     "debugInfo"
+   full: {
+  "error": {
+    "code": "UserError",
+    "severity": null,
+    "message": "Identity(object id: <guid-9>) does not have permissions for Microsoft.CognitiveServices/accounts/AIServices/agents/read actions. Please refer to https://learn.microsoft.com/en-us/azure/foundry/concepts/rbac-foundry to fix the permissions issue.",
+    "messageFormat": null,
+    "messageParameters": null,
+    "referenceCode": null,
+    "detailsUri": null,
+    "target": null,
+    "details": [],
+    "innerError": {
+      "code": "ForbiddenError",
+      "innerError": null
+    },
+    "debugInfo": null,
+    "additionalInfo": null
+  },
+  "correlation": {
+    "operation": "<hex-45>",
+    "request": "de04370f7d05a974"
+  },
+  "environment": "japaneast",
+  "location": "japaneast",
+  "time": "2026-11-22T05:54:42.7445847+00:00",
+  "componentName": null,
+  "statusCode": 403
+}
+[ac1 low-level items:list(scope=user-alice)] POST {pubproj}/memory_stores/ms13/items:list?api-version=v1 -> 403 (0.1s) {   "error": {     "code": "UserError",     "severity": null,     "message": "Identity(object id: <guid-9>) does not have permissions for Microsoft.CognitiveServices/accounts/AIServices/agents/read actions. Please refer to https://learn.microsoft.com/en-us/azure/foundry/concepts/rbac-foundry to fix the permissions issue.",     "messageFormat": null,     "messageParameters": null,     "referenceCode": null,     "detailsUri": null,     "target": null,     "details": [],     "innerError": {       "code": "ForbiddenError",       "innerError": null     },     "debugInfo"
+   full: {
+  "error": {
+    "code": "UserError",
+    "severity": null,
+    "message": "Identity(object id: <guid-9>) does not have permissions for Microsoft.CognitiveServices/accounts/AIServices/agents/read actions. Please refer to https://learn.microsoft.com/en-us/azure/foundry/concepts/rbac-foundry to fix the permissions issue.",
+    "messageFormat": null,
+    "messageParameters": null,
+    "referenceCode": null,
+    "detailsUri": null,
+    "target": null,
+    "details": [],
+    "innerError": {
+      "code": "ForbiddenError",
+      "innerError": null
+    },
+    "debugInfo": null,
+    "additionalInfo": null
+  },
+  "correlation": {
+    "operation": "<hex-46>",
+    "request": "13abb6683393ad9c"
+  },
+  "environment": "japaneast",
+  "location": "japaneast",
+  "time": "2026-11-22T05:54:42.8262169+00:00",
+  "componentName": null,
+  "statusCode": 403
+}

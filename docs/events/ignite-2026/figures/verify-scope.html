@@ -1,0 +1,45 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8"><meta name="figure-size" content="1600x675"><link rel="stylesheet" href="../../tools/figure.css"><style>
+body{padding:18px 28px}
+.g{display:grid;grid-template-columns:1fr 1.12fr 0.88fr;gap:18px;height:545px;zoom:1.16}
+h2{font-size:24px;margin:0 0 8px}
+.c{border:2px solid var(--ga);background:#f3fbf5;border-radius:12px;padding:8px 12px;margin-bottom:9px;font-size:19px;line-height:1.35}
+.c b{font-size:21px;display:block}
+.x{display:grid;grid-template-columns:1fr;gap:8px}
+.x div{border:2px solid var(--border);border-radius:10px;padding:7px 12px;font-size:19px;line-height:1.32;background:#fff}
+.x div b{font-size:20px}
+.x div.cost{border-color:var(--dep);background:var(--dep-bg)}
+.why{display:block;color:var(--muted);font-size:17.5px}
+.big{white-space:nowrap;font-size:44px;font-weight:800;color:var(--accent);line-height:1.1}
+.big small{font-size:20px;color:var(--muted);font-weight:700}
+.bar{height:30px;border-radius:6px;background:#eef1f4;position:relative;margin:10px 0 4px;overflow:hidden}
+.bar span{position:absolute;left:0;top:0;bottom:0}
+.lgd{font-size:15px;color:var(--muted);display:flex;justify-content:space-between}
+.br{margin-top:12px;font-size:19px;line-height:1.45}
+.br div{display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding:3px 0}
+.sw{display:inline-block;width:14px;height:14px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+</style></head><body><div class="g">
+<div><h2>実施した検証</h2>
+<div class="c"><b>閉域</b>VNet 注入+自前の Cosmos DB・Storage・AI Search、NAT なし。到達、prompt agent、ツール 5 種、harness</div>
+<div class="c"><b>外向きの経路</b>サブネットの NSG・UDR で止まる通信と、harness の egress controls</div>
+<div class="c"><b>権限</b>マネージド ID 5 つにロールを付け分け。推論の経路、API キー、利用者どうしの共有、接続、メモリ</div>
+<div class="c"><b>Agent Optimizer</b>見積もりと最小のジョブを申請なしで(公開・閉域)</div>
+</div>
+<div><h2>実施しなかったもの</h2><div class="x">
+<div class="cost"><b>Managed VNet・Azure Firewall</b><span class="why">費用見込み超過のため除外。Firewall は 1 日 4,747 円(Managed VNet でも FQDN 規則で自動作成)</span></div>
+<div><b>hosted agent の閉域・外向き</b><span class="why">コンテナー イメージ・ACR の構築に時間がかかる</span></div>
+<div><b>Foundry IQ の権限絞り込み</b><span class="why">テスト用の Entra ユーザーと ACL 付きのデータが要る</span></div>
+<div><b>エージェント ID の無効化</b><span class="why">Entra の管理者ロールが要る</span></div>
+<div><b>Browser Automation・Work IQ・A2A</b><span class="why">今回の対象外(閉域の可否は公式ページで割れたまま)</span></div>
+</div></div>
+<div><h2>費用(見込み)</h2>
+<div class="big">約 1,790 円 <small>/ 予算 5,000 円</small></div>
+<div class="bar"><span style="width:28.5%;background:#8250df"></span><span style="left:28.5%;width:2.5%;background:var(--accent)"></span><span style="left:31%;width:4.7%;background:var(--ga)"></span></div>
+<div class="lgd"><span>0</span><span>5,000 円</span></div>
+<div class="br">
+<div><span><span class="sw" style="background:#8250df"></span>Private DNS ゾーン 6 つ × 3 回</span><b>1,425 円</b></div>
+<div><span><span class="sw" style="background:var(--accent)"></span>時間課金(約 4.3 時間)</span><b>約 127 円</b></div>
+<div><span><span class="sw" style="background:var(--ga)"></span>呼び出し・保存ほか</span><b>約 234 円</b></div>
+</div>
+<div class="note" style="font-size:17.5px">環境は 3 回作った。DNS ゾーンは毎回 1 か月分で計上(日割りなら合計約 370 円)。請求の確定値ではない。消し忘れると 1 日 716 円</div>
+</div>
+</div></body></html>

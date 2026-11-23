@@ -1,0 +1,11 @@
+### [2026-11-22 14:16:01 JST] vmprobe.py reach 
+Enable succeeded: 
+[stdout]
+===== reach  @ 2026-11-22T05:16:03Z
+[list agents] GET {proj}/agents?api-version=v1&limit=5 -> 200 (0.4s) {   "data": [],   "has_more": false,   "object": "list" }
+[list connections] GET {proj}/connections?api-version=v1 -> 200 (0.2s) {   "value": [     {       "name": "conn-cosmos",       "id": "/subscriptions/<sub>/resourceGroups/rg-ignite26-verify/providers/Microsoft.CognitiveServices/accounts/aif-<sfx>/projects/proj/connections/conn-cosmos",       "type": "CosmosDb",       "target": "https://
+[project /openai/v1/responses] POST {proj}/openai/v1/responses -> 200 (1.1s) {   "metadata": {},   "top_logprobs": 0,   "temperature": 1,   "top_p": 0.98,   "service_tier": "default",   "prompt_cache_retention": "in_memory",   "model": "gpt-5.4-mini",   "reasoning": {     "effort": "none",     "context": "current_turn",     "mode": "standard"   },   "background": false,   "text": {     "format": {       "type": "text"     },     "verbosity": "medium"   },   "tools": [],   "tool_choice": "auto",   "truncation": "disabled",   "id": "resp_<id-28>",   "object": "response",   "status": "completed",   "created_at": 1795324565,   "completed_at": 1795324566,   "error": null,   "incomplete_details": null,   "output": [     {       "type": "message",       "id": "msg_<id-29>",       "response_id": "resp_<id-28>",       "phase": "final_answer",   
+[account /openai/v1/responses] POST {acct-oai}/responses -> 200 (1.0s) {   "id": "resp_<id-30>",   "object": "response",   "created_at": 1795324566,   "status": "completed",   "access_programs": null,   "background": false,   "completed_at": 1795324567,   "content_filters": [     {       "blocked": false,       "source_type": "prompt",       "content_filter_raw": [],       "content_filter_results": {         "hate": {           "filtered": false,           "severity": "safe"         },         "sexual": {           "filtered": false,           "severity": "safe"         },         "violence": {           "filtered": fals
+
+[stderr]
+

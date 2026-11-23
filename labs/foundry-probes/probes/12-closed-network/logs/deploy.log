@@ -1,0 +1,252 @@
+[2026-11-22 14:01:45 JST] az group create
+{
+  "id": "/subscriptions/<sub>/resourceGroups/rg-ignite26-verify",
+  "location": "japaneast",
+  "managedBy": null,
+  "name": "rg-ignite26-verify",
+  "properties": {
+    "provisioningState": "Succeeded"
+  },
+  "tags": {
+    "created": "2026-11-22T05:01:45Z",
+    "purpose": "ignite26-verify"
+  },
+  "type": "Microsoft.Resources/resourceGroups"
+}
+[2026-11-22 14:01:58 JST] deployment p12-infra start
+[2026-11-22 14:02:11 JST] deployment p12-infra end
+[2026-11-22 14:02:46 JST] p12-infra 1 回目: プリフライトで失敗(リソース未作成)
+  QuotaExceeded: standardBasv2Family Cores quota Current Limit: 0(Standard_B2ats_v2)
+  → vmSize=Standard_B1s(standardBSFamily の上限 10)で再実行
+[2026-11-22 14:02:56 JST] deployment p12-infra start (2 回目)
+[2026-11-22 14:09:00 JST] deployment p13-public start
+### [2026-11-22 14:09:39 JST] 作成後の GET(サブネットの defaultOutboundAccess とアカウントの networkInjections)
+[
+  {
+    "defaultOutboundAccess": false,
+    "delegation": "Microsoft.App/environments",
+    "name": "snet-agent",
+    "prefix": "10.40.0.0/24",
+    "sal": "legionservicelink"
+  },
+  {
+    "defaultOutboundAccess": false,
+    "delegation": null,
+    "name": "snet-pe",
+    "prefix": "10.40.1.0/24",
+    "sal": null
+  },
+  {
+    "defaultOutboundAccess": true,
+    "delegation": null,
+    "name": "snet-vm",
+    "prefix": "10.40.2.0/24",
+    "sal": null
+  }
+]
+{
+  "acls": {
+    "bypass": "AzureServices",
+    "defaultAction": "Deny",
+    "ipRules": [],
+    "virtualNetworkRules": []
+  },
+  "endpoints": {
+    "AI Foundry API": "https://aif-<sfx>.services.ai.azure.com/",
+    "Azure AI Model Inference API": "https://aif-<sfx>.services.ai.azure.com/",
+    "Azure MAI Model Inference API": "https://aif-<sfx>.services.ai.azure.com/",
+    "Azure MAI Model Inference API v1.0": "https://aif-<sfx>.services.ai.azure.com/",
+    "Azure MAI Realtime API v1.0": "https://aif-<sfx>.services.ai.azure.com/",
+    "Azure OpenAI Legacy API - Latest moniker": "https://aif-<sfx>.openai.azure.com/",
+    "Cohere AI API": "https://aif-<sfx>.services.ai.azure.com/",
+    "Computer Vision": "https://aif-<sfx>.cognitiveservices.azure.com/",
+    "Container": "https://aif-<sfx>.cognitiveservices.azure.com/",
+    "Content Safety": "https://aif-<sfx>.cognitiveservices.azure.com/",
+    "Content Understanding": "https://aif-<sfx>.services.ai.azure.com/",
+    "Conversational Language Understanding Authoring": "https://aif-<sfx>.cognitiveservices.azure.com/",
+    "ConversationalLURuntime": "https://aif-<sfx>.cognitiveservices.azure.com/",
+    "Custom Question Answering": "https://aif-<sfx>.cognitiveservices.azure.com/",
+    "Custom Question Answering Authoring": "https://aif-<sfx>.cognitiveservices.azure.com/",
+    "Custom Text Authoring": "https://aif-<sfx>.cognitiveservices.azure.com/",
+    "CustomTranslator": "https://aif-<sfx>.cognitiveservices.azure.com/",
+    "DocumentTranslation": "https://aif-<sfx>.cognitiveservices.azure.com/",
+    "Duplex Live Sessions WebSocket API": "https://aif-<sfx>.cognitiveservices.azure.com/",
+    "FormRecognizer": "https://aif-<sfx>.cognitiveservices.azure.com/",
+    "LUIS": "https://aif-<sfx>.cognitiveservices.azure.com/",
+    "Language": "https://aif-<sfx>.cognitiveservices.azure.com/",
+    "Language Remote MCP Server": "https://aif-<sfx>.cognitiveservices.azure.com/",
+    "MAAP Managed Deployments API": "https://aif-<sfx>.cognitiveservices.azure.com/",
+    "Mistral AI API": "https://aif-<sfx>.services.ai.azure.com/",
+    "OpenAI Dall-E API": "https://aif-<sfx>.openai.azure.com/",
+    "OpenAI Language Model Instance API": "https://aif-<sfx>.openai.azure.com/",
+    "OpenAI Model Scaleset API": "https://aif-<sfx>.openai.azure.com/",
+    "OpenAI Moderations API": "https://aif-<sfx>.openai.azure.com/",
+    "OpenAI Realtime API": "https://aif-<sfx>.openai.azure.com/",
+    "OpenAI Realtime Live WebSocket API": "https://aif-<sfx>.openai.azure.com/",
+    "OpenAI Realtime Translation WebSocket API": "https://aif-<sfx>.openai.azure.com/",
+    "OpenAI Response API on Websocket": "https://aif-<sfx>.openai.azure.com/",
+    "OpenAI Sora API": "https://aif-<sfx>.openai.azure.com/",
+    "OpenAI Whisper API": "https://aif-<sfx>.openai.azure.com/",
+    "ProjectA APIs": "https://aif-<sfx>.cognitiveservices.azure.com/",
+    "QnAMaker": "https://aif-<sfx>.cognitiveservices.azure.com/",
+    "QuestionAnswering": "https://aif-<sfx>.cognitiveservices.azure.com/",
+    "Speech Services Audio Content Creation": "https://aif-<sfx>.cognitiveservices.azure.com/",
+    "Speech Services Batch Avatar": "https://aif-<sfx>.cognitiveservices.azure.com/",
+    "Speech Services Batch Text to Speech": "https://aif-<sfx>.cognitiveservices.azure.com/",
+    "Speech Services Custom Avatar": "https://aif-<sfx>.cognitiveservices.azure.com/",
+    "Speech Services Custom Voice": "https://aif-<sfx>.cognitiveservices.azure.com/",
+    "Speech Services Custom Voice Trial": "https://aif-<sfx>.cognitiveservices.azure.com/",
+    "Speech Services Podcast": "https://aif-<sfx>.cognitiveservices.azure.com/",
+    "Speech Services Speaker Identification": "https://aif-<sfx>.cognitiveservices.azure.com/",
+    "Speech Services Speaker Verification": "https://aif-<sfx>.cognitiveservices.azure.com/",
+    "Speech Services Speech to Text": "https://aif-<sfx>.cognitiveservices.azure.com/",
+    "Speech Services Speech to Text (Standard)": "https://japaneast.stt.speech.microsoft.com",
+    "Speech Services Speech to Text 2024-05-15-preview": "https://aif-<sfx>.cognitiveservices.azure.com/",
+    "Speech Services Speech to Text 2024-11-15": "https://aif-<sfx>.cognitiveservices.azure.com/",
+    "Speech Services Speech to Text 2025-10-15": "https://aif-<sfx>.cognitiveservices.azure.com/",
+    "Speech Services Speech to Text v3.2": "https://aif-<sfx>.cognitiveservices.azure.com/",
+    "Speech Services Speech to Text v3.2_internal.1": "https://aif-<sfx>.cognitiveservices.azure.com/",
+    "Speech Services TTS Player": "https://aif-<sfx>.cognitiveservices.azure.com/",
+    "Speech Services Text to Speech (Neural)": "https://japaneast.tts.speech.microsoft.com",
+    "Text Analytics": "https://aif-<sfx>.cognitiveservices.azure.com/",
+    "TextTranslation": "https://aif-<sfx>.cognitiveservices.azure.com/",
+    "TextTranslation-Global": "https://api.cognitive.microsofttranslator.com/",
+    "Token": "https://aif-<sfx>.cognitiveservices.azure.com/",
+    "Token Service API": "https://aif-<sfx>.openai.azure.com/",
+    "Turing": "https://aif-<sfx>.cognitiveservices.azure.com/",
+    "Video Translation": "https://aif-<sfx>.cognitiveservices.azure.com/",
+    "Voice Agent Realtime API": "https://aif-<sfx>.cognitiveservices.azure.com/",
+    "Voice Live Capabilities API": "https://aif-<sfx>.cognitiveservices.azure.com/",
+    "Voice Live Media Gateway Calls API": "https://aif-<sfx>.cognitiveservices.azure.com/",
+    "Voice Live Media Gateway Calls HTTP API": "https://aif-<sfx>.cognitiveservices.azure.com/",
+    "Voice Live Realtime API": "https://aif-<sfx>.cognitiveservices.azure.com/",
+    "Voice Live SIP API": "https://aif-<sfx>.cognitiveservices.azure.com/",
+    "Voice Live SIP Calls API": "https://aif-<sfx>.cognitiveservices.azure.com/",
+    "fal.ai Inference API": "https://aif-<sfx>.cognitiveservices.azure.com/"
+  },
+  "inj": [
+    {
+      "scenario": "agent",
+      "subnetArmId": "/subscriptions/<sub>/resourceGroups/rg-ignite26-verify/providers/Microsoft.Network/virtualNetworks/vnet-<sfx>/subnets/snet-agent",
+      "useMicrosoftManagedNetwork": false
+    }
+  ],
+  "pna": "Disabled",
+  "state": "Succeeded"
+}
+Microsoft.ContainerService registrationState=NotRegistered
+[2026-11-22 14:10:13 JST] deployment p13-public end (exit=0)
+[2026-11-22 14:11:21 JST] p13-public 完了(アカウント aif-<sfx>p・プロジェクト pub・gpt-5.4-mini / gpt-5.4 / text-embedding-3-small)
+[2026-11-22 14:13:41 JST] deployment p12-infra end (exit=0)
+[2026-11-22 14:13:53 JST] p12-infra Succeeded(開始 14:02、完了 14:13)
+### [2026-11-22 14:14:05 JST] account capability host
+[2026-11-22 14:14:07 JST] PUT https://management.azure.com/subscriptions/<sub>/resourceGroups/rg-ignite26-verify/providers/Microsoft.CognitiveServices/accounts/aif-<sfx>/capabilityHosts/caphost-acct?api-version=2026-11-01
+  request: {"properties":{"capabilityHostKind":"Agents"}}
+  HTTP 400
+  body: {"error":{"code":"UserError","message":"The customerSubnet property must match the subnet recorded on the CapabilityHost parent resource.","details":[],"additionalInfo":[{"type":"ComponentName","info":{"value":"managementfrontend"}},{"type":"Correlation","info":{"value":{"operation":"<hex-1>","request":"529b5597f2f84d29"}}},{"type":"Environment","info":{"value":"japaneast"}},{"type":"Location","info":{"value":"japaneast"}},{"type":"Time","info":{"value":"2026-11-22T05:14:07.6881373+00:00"}}]}}
+[2026-11-22 14:14:09 JST]   provisioningState=GET-failed
+[2026-11-22 14:14:40 JST]   provisioningState=GET-failed
+[2026-11-22 14:15:10 JST]   provisioningState=GET-failed
+[2026-11-22 14:15:51 JST] (待ちループを中断。アカウントの capability host は 400 で作られていない → customerSubnet にエージェントサブネットを入れて再実行)
+### [2026-11-22 14:16:02 JST] account capability host
+[2026-11-22 14:16:05 JST] PUT https://management.azure.com/subscriptions/<sub>/resourceGroups/rg-ignite26-verify/providers/Microsoft.CognitiveServices/accounts/aif-<sfx>/capabilityHosts/caphost-acct?api-version=2026-11-01
+  request: {"properties":{"capabilityHostKind":"Agents","customerSubnet":"/subscriptions/<sub>/resourceGroups/rg-ignite26-verify/providers/Microsoft.Network/virtualNetworks/vnet-<sfx>/subnets/snet-agent"}}
+  HTTP 409
+  body: {"error":{"code":"UserError","message":"There is an existing Capability Host with name: aif-<sfx>@aml_aiagentservice, provisioning state: Succeeded for Foundry Account: <sub>/rg-ignite26-verify/aif-<sfx>@AML/caphost-acct, cannot create a new Capability Host with name: caphost-acct for the same ClientId.","target":"caphost-acct","details":[],"additionalInfo":[{"type":"ComponentName","info":{"value":"managementfrontend"}},{"type":"Correlation","info":{"value":{"operation":"<hex-2>","request":"54bfab799d203558"}}},{"type":"Environment","info":{"value":"japaneast"}},{"type":"Location","info":{"value":"japaneast"}},{"type":"Time","info":{"value":"2026-11-22T05:16:05.5580234+00:00"}},{"type":"InnerError","info":{"value":{"code":"Conflict","innerError":null}}},{"type":"MessageFormat","info":{"value":"An error occurred"}},{"type":"MessageParameters","info":{"value":{"0":"There is an existing Capability Host with name: aif-<sfx>@aml_aiagentservice, provisioning state: Succeeded for Foundry Account: <sub>/rg-ignite26-verify/aif-<sfx>@AML/caphost-acct, cannot create a new Capability Host with name: caphost-acct for the same ClientId."}}}]}}
+[2026-11-22 14:16:06 JST]   provisioningState=GET-failed
+[2026-11-22 14:16:37 JST]   provisioningState=GET-failed
+### [2026-11-22 14:16:41 JST] アカウントの capability host 一覧(自動作成されたものの確認)
+[2026-11-22 14:16:41 JST] GET https://management.azure.com/subscriptions/<sub>/resourceGroups/rg-ignite26-verify/providers/Microsoft.CognitiveServices/accounts/aif-<sfx>/capabilityHosts?api-version=2026-11-01
+  HTTP 200
+  body: {"value":[{"id":"/subscriptions/<sub>/resourceGroups/rg-ignite26-verify/providers/Microsoft.CognitiveServices/accounts/aif-<sfx>/capabilityHosts/aif-<sfx>@aml_aiagentservice","name":"aif-<sfx>@aml_aiagentservice","type":"Microsoft.CognitiveServices/accounts/capabilityHosts","properties":{"description":null,"tags":null,"properties":null,"customerSubnet":"/subscriptions/<sub>/resourceGroups/rg-ignite26-verify/providers/Microsoft.Network/virtualNetworks/vnet-<sfx>/subnets/snet-agent","capabilityHostKind":"Agents","aiServicesConnections":null,"vectorStoreConnections":null,"storageConnections":null,"threadStorageConnections":null,"provisioningState":"Succeeded"},"systemData":{"createdAt":"2026-11-22T05:03:22.5396199+00:00","lastModifiedAt":"2026-11-22T05:06:11.1529703+00:00"}}]}
+[2026-11-22 14:17:07 JST]   provisioningState=GET-failed
+[2026-11-22 14:17:08 JST] GET https://management.azure.com/subscriptions/<sub>/resourceGroups/rg-ignite26-verify/providers/Microsoft.CognitiveServices/accounts/aif-<sfx>/capabilityHosts/caphost-acct?api-version=2026-11-01
+  HTTP 404
+  body: {"error":{"code":"UserError","message":"CapabilityHost 'caphost-acct' not found in workspace 'aif-<sfx>@AML'","details":[],"additionalInfo":[{"type":"ComponentName","info":{"value":"managementfrontend"}},{"type":"Correlation","info":{"value":{"operation":"<hex-3>","request":"ad515ecb2bf27cb6"}}},{"type":"Environment","info":{"value":"japaneast"}},{"type":"Location","info":{"value":"japaneast"}},{"type":"Time","info":{"value":"2026-11-22T05:17:08.1595739+00:00"}},{"type":"InnerError","info":{"value":{"code":"NotFoundError","innerError":null}}}]}}
+### [2026-11-22 14:17:08 JST] project capability host
+[2026-11-22 14:17:09 JST] PUT https://management.azure.com/subscriptions/<sub>/resourceGroups/rg-ignite26-verify/providers/Microsoft.CognitiveServices/accounts/aif-<sfx>/projects/proj/capabilityHosts/caphost-proj?api-version=2026-11-01
+  request: {"properties":{"capabilityHostKind":"Agents","vectorStoreConnections":["conn-search"],"storageConnections":["conn-storage"],"threadStorageConnections":["conn-cosmos"]}}
+  HTTP 201
+  body: {"properties":{"description":null,"tags":null,"properties":null,"customerSubnet":null,"capabilityHostKind":"Agents","aiServicesConnections":null,"vectorStoreConnections":["conn-search"],"storageConnections":["conn-storage"],"threadStorageConnections":["conn-cosmos"],"provisioningState":"Creating"}}
+[2026-11-22 14:17:10 JST]   provisioningState=Creating
+[2026-11-22 14:17:40 JST]   provisioningState=Creating
+[2026-11-22 14:18:11 JST]   provisioningState=Creating
+[2026-11-22 14:18:42 JST]   provisioningState=Creating
+[2026-11-22 14:19:12 JST]   provisioningState=Creating
+[2026-11-22 14:19:43 JST]   provisioningState=Creating
+[2026-11-22 14:20:14 JST]   provisioningState=Succeeded
+[2026-11-22 14:20:14 JST] GET https://management.azure.com/subscriptions/<sub>/resourceGroups/rg-ignite26-verify/providers/Microsoft.CognitiveServices/accounts/aif-<sfx>/projects/proj/capabilityHosts/caphost-proj?api-version=2026-11-01
+  HTTP 200
+  body: {"id":"/subscriptions/<sub>/resourceGroups/rg-ignite26-verify/providers/Microsoft.CognitiveServices/accounts/aif-<sfx>/projects/proj/capabilityHosts/caphost-proj","name":"caphost-proj","type":"Microsoft.CognitiveServices/accounts/projects/capabilityHosts","properties":{"description":null,"tags":null,"properties":null,"customerSubnet":null,"capabilityHostKind":"Agents","aiServicesConnections":null,"vectorStoreConnections":["conn-search"],"storageConnections":["conn-storage"],"threadStorageConnections":["conn-cosmos"],"provisioningState":"Succeeded"},"systemData":{"createdAt":"2026-11-22T05:17:09.1676502+00:00","lastModifiedAt":"2026-11-22T05:19:48.8084778+00:00"}}
+[2026-11-22 14:20:34 JST] project capability host Succeeded(14:17:08 PUT 201 → 14:20:14 Succeeded)
+[2026-11-22 14:56:21 JST] 閉域アカウントに gpt-5.4(GlobalStandard 10)を追加(14 の閉域側の最適化モデル)
+{"name":"gpt-5.4","state":"Succeeded"}
+[2026-11-22 15:22:55 JST] down 開始(UTC 06:22)
+### [2026-11-22 15:22:59 JST] down: capability host → アカウント → purge → RG
+[2026-11-22 15:23:01 JST] DELETE https://management.azure.com/subscriptions/<sub>/resourceGroups/rg-ignite26-verify/providers/Microsoft.CognitiveServices/accounts/aif-<sfx>/projects/proj/capabilityHosts/caphost-proj?api-version=2026-11-01
+  HTTP 202
+  body: 
+[2026-11-22 15:24:08 JST] DELETE https://management.azure.com/subscriptions/<sub>/resourceGroups/rg-ignite26-verify/providers/Microsoft.CognitiveServices/accounts/aif-<sfx>/capabilityHosts/caphost-acct?api-version=2026-11-01
+  HTTP 204
+  body: 
+[2026-11-22 15:25:08 JST] delete + purge aif-<sfx>
+ERROR: (CannotDeleteResource) Cannot delete resource while nested resources exist. Some existing nested resource IDs include: 'Microsoft.CognitiveServices/accounts/aif-<sfx>/projects/proj'. Please delete all nested resources before deleting this resource.
+Code: CannotDeleteResource
+Message: Cannot delete resource while nested resources exist. Some existing nested resource IDs include: 'Microsoft.CognitiveServices/accounts/aif-<sfx>/projects/proj'. Please delete all nested resources before deleting this resource.
+ERROR: (NotFound) The account '/subscriptions/<sub>/resourceGroups/rg-ignite26-verify/providers/Microsoft.CognitiveServices/accounts/aif-<sfx>' is still active, please delete the account first before purge it.
+Code: NotFound
+Message: The account '/subscriptions/<sub>/resourceGroups/rg-ignite26-verify/providers/Microsoft.CognitiveServices/accounts/aif-<sfx>' is still active, please delete the account first before purge it.
+[2026-11-22 15:25:10 JST] delete + purge aif-<sfx>p
+ERROR: (CannotDeleteResource) Cannot delete resource while nested resources exist. Some existing nested resource IDs include: 'Microsoft.CognitiveServices/accounts/aif-<sfx>p/projects/pub'. Please delete all nested resources before deleting this resource.
+Code: CannotDeleteResource
+Message: Cannot delete resource while nested resources exist. Some existing nested resource IDs include: 'Microsoft.CognitiveServices/accounts/aif-<sfx>p/projects/pub'. Please delete all nested resources before deleting this resource.
+ERROR: (NotFound) The account '/subscriptions/<sub>/resourceGroups/rg-ignite26-verify/providers/Microsoft.CognitiveServices/accounts/aif-<sfx>p' is still active, please delete the account first before purge it.
+Code: NotFound
+Message: The account '/subscriptions/<sub>/resourceGroups/rg-ignite26-verify/providers/Microsoft.CognitiveServices/accounts/aif-<sfx>p' is still active, please delete the account first before purge it.
+[2026-11-22 15:25:12 JST] az group delete -n rg-ignite26-verify --yes
+ERROR: (ResourceGroupDeletionBlocked) Deletion of resource group 'rg-ignite26-verify' failed as '6' resources could not be deleted. The provisioning state of the resource group will be rolled back. The tracking Id is '<guid-13>'. Please check audit logs for more details.
+Code: ResourceGroupDeletionBlocked
+Message: Deletion of resource group 'rg-ignite26-verify' failed as '6' resources could not be deleted. The provisioning state of the resource group will be rolled back. The tracking Id is '<guid-13>'. Please check audit logs for more details.
+Exception Details:	(None) {"error":{"code":"InUseSubnetCannotBeDeleted","message":"Subnet snet-agent is in use by /subscriptions/<sub>/resourceGroups/rg-ignite26-verify/providers/Microsoft.Network/virtualNetworks/vnet-<sfx>/subnets/snet-agent/serviceAssociationLinks/legionservicelink and cannot be deleted. In order to delete the subnet, delete all the resources within the subnet. See aka.ms/deletesubnet.","details":[]}}
+	Code: None
+	Message: {"error":{"code":"InUseSubnetCannotBeDeleted","message":"Subnet snet-agent is in use by /subscriptions/<sub>/resourceGroups/rg-ignite26-verify/providers/Microsoft.Network/virtualNetworks/vnet-<sfx>/subnets/snet-agent/serviceAssociationLinks/legionservicelink and cannot be deleted. In order to delete the subnet, delete all the resources within the subnet. See aka.ms/deletesubnet.","details":[]}}
+	Target: /subscriptions/<sub>/resourceGroups/rg-ignite26-verify/providers/Microsoft.Network/virtualNetworks/vnet-<sfx>
+[2026-11-22 15:45:31 JST] az group exists -n rg-ignite26-verify -> true
+[2026-11-22 15:46:02 JST] az group exists -n rg-ignite26-verify -> true
+[2026-11-22 15:46:33 JST] az group exists -n rg-ignite26-verify -> true
+[2026-11-22 15:47:03 JST] az group exists -n rg-ignite26-verify -> true
+[2026-11-22 15:47:34 JST] az group exists -n rg-ignite26-verify -> true
+[2026-11-22 15:48:05 JST] az group exists -n rg-ignite26-verify -> true
+[2026-11-22 15:48:36 JST] az group exists -n rg-ignite26-verify -> true
+[2026-11-22 15:49:11 JST] az group exists -n rg-ignite26-verify -> true
+[2026-11-22 15:49:42 JST] az group exists -n rg-ignite26-verify -> true
+[2026-11-22 15:50:13 JST] az group exists -n rg-ignite26-verify -> true
+[2026-11-22 15:50:43 JST] az group exists -n rg-ignite26-verify -> true
+[2026-11-22 15:51:14 JST] az group exists -n rg-ignite26-verify -> true
+[2026-11-22 15:51:45 JST] az group exists -n rg-ignite26-verify -> true
+[2026-11-22 15:52:15 JST] az group exists -n rg-ignite26-verify -> true
+[2026-11-22 15:52:46 JST] az group exists -n rg-ignite26-verify -> true
+[2026-11-22 15:53:17 JST] az group exists -n rg-ignite26-verify -> true
+[2026-11-22 15:53:47 JST] az group exists -n rg-ignite26-verify -> true
+### [2026-11-22 15:30:15 JST] RG 削除中に、論理削除されたアカウントを purge(委任サブネットの legionservicelink を外すため)
+aif-<sfx>	2026-11-22T06:26:31.1105016Z
+aif-<sfx>p	2026-11-22T06:25:52.8014526Z
+[2026-11-22 15:30:21 JST] purge aif-<sfx>
+[2026-11-22 15:52:50 JST] purge aif-<sfx>p
+[2026-11-22 15:54:18 JST] az group exists -n rg-ignite26-verify -> true
+[2026-11-22 15:54:49 JST] az group exists -n rg-ignite26-verify -> true
+[2026-11-22 15:55:20 JST] az group exists -n rg-ignite26-verify -> true
+[2026-11-22 15:55:50 JST] az group exists -n rg-ignite26-verify -> true
+[2026-11-22 15:56:21 JST] az group exists -n rg-ignite26-verify -> true
+[2026-11-22 15:56:52 JST] az group exists -n rg-ignite26-verify -> true
+[2026-11-22 15:57:22 JST] az group exists -n rg-ignite26-verify -> true
+[2026-11-22 15:57:53 JST] az group exists -n rg-ignite26-verify -> true
+[2026-11-22 15:58:24 JST] az group exists -n rg-ignite26-verify -> true
+[2026-11-22 15:58:55 JST] az group exists -n rg-ignite26-verify -> true
+[2026-11-22 15:59:25 JST] az group exists -n rg-ignite26-verify -> true
+[2026-11-22 15:59:55 JST] 1 回目の az group delete は ResourceGroupDeletionBlocked(6 リソース。VNet が委任サブネットの legionservicelink で残った)。両アカウントの purge 完了(15:52)後に SAL が消えたので再実行
+[2026-11-22 15:59:55 JST] az group delete -n rg-ignite26-verify --yes(2 回目)
+[2026-11-22 16:01:12 JST] az group exists -n rg-ignite26-verify -> false
+[2026-11-22 16:01:24 JST] 最終確認: az group exists -n rg-ignite26-verify -> false
+[2026-11-22 16:01:26 JST] 論理削除のまま残っているアカウント: []
+[2026-11-22 16:01:32 JST] 既存 RG: NetworkWatcherRG rg-decision-models 

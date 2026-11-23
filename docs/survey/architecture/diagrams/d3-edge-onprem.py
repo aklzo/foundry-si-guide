@@ -56,7 +56,7 @@ d.cluster(1040, 110, 1520, 620, L3, kind="local", sublabel="申請制・サー�
 app3 = d.node(1180, 200, icon("cli"), "閉域の業務アプリ", note="インターネット接続ゼロ")
 di = d.node(1180, 370, icon("container"), "Document Intelligence", note="構造化抽出の唯一の選択肢",
             status="GA")
-oth = d.box(1405, 370, 190, 64, "Vision Read OCR / Speech\n/ Language / Translator\n(一部プレビュー)")
+oth = d.box(1405, 370, 190, 64, "Vision Read OCR(2028-09 廃止)\n/ Speech / Language\n/ Translator(一部プレビュー)")
 d.box(1280, 540, 360, 50, "Content Understanding はコンテナなし\n→ マルチモーダル文書処理はオンプレ不可", fill=WARN_FILL,
       border=WARN_BORDER, text_color=RED)
 
@@ -78,10 +78,10 @@ d.edge(app3, oth, via=[(1405, 200)])
 
 d.notes(
     [
-        ("制約", "Foundry Local は埋め込み・ビジョンモデルなし。サーバー推論(バッチング・GPU 共有)は提供しないと明記 → 同時ユーザーは vLLM 等"),
+        ("制約", "Foundry Local のカタログは絞られている(2.1 で ONNX の自前モデル持ち込みは可)。サーバー推論(バッチング・GPU 共有)は提供しないと明記 → 同時ユーザーは vLLM 等"),
         ("運用", "Azure Local 版は 18 リージョン(Japan East 含む)。拡張 2609 で拡張 MI に Arc K8s の Reader が必須。既定ワーカーは「通常小さすぎる」"),
         ("課金", "切断コンテナは申請(10 営業日以内)・承認サブスクリプションのみ。コミットメントは暦年単位で購入時に全額課金"),
-        ("注意", "Content Safety / Fast transcription の切断対応はページ間で不整合 → エアギャップ案件は事前に確認"),
+        ("期限", "Content Safety コンテナーは 2027-04-30 廃止・Read OCR コンテナーは 2028-09-28・Language の CLU / CQA 等は 2029-03-31 → エアギャップの安全性フィルタと OCR は代替前提で組む"),
         ("制約", "クラウド + エッジのハイブリッドに公式ガイダンスなし。オフラインではエージェント・ガードレール・観測性は使えない"),
     ],
     source="出典: docs/survey/architecture/07 §9",

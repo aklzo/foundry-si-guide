@@ -1,0 +1,61 @@
+===== conn  @ 2026-11-22T05:46:13Z
+[fu PUT connection] PUT https://management.azure.com/subscriptions/<sub>/resourceGroups/rg-ignite26-verify/providers/Microsoft.CognitiveServices/accounts/aif-<sfx>/projects/proj/connections/c13-by-fu?api-version=2026-11-01 -> 403 (0.1s) {"error":{"code":"AuthorizationFailed","message":"The client '<guid-4>' with object id '<guid-5>' does not have authorization to perform action 'Microsoft.CognitiveServices/accounts/projects/connections/write' over scope '/subscriptions/<sub>/resourceGroups/rg-ignite26-verify/providers/Microsoft.CognitiveServices/accounts/aif-<sfx>/projects/proj/connections/c13-by-fu' or the scope is invalid. If access was 
+   full: {"error":{"code":"AuthorizationFailed","message":"The client '<guid-4>' with object id '<guid-5>' does not have authorization to perform action 'Microsoft.CognitiveServices/accounts/projects/connections/write' over scope '/subscriptions/<sub>/resourceGroups/rg-ignite26-verify/providers/Microsoft.CognitiveServices/accounts/aif-<sfx>/projects/proj/connections/c13-by-fu' or the scope is invalid. If access was recently granted, please refresh your credentials."}}
+[ops PUT connection] PUT https://management.azure.com/subscriptions/<sub>/resourceGroups/rg-ignite26-verify/providers/Microsoft.CognitiveServices/accounts/aif-<sfx>/projects/proj/connections/c13-by-ops?api-version=2026-11-01 -> 403 (0.1s) {"error":{"code":"AuthorizationFailed","message":"The client '<guid-2>' with object id '<guid-3>' does not have authorization to perform action 'Microsoft.CognitiveServices/accounts/projects/connections/write' over scope '/subscriptions/<sub>/resourceGroups/rg-ignite26-verify/providers/Microsoft.CognitiveServices/accounts/aif-<sfx>/projects/proj/connections/c13-by-ops' or the scope is invalid. If access was
+   full: {"error":{"code":"AuthorizationFailed","message":"The client '<guid-2>' with object id '<guid-3>' does not have authorization to perform action 'Microsoft.CognitiveServices/accounts/projects/connections/write' over scope '/subscriptions/<sub>/resourceGroups/rg-ignite26-verify/providers/Microsoft.CognitiveServices/accounts/aif-<sfx>/projects/proj/connections/c13-by-ops' or the scope is invalid. If access was recently granted, please refresh your credentials."}}
+[rd PUT connection] PUT https://management.azure.com/subscriptions/<sub>/resourceGroups/rg-ignite26-verify/providers/Microsoft.CognitiveServices/accounts/aif-<sfx>/projects/proj/connections/c13-by-rd?api-version=2026-11-01 -> 403 (0.0s) {"error":{"code":"AuthorizationFailed","message":"The client '<guid-10>' with object id '<guid-11>' does not have authorization to perform action 'Microsoft.CognitiveServices/accounts/projects/connections/write' over scope '/subscriptions/<sub>/resourceGroups/rg-ignite26-verify/providers/Microsoft.CognitiveServices/accounts/aif-<sfx>/projects/proj/connections/c13-by-rd' or the scope is invalid. If access was 
+   full: {"error":{"code":"AuthorizationFailed","message":"The client '<guid-10>' with object id '<guid-11>' does not have authorization to perform action 'Microsoft.CognitiveServices/accounts/projects/connections/write' over scope '/subscriptions/<sub>/resourceGroups/rg-ignite26-verify/providers/Microsoft.CognitiveServices/accounts/aif-<sfx>/projects/proj/connections/c13-by-rd' or the scope is invalid. If access was recently granted, please refresh your credentials."}}
+[fu listsecrets(conn-search)] POST https://management.azure.com/subscriptions/<sub>/resourceGroups/rg-ignite26-verify/providers/Microsoft.CognitiveServices/accounts/aif-<sfx>/projects/proj/connections/conn-search/listsecrets?api-version=2026-11-01 -> 200 (0.2s) {"tags":null,"location":null,"id":"/subscriptions/<sub>/resourceGroups/rg-ignite26-verify/providers/Microsoft.CognitiveServices/accounts/aif-<sfx>/projects/proj/connections/conn-search","name":"conn-search","type":"Microsoft.CognitiveServices/accounts/projects/connections","properties":{"authType":"AAD","group":"AzureAI","category":"CognitiveSearch","expiryTime":null,"target":"https://srch-<sfx>.search.windows.net","useWorkspaceManagedIdentity":false,"isShare
+   full: {"tags":null,"location":null,"id":"/subscriptions/<sub>/resourceGroups/rg-ignite26-verify/providers/Microsoft.CognitiveServices/accounts/aif-<sfx>/projects/proj/connections/conn-search","name":"conn-search","type":"Microsoft.CognitiveServices/accounts/projects/connections","properties":{"authType":"AAD","group":"AzureAI","category":"CognitiveSearch","expiryTime":null,"target":"https://srch-<sfx>.search.windows.net","useWorkspaceManagedIdentity":false,"isSharedToAll":false,"sharedUserList":[],"peRequirement":"NotRequired","peStatus":"NotApplicable","error":null,"isDefault":true,"metadata":{"ApiType":"Azure","ResourceId":"/subscriptions/<sub>/resourceGroups/rg-ignite26-verify/providers/Microsoft.Search/searchServices/srch-<sfx>","location":"japaneast","ApiVersion":"2024-05-01-preview","DeploymentApiVersion":"2023-11-01"}},"systemData":{"createdAt":"2026-11-22T05:12:19.2423169Z","createdBy":"<email>","createdByType":"User","lastModifiedAt":"2026-11-22T05:12:19.2423169Z","lastModifiedBy":"<email>","lastModifiedByType":"User"}}
+[fu data-plane list connections] GET {proj}/connections?api-version=v1 -> 200 (0.2s) {   "value": [     {       "name": "conn-cosmos",       "id": "/subscriptions/<sub>/resourceGroups/rg-ignite26-verify/providers/Microsoft.CognitiveServices/accounts/aif-<sfx>/projects/proj/connections/conn-cosmos",       "type": "CosmosDb",       "target": "https://
+   full: {
+  "value": [
+    {
+      "name": "conn-cosmos",
+      "id": "/subscriptions/<sub>/resourceGroups/rg-ignite26-verify/providers/Microsoft.CognitiveServices/accounts/aif-<sfx>/projects/proj/connections/conn-cosmos",
+      "type": "CosmosDb",
+      "target": "https://cos-<sfx>.documents.azure.com:443/",
+      "isDefault": true,
+      "credentials": {
+        "type": "AAD"
+      },
+      "metadata": {
+        "ApiType": "Azure",
+        "ResourceId": "/subscriptions/<sub>/resourceGroups/rg-ignite26-verify/providers/Microsoft.DocumentDB/databaseAccounts/cos-<sfx>",
+        "location": "japaneast"
+      }
+    },
+    {
+      "name": "conn-storage",
+      "id": "/subscriptions/<sub>/resourceGroups/rg-ignite26-verify/providers/Microsoft.CognitiveServices/accounts/aif-<sfx>/projects/proj/connections/conn-storage",
+      "type": "AzureStorageAccount",
+      "target": "https://st<sfx>.blob.core.windows.net/",
+      "isDefault": true,
+      "credentials": {
+        "type": "AAD"
+      },
+      "metadata": {
+        "ApiType": "Azure",
+        "ResourceId": "/subscriptions/<sub>/resourceGroups/rg-ignite26-verify/providers/Microsoft.Storage/storageAccounts/st<sfx>",
+        "location": "japaneast"
+      }
+    },
+    {
+      "name": "conn-search",
+      "id": "/subscriptions/<sub>/resourceGroups/rg-ignite26-verify/providers/Microsoft.CognitiveServices/accounts/aif-<sfx>/projects/proj/connections/conn-search",
+      "type": "CognitiveSearch",
+      "target": "https://srch-<sfx>.search.windows.net",
+      "isDefault": true,
+      "credentials": {
+        "type": "AAD"
+      },
+      "metadata": {
+        "ApiType": "Azure",
+        "ResourceId": "/subscriptions/<sub>/resourceGroups/rg-ignite26-verify/providers/Microsoft.Search/searchServices/srch-<sfx>",
+        "location": "japaneast",
+        "ApiVersion": "2024-05-01-preview",
+        "DeploymentApiVersion": "2023-11-01"
+      }
+    }
+  ]
+}

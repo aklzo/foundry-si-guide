@@ -1,0 +1,11 @@
+### [2026-11-22 14:30:23 JST] vmprobe.py mcp 
+Enable succeeded: 
+[stdout]
+===== mcp  @ 2026-11-22T05:30:25Z
+[create_version] POST {proj}/agents/a12-mcp/versions?api-version=v1 -> 200 (2.4s) {   "metadata": {},   "object": "agent.version",   "id": "a12-mcp:1",   "name": "a12-mcp",   "version": "1",   "description": "probe a12-mcp",   "created_at": 1795325427,   "definition": {     "kind": "prompt",     "model": "gpt-5.4-mini",     "instructions": "Always call the get_vm_secret tool and report its exact output.",     "tools": [       {         "type": "mcp",         "server_label": "vmmcp",         "server_url": "http://10.40.2.10:8081/mcp",         "require_approval": "never"       }     ]   },   "draft": false,   "status": "active",   "instance_identity": {     "principal_id": "2
+[agent mcp] POST {proj}/agents/a12-mcp/endpoint/protocols/openai/responses?api-version=v1 -> 200 (4.0s) {   "metadata": {},   "top_logprobs": 0,   "temperature": 1,   "top_p": 0.98,   "service_tier": "default",   "prompt_cache_retention": "in_memory",   "model": "gpt-5.4-mini",   "reasoning": {     "effort": "none",     "context": "current_turn",     "mode": "standard"   },   "background": false,   "text": {     "format": {       "type": "text"     },     "verbosity": "medium"   },   "tools": [     {       "type": "mcp",       "server_label": "vmmcp",       "server_url": "http://10.40.2.10:8081/mcp",       "require_approval": "never"     }   ],   "tool_choice": "required",   "truncation": "disabled",   "id": "resp_<id-27>",   "object": "response",   "status": "completed",   "created_at": 1795325428,   "completed_at": 1795325430,   "error": null,   "incomplete_details": null,   "output": [     {       "type": "mcp_list_tools",       "id": "mcpl_03c
+[mcp] output_text: 'VM secret is 7391. caller_ip=10.40.0.84'
+[mcp] tool items: [{"type": "mcp_list_tools", "server_label": "vmmcp"}, {"type": "mcp_call", "server_label": "vmmcp", "name": "get_vm_secret", "output": "VM secret is 7391. caller_ip=10.40.0.84\n", "status": "completed"}]
+
+[stderr]
+

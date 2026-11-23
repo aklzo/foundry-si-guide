@@ -1,0 +1,14 @@
+### [2026-11-22 14:15:01 JST] vmprobe.py dns 
+Enable succeeded: 
+[stdout]
+===== dns  @ 2026-11-22T05:15:07Z
+[dns] aif-<sfx>.services.ai.azure.com -> ['10.40.1.9']
+[dns] aif-<sfx>.openai.azure.com -> ['10.40.1.8']
+[dns] aif-<sfx>.cognitiveservices.azure.com -> ['10.40.1.7']
+[dns] cos-<sfx>.documents.azure.com -> ['10.40.1.5']
+[dns] srch-<sfx>.search.windows.net -> ['10.40.1.10']
+[dns] st<sfx>.blob.core.windows.net -> ['10.40.1.4']
+[vm-egress(public ip echo)] GET https://api.ipify.org?format=json -> 200 (0.2s) {"ip":"<public-ip-3>"}
+
+[stderr]
+

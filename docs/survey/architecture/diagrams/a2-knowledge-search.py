@@ -42,22 +42,22 @@ cu = d.node(365, ING, az("aimachinelearning/cognitive-services.png"),
 indexer = d.box(660, ING, 230, 58, "インデクサ + スキルセット\n(Text Split + 埋め込み)")
 d.text(660, ING + 38, "統合ベクトル化・index projections", anchor="ma")
 
-sc = d.cluster(905, 140, 1500, 615, "Azure AI Search(自前インデックス)", kind="focus")
+sc = d.cluster(905, 140, 1500, 615, "Foundry IQ (Azure AI Search)(自前インデックス)", kind="focus")
 index = d.node(1040, 340, icon("search"), "インデックス", note="チャンク 512 / 重複 25%(公式)")
 
 # 文書単位アクセス制御 4 方式(ステータスは 04 章の表)
 d.text(1195, 180, "文書単位のアクセス制御(4 方式)", font=F_LABEL_B, fill=INK)
 acl = [
     ("セキュリティフィルタ\nグループ ID をフィールドに入れて絞る", "GA", True),
-    ("POSIX 風 ACL / RBAC スコープ\nEntra プリンシパルと権限メタデータを照合", "Preview", False),
+    ("POSIX 風 ACL / RBAC スコープ\nEntra プリンシパルと権限メタデータを照合", "GA", True),
     ("Purview 秘密度ラベル\nクエリ時に Purview ポリシーを評価", "Preview", False),
-    ("SharePoint ACL\nSharePoint の権限を直接取り込む", "Preview", False),
+    ("SharePoint ACL\nSharePoint の権限を直接取り込む", "GA", True),
 ]
 for i, (label, status, ga) in enumerate(acl):
     kw = dict(fill=(236, 248, 240), border=GREEN) if ga else {}
     d.box(1340, 245 + i * 72, 290, 50, label, status=status, **kw)
-d.text(1195, 540, "GA 要件を満たせるのはセキュリティフィルタだけ。\nPreview 方式はクエリ時にユーザートークンを\n"
-       "x-ms-query-source-authorization で渡す", fill=MUTED)
+d.text(1195, 540, "ACL / RBAC・SharePoint ACL は 2026-10-01 で GA。\nクエリ時にユーザートークンを\n"
+       "x-ms-query-source-authorization で渡す(無いと全件)", fill=MUTED)
 
 # --- 処理の流れ(下段) ------------------------------------------------------------
 d.steps_panel(40, 652, 1520, [
@@ -85,7 +85,7 @@ d.notes(
         ("注意", "チャンク分割時は権限フィールドを index projections へ移す(忘れると静かに漏れる)。権限変更は次回インデクサ実行で反映"),
         ("閉域", "インデクサの executionEnvironment を \"Private\" に。未設定だと PE を越えられず、空インデックスのままサイレントに失敗"),
         ("制約", "セマンティックランカーは上位 50 件だけを再ランク(L1 の取りこぼしは救えない)。ベクトル容量はパーティション単位のハード上限"),
-        ("認証", "agent → AI Search はマネージド ID + Private Endpoint。ユーザー別の可視性はクエリで強制し、プロンプトでは制御しない"),
+        ("認証", "agent → AI Search はマネージド ID + Private Endpoint。ユーザー別の可視性はクエリで強制し、プロンプトでは制御しない(ACL 取り込みは API 版 2026-10-01 に固定)"),
     ],
     source="出典: docs/survey/architecture/04 A2(閉域版は 07 章)",
 )

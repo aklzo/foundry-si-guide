@@ -1,0 +1,8 @@
+### [2026-11-22 18:50:44 JST] vmprobe.py serverlog 20
+Enable succeeded: 
+[stdout]
+===== serverlog 20 @ 2026-11-22T09:50:51Z
+{"t": "2026-11-22T08:51:29Z", "kind": "api", "client_ip": "10.40.2.10", "method": "GET", "path": "/health", "ua": "curl/8.5.0"}
+
+[stderr]
+

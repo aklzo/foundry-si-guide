@@ -1,0 +1,27 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8"><meta name="figure-size" content="1600x675"><link rel="stylesheet" href="../../tools/figure.css"><style>
+.grid2{grid-template-columns:0.85fr 1.25fr;height:500px;zoom:1.22}
+.hist{display:flex;flex-direction:column;gap:8px}
+.hist .y{display:grid;grid-template-columns:100px 1fr;align-items:center;gap:10px;font-size:21px}
+.hist .y b{color:var(--muted)}
+.hist .now{border:3px solid var(--accent);background:var(--accent-bg);border-radius:10px;padding:8px 12px;font-weight:800;color:var(--accent)}
+.hist .old{border:2px solid var(--border);border-radius:10px;padding:6px 12px;color:var(--muted)}
+.t2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.box{border-radius:12px;padding:12px 14px;font-size:20px;line-height:1.45}
+.chg{border:3px solid var(--accent);background:var(--accent-bg)}
+.same{border:3px solid var(--border);background:var(--panel)}
+.box h3{margin:0 0 6px;font-size:23px}
+code{font-family:Consolas,"SF Mono",monospace;font-size:18px;background:#fff;border-radius:4px;padding:0 4px}
+</style></head><body><div class="grid2">
+<div><h2>製品名の変遷</h2><div class="hist">
+<div class="y"><b>2015</b><div class="old">Azure Search</div></div>
+<div class="y"><b>2019</b><div class="old">Azure Cognitive Search</div></div>
+<div class="y"><b>2023</b><div class="old">Azure AI Search</div></div>
+<div class="y"><b>2026-11</b><div class="now">Foundry IQ (Azure AI Search)</div></div>
+</div>
+<div class="note" style="margin-top:16px">Foundry の <code>Microsoft.CognitiveServices/accounts</code>・<code>az cognitiveservices</code> は <b>Foundry リソース自体</b>の型で、Search とは別。こちらも名前は変わっていない</div></div>
+<div><h2>どこが変わったか</h2><div class="t2">
+<div class="box chg"><h3>変わった(表示名だけ)</h3>Azure ポータル<br>Foundry ポータル<br>ドキュメント<br>製品ページ</div>
+<div class="box same"><h3>変わらない</h3>リソースプロバイダー <code>Microsoft.Search</code><br>リソース種別 <code>searchServices</code><br>エンドポイント <code>*.search.windows.net</code><br>SDK のパッケージ名・API 版<br>CLI <code>az search</code><br>RBAC のロール名<br>エラー・ログ・課金メーター名</div>
+</div>
+<div class="warn">「Foundry IQ」はナレッジベースの機能名でもある。会話や設計書では「Search サービス」か「ナレッジベース」かを言い分ける</div></div>
+</div></body></html>

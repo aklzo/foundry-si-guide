@@ -9,7 +9,7 @@ import sys
 _here = Path(__file__).resolve()
 _repo = next(p for p in _here.parents if (p / "labs" / "maf-ports" / "tools" / "archdiagram.py").exists())
 sys.path.insert(0, str(_repo / "labs" / "maf-ports" / "tools"))
-from archdiagram import BLUE, STATUS_COLORS, TELEM, Diagram, az, icon, res  # noqa: E402
+from archdiagram import BLUE, GREEN, STATUS_COLORS, TELEM, Diagram, az, icon, res  # noqa: E402
 
 d = Diagram(
     "B3: 長時間・確実な再開 ── MAF + Durable Extension + DTS",
@@ -41,7 +41,7 @@ wf_d = d.box(440, R_D, 250, 56, "再開 → 実行・監査記録\n(待機点か
 ext = d.box(790, 350, 190, 380, "Durable Extension\n\nステップごとに\n自動チェックポイント\n\n障害・再デプロイ後も\n最後の CP から再開",
             fill=(255, 255, 255))
 pv_text, pv_bg = STATUS_COLORS["Preview"]
-d.pill(ext.x1 - 12, ext.y0, "beta", color=pv_text, bg=pv_bg, anchor="mm")
+d.pill(ext.x1 - 12, ext.y0, "stable", color=GREEN, bg=(218, 251, 225), anchor="mm")
 
 dts = d.node(1110, 350, icon("scheduler"), "Durable Task\nScheduler(DTS)", note="推奨バックエンド・フルマネージド")
 dash = d.node(1395, 350, az("general/dashboard.png"), "DTS ダッシュボード", note="セッション / 進行を可視化")
@@ -72,8 +72,8 @@ d.notes(
     [
         ("推奨", "バックエンドは DTS(最高性能・フルマネージド・組込みダッシュボード)。ローカル エミュレータがあり CI でテストしやすい"),
         ("制約", "hosted agent の中から DTS を使う公式パターンは未確認 → Durable が要るなら Functions か自前コンピュートにホストする"),
-        ("注意", "拡張パッケージ(agent-framework-durabletask / -azurefunctions)は 1.0.0b の beta。MAF 本体は GA"),
-        ("注意", "hosted agent 内で完結させる代替は long-running hosted agents(Preview・DTS とは別系統)。AI が 1 ステップだけなら B5 を検討"),
+        ("注意", "拡張パッケージ(agent-framework-durabletask / -azurefunctions)は 2026-11-09 に 1.0.0 stable(Learn の手順は --pre のまま)。1.22 以降のレコードがあるストアで新旧ワーカーを混在させない"),
+        ("注意", "hosted agent 内で完結させる代替は long-running hosted agents(2026-11 に GA・DTS とは別系統)。AI が 1 ステップだけなら B5 を検討"),
         ("運用", "分散ホストで信頼性のあるストリーミングをするには Redis 等の stream broker が別途必要"),
     ],
     source="出典: docs/survey/architecture/05 B3(beta 表記は 02 章 H)",

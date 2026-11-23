@@ -1,0 +1,4925 @@
+######## p15-all.log
+===== all P0 @ 2026-11-22T08:56:49Z
+[P0][T6 dns] api.ipify.org -> ['<public-ip-6>', '<public-ip-7>', '<public-ip-8>']
+[P0][T6 dns] ifconfig.me -> ['<public-ip-9>']
+[P0][T6 dns] github.com -> ['<public-ip-10>']
+[P0][T6 vm-egress] https://api.ipify.org?format=json -> 200 (0.2s) b'{"ip":"<public-ip-5>"}'
+[P0][T6 vm-egress] https://ifconfig.me/ip -> 200 (0.2s) b'<public-ip-5>'
+[P0][basic prompt agent] POST {proj}/agents/a15-basic/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.1s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][basic] HTTP 403 (0.1s) 403: Traffic is not from an approved private endpoint. text=''
+[P0][t1 conversation (a15-harness)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/conversations?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 harness shell (a15-harness)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+   shell outputs: []
+[P0][T1 a15-harness] HTTP 403 (0.0s) 403: Traffic is not from an approved private endpoint. shell_outputs=0
+[P0][T1 vm-log] []
+[P0][t2 openapi public] POST {proj}/agents/a15-oapi/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][T2 openapi→ipify] HTTP 403 (0.0s) 403: Traffic is not from an approved private endpoint.
+[P0][t3 mcp learn] POST {proj}/agents/a15-mcp/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][T3 mcp→learn] HTTP 403 (0.0s) 403: Traffic is not from an approved private endpoint.
+[P0][t4 code interpreter] POST {proj}/agents/a15-ci/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][T4 code_interp] HTTP 403 (0.0s) 403: Traffic is not from an approved private endpoint.
+[P0][t5 web search] POST {proj}/agents/a15-web/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][T5 web_search] HTTP 403 (0.0s) 403: Traffic is not from an approved private endpoint.
+===== all P0 @ 2026-11-22T09:04:34Z
+[P0][T6 dns] api.ipify.org -> ['<public-ip-6>', '<public-ip-7>', '<public-ip-8>']
+[P0][T6 dns] ifconfig.me -> ['<public-ip-9>']
+[P0][T6 dns] github.com -> ['<public-ip-10>']
+[P0][T6 vm-egress] https://api.ipify.org?format=json -> 200 (0.2s) b'{"ip":"<public-ip-5>"}'
+[P0][T6 vm-egress] https://ifconfig.me/ip -> 200 (0.2s) b'<public-ip-5>'
+[P0][basic prompt agent] POST {proj}/agents/a15-basic/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][basic prompt agent (fallback: project responses+agent_reference)] POST {proj}/openai/v1/responses -> 200 (1.8s)
+   body: {
+  "metadata": {},
+  "top_logprobs": 0,
+  "temperature": 1,
+  "top_p": 0.98,
+  "service_tier": "default",
+  "prompt_cache_retention": "in_memory",
+  "model": "gpt-5.4-mini",
+  "reasoning": {
+    "effort": "none",
+    "context": "current_turn",
+    "mode": "standard"
+  },
+  "background": false,
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "tools": [],
+  "tool_choice": "auto",
+  "truncation": "disabled",
+  "id": "resp_<id-4>",
+  "object": "response",
+  "status": "completed",
+  "created_at": 1795338275,
+  "completed_at": 1795338275,
+  "error": null,
+  "incomplete_details": null,
+  "output": [
+    {
+      "type": "message",
+      "id": "msg_<id-5>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a15-basic",
+        "version": "1"
+      },
+      "response_id": "resp_<id-4>",
+      "phase": "final_answer",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "PONG",
+          "annotations": [],
+          "logprobs": []
+        }
+      ],
+      "status": "completed"
+    }
+  ],
+  "instructions": "Reply with exactly: PONG",
+  "usage": {
+    "input_tokens": 17,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0
+    },
+    "output_tokens": 6,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 23
+  },
+  "parallel_tool_calls": true,
+  "agent_reference": {
+    "type": "agent_reference",
+    "name": "a15-basic",
+    "version": "1"
+  },
+  "content_filters": [
+    {
+      "blocked": false,
+      "source_type": "prompt",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "jailbreak": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 836,
+        "check_offset": 0
+      }
+    },
+    {
+      "blocked": false,
+      "source_type": "completion",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "protected_material_text": {
+          "filtered": false,
+          "detected": false
+        },
+        "protected_material_code": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 4,
+        "check_offset": 0
+      }
+    }
+  ]
+}
+[P0][basic] HTTP 200 (1.8s) route=project+agent_reference(agent endpoint 403)  text='PONG'
+[P0][t1 conversation (a15-harness)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/conversations?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 harness shell (a15-harness)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+   shell outputs: []
+[P0][T1 a15-harness] HTTP 403 (0.0s) 403: Traffic is not from an approved private endpoint. shell_outputs=0
+[P0][T1 vm-log] []
+[P0][t2 openapi public] POST {proj}/agents/a15-oapi/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t2 openapi public (fallback: project responses+agent_reference)] POST {proj}/openai/v1/responses -> 200 (3.4s)
+   body: {
+  "metadata": {},
+  "top_logprobs": 0,
+  "temperature": 1,
+  "top_p": 0.98,
+  "service_tier": "default",
+  "prompt_cache_retention": "in_memory",
+  "model": "gpt-5.4-mini",
+  "reasoning": {
+    "effort": "none",
+    "context": "current_turn",
+    "mode": "standard"
+  },
+  "background": false,
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "tools": [
+    {
+      "type": "openapi",
+      "openapi": {
+        "name": "ipecho",
+        "description": "Public IP echo service",
+        "spec": {
+          "openapi": "3.0.1",
+          "info": {
+            "title": "ipecho",
+            "version": "1.0"
+          },
+          "servers": [
+            {
+              "url": "https://api.ipify.org"
+            }
+          ],
+          "paths": {
+            "/": {
+              "get": {
+                "operationId": "getEgressIp",
+                "summary": "Return the caller's public IP address",
+                "parameters": [
+                  {
+                    "name": "format",
+                    "in": "query",
+                    "required": true,
+                    "schema": {
+                      "type": "string",
+                      "enum": [
+                        "json"
+                      ]
+                    }
+                  }
+                ],
+                "responses": {
+                  "200": {
+                    "description": "ok",
+                    "content": {
+                      "application/json": {
+                        "schema": {
+                          "type": "object",
+                          "properties": {
+                            "ip": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "auth": {
+          "type": "anonymous"
+        }
+      }
+    }
+  ],
+  "tool_choice": "required",
+  "truncation": "disabled",
+  "id": "resp_<id-6>",
+  "object": "response",
+  "status": "completed",
+  "created_at": 1795338277,
+  "completed_at": 1795338279,
+  "error": null,
+  "incomplete_details": null,
+  "output": [
+    {
+      "type": "openapi_call",
+      "id": "fc_<token-1>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a15-oapi",
+        "version": "1"
+      },
+      "response_id": "resp_<id-6>",
+      "call_id": "call_<id-7>",
+      "name": "ipecho_getEgressIp",
+      "arguments": "{\"format\":\"json\"}",
+      "status": "completed"
+    },
+    {
+      "type": "openapi_call_output",
+      "id": "fco_<token-2>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a15-oapi",
+        "version": "1"
+      },
+      "response_id": "resp_<id-6>",
+      "call_id": "call_<id-7>",
+      "name": "ipecho_getEgressIp",
+      "output": "{\n        \"response\": \"{\\n  \\\"ip\\\": \\\"<public-ip-11>\\\"\\n}\"\n      }",
+      "status": "completed"
+    },
+    {
+      "type": "message",
+      "id": "msg_<id-8>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a15-oapi",
+        "version": "1"
+      },
+      "response_id": "resp_<id-6>",
+      "phase": "final_answer",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "<public-ip-11>",
+          "annotations": [],
+          "logprobs": []
+        }
+      ],
+      "status": "completed"
+    }
+  ],
+  "instructions": "Always call the ipecho getEgressIp operation with format=json and report the exact ip value.",
+  "usage": {
+    "input_tokens": 216,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0
+    },
+    "output_tokens": 36,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 252
+  },
+  "parallel_tool_calls": true,
+  "agent_reference": {
+    "type": "agent_reference",
+    "name": "a15-oapi",
+    "version": "1"
+  },
+  "content_filters": [
+    {
+      "blocked": false,
+      "source_type": "prompt",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "jailbreak": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 1115,
+        "check_offset": 0
+      }
+    },
+    {
+      "blocked": false,
+      "source_type": "completion",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "protected_material_text": {
+          "filtered": false,
+          "detected": false
+        },
+        "protected_material_code": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 13,
+        "check_offset": 0
+      }
+    }
+  ]
+}
+[P0][T2 openapi→ipify] HTTP 200 (3.4s) route=project+agent_reference(agent endpoint 403) 
+[P0][t3 mcp learn] POST {proj}/agents/a15-mcp/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t3 mcp learn (fallback: project responses+agent_reference)] POST {proj}/openai/v1/responses -> 429 (4.6s)
+   body: {"error":{"code":"rate_limit_exceeded","message":"Model deployment rate limit exceeded. Your requests to gpt-5.4-mini for gpt-5.4-mini in japaneast have exceeded token rate limit.. To request more quota, see https://learn.microsoft.com/en-us/azure/ai-services/openai/quotas-limits","type":"error","additionalInfo":{"request_id":"<hex-83>","rate_limit_source":"rapi"}}}
+[P0][T3 mcp→learn] HTTP 429 (4.6s) route=project+agent_reference(agent endpoint 403) rate_limit_exceeded: Model deployment rate limit exceeded. Your requests to gpt-5.4-mini for gpt-5.4-mini in japaneast have exceeded token rate limit.. To request more quota, see https://learn.microsoft.com/en-us/azure/ai-services/openai/quo
+[P0][t4 code interpreter] POST {proj}/agents/a15-ci/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t4 code interpreter (fallback: project responses+agent_reference)] POST {proj}/openai/v1/responses -> 200 (21.9s)
+   body: {
+  "metadata": {},
+  "top_logprobs": 0,
+  "temperature": 1,
+  "top_p": 0.98,
+  "service_tier": "default",
+  "prompt_cache_retention": "in_memory",
+  "model": "gpt-5.4-mini",
+  "reasoning": {
+    "effort": "none",
+    "context": "current_turn",
+    "mode": "standard"
+  },
+  "background": false,
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "tools": [
+    {
+      "type": "code_interpreter",
+      "container": {
+        "type": "auto"
+      }
+    }
+  ],
+  "tool_choice": "required",
+  "truncation": "disabled",
+  "id": "resp_<id-9>",
+  "object": "response",
+  "status": "completed",
+  "created_at": 1795338285,
+  "completed_at": 1795338302,
+  "error": null,
+  "incomplete_details": null,
+  "output": [
+    {
+      "type": "code_interpreter_call",
+      "id": "ci_<id-10>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a15-ci",
+        "version": "1"
+      },
+      "response_id": "resp_<id-9>",
+      "status": "completed",
+      "container_id": "cntr_<id-11>",
+      "code": "import urllib.request\nfor u in ['https://api.ipify.org?format=json', 'http://10.40.2.10:8080/whoami']:\n    try:\n        print(u, urllib.request.urlopen(u, timeout=8).read()[:80])\n    except Exception as e:\n        print(u, 'ERR', type(e).__name__, e)",
+      "outputs": null
+    },
+    {
+      "type": "message",
+      "id": "msg_<id-12>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a15-ci",
+        "version": "1"
+      },
+      "response_id": "resp_<id-9>",
+      "phase": "final_answer",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "Raw output:\n\n```text\nhttps://api.ipify.org?format=json ERR URLError <urlopen error [Errno -3] Temporary failure in name resolution>\nhttp://10.40.2.10:8080/whoami ERR URLError <urlopen error timed out>\n```",
+          "annotations": [],
+          "logprobs": []
+        }
+      ],
+      "status": "completed"
+    }
+  ],
+  "instructions": "Use the python tool. Report exact outputs and errors.",
+  "usage": {
+    "input_tokens": 908,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0
+    },
+    "output_tokens": 149,
+    "output_tokens_details": {
+      "reasoning_tokens": 85
+    },
+    "total_tokens": 1057
+  },
+  "parallel_tool_calls": true,
+  "agent_reference": {
+    "type": "agent_reference",
+    "name": "a15-ci",
+    "version": "1"
+  },
+  "content_filters": [
+    {
+      "blocked": false,
+      "source_type": "prompt",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "jailbreak": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 4019,
+        "check_offset": 0
+      }
+    },
+    {
+      "blocked": false,
+      "source_type": "completion",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "protected_material_text": {
+          "filtered": false,
+          "detected": false
+        },
+        "protected_material_code": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 634,
+        "check_offset": 0
+      }
+    }
+  ]
+}
+[P0][T4 code_interp] HTTP 200 (21.9s) route=project+agent_reference(agent endpoint 403) 
+[P0][t5 web search] POST {proj}/agents/a15-web/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t5 web search (fallback: project responses+agent_reference)] POST {proj}/openai/v1/responses -> 200 (4.6s)
+   body: {
+  "metadata": {},
+  "top_logprobs": 0,
+  "temperature": 1,
+  "top_p": 0.98,
+  "service_tier": "default",
+  "prompt_cache_retention": "in_memory",
+  "model": "gpt-5.4-mini",
+  "reasoning": {
+    "effort": "none",
+    "context": "current_turn",
+    "mode": "standard"
+  },
+  "background": false,
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "tools": [
+    {
+      "type": "web_search",
+      "return_token_budget": "default",
+      "search_content_types": [
+        "text"
+      ],
+      "user_location": {
+        "type": "approximate",
+        "country": "US"
+      },
+      "search_context_size": "medium"
+    }
+  ],
+  "tool_choice": "required",
+  "truncation": "disabled",
+  "id": "resp_<id-13>",
+  "object": "response",
+  "status": "completed",
+  "created_at": 1795338307,
+  "completed_at": 1795338310,
+  "error": null,
+  "incomplete_details": null,
+  "output": [
+    {
+      "type": "web_search_call",
+      "id": "ws_<id-14>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a15-web",
+        "version": "1"
+      },
+      "response_id": "resp_<id-13>",
+      "status": "completed",
+      "action": {
+        "type": "search",
+        "queries": [
+          "Microsoft Ignite 2026 location city official"
+        ],
+        "query": "Microsoft Ignite 2026 location city official"
+      }
+    },
+    {
+      "type": "message",
+      "id": "msg_<id-15>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a15-web",
+        "version": "1"
+      },
+      "response_id": "resp_<id-13>",
+      "phase": "final_answer",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "サンフランシスコです。 ([partner.microsoft.com](https://partner.microsoft.com/en-us/blog/article/ignite-2026-know-before-you-go))",
+          "annotations": [
+            {
+              "type": "url_citation",
+              "url": "https://partner.microsoft.com/en-us/blog/article/ignite-2026-know-before-you-go",
+              "start_index": 12,
+              "end_index": 118,
+              "title": "Microsoft Ignite 2026: Build an agenda that moves your business forward"
+            }
+          ],
+          "logprobs": []
+        }
+      ],
+      "status": "completed"
+    }
+  ],
+  "instructions": "Use web search. Answer briefly.",
+  "usage": {
+    "input_tokens": 8324,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0
+    },
+    "output_tokens": 72,
+    "output_tokens_details": {
+      "reasoning_tokens": 38
+    },
+    "total_tokens": 8396
+  },
+  "parallel_tool_calls": true,
+  "agent_reference": {
+    "type": "agent_reference",
+    "name": "a15-web",
+    "version": "1"
+  },
+  "content_filters": [
+    {
+      "blocked": false,
+      "source_type": "prompt",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "jailbreak": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 19205,
+        "check_offset": 0
+      }
+    },
+    {
+      "blocked": false,
+      "source_type": "completion",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "protected_material_text": {
+          "filtered": false,
+          "detected": false
+        },
+        "protected_material_code": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 18442,
+        "check_offset": 0
+      }
+    }
+  ]
+}
+[P0][T5 web_search] HTTP 200 (4.6s) route=project+agent_reference(agent endpoint 403) 
+===== all P0 @ 2026-11-22T09:08:05Z
+[P0][T6 dns] api.ipify.org -> ['<public-ip-6>', '<public-ip-7>', '<public-ip-8>']
+[P0][T6 dns] ifconfig.me -> ['<public-ip-9>']
+[P0][T6 dns] github.com -> ['<public-ip-10>']
+[P0][T6 vm-egress] https://api.ipify.org?format=json -> 200 (0.2s) b'{"ip":"<public-ip-5>"}'
+[P0][T6 vm-egress] https://ifconfig.me/ip -> 200 (0.2s) b'<public-ip-5>'
+[P0][basic prompt agent] POST {proj}/agents/a15-basic/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][basic prompt agent (retry 1)] POST {proj}/agents/a15-basic/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][basic prompt agent (retry 2)] POST {proj}/agents/a15-basic/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][basic prompt agent (retry 3)] POST {proj}/agents/a15-basic/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][basic prompt agent (retry 4)] POST {proj}/agents/a15-basic/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][basic prompt agent (retry 5)] POST {proj}/agents/a15-basic/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][basic prompt agent (retry 6)] POST {proj}/agents/a15-basic/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][basic prompt agent (retry 7)] POST {proj}/agents/a15-basic/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][basic prompt agent (retry 8)] POST {proj}/agents/a15-basic/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][basic prompt agent (retry 9)] POST {proj}/agents/a15-basic/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][basic prompt agent (retry 10)] POST {proj}/agents/a15-basic/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][basic prompt agent (retry 11)] POST {proj}/agents/a15-basic/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][basic prompt agent (retry 12)] POST {proj}/agents/a15-basic/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][basic prompt agent (retry 13)] POST {proj}/agents/a15-basic/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][basic prompt agent (retry 14)] POST {proj}/agents/a15-basic/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][basic prompt agent (fallback: project responses+agent_reference)] POST {proj}/openai/v1/responses -> 200 (3.3s)
+   body: {
+  "metadata": {},
+  "top_logprobs": 0,
+  "temperature": 1,
+  "top_p": 0.98,
+  "service_tier": "default",
+  "prompt_cache_retention": "in_memory",
+  "model": "gpt-5.4-mini",
+  "reasoning": {
+    "effort": "none",
+    "context": "current_turn",
+    "mode": "standard"
+  },
+  "background": false,
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "tools": [],
+  "tool_choice": "auto",
+  "truncation": "disabled",
+  "id": "resp_<id-16>",
+  "object": "response",
+  "status": "completed",
+  "created_at": 1795338607,
+  "completed_at": 1795338608,
+  "error": null,
+  "incomplete_details": null,
+  "output": [
+    {
+      "type": "message",
+      "id": "msg_<id-17>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a15-basic",
+        "version": "1"
+      },
+      "response_id": "resp_<id-16>",
+      "phase": "final_answer",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "PONG",
+          "annotations": [],
+          "logprobs": []
+        }
+      ],
+      "status": "completed"
+    }
+  ],
+  "instructions": "Reply with exactly: PONG",
+  "usage": {
+    "input_tokens": 17,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0
+    },
+    "output_tokens": 6,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 23
+  },
+  "parallel_tool_calls": true,
+  "agent_reference": {
+    "type": "agent_reference",
+    "name": "a15-basic",
+    "version": "1"
+  },
+  "content_filters": [
+    {
+      "blocked": false,
+      "source_type": "prompt",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "jailbreak": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 836,
+        "check_offset": 0
+      }
+    },
+    {
+      "blocked": false,
+      "source_type": "completion",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "protected_material_text": {
+          "filtered": false,
+          "detected": false
+        },
+        "protected_material_code": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 4,
+        "check_offset": 0
+      }
+    }
+  ]
+}
+[P0][basic] HTTP 200 (3.3s) route=project+agent_reference(agent endpoint 403)  text='PONG'
+[P0][t1 conversation (a15-harness)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/conversations?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 conversation (a15-harness) (retry 1)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/conversations?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 conversation (a15-harness) (retry 2)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/conversations?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 conversation (a15-harness) (retry 3)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/conversations?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 conversation (a15-harness) (retry 4)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/conversations?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 conversation (a15-harness) (retry 5)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/conversations?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 conversation (a15-harness) (retry 6)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/conversations?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 conversation (a15-harness) (retry 7)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/conversations?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 conversation (a15-harness) (retry 8)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/conversations?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 conversation (a15-harness) (retry 9)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/conversations?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 conversation (a15-harness) (retry 10)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/conversations?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 conversation (a15-harness) (retry 11)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/conversations?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 conversation (a15-harness) (retry 12)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/conversations?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 conversation (a15-harness) (retry 13)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/conversations?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 conversation (a15-harness) (retry 14)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/conversations?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 harness shell (a15-harness)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 harness shell (a15-harness) (retry 1)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 harness shell (a15-harness) (retry 2)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 harness shell (a15-harness) (retry 3)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 harness shell (a15-harness) (retry 4)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 harness shell (a15-harness) (retry 5)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 harness shell (a15-harness) (retry 6)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 harness shell (a15-harness) (retry 7)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 harness shell (a15-harness) (retry 8)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 harness shell (a15-harness) (retry 9)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 harness shell (a15-harness) (retry 10)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 harness shell (a15-harness) (retry 11)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 harness shell (a15-harness) (retry 12)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 harness shell (a15-harness) (retry 13)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 harness shell (a15-harness) (retry 14)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+   shell outputs: []
+[P0][T1 a15-harness] HTTP 403 (0.0s) 403: Traffic is not from an approved private endpoint. shell_outputs=0
+[P0][T1 vm-log] []
+[P0][t2 openapi public] POST {proj}/agents/a15-oapi/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t2 openapi public (retry 1)] POST {proj}/agents/a15-oapi/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t2 openapi public (retry 2)] POST {proj}/agents/a15-oapi/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t2 openapi public (retry 3)] POST {proj}/agents/a15-oapi/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t2 openapi public (retry 4)] POST {proj}/agents/a15-oapi/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t2 openapi public (retry 5)] POST {proj}/agents/a15-oapi/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t2 openapi public (retry 6)] POST {proj}/agents/a15-oapi/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t2 openapi public (retry 7)] POST {proj}/agents/a15-oapi/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t2 openapi public (retry 8)] POST {proj}/agents/a15-oapi/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t2 openapi public (retry 9)] POST {proj}/agents/a15-oapi/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t2 openapi public (retry 10)] POST {proj}/agents/a15-oapi/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t2 openapi public (retry 11)] POST {proj}/agents/a15-oapi/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t2 openapi public (retry 12)] POST {proj}/agents/a15-oapi/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t2 openapi public (retry 13)] POST {proj}/agents/a15-oapi/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t2 openapi public (retry 14)] POST {proj}/agents/a15-oapi/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t2 openapi public (fallback: project responses+agent_reference)] POST {proj}/openai/v1/responses -> 200 (6.7s)
+   body: {
+  "metadata": {},
+  "top_logprobs": 0,
+  "temperature": 1,
+  "top_p": 0.98,
+  "service_tier": "default",
+  "prompt_cache_retention": "in_memory",
+  "model": "gpt-5.4-mini",
+  "reasoning": {
+    "effort": "none",
+    "context": "current_turn",
+    "mode": "standard"
+  },
+  "background": false,
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "tools": [
+    {
+      "type": "openapi",
+      "openapi": {
+        "name": "ipecho",
+        "description": "Public IP echo service",
+        "spec": {
+          "openapi": "3.0.1",
+          "info": {
+            "title": "ipecho",
+            "version": "1.0"
+          },
+          "servers": [
+            {
+              "url": "https://api.ipify.org"
+            }
+          ],
+          "paths": {
+            "/": {
+              "get": {
+                "operationId": "getEgressIp",
+                "summary": "Return the caller's public IP address",
+                "parameters": [
+                  {
+                    "name": "format",
+                    "in": "query",
+                    "required": true,
+                    "schema": {
+                      "type": "string",
+                      "enum": [
+                        "json"
+                      ]
+                    }
+                  }
+                ],
+                "responses": {
+                  "200": {
+                    "description": "ok",
+                    "content": {
+                      "application/json": {
+                        "schema": {
+                          "type": "object",
+                          "properties": {
+                            "ip": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "auth": {
+          "type": "anonymous"
+        }
+      }
+    },
+    {
+      "type": "openapi",
+      "openapi": {
+        "name": "ipecho2",
+        "description": "Public IP and header echo",
+        "spec": {
+          "openapi": "3.0.1",
+          "info": {
+            "title": "ipecho2",
+            "version": "1.0"
+          },
+          "servers": [
+            {
+              "url": "https://ifconfig.me"
+            }
+          ],
+          "paths": {
+            "/all.json": {
+              "get": {
+                "operationId": "getAllHeaders",
+                "summary": "Return the caller IP as seen by the server and the X-Forwarded-For header",
+                "responses": {
+                  "200": {
+                    "description": "ok",
+                    "content": {
+                      "application/json": {
+                        "schema": {
+                          "type": "object",
+                          "properties": {
+                            "ip_addr": {
+                              "type": "string"
+                            },
+                            "forwarded": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "auth": {
+          "type": "anonymous"
+        }
+      }
+    }
+  ],
+  "tool_choice": "required",
+  "truncation": "disabled",
+  "id": "resp_<id-18>",
+  "object": "response",
+  "status": "completed",
+  "created_at": 1795338972,
+  "completed_at": 1795338976,
+  "error": null,
+  "incomplete_details": null,
+  "output": [
+    {
+      "type": "openapi_call",
+      "id": "fc_<token-3>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a15-oapi",
+        "version": "2"
+      },
+      "response_id": "resp_<id-18>",
+      "call_id": "call_<id-19>",
+      "name": "ipecho_getEgressIp",
+      "arguments": "{\"format\":\"json\"}",
+      "status": "completed"
+    },
+    {
+      "type": "openapi_call_output",
+      "id": "fco_<token-4>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a15-oapi",
+        "version": "2"
+      },
+      "response_id": "resp_<id-18>",
+      "call_id": "call_<id-19>",
+      "name": "ipecho_getEgressIp",
+      "output": "{\n        \"response\": \"{\\n  \\\"ip\\\": \\\"<public-ip-11>\\\"\\n}\"\n      }",
+      "status": "completed"
+    },
+    {
+      "type": "openapi_call",
+      "id": "fc_<token-5>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a15-oapi",
+        "version": "2"
+      },
+      "response_id": "resp_<id-18>",
+      "call_id": "call_<id-20>",
+      "name": "ipecho2_getAllHeaders",
+      "arguments": "{}",
+      "status": "completed"
+    },
+    {
+      "type": "openapi_call_output",
+      "id": "fco_<token-6>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a15-oapi",
+        "version": "2"
+      },
+      "response_id": "resp_<id-18>",
+      "call_id": "call_<id-20>",
+      "name": "ipecho2_getAllHeaders",
+      "output": "{\n        \"response\": \"{\\n  \\\"ip_addr\\\": \\\"<public-ip-1>\\\",\\n  \\\"user_agent\\\": \\\"azure-agents\\\",\\n  \\\"port\\\": \\\"57498\\\",\\n  \\\"method\\\": \\\"GET\\\",\\n  \\\"encoding\\\": \\\"gzip, deflate\\\",\\n  \\\"mime\\\": \\\"*/*\\\",\\n  \\\"via\\\": \\\"1.1 google\\\",\\n  \\\"forwarded\\\": \\\"<public-ip-2>,<public-ip-3>,<public-ip-1>,<public-ip-14>
+[P0][T2 openapi→ipify] HTTP 200 (6.7s) route=project+agent_reference(agent endpoint 403) 
+[P0][t3 mcp learn] POST {proj}/agents/a15-mcp/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t3 mcp learn (retry 1)] POST {proj}/agents/a15-mcp/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t3 mcp learn (retry 2)] POST {proj}/agents/a15-mcp/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t3 mcp learn (retry 3)] POST {proj}/agents/a15-mcp/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t3 mcp learn (retry 4)] POST {proj}/agents/a15-mcp/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t3 mcp learn (retry 5)] POST {proj}/agents/a15-mcp/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t3 mcp learn (retry 6)] POST {proj}/agents/a15-mcp/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t3 mcp learn (retry 7)] POST {proj}/agents/a15-mcp/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t3 mcp learn (retry 8)] POST {proj}/agents/a15-mcp/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t3 mcp learn (retry 9)] POST {proj}/agents/a15-mcp/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t3 mcp learn (retry 10)] POST {proj}/agents/a15-mcp/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t3 mcp learn (retry 11)] POST {proj}/agents/a15-mcp/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t3 mcp learn (retry 12)] POST {proj}/agents/a15-mcp/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t3 mcp learn (retry 13)] POST {proj}/agents/a15-mcp/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t3 mcp learn (retry 14)] POST {proj}/agents/a15-mcp/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t3 mcp learn (fallback: project responses+agent_reference)] POST {proj}/openai/v1/responses -> 200 (6.7s)
+   body: {
+  "metadata": {},
+  "top_logprobs": 0,
+  "temperature": 1,
+  "top_p": 0.98,
+  "service_tier": "default",
+  "prompt_cache_retention": "in_memory",
+  "model": "gpt-5.4-mini",
+  "reasoning": {
+    "effort": "none",
+    "context": "current_turn",
+    "mode": "standard"
+  },
+  "background": false,
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "tools": [
+    {
+      "type": "mcp",
+      "server_label": "mslearn",
+      "server_url": "https://learn.microsoft.com/api/mcp",
+      "require_approval": "never"
+    }
+  ],
+  "tool_choice": "required",
+  "truncation": "disabled",
+  "id": "resp_<id-21>",
+  "object": "response",
+  "status": "completed",
+  "created_at": 1795339101,
+  "completed_at": 1795339103,
+  "error": null,
+  "incomplete_details": null,
+  "output": [
+    {
+      "type": "mcp_list_tools",
+      "id": "mcpl_<id-22>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a15-mcp",
+        "version": "1"
+      },
+      "response_id": "resp_<id-21>",
+      "server_label": "mslearn",
+      "tools": [
+        {
+          "name": "microsoft_docs_search",
+          "description": "Search official Microsoft/Azure documentation to find the most relevant and trustworthy content for a user's query. This tool returns up to 10 high-quality content chunks (each max 500 tokens), extracted from Microsoft Learn and other official sources. Each result includes the article title, URL, and a self-contained content excerpt optimized for fast retrieval and reasoning. Always use this tool to quickly ground your answers in accurate, first-party Microsoft/Azure knowledge.\n\n## Follow-up Pattern\nTo ensure completeness, use microsoft_docs_fetch when high-value pages are identified by search. The fetch tool complements search by providing the full detail. This is a required step for comprehensive results.",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string",
+                "description": "a query or topic about Microsoft/Azure products, services, platforms, developer tools, frameworks, or APIs",
+                "properties": {},
+                "default": null,
+                "required": []
+              }
+            },
+            "required": []
+          },
+          "annotations": {}
+        },
+        {
+          "name": "microsoft_code_sample_search",
+          "description": "Search for code snippets and examples in official Microsoft Learn documentation. This tool retrieves relevant code samples from Microsoft documentation pages providing developers with practical implementation examples and best practices for Microsoft/Azure products and services related coding tasks. This tool will help you use the **LATEST OFFICIAL** code snippets to empower coding capabilities.\n\n## When to Use This Tool\n- When you are going to provide sample Microsoft/Azure related code snippets in your answers.\n- When you are **generating any Microsoft/Azure related code**.\n\n## Usage Pattern\nInput a descriptive query, or SDK/class/method name to retrieve related code samples. The optional parameter `language` can help to filter results.\n\nEligible values for `language` parameter include: csharp javascript typescript python powershell azurecli al sql java kusto cpp go rust ruby php",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string",
+                "description": "a descriptive query, SDK name, method name or code snippet related to Microsoft/Azure products, services, platforms, developer tools, frameworks, APIs or SDKs",
+                "properties": {},
+                "required": []
+              },
+              "language": {
+                "type": "string",
+                "description": "Optional parameter specifying the programming language of code snippets to retrieve. Can significantly improve search quality if provided. Eligible values: csharp javascript typescript python powershell azurecli al sql java kusto cpp go rust ruby php",
+                "properties": {},
+                "default": null,
+                "required": []
+              }
+            },
+            "required": [
+              "query"
+            ]
+          },
+          "annotations": {}
+        },
+        {
+          "name": "microsoft_docs_fetch",
+          "description": "Fetch and convert a Microsoft Learn documentation webpage to markdown format. This tool retrieves the latest complete content of Microsoft documentation webpages including Azure, .NET, Microsoft 365, and other Microsoft technologies.\n\n## When to Use This Tool\n- When search results provide incomplete information or truncated content\n- When you need complete step-by-step procedures or tutorials\n- When you need troubleshooting sections, prerequisites, or detailed explanations\n- When search results reference a specific page that seems highly relevant\n- For comprehensive guides that require full context\n\n## Usage Pattern\nUse this tool AFTER microsoft_docs_search when you identify specific high-value pages that need complete content. The search tool gives you an overview; this tool gives you the complete picture.\n\n## URL Requirements\n- The URL must be a valid HTML documentation webpage from the microsoft.com domain\n- Binary files (PDF, DOCX, images, etc.) are not supported\n\n## Output Format\nmarkdown with headings, code blocks, tables, and links preserved.",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "url": {
+                "type": "string",
+                "description": "URL of the Microsoft documentation page to read",
+                "properties": {},
+                "required": []
+              }
+            },
+       
+[P0][T3 mcp→learn] HTTP 200 (6.7s) route=project+agent_reference(agent endpoint 403) 
+[P0][t4 code interpreter] POST {proj}/agents/a15-ci/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t4 code interpreter (retry 1)] POST {proj}/agents/a15-ci/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t4 code interpreter (retry 2)] POST {proj}/agents/a15-ci/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t4 code interpreter (retry 3)] POST {proj}/agents/a15-ci/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t4 code interpreter (retry 4)] POST {proj}/agents/a15-ci/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t4 code interpreter (retry 5)] POST {proj}/agents/a15-ci/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t4 code interpreter (retry 6)] POST {proj}/agents/a15-ci/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t4 code interpreter (retry 7)] POST {proj}/agents/a15-ci/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t4 code interpreter (retry 8)] POST {proj}/agents/a15-ci/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t4 code interpreter (retry 9)] POST {proj}/agents/a15-ci/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t4 code interpreter (retry 10)] POST {proj}/agents/a15-ci/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t4 code interpreter (retry 11)] POST {proj}/agents/a15-ci/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t4 code interpreter (retry 12)] POST {proj}/agents/a15-ci/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t4 code interpreter (retry 13)] POST {proj}/agents/a15-ci/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t4 code interpreter (retry 14)] POST {proj}/agents/a15-ci/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t4 code interpreter (fallback: project responses+agent_reference)] POST {proj}/openai/v1/responses -> 200 (18.6s)
+   body: {
+  "metadata": {},
+  "top_logprobs": 0,
+  "temperature": 1,
+  "top_p": 0.98,
+  "service_tier": "default",
+  "prompt_cache_retention": "in_memory",
+  "model": "gpt-5.4-mini",
+  "reasoning": {
+    "effort": "none",
+    "context": "current_turn",
+    "mode": "standard"
+  },
+  "background": false,
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "tools": [
+    {
+      "type": "code_interpreter",
+      "container": {
+        "type": "auto"
+      }
+    }
+  ],
+  "tool_choice": "required",
+  "truncation": "disabled",
+  "id": "resp_<id-23>",
+  "object": "response",
+  "status": "completed",
+  "created_at": 1795339225,
+  "completed_at": 1795339242,
+  "error": null,
+  "incomplete_details": null,
+  "output": [
+    {
+      "type": "code_interpreter_call",
+      "id": "ci_<id-24>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a15-ci",
+        "version": "1"
+      },
+      "response_id": "resp_<id-23>",
+      "status": "completed",
+      "container_id": "cntr_<id-25>",
+      "code": "import urllib.request\nfor u in ['https://api.ipify.org?format=json', 'http://10.40.2.10:8080/whoami']:\n    try:\n        print(u, urllib.request.urlopen(u, timeout=8).read()[:80])\n    except Exception as e:\n        print(u, 'ERR', type(e).__name__, e)",
+      "outputs": null
+    },
+    {
+      "type": "message",
+      "id": "msg_<id-26>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a15-ci",
+        "version": "1"
+      },
+      "response_id": "resp_<id-23>",
+      "phase": "final_answer",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "Raw output:\n\n```text\nhttps://api.ipify.org?format=json ERR URLError <urlopen error [Errno -3] Temporary failure in name resolution>\nhttp://10.40.2.10:8080/whoami ERR URLError <urlopen error timed out>\n```",
+          "annotations": [],
+          "logprobs": []
+        }
+      ],
+      "status": "completed"
+    }
+  ],
+  "instructions": "Use the python tool. Report exact outputs and errors.",
+  "usage": {
+    "input_tokens": 908,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0
+    },
+    "output_tokens": 149,
+    "output_tokens_details": {
+      "reasoning_tokens": 85
+    },
+    "total_tokens": 1057
+  },
+  "parallel_tool_calls": true,
+  "agent_reference": {
+    "type": "agent_reference",
+    "name": "a15-ci",
+    "version": "1"
+  },
+  "content_filters": [
+    {
+      "blocked": false,
+      "source_type": "prompt",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "jailbreak": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 4019,
+        "check_offset": 0
+      }
+    },
+    {
+      "blocked": false,
+      "source_type": "completion",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "protected_material_text": {
+          "filtered": false,
+          "detected": false
+        },
+        "protected_material_code": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 634,
+        "check_offset": 0
+      }
+    }
+  ]
+}
+[P0][T4 code_interp] HTTP 200 (18.6s) route=project+agent_reference(agent endpoint 403) 
+[P0][t5 web search] POST {proj}/agents/a15-web/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t5 web search (retry 1)] POST {proj}/agents/a15-web/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t5 web search (retry 2)] POST {proj}/agents/a15-web/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t5 web search (retry 3)] POST {proj}/agents/a15-web/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t5 web search (retry 4)] POST {proj}/agents/a15-web/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t5 web search (retry 5)] POST {proj}/agents/a15-web/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t5 web search (retry 6)] POST {proj}/agents/a15-web/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t5 web search (retry 7)] POST {proj}/agents/a15-web/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t5 web search (retry 8)] POST {proj}/agents/a15-web/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t5 web search (retry 9)] POST {proj}/agents/a15-web/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t5 web search (retry 10)] POST {proj}/agents/a15-web/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t5 web search (retry 11)] POST {proj}/agents/a15-web/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t5 web search (retry 12)] POST {proj}/agents/a15-web/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t5 web search (retry 13)] POST {proj}/agents/a15-web/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t5 web search (retry 14)] POST {proj}/agents/a15-web/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.1s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t5 web search (fallback: project responses+agent_reference)] POST {proj}/openai/v1/responses -> 200 (4.7s)
+   body: {
+  "metadata": {},
+  "top_logprobs": 0,
+  "temperature": 1,
+  "top_p": 0.98,
+  "service_tier": "default",
+  "prompt_cache_retention": "in_memory",
+  "model": "gpt-5.4-mini",
+  "reasoning": {
+    "effort": "none",
+    "context": "current_turn",
+    "mode": "standard"
+  },
+  "background": false,
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "tools": [
+    {
+      "type": "web_search",
+      "return_token_budget": "default",
+      "search_content_types": [
+        "text"
+      ],
+      "user_location": {
+        "type": "approximate",
+        "country": "US"
+      },
+      "search_context_size": "medium"
+    }
+  ],
+  "tool_choice": "required",
+  "truncation": "disabled",
+  "id": "resp_<id-27>",
+  "object": "response",
+  "status": "completed",
+  "created_at": 1795339365,
+  "completed_at": 1795339368,
+  "error": null,
+  "incomplete_details": null,
+  "output": [
+    {
+      "type": "web_search_call",
+      "id": "ws_<id-28>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a15-web",
+        "version": "1"
+      },
+      "response_id": "resp_<id-27>",
+      "status": "completed",
+      "action": {
+        "type": "search",
+        "queries": [
+          "Microsoft Ignite 2026 location city official"
+        ],
+        "query": "Microsoft Ignite 2026 location city official"
+      }
+    },
+    {
+      "type": "message",
+      "id": "msg_<id-29>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a15-web",
+        "version": "1"
+      },
+      "response_id": "resp_<id-27>",
+      "phase": "final_answer",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "サンフランシスコ。 ([partner.microsoft.com](https://partner.microsoft.com/en-us/blog/article/ignite-2026-know-before-you-go))",
+          "annotations": [
+            {
+              "type": "url_citation",
+              "url": "https://partner.microsoft.com/en-us/blog/article/ignite-2026-know-before-you-go",
+              "start_index": 10,
+              "end_index": 116,
+              "title": "Microsoft Ignite 2026: Build an agenda that moves your business forward"
+            }
+          ],
+          "logprobs": []
+        }
+      ],
+      "status": "completed"
+    }
+  ],
+  "instructions": "Use web search. Answer briefly.",
+  "usage": {
+    "input_tokens": 8324,
+    "input_tokens_details": {
+      "cached_tokens": 4096,
+      "cache_write_tokens": 0
+    },
+    "output_tokens": 71,
+    "output_tokens_details": {
+      "reasoning_tokens": 38
+    },
+    "total_tokens": 8395
+  },
+  "parallel_tool_calls": true,
+  "agent_reference": {
+    "type": "agent_reference",
+    "name": "a15-web",
+    "version": "1"
+  },
+  "content_filters": [
+    {
+      "blocked": false,
+      "source_type": "prompt",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "jailbreak": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 19205,
+        "check_offset": 0
+      }
+    },
+    {
+      "blocked": false,
+      "source_type": "completion",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "protected_material_text": {
+          "filtered": false,
+          "detected": false
+        },
+        "protected_material_code": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 18440,
+        "check_offset": 0
+      }
+    }
+  ]
+}
+[P0][T5 web_search] HTTP 200 (4.7s) route=project+agent_reference(agent endpoint 403) 
+===== all P1 @ 2026-11-22T09:33:54Z
+[P1][T6 dns] api.ipify.org -> ['<public-ip-6>', '<public-ip-7>', '<public-ip-8>']
+[P1][T6 dns] ifconfig.me -> ['<public-ip-9>']
+[P1][T6 dns] github.com -> ['<public-ip-10>']
+[P1][T6 vm-egress] https://api.ipify.org?format=json -> 200 (0.2s) b'{"ip":"<public-ip-5>"}'
+[P1][T6 vm-egress] https://ifconfig.me/ip -> 200 (0.2s) b'<public-ip-5>'
+[P1][basic prompt agent] POST {proj}/agents/a15-basic/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P1][basic prompt agent (fallback: project responses+agent_reference)] POST {proj}/openai/v1/responses -> 200 (2.6s)
+   body: {
+  "metadata": {},
+  "top_logprobs": 0,
+  "temperature": 1,
+  "top_p": 0.98,
+  "service_tier": "default",
+  "prompt_cache_retention": "in_memory",
+  "model": "gpt-5.4-mini",
+  "reasoning": {
+    "effort": "none",
+    "context": "current_turn",
+    "mode": "standard"
+  },
+  "background": false,
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "tools": [],
+  "tool_choice": "auto",
+  "truncation": "disabled",
+  "id": "resp_<id-30>",
+  "object": "response",
+  "status": "completed",
+  "created_at": 1795340036,
+  "completed_at": 1795340037,
+  "error": null,
+  "incomplete_details": null,
+  "output": [
+    {
+      "type": "message",
+      "id": "msg_<id-31>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a15-basic",
+        "version": "1"
+      },
+      "response_id": "resp_<id-30>",
+      "phase": "final_answer",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "PONG",
+          "annotations": [],
+          "logprobs": []
+        }
+      ],
+      "status": "completed"
+    }
+  ],
+  "instructions": "Reply with exactly: PONG",
+  "usage": {
+    "input_tokens": 17,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0
+    },
+    "output_tokens": 6,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 23
+  },
+  "parallel_tool_calls": true,
+  "agent_reference": {
+    "type": "agent_reference",
+    "name": "a15-basic",
+    "version": "1"
+  },
+  "content_filters": [
+    {
+      "blocked": false,
+      "source_type": "prompt",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "jailbreak": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 836,
+        "check_offset": 0
+      }
+    },
+    {
+      "blocked": false,
+      "source_type": "completion",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "protected_material_text": {
+          "filtered": false,
+          "detected": false
+        },
+        "protected_material_code": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 4,
+        "check_offset": 0
+      }
+    }
+  ]
+}
+[P1][basic] HTTP 200 (2.6s) route=project+agent_reference(agent endpoint 403)  text='PONG'
+[P1][t1 conversation (a15-harness)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/conversations?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P1][t1 conversation (a15-harness) (retry 1)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/conversations?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P1][t1 conversation (a15-harness) (retry 2)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/conversations?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P1][t1 conversation (a15-harness) (retry 3)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/conversations?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P1][t1 conversation (a15-harness) (retry 4)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/conversations?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P1][t1 harness shell (a15-harness)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P1][t1 harness shell (a15-harness) (retry 1)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P1][t1 harness shell (a15-harness) (retry 2)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P1][t1 harness shell (a15-harness) (retry 3)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P1][t1 harness shell (a15-harness) (retry 4)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+   shell outputs: []
+[P1][T1 a15-harness] HTTP 403 (0.0s) 403: Traffic is not from an approved private endpoint. shell_outputs=0
+[P1][T1 vm-log] []
+[P1][t2 openapi public] POST {proj}/agents/a15-oapi/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P1][t2 openapi public (fallback: project responses+agent_reference)] POST {proj}/openai/v1/responses -> 400 (16.9s)
+   body: {"error":{"message":"A user error occurred while executing a tool call.","type":"invalid_request_error","param":null,"code":"tool_user_error","request_id":"<hex-84>"}}
+[P1][T2 openapi→ipify] HTTP 400 (16.9s) route=project+agent_reference(agent endpoint 403) tool_user_error: A user error occurred while executing a tool call.
+[P1][t3 mcp learn] POST {proj}/agents/a15-mcp/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P1][t3 mcp learn (fallback: project responses+agent_reference)] POST {proj}/openai/v1/responses -> 200 (6.4s)
+   body: {
+  "metadata": {},
+  "top_logprobs": 0,
+  "temperature": 1,
+  "top_p": 0.98,
+  "service_tier": "default",
+  "prompt_cache_retention": "in_memory",
+  "model": "gpt-5.4-mini",
+  "reasoning": {
+    "effort": "none",
+    "context": "current_turn",
+    "mode": "standard"
+  },
+  "background": false,
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "tools": [
+    {
+      "type": "mcp",
+      "server_label": "mslearn",
+      "server_url": "https://learn.microsoft.com/api/mcp",
+      "require_approval": "never"
+    }
+  ],
+  "tool_choice": "required",
+  "truncation": "disabled",
+  "id": "resp_<id-32>",
+  "object": "response",
+  "status": "completed",
+  "created_at": 1795340136,
+  "completed_at": 1795340140,
+  "error": null,
+  "incomplete_details": null,
+  "output": [
+    {
+      "type": "mcp_list_tools",
+      "id": "mcpl_<id-33>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a15-mcp",
+        "version": "1"
+      },
+      "response_id": "resp_<id-32>",
+      "server_label": "mslearn",
+      "tools": [
+        {
+          "name": "microsoft_docs_search",
+          "description": "Search official Microsoft/Azure documentation to find the most relevant and trustworthy content for a user's query. This tool returns up to 10 high-quality content chunks (each max 500 tokens), extracted from Microsoft Learn and other official sources. Each result includes the article title, URL, and a self-contained content excerpt optimized for fast retrieval and reasoning. Always use this tool to quickly ground your answers in accurate, first-party Microsoft/Azure knowledge.\n\n## Follow-up Pattern\nTo ensure completeness, use microsoft_docs_fetch when high-value pages are identified by search. The fetch tool complements search by providing the full detail. This is a required step for comprehensive results.",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string",
+                "description": "a query or topic about Microsoft/Azure products, services, platforms, developer tools, frameworks, or APIs",
+                "properties": {},
+                "default": null,
+                "required": []
+              }
+            },
+            "required": []
+          },
+          "annotations": {}
+        },
+        {
+          "name": "microsoft_code_sample_search",
+          "description": "Search for code snippets and examples in official Microsoft Learn documentation. This tool retrieves relevant code samples from Microsoft documentation pages providing developers with practical implementation examples and best practices for Microsoft/Azure products and services related coding tasks. This tool will help you use the **LATEST OFFICIAL** code snippets to empower coding capabilities.\n\n## When to Use This Tool\n- When you are going to provide sample Microsoft/Azure related code snippets in your answers.\n- When you are **generating any Microsoft/Azure related code**.\n\n## Usage Pattern\nInput a descriptive query, or SDK/class/method name to retrieve related code samples. The optional parameter `language` can help to filter results.\n\nEligible values for `language` parameter include: csharp javascript typescript python powershell azurecli al sql java kusto cpp go rust ruby php",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string",
+                "description": "a descriptive query, SDK name, method name or code snippet related to Microsoft/Azure products, services, platforms, developer tools, frameworks, APIs or SDKs",
+                "properties": {},
+                "required": []
+              },
+              "language": {
+                "type": "string",
+                "description": "Optional parameter specifying the programming language of code snippets to retrieve. Can significantly improve search quality if provided. Eligible values: csharp javascript typescript python powershell azurecli al sql java kusto cpp go rust ruby php",
+                "properties": {},
+                "default": null,
+                "required": []
+              }
+            },
+            "required": [
+              "query"
+            ]
+          },
+          "annotations": {}
+        },
+        {
+          "name": "microsoft_docs_fetch",
+          "description": "Fetch and convert a Microsoft Learn documentation webpage to markdown format. This tool retrieves the latest complete content of Microsoft documentation webpages including Azure, .NET, Microsoft 365, and other Microsoft technologies.\n\n## When to Use This Tool\n- When search results provide incomplete information or truncated content\n- When you need complete step-by-step procedures or tutorials\n- When you need troubleshooting sections, prerequisites, or detailed explanations\n- When search results reference a specific page that seems highly relevant\n- For comprehensive guides that require full context\n\n## Usage Pattern\nUse this tool AFTER microsoft_docs_search when you identify specific high-value pages that need complete content. The search tool gives you an overview; this tool gives you the complete picture.\n\n## URL Requirements\n- The URL must be a valid HTML documentation webpage from the microsoft.com domain\n- Binary files (PDF, DOCX, images, etc.) are not supported\n\n## Output Format\nmarkdown with headings, code blocks, tables, and links preserved.",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "url": {
+                "type": "string",
+                "description": "URL of the Microsoft documentation page to read",
+                "properties": {},
+                "required": []
+              }
+            },
+       
+[P1][T3 mcp→learn] HTTP 200 (6.4s) route=project+agent_reference(agent endpoint 403) 
+[P1][t4 code interpreter] POST {proj}/agents/a15-ci/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P1][t4 code interpreter (fallback: project responses+agent_reference)] POST {proj}/openai/v1/responses -> 200 (17.7s)
+   body: {
+  "metadata": {},
+  "top_logprobs": 0,
+  "temperature": 1,
+  "top_p": 0.98,
+  "service_tier": "default",
+  "prompt_cache_retention": "in_memory",
+  "model": "gpt-5.4-mini",
+  "reasoning": {
+    "effort": "none",
+    "context": "current_turn",
+    "mode": "standard"
+  },
+  "background": false,
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "tools": [
+    {
+      "type": "code_interpreter",
+      "container": {
+        "type": "auto"
+      }
+    }
+  ],
+  "tool_choice": "required",
+  "truncation": "disabled",
+  "id": "resp_<id-34>",
+  "object": "response",
+  "status": "completed",
+  "created_at": 1795340142,
+  "completed_at": 1795340158,
+  "error": null,
+  "incomplete_details": null,
+  "output": [
+    {
+      "type": "code_interpreter_call",
+      "id": "ci_<id-35>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a15-ci",
+        "version": "1"
+      },
+      "response_id": "resp_<id-34>",
+      "status": "completed",
+      "container_id": "cntr_<id-36>",
+      "code": "import urllib.request\nfor u in ['https://api.ipify.org?format=json', 'http://10.40.2.10:8080/whoami']:\n    try:\n        print(u, urllib.request.urlopen(u, timeout=8).read()[:80])\n    except Exception as e:\n        print(u, 'ERR', type(e).__name__, e)\n",
+      "outputs": null
+    },
+    {
+      "type": "message",
+      "id": "msg_<id-37>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a15-ci",
+        "version": "1"
+      },
+      "response_id": "resp_<id-34>",
+      "phase": "final_answer",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "Raw output:\n\n```text\nhttps://api.ipify.org?format=json ERR URLError <urlopen error [Errno -3] Temporary failure in name resolution>\nhttp://10.40.2.10:8080/whoami ERR URLError <urlopen error timed out>\n```",
+          "annotations": [],
+          "logprobs": []
+        }
+      ],
+      "status": "completed"
+    }
+  ],
+  "instructions": "Use the python tool. Report exact outputs and errors.",
+  "usage": {
+    "input_tokens": 908,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0
+    },
+    "output_tokens": 149,
+    "output_tokens_details": {
+      "reasoning_tokens": 85
+    },
+    "total_tokens": 1057
+  },
+  "parallel_tool_calls": true,
+  "agent_reference": {
+    "type": "agent_reference",
+    "name": "a15-ci",
+    "version": "1"
+  },
+  "content_filters": [
+    {
+      "blocked": false,
+      "source_type": "prompt",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "jailbreak": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 4019,
+        "check_offset": 0
+      }
+    },
+    {
+      "blocked": false,
+      "source_type": "completion",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "protected_material_text": {
+          "filtered": false,
+          "detected": false
+        },
+        "protected_material_code": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 635,
+        "check_offset": 0
+      }
+    }
+  ]
+}
+[P1][T4 code_interp] HTTP 200 (17.7s) route=project+agent_reference(agent endpoint 403) 
+[P1][t5 web search] POST {proj}/agents/a15-web/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P1][t5 web search (fallback: project responses+agent_reference)] POST {proj}/openai/v1/responses -> 200 (7.3s)
+   body: {
+  "metadata": {},
+  "top_logprobs": 0,
+  "temperature": 1,
+  "top_p": 0.98,
+  "service_tier": "default",
+  "prompt_cache_retention": "in_memory",
+  "model": "gpt-5.4-mini",
+  "reasoning": {
+    "effort": "none",
+    "context": "current_turn",
+    "mode": "standard"
+  },
+  "background": false,
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "tools": [
+    {
+      "type": "web_search",
+      "return_token_budget": "default",
+      "search_content_types": [
+        "text"
+      ],
+      "user_location": {
+        "type": "approximate",
+        "country": "US"
+      },
+      "search_context_size": "medium"
+    }
+  ],
+  "tool_choice": "required",
+  "truncation": "disabled",
+  "id": "resp_<id-38>",
+  "object": "response",
+  "status": "completed",
+  "created_at": 1795340159,
+  "completed_at": 1795340163,
+  "error": null,
+  "incomplete_details": null,
+  "output": [
+    {
+      "type": "web_search_call",
+      "id": "ws_<id-39>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a15-web",
+        "version": "1"
+      },
+      "response_id": "resp_<id-38>",
+      "status": "completed",
+      "action": {
+        "type": "search",
+        "queries": [
+          "Microsoft Ignite 2026 location city official"
+        ],
+        "query": "Microsoft Ignite 2026 location city official"
+      }
+    },
+    {
+      "type": "message",
+      "id": "msg_<id-40>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a15-web",
+        "version": "1"
+      },
+      "response_id": "resp_<id-38>",
+      "phase": "final_answer",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "サンフランシスコ。 ([partner.microsoft.com](https://partner.microsoft.com/en-us/blog/article/ignite-2026-know-before-you-go))",
+          "annotations": [
+            {
+              "type": "url_citation",
+              "url": "https://partner.microsoft.com/en-us/blog/article/ignite-2026-know-before-you-go",
+              "start_index": 10,
+              "end_index": 116,
+              "title": "Microsoft Ignite 2026: Build an agenda that moves your business forward"
+            }
+          ],
+          "logprobs": []
+        }
+      ],
+      "status": "completed"
+    }
+  ],
+  "instructions": "Use web search. Answer briefly.",
+  "usage": {
+    "input_tokens": 8322,
+    "input_tokens_details": {
+      "cached_tokens": 4096,
+      "cache_write_tokens": 0
+    },
+    "output_tokens": 72,
+    "output_tokens_details": {
+      "reasoning_tokens": 39
+    },
+    "total_tokens": 8394
+  },
+  "parallel_tool_calls": true,
+  "agent_reference": {
+    "type": "agent_reference",
+    "name": "a15-web",
+    "version": "1"
+  },
+  "content_filters": [
+    {
+      "blocked": false,
+      "source_type": "prompt",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "jailbreak": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 19205,
+        "check_offset": 0
+      }
+    },
+    {
+      "blocked": false,
+      "source_type": "completion",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "protected_material_text": {
+          "filtered": false,
+          "detected": false
+        },
+        "protected_material_code": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 18288,
+        "check_offset": 0
+      }
+    }
+  ]
+}
+[P1][T5 web_search] HTTP 200 (7.3s) route=project+agent_reference(agent endpoint 403) 
+===== all P2 @ 2026-11-22T09:40:02Z
+[P2][T6 dns] api.ipify.org -> ['<public-ip-6>', '<public-ip-7>', '<public-ip-8>']
+[P2][T6 dns] ifconfig.me -> ['<public-ip-9>']
+[P2][T6 dns] github.com -> ['<public-ip-10>']
+[P2][T6 vm-egress] https://api.ipify.org?format=json -> 200 (0.2s) b'{"ip":"<public-ip-5>"}'
+[P2][T6 vm-egress] https://ifconfig.me/ip -> 200 (0.2s) b'<public-ip-5>'
+[P2][basic prompt agent] POST {proj}/agents/a15-basic/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P2][basic prompt agent (fallback: project responses+agent_reference)] POST {proj}/openai/v1/responses -> 200 (2.4s)
+   body: {
+  "metadata": {},
+  "top_logprobs": 0,
+  "temperature": 1,
+  "top_p": 0.98,
+  "service_tier": "default",
+  "prompt_cache_retention": "in_memory",
+  "model": "gpt-5.4-mini",
+  "reasoning": {
+    "effort": "none",
+    "context": "current_turn",
+    "mode": "standard"
+  },
+  "background": false,
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "tools": [],
+  "tool_choice": "auto",
+  "truncation": "disabled",
+  "id": "resp_<id-41>",
+  "object": "response",
+  "status": "completed",
+  "created_at": 1795340404,
+  "completed_at": 1795340404,
+  "error": null,
+  "incomplete_details": null,
+  "output": [
+    {
+      "type": "message",
+      "id": "msg_<id-42>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a15-basic",
+        "version": "1"
+      },
+      "response_id": "resp_<id-41>",
+      "phase": "final_answer",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "PONG",
+          "annotations": [],
+          "logprobs": []
+        }
+      ],
+      "status": "completed"
+    }
+  ],
+  "instructions": "Reply with exactly: PONG",
+  "usage": {
+    "input_tokens": 17,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0
+    },
+    "output_tokens": 6,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 23
+  },
+  "parallel_tool_calls": true,
+  "agent_reference": {
+    "type": "agent_reference",
+    "name": "a15-basic",
+    "version": "1"
+  },
+  "content_filters": [
+    {
+      "blocked": false,
+      "source_type": "prompt",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "jailbreak": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 836,
+        "check_offset": 0
+      }
+    },
+    {
+      "blocked": false,
+      "source_type": "completion",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "protected_material_text": {
+          "filtered": false,
+          "detected": false
+        },
+        "protected_material_code": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 4,
+        "check_offset": 0
+      }
+    }
+  ]
+}
+[P2][basic] HTTP 200 (2.4s) route=project+agent_reference(agent endpoint 403)  text='PONG'
+[P2][t1 conversation (a15-harness)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/conversations?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P2][t1 conversation (a15-harness) (retry 1)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/conversations?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P2][t1 conversation (a15-harness) (retry 2)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/conversations?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P2][t1 conversation (a15-harness) (retry 3)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/conversations?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P2][t1 conversation (a15-harness) (retry 4)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/conversations?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P2][t1 harness shell (a15-harness)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P2][t1 harness shell (a15-harness) (retry 1)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P2][t1 harness shell (a15-harness) (retry 2)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P2][t1 harness shell (a15-harness) (retry 3)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P2][t1 harness shell (a15-harness) (retry 4)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+   shell outputs: []
+[P2][T1 a15-harness] HTTP 403 (0.0s) 403: Traffic is not from an approved private endpoint. shell_outputs=0
+[P2][T1 vm-log] []
+[P2][t2 openapi public] POST {proj}/agents/a15-oapi/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P2][t2 openapi public (fallback: project responses+agent_reference)] POST {proj}/openai/v1/responses -> 400 (16.9s)
+   body: {"error":{"message":"A user error occurred while executing a tool call.","type":"invalid_request_error","param":null,"code":"tool_user_error","request_id":"<hex-85>"}}
+[P2][T2 openapi→ipify] HTTP 400 (16.9s) route=project+agent_reference(agent endpoint 403) tool_user_error: A user error occurred while executing a tool call.
+[P2][t3 mcp learn] POST {proj}/agents/a15-mcp/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P2][t3 mcp learn (fallback: project responses+agent_reference)] POST {proj}/openai/v1/responses -> 200 (3.9s)
+   body: {
+  "metadata": {},
+  "top_logprobs": 0,
+  "temperature": 1,
+  "top_p": 0.98,
+  "service_tier": "default",
+  "prompt_cache_retention": "in_memory",
+  "model": "gpt-5.4-mini",
+  "reasoning": {
+    "effort": "none",
+    "context": "current_turn",
+    "mode": "standard"
+  },
+  "background": false,
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "tools": [
+    {
+      "type": "mcp",
+      "server_label": "mslearn",
+      "server_url": "https://learn.microsoft.com/api/mcp",
+      "require_approval": "never"
+    }
+  ],
+  "tool_choice": "required",
+  "truncation": "disabled",
+  "id": "resp_<id-43>",
+  "object": "response",
+  "status": "completed",
+  "created_at": 1795340503,
+  "completed_at": 1795340505,
+  "error": null,
+  "incomplete_details": null,
+  "output": [
+    {
+      "type": "mcp_list_tools",
+      "id": "mcpl_<id-44>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a15-mcp",
+        "version": "1"
+      },
+      "response_id": "resp_<id-43>",
+      "server_label": "mslearn",
+      "tools": [
+        {
+          "name": "microsoft_docs_search",
+          "description": "Search official Microsoft/Azure documentation to find the most relevant and trustworthy content for a user's query. This tool returns up to 10 high-quality content chunks (each max 500 tokens), extracted from Microsoft Learn and other official sources. Each result includes the article title, URL, and a self-contained content excerpt optimized for fast retrieval and reasoning. Always use this tool to quickly ground your answers in accurate, first-party Microsoft/Azure knowledge.\n\n## Follow-up Pattern\nTo ensure completeness, use microsoft_docs_fetch when high-value pages are identified by search. The fetch tool complements search by providing the full detail. This is a required step for comprehensive results.",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string",
+                "description": "a query or topic about Microsoft/Azure products, services, platforms, developer tools, frameworks, or APIs",
+                "properties": {},
+                "default": null,
+                "required": []
+              }
+            },
+            "required": []
+          },
+          "annotations": {}
+        },
+        {
+          "name": "microsoft_code_sample_search",
+          "description": "Search for code snippets and examples in official Microsoft Learn documentation. This tool retrieves relevant code samples from Microsoft documentation pages providing developers with practical implementation examples and best practices for Microsoft/Azure products and services related coding tasks. This tool will help you use the **LATEST OFFICIAL** code snippets to empower coding capabilities.\n\n## When to Use This Tool\n- When you are going to provide sample Microsoft/Azure related code snippets in your answers.\n- When you are **generating any Microsoft/Azure related code**.\n\n## Usage Pattern\nInput a descriptive query, or SDK/class/method name to retrieve related code samples. The optional parameter `language` can help to filter results.\n\nEligible values for `language` parameter include: csharp javascript typescript python powershell azurecli al sql java kusto cpp go rust ruby php",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string",
+                "description": "a descriptive query, SDK name, method name or code snippet related to Microsoft/Azure products, services, platforms, developer tools, frameworks, APIs or SDKs",
+                "properties": {},
+                "required": []
+              },
+              "language": {
+                "type": "string",
+                "description": "Optional parameter specifying the programming language of code snippets to retrieve. Can significantly improve search quality if provided. Eligible values: csharp javascript typescript python powershell azurecli al sql java kusto cpp go rust ruby php",
+                "properties": {},
+                "default": null,
+                "required": []
+              }
+            },
+            "required": [
+              "query"
+            ]
+          },
+          "annotations": {}
+        },
+        {
+          "name": "microsoft_docs_fetch",
+          "description": "Fetch and convert a Microsoft Learn documentation webpage to markdown format. This tool retrieves the latest complete content of Microsoft documentation webpages including Azure, .NET, Microsoft 365, and other Microsoft technologies.\n\n## When to Use This Tool\n- When search results provide incomplete information or truncated content\n- When you need complete step-by-step procedures or tutorials\n- When you need troubleshooting sections, prerequisites, or detailed explanations\n- When search results reference a specific page that seems highly relevant\n- For comprehensive guides that require full context\n\n## Usage Pattern\nUse this tool AFTER microsoft_docs_search when you identify specific high-value pages that need complete content. The search tool gives you an overview; this tool gives you the complete picture.\n\n## URL Requirements\n- The URL must be a valid HTML documentation webpage from the microsoft.com domain\n- Binary files (PDF, DOCX, images, etc.) are not supported\n\n## Output Format\nmarkdown with headings, code blocks, tables, and links preserved.",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "url": {
+                "type": "string",
+                "description": "URL of the Microsoft documentation page to read",
+                "properties": {},
+                "required": []
+              }
+            },
+       
+[P2][T3 mcp→learn] HTTP 200 (3.9s) route=project+agent_reference(agent endpoint 403) 
+[P2][t4 code interpreter] POST {proj}/agents/a15-ci/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P2][t4 code interpreter (fallback: project responses+agent_reference)] POST {proj}/openai/v1/responses -> 200 (18.5s)
+   body: {
+  "metadata": {},
+  "top_logprobs": 0,
+  "temperature": 1,
+  "top_p": 0.98,
+  "service_tier": "default",
+  "prompt_cache_retention": "in_memory",
+  "model": "gpt-5.4-mini",
+  "reasoning": {
+    "effort": "none",
+    "context": "current_turn",
+    "mode": "standard"
+  },
+  "background": false,
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "tools": [
+    {
+      "type": "code_interpreter",
+      "container": {
+        "type": "auto"
+      }
+    }
+  ],
+  "tool_choice": "required",
+  "truncation": "disabled",
+  "id": "resp_<id-45>",
+  "object": "response",
+  "status": "completed",
+  "created_at": 1795340507,
+  "completed_at": 1795340524,
+  "error": null,
+  "incomplete_details": null,
+  "output": [
+    {
+      "type": "code_interpreter_call",
+      "id": "ci_<id-46>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a15-ci",
+        "version": "1"
+      },
+      "response_id": "resp_<id-45>",
+      "status": "completed",
+      "container_id": "cntr_<id-47>",
+      "code": "import urllib.request\nfor u in ['https://api.ipify.org?format=json', 'http://10.40.2.10:8080/whoami']:\n    try:\n        print(u, urllib.request.urlopen(u, timeout=8).read()[:80])\n    except Exception as e:\n        print(u, 'ERR', type(e).__name__, e)",
+      "outputs": null
+    },
+    {
+      "type": "message",
+      "id": "msg_<id-48>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a15-ci",
+        "version": "1"
+      },
+      "response_id": "resp_<id-45>",
+      "phase": "final_answer",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "Raw output:\n```text\nhttps://api.ipify.org?format=json ERR URLError <urlopen error [Errno -3] Temporary failure in name resolution>\nhttp://10.40.2.10:8080/whoami ERR URLError <urlopen error timed out>\n```",
+          "annotations": [],
+          "logprobs": []
+        }
+      ],
+      "status": "completed"
+    }
+  ],
+  "instructions": "Use the python tool. Report exact outputs and errors.",
+  "usage": {
+    "input_tokens": 908,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0
+    },
+    "output_tokens": 149,
+    "output_tokens_details": {
+      "reasoning_tokens": 85
+    },
+    "total_tokens": 1057
+  },
+  "parallel_tool_calls": true,
+  "agent_reference": {
+    "type": "agent_reference",
+    "name": "a15-ci",
+    "version": "1"
+  },
+  "content_filters": [
+    {
+      "blocked": false,
+      "source_type": "prompt",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "jailbreak": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 4019,
+        "check_offset": 0
+      }
+    },
+    {
+      "blocked": false,
+      "source_type": "completion",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "protected_material_text": {
+          "filtered": false,
+          "detected": false
+        },
+        "protected_material_code": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 633,
+        "check_offset": 0
+      }
+    }
+  ]
+}
+[P2][T4 code_interp] HTTP 200 (18.5s) route=project+agent_reference(agent endpoint 403) 
+[P2][t5 web search] POST {proj}/agents/a15-web/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P2][t5 web search (fallback: project responses+agent_reference)] POST {proj}/openai/v1/responses -> 200 (5.9s)
+   body: {
+  "metadata": {},
+  "top_logprobs": 0,
+  "temperature": 1,
+  "top_p": 0.98,
+  "service_tier": "default",
+  "prompt_cache_retention": "in_memory",
+  "model": "gpt-5.4-mini",
+  "reasoning": {
+    "effort": "none",
+    "context": "current_turn",
+    "mode": "standard"
+  },
+  "background": false,
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "tools": [
+    {
+      "type": "web_search",
+      "return_token_budget": "default",
+      "search_content_types": [
+        "text"
+      ],
+      "user_location": {
+        "type": "approximate",
+        "country": "US"
+      },
+      "search_context_size": "medium"
+    }
+  ],
+  "tool_choice": "required",
+  "truncation": "disabled",
+  "id": "resp_<id-49>",
+  "object": "response",
+  "status": "completed",
+  "created_at": 1795340526,
+  "completed_at": 1795340529,
+  "error": null,
+  "incomplete_details": null,
+  "output": [
+    {
+      "type": "web_search_call",
+      "id": "ws_<id-50>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a15-web",
+        "version": "1"
+      },
+      "response_id": "resp_<id-49>",
+      "status": "completed",
+      "action": {
+        "type": "search",
+        "queries": [
+          "Microsoft Ignite 2026 location city official"
+        ],
+        "query": "Microsoft Ignite 2026 location city official"
+      }
+    },
+    {
+      "type": "message",
+      "id": "msg_<id-51>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a15-web",
+        "version": "1"
+      },
+      "response_id": "resp_<id-49>",
+      "phase": "final_answer",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "サンフランシスコ。 ([partner.microsoft.com](https://partner.microsoft.com/en-us/blog/article/ignite-2026-know-before-you-go))",
+          "annotations": [
+            {
+              "type": "url_citation",
+              "url": "https://partner.microsoft.com/en-us/blog/article/ignite-2026-know-before-you-go",
+              "start_index": 10,
+              "end_index": 116,
+              "title": "Microsoft Ignite 2026: Build an agenda that moves your business forward"
+            }
+          ],
+          "logprobs": []
+        }
+      ],
+      "status": "completed"
+    }
+  ],
+  "instructions": "Use web search. Answer briefly.",
+  "usage": {
+    "input_tokens": 8343,
+    "input_tokens_details": {
+      "cached_tokens": 4096,
+      "cache_write_tokens": 0
+    },
+    "output_tokens": 71,
+    "output_tokens_details": {
+      "reasoning_tokens": 38
+    },
+    "total_tokens": 8414
+  },
+  "parallel_tool_calls": true,
+  "agent_reference": {
+    "type": "agent_reference",
+    "name": "a15-web",
+    "version": "1"
+  },
+  "content_filters": [
+    {
+      "blocked": false,
+      "source_type": "prompt",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "jailbreak": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 19205,
+        "check_offset": 0
+      }
+    },
+    {
+      "blocked": false,
+      "source_type": "completion",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "protected_material_text": {
+          "filtered": false,
+          "detected": false
+        },
+        "protected_material_code": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 18372,
+        "check_offset": 0
+      }
+    }
+  ]
+}
+[P2][T5 web_search] HTTP 200 (5.9s) route=project+agent_reference(agent endpoint 403) 
+===== all P3 @ 2026-11-22T09:45:41Z
+[P3][T6 dns] api.ipify.org -> ['<public-ip-6>', '<public-ip-7>', '<public-ip-8>']
+[P3][T6 dns] ifconfig.me -> ['<public-ip-9>']
+[P3][T6 dns] github.com -> ['<public-ip-12>']
+[P3][T6 vm-egress] https://api.ipify.org?format=json -> 200 (0.2s) b'{"ip":"<public-ip-5>"}'
+[P3][T6 vm-egress] https://ifconfig.me/ip -> 200 (0.2s) b'<public-ip-5>'
+[P3][basic prompt agent] POST {proj}/agents/a15-basic/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P3][basic prompt agent (fallback: project responses+agent_reference)] POST {proj}/openai/v1/responses -> 200 (4.4s)
+   body: {
+  "metadata": {},
+  "top_logprobs": 0,
+  "temperature": 1,
+  "top_p": 0.98,
+  "service_tier": "default",
+  "prompt_cache_retention": "in_memory",
+  "model": "gpt-5.4-mini",
+  "reasoning": {
+    "effort": "none",
+    "context": "current_turn",
+    "mode": "standard"
+  },
+  "background": false,
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "tools": [],
+  "tool_choice": "auto",
+  "truncation": "disabled",
+  "id": "resp_<id-52>",
+  "object": "response",
+  "status": "completed",
+  "created_at": 1795340745,
+  "completed_at": 1795340746,
+  "error": null,
+  "incomplete_details": null,
+  "output": [
+    {
+      "type": "message",
+      "id": "msg_<id-53>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a15-basic",
+        "version": "1"
+      },
+      "response_id": "resp_<id-52>",
+      "phase": "final_answer",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "PONG",
+          "annotations": [],
+          "logprobs": []
+        }
+      ],
+      "status": "completed"
+    }
+  ],
+  "instructions": "Reply with exactly: PONG",
+  "usage": {
+    "input_tokens": 17,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0
+    },
+    "output_tokens": 6,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 23
+  },
+  "parallel_tool_calls": true,
+  "agent_reference": {
+    "type": "agent_reference",
+    "name": "a15-basic",
+    "version": "1"
+  },
+  "content_filters": [
+    {
+      "blocked": false,
+      "source_type": "prompt",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "jailbreak": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 836,
+        "check_offset": 0
+      }
+    },
+    {
+      "blocked": false,
+      "source_type": "completion",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "protected_material_text": {
+          "filtered": false,
+          "detected": false
+        },
+        "protected_material_code": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 4,
+        "check_offset": 0
+      }
+    }
+  ]
+}
+[P3][basic] HTTP 200 (4.4s) route=project+agent_reference(agent endpoint 403)  text='PONG'
+[P3][t1 conversation (a15-harness)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/conversations?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P3][t1 conversation (a15-harness) (retry 1)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/conversations?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P3][t1 conversation (a15-harness) (retry 2)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/conversations?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P3][t1 conversation (a15-harness) (retry 3)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/conversations?api-version=v1 -> 403 (0.1s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P3][t1 conversation (a15-harness) (retry 4)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/conversations?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P3][t1 harness shell (a15-harness)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P3][t1 harness shell (a15-harness) (retry 1)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P3][t1 harness shell (a15-harness) (retry 2)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P3][t1 harness shell (a15-harness) (retry 3)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P3][t1 harness shell (a15-harness) (retry 4)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+   shell outputs: []
+[P3][T1 a15-harness] HTTP 403 (0.0s) 403: Traffic is not from an approved private endpoint. shell_outputs=0
+[P3][T1 vm-log] []
+[P3][t2 openapi public] POST {proj}/agents/a15-oapi/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P3][t2 openapi public (fallback: project responses+agent_reference)] POST {proj}/openai/v1/responses -> 400 (45.1s)
+   body: {
+  "error": {
+    "code": "invalid_configuration",
+    "message": "Storage operation exceeded its 45-second deadline. [Request ID: <hex-81>]",
+    "type": "invalid_request_error",
+    "details": [],
+    "additionalInfo": {
+      "request_id": "<hex-81>"
+    }
+  }
+}
+[P3][T2 openapi→ipify] HTTP 400 (45.1s) route=project+agent_reference(agent endpoint 403) invalid_configuration: Storage operation exceeded its 45-second deadline. [Request ID: <hex-81>]
+[P3][t3 mcp learn] POST {proj}/agents/a15-mcp/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P3][t3 mcp learn (fallback: project responses+agent_reference)] POST {proj}/openai/v1/responses -> 400 (63.0s)
+   body: {"error":{"message":"A user error occurred while executing a tool call.","type":"invalid_request_error","param":null,"code":"tool_user_error","request_id":"<hex-86>"}}
+[P3][T3 mcp→learn] HTTP 400 (63.0s) route=project+agent_reference(agent endpoint 403) tool_user_error: A user error occurred while executing a tool call.
+[P3][t4 code interpreter] POST {proj}/agents/a15-ci/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P3][t4 code interpreter (fallback: project responses+agent_reference)] POST {proj}/openai/v1/responses -> 200 (19.3s)
+   body: {
+  "metadata": {},
+  "top_logprobs": 0,
+  "temperature": 1,
+  "top_p": 0.98,
+  "service_tier": "default",
+  "prompt_cache_retention": "in_memory",
+  "model": "gpt-5.4-mini",
+  "reasoning": {
+    "effort": "none",
+    "context": "current_turn",
+    "mode": "standard"
+  },
+  "background": false,
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "tools": [
+    {
+      "type": "code_interpreter",
+      "container": {
+        "type": "auto"
+      }
+    }
+  ],
+  "tool_choice": "required",
+  "truncation": "disabled",
+  "id": "resp_<id-54>",
+  "object": "response",
+  "status": "completed",
+  "created_at": 1795340936,
+  "completed_at": 1795340953,
+  "error": null,
+  "incomplete_details": null,
+  "output": [
+    {
+      "type": "code_interpreter_call",
+      "id": "ci_<id-55>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a15-ci",
+        "version": "1"
+      },
+      "response_id": "resp_<id-54>",
+      "status": "completed",
+      "container_id": "cntr_<id-56>",
+      "code": "import urllib.request\nfor u in ['https://api.ipify.org?format=json', 'http://10.40.2.10:8080/whoami']:\n    try:\n        print(u, urllib.request.urlopen(u, timeout=8).read()[:80])\n    except Exception as e:\n        print(u, 'ERR', type(e).__name__, e)",
+      "outputs": null
+    },
+    {
+      "type": "message",
+      "id": "msg_<id-57>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a15-ci",
+        "version": "1"
+      },
+      "response_id": "resp_<id-54>",
+      "phase": "final_answer",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "Raw output:\n\n```text\nhttps://api.ipify.org?format=json ERR URLError <urlopen error [Errno -3] Temporary failure in name resolution>\nhttp://10.40.2.10:8080/whoami ERR URLError <urlopen error timed out>\n```",
+          "annotations": [],
+          "logprobs": []
+        }
+      ],
+      "status": "completed"
+    }
+  ],
+  "instructions": "Use the python tool. Report exact outputs and errors.",
+  "usage": {
+    "input_tokens": 908,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0
+    },
+    "output_tokens": 149,
+    "output_tokens_details": {
+      "reasoning_tokens": 85
+    },
+    "total_tokens": 1057
+  },
+  "parallel_tool_calls": true,
+  "agent_reference": {
+    "type": "agent_reference",
+    "name": "a15-ci",
+    "version": "1"
+  },
+  "content_filters": [
+    {
+      "blocked": false,
+      "source_type": "prompt",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "jailbreak": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 4019,
+        "check_offset": 0
+      }
+    },
+    {
+      "blocked": false,
+      "source_type": "completion",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "protected_material_text": {
+          "filtered": false,
+          "detected": false
+        },
+        "protected_material_code": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 634,
+        "check_offset": 0
+      }
+    }
+  ]
+}
+[P3][T4 code_interp] HTTP 200 (19.3s) route=project+agent_reference(agent endpoint 403) 
+[P3][t5 web search] POST {proj}/agents/a15-web/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P3][t5 web search (fallback: project responses+agent_reference)] POST {proj}/openai/v1/responses -> 200 (4.6s)
+   body: {
+  "metadata": {},
+  "top_logprobs": 0,
+  "temperature": 1,
+  "top_p": 0.98,
+  "service_tier": "default",
+  "prompt_cache_retention": "in_memory",
+  "model": "gpt-5.4-mini",
+  "reasoning": {
+    "effort": "none",
+    "context": "current_turn",
+    "mode": "standard"
+  },
+  "background": false,
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "tools": [
+    {
+      "type": "web_search",
+      "return_token_budget": "default",
+      "search_content_types": [
+        "text"
+      ],
+      "user_location": {
+        "type": "approximate",
+        "country": "US"
+      },
+      "search_context_size": "medium"
+    }
+  ],
+  "tool_choice": "required",
+  "truncation": "disabled",
+  "id": "resp_<id-58>",
+  "object": "response",
+  "status": "completed",
+  "created_at": 1795340954,
+  "completed_at": 1795340958,
+  "error": null,
+  "incomplete_details": null,
+  "output": [
+    {
+      "type": "web_search_call",
+      "id": "ws_<id-59>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a15-web",
+        "version": "1"
+      },
+      "response_id": "resp_<id-58>",
+      "status": "completed",
+      "action": {
+        "type": "search",
+        "queries": [
+          "Microsoft Ignite 2026 location city official"
+        ],
+        "query": "Microsoft Ignite 2026 location city official"
+      }
+    },
+    {
+      "type": "message",
+      "id": "msg_<id-60>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a15-web",
+        "version": "1"
+      },
+      "response_id": "resp_<id-58>",
+      "phase": "final_answer",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "サンフランシスコ。 ([partner.microsoft.com](https://partner.microsoft.com/en-us/blog/article/ignite-2026-know-before-you-go))",
+          "annotations": [
+            {
+              "type": "url_citation",
+              "url": "https://partner.microsoft.com/en-us/blog/article/ignite-2026-know-before-you-go",
+              "start_index": 10,
+              "end_index": 116,
+              "title": "Microsoft Ignite 2026: Build an agenda that moves your business forward"
+            }
+          ],
+          "logprobs": []
+        }
+      ],
+      "status": "completed"
+    }
+  ],
+  "instructions": "Use web search. Answer briefly.",
+  "usage": {
+    "input_tokens": 8324,
+    "input_tokens_details": {
+      "cached_tokens": 4096,
+      "cache_write_tokens": 0
+    },
+    "output_tokens": 71,
+    "output_tokens_details": {
+      "reasoning_tokens": 38
+    },
+    "total_tokens": 8395
+  },
+  "parallel_tool_calls": true,
+  "agent_reference": {
+    "type": "agent_reference",
+    "name": "a15-web",
+    "version": "1"
+  },
+  "content_filters": [
+    {
+      "blocked": false,
+      "source_type": "prompt",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "jailbreak": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 19205,
+        "check_offset": 0
+      }
+    },
+    {
+      "blocked": false,
+      "source_type": "completion",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "protected_material_text": {
+          "filtered": false,
+          "detected": false
+        },
+        "protected_material_code": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 18440,
+        "check_offset": 0
+      }
+    }
+  ]
+}
+[P3][T5 web_search] HTTP 200 (4.6s) route=project+agent_reference(agent endpoint 403) 
+######## p15-bundle.log
+######## p15-route.log
+===== route P0 @ 2026-11-22T09:00:48Z
+[P0][route agent-endpoint] POST {proj}/agents/a15-basic/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][route] agent endpoint HTTP 403 (0.0s) 403: Traffic is not from an approved private endpoint. text=''
+[P0][route project responses + agent_reference] POST {proj}/openai/v1/responses -> 200 (34.7s)
+   body: {
+  "metadata": {},
+  "top_logprobs": 0,
+  "temperature": 1,
+  "top_p": 0.98,
+  "service_tier": "default",
+  "prompt_cache_retention": "in_memory",
+  "model": "gpt-5.4-mini",
+  "reasoning": {
+    "effort": "none",
+    "context": "current_turn",
+    "mode": "standard"
+  },
+  "background": false,
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "tools": [],
+  "tool_choice": "auto",
+  "truncation": "disabled",
+  "id": "resp_<id-61>",
+  "object": "response",
+  "status": "completed",
+  "created_at": 1795338050,
+  "completed_at": 1795338051,
+  "error": null,
+  "incomplete_details": null,
+  "output": [
+    {
+      "type": "message",
+      "id": "msg_<id-62>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a15-basic",
+        "version": "1"
+      },
+      "response_id": "resp_<id-61>",
+      "phase": "final_answer",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "PONG",
+          "annotations": [],
+          "logprobs": []
+        }
+      ],
+      "status": "completed"
+    }
+  ],
+  "instructions": "Reply with exactly: PONG",
+  "usage": {
+    "input_tokens": 17,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0
+    },
+    "output_tokens": 6,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 23
+  },
+  "parallel_tool_calls": true,
+  "agent_reference": {
+    "type": "agent_reference",
+    "name": "a15-basic",
+    "version": "1"
+  },
+  "content_filters": [
+    {
+      "blocked": false,
+      "source_type": "prompt",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "jailbreak": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 836,
+        "check_offset": 0
+      }
+    },
+    {
+      "blocked": false,
+      "source_type": "completion",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "protected_material_text": {
+          "filtered": false,
+          "detected": false
+        },
+        "protected_material_code": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 4,
+        "check_offset": 0
+      }
+    }
+  ]
+}
+[P0][route] project responses+agent_reference HTTP 200 (34.7s)  text='PONG'
+[P0][route GET agent] GET {proj}/agents/a15-basic?api-version=v1 -> 200 (1.2s)
+   body: {
+  "object": "agent",
+  "id": "a15-basic",
+  "name": "a15-basic",
+  "state": "enabled",
+  "configuration_state": "enabled",
+  "versions": {
+    "latest": {
+      "metadata": {},
+      "object": "agent.version",
+      "id": "a15-basic:1",
+      "name": "a15-basic",
+      "version": "1",
+      "description": "probe a15-basic",
+      "created_at": 1795337743,
+      "definition": {
+        "kind": "prompt",
+        "model": "gpt-5.4-mini",
+        "instructions": "Reply with exactly: PONG"
+      },
+      "draft": false,
+      "status": "active",
+      "instance_identity": {
+        "principal_id": "<guid-14>",
+        "client_id": "<guid-14>"
+      },
+      "blueprint": {
+        "principal_id": "<guid-15>",
+        "client_id": "<guid-16>"
+      },
+      "blueprint_reference": {
+        "type": "ManagedAgentIdentityBlueprint",
+        "blueprint_id": "a15-basic-57a72"
+      },
+      "agent_guid": "<guid-17>"
+    }
+  },
+  "agent_endpoint": {
+    "version_selector": {
+      "version_selection_rules": [
+        {
+          "type": "FixedRatio",
+          "agent_version": "@latest",
+          "traffic_percentage": 100
+        }
+      ]
+    },
+    "protocols": [
+      "responses"
+    ],
+    "protocol_configuration": {
+      "responses": {}
+    },
+    "authorization_schemes": [
+      {
+        "type": "Entra",
+        "isolation_key_source": {"kind":"Entra"}
+      }
+    ],
+    "publish_approval_status": "not_published"
+  },
+  "instance_identity": {
+    "principal_id": "<guid-14>",
+    "client_id": "<guid-14>",
+    "status": "active"
+  },
+  "blueprint": {
+    "principal_id": "<guid-15>",
+    "client_id": "<guid-16>"
+  },
+  "blueprint_reference": {
+    "type": "ManagedAgentIdentityBlueprint",
+    "blueprint_id": "a15-basic-57a72"
+  }
+}
+[P0][route] GET agent HTTP 200 agent_endpoint={"version_selector": {"version_selection_rules": [{"type": "FixedRatio", "agent_version": "@latest", "traffic_percentage": 100}]}, "protocols": ["responses"], "protocol_configuration": {"responses": {}}, "authorization_schemes": [{"type": "Entra", "isolation_key_source": {"kind": "Entra"}}], "publis
+===== route P0 @ 2026-11-22T09:03:49Z
+[P0][route agent-endpoint] POST {proj}/agents/a15-basic/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.1s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][route agent-endpoint (fallback: project responses+agent_reference)] POST {proj}/openai/v1/responses -> 200 (7.7s)
+   body: {
+  "metadata": {},
+  "top_logprobs": 0,
+  "temperature": 1,
+  "top_p": 0.98,
+  "service_tier": "default",
+  "prompt_cache_retention": "in_memory",
+  "model": "gpt-5.4-mini",
+  "reasoning": {
+    "effort": "none",
+    "context": "current_turn",
+    "mode": "standard"
+  },
+  "background": false,
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "tools": [],
+  "tool_choice": "auto",
+  "truncation": "disabled",
+  "id": "resp_<id-63>",
+  "object": "response",
+  "status": "completed",
+  "created_at": 1795338236,
+  "completed_at": 1795338236,
+  "error": null,
+  "incomplete_details": null,
+  "output": [
+    {
+      "type": "message",
+      "id": "msg_<id-64>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a15-basic",
+        "version": "1"
+      },
+      "response_id": "resp_<id-63>",
+      "phase": "final_answer",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "PONG",
+          "annotations": [],
+          "logprobs": []
+        }
+      ],
+      "status": "completed"
+    }
+  ],
+  "instructions": "Reply with exactly: PONG",
+  "usage": {
+    "input_tokens": 17,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0
+    },
+    "output_tokens": 6,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 23
+  },
+  "parallel_tool_calls": true,
+  "agent_reference": {
+    "type": "agent_reference",
+    "name": "a15-basic",
+    "version": "1"
+  },
+  "content_filters": [
+    {
+      "blocked": false,
+      "source_type": "prompt",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "jailbreak": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 836,
+        "check_offset": 0
+      }
+    },
+    {
+      "blocked": false,
+      "source_type": "completion",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "protected_material_text": {
+          "filtered": false,
+          "detected": false
+        },
+        "protected_material_code": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 4,
+        "check_offset": 0
+      }
+    }
+  ]
+}
+[P0][route] agent endpoint HTTP 200 (7.7s)  text='PONG'
+[P0][route project responses + agent_reference] POST {proj}/openai/v1/responses -> 200 (2.1s)
+   body: {
+  "metadata": {},
+  "top_logprobs": 0,
+  "temperature": 1,
+  "top_p": 0.98,
+  "service_tier": "default",
+  "prompt_cache_retention": "in_memory",
+  "model": "gpt-5.4-mini",
+  "reasoning": {
+    "effort": "none",
+    "context": "current_turn",
+    "mode": "standard"
+  },
+  "background": false,
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "tools": [],
+  "tool_choice": "auto",
+  "truncation": "disabled",
+  "id": "resp_<id-65>",
+  "object": "response",
+  "status": "completed",
+  "created_at": 1795338238,
+  "completed_at": 1795338238,
+  "error": null,
+  "incomplete_details": null,
+  "output": [
+    {
+      "type": "message",
+      "id": "msg_<id-66>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a15-basic",
+        "version": "1"
+      },
+      "response_id": "resp_<id-65>",
+      "phase": "final_answer",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "PONG",
+          "annotations": [],
+          "logprobs": []
+        }
+      ],
+      "status": "completed"
+    }
+  ],
+  "instructions": "Reply with exactly: PONG",
+  "usage": {
+    "input_tokens": 17,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0
+    },
+    "output_tokens": 6,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 23
+  },
+  "parallel_tool_calls": true,
+  "agent_reference": {
+    "type": "agent_reference",
+    "name": "a15-basic",
+    "version": "1"
+  },
+  "content_filters": [
+    {
+      "blocked": false,
+      "source_type": "prompt",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "jailbreak": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 836,
+        "check_offset": 0
+      }
+    },
+    {
+      "blocked": false,
+      "source_type": "completion",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "protected_material_text": {
+          "filtered": false,
+          "detected": false
+        },
+        "protected_material_code": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 4,
+        "check_offset": 0
+      }
+    }
+  ]
+}
+[P0][route] project responses+agent_reference HTTP 200 (2.1s)  text='PONG'
+[P0][route GET agent] GET {proj}/agents/a15-basic?api-version=v1 -> 200 (0.3s)
+   body: {
+  "object": "agent",
+  "id": "a15-basic",
+  "name": "a15-basic",
+  "state": "enabled",
+  "configuration_state": "enabled",
+  "versions": {
+    "latest": {
+      "metadata": {},
+      "object": "agent.version",
+      "id": "a15-basic:1",
+      "name": "a15-basic",
+      "version": "1",
+      "description": "probe a15-basic",
+      "created_at": 1795337743,
+      "definition": {
+        "kind": "prompt",
+        "model": "gpt-5.4-mini",
+        "instructions": "Reply with exactly: PONG"
+      },
+      "draft": false,
+      "status": "active",
+      "instance_identity": {
+        "principal_id": "<guid-14>",
+        "client_id": "<guid-14>"
+      },
+      "blueprint": {
+        "principal_id": "<guid-15>",
+        "client_id": "<guid-16>"
+      },
+      "blueprint_reference": {
+        "type": "ManagedAgentIdentityBlueprint",
+        "blueprint_id": "a15-basic-57a72"
+      },
+      "agent_guid": "<guid-17>"
+    }
+  },
+  "agent_endpoint": {
+    "version_selector": {
+      "version_selection_rules": [
+        {
+          "type": "FixedRatio",
+          "agent_version": "@latest",
+          "traffic_percentage": 100
+        }
+      ]
+    },
+    "protocols": [
+      "responses"
+    ],
+    "protocol_configuration": {
+      "responses": {}
+    },
+    "authorization_schemes": [
+      {
+        "type": "Entra",
+        "isolation_key_source": {"kind":"Entra"}
+      }
+    ],
+    "publish_approval_status": "not_published"
+  },
+  "instance_identity": {
+    "principal_id": "<guid-14>",
+    "client_id": "<guid-14>",
+    "status": "active"
+  },
+  "blueprint": {
+    "principal_id": "<guid-15>",
+    "client_id": "<guid-16>",
+    "status": "active"
+  },
+  "blueprint_reference": {
+    "type": "ManagedAgentIdentityBlueprint",
+    "blueprint_id": "a15-basic-57a72"
+  }
+}
+[P0][route] GET agent HTTP 200 agent_endpoint={"version_selector": {"version_selection_rules": [{"type": "FixedRatio", "agent_version": "@latest", "traffic_percentage": 100}]}, "protocols": ["responses"], "protocol_configuration": {"responses": {}}, "authorization_schemes": [{"type": "Entra", "isolation_key_source": {"kind": "Entra"}}], "publis
+######## p15-setup.log
+===== setup P0 @ 2026-11-22T08:53:46Z
+[P0][create a15-harness] POST {proj}/agents/a15-harness/versions?api-version=v1 -> 200 (101.4s)
+   body: {
+  "metadata": {},
+  "object": "agent.version",
+  "id": "a15-harness:1",
+  "name": "a15-harness",
+  "version": "1",
+  "description": "probe a15-harness",
+  "created_at": 1795337666,
+  "definition": {
+    "kind": "prompt",
+    "harness": {
+      "type": "microsoft_copilot_preview"
+    },
+    "model": "gpt-5.4-mini",
+    "instructions": "You are a network test agent. Use the shell tool. Run commands exactly as given."
+  },
+  "draft": false,
+  "status": "active",
+  "instance_identity": {
+    "principal_id": "<guid-18>",
+    "client_id": "<guid-18>"
+  },
+  "blueprint": {
+    "principal_id": "<guid-19>",
+    "client_id": "<guid-20>"
+  },
+  "blueprint_reference": {
+    "type": "ManagedAgentIdentityBlueprint",
+    "blueprint_id": "a15-harness-7c066"
+  },
+  "agent_guid": "<guid-21>"
+}
+[P0][setup] a15-harness -> 200 (101.4s) 
+[P0][create a15-oapi] POST {proj}/agents/a15-oapi/versions?api-version=v1 -> 200 (3.8s)
+   body: {
+  "metadata": {},
+  "object": "agent.version",
+  "id": "a15-oapi:1",
+  "name": "a15-oapi",
+  "version": "1",
+  "description": "probe a15-oapi",
+  "created_at": 1795337731,
+  "definition": {
+    "kind": "prompt",
+    "model": "gpt-5.4-mini",
+    "instructions": "Always call the ipecho getEgressIp operation with format=json and report the exact ip value.",
+    "tools": [
+      {
+        "type": "openapi",
+        "openapi": {
+          "name": "ipecho",
+          "description": "Public IP echo service",
+          "spec": {
+            "openapi": "3.0.1",
+            "info": {"title":"ipecho","version":"1.0"},
+            "servers": [{"url":"https://api.ipify.org"}],
+            "paths": {"/":{"get":{"operationId":"getEgressIp","summary":"Return the caller's public IP address","parameters":[{"name":"format","in":"query","required":true,"schema":{"type":"string","enum":["json"]}}],"responses":{"200":{"description":"ok","content":{"application/json":{"schema":{"type":"object","properties":{"ip":{"type":"string"}}}}}}}}}}
+          },
+          "auth": {
+            "type": "anonymous"
+          }
+        }
+      }
+    ]
+  },
+  "draft": false,
+  "status": "active",
+  "instance_identity": {
+    "principal_id": "<guid-22>",
+    "client_id": "<guid-22>"
+  },
+  "blueprint": {
+    "principal_id": "<guid-23>",
+    "client_id": "<guid-24>"
+  },
+  "blueprint_reference": {
+    "type": "ManagedAgentIdentityBlueprint",
+    "blueprint_id": "a15-oapi-cb459"
+  },
+  "agent_guid": "<guid-25>"
+}
+[P0][setup] a15-oapi -> 200 (3.8s) 
+[P0][create a15-mcp] POST {proj}/agents/a15-mcp/versions?api-version=v1 -> 200 (2.7s)
+   body: {
+  "metadata": {},
+  "object": "agent.version",
+  "id": "a15-mcp:1",
+  "name": "a15-mcp",
+  "version": "1",
+  "description": "probe a15-mcp",
+  "created_at": 1795337734,
+  "definition": {
+    "kind": "prompt",
+    "model": "gpt-5.4-mini",
+    "instructions": "Always call the microsoft_docs_search tool of mslearn first, then answer with one document title.",
+    "tools": [
+      {
+        "type": "mcp",
+        "server_label": "mslearn",
+        "server_url": "https://learn.microsoft.com/api/mcp",
+        "require_approval": "never"
+      }
+    ]
+  },
+  "draft": false,
+  "status": "active",
+  "instance_identity": {
+    "principal_id": "<guid-26>",
+    "client_id": "<guid-26>"
+  },
+  "blueprint": {
+    "principal_id": "<guid-27>",
+    "client_id": "<guid-28>"
+  },
+  "blueprint_reference": {
+    "type": "ManagedAgentIdentityBlueprint",
+    "blueprint_id": "a15-mcp-a6429"
+  },
+  "agent_guid": "<guid-29>"
+}
+[P0][setup] a15-mcp -> 200 (2.7s) 
+[P0][create a15-ci] POST {proj}/agents/a15-ci/versions?api-version=v1 -> 200 (2.5s)
+   body: {
+  "metadata": {},
+  "object": "agent.version",
+  "id": "a15-ci:1",
+  "name": "a15-ci",
+  "version": "1",
+  "description": "probe a15-ci",
+  "created_at": 1795337737,
+  "definition": {
+    "kind": "prompt",
+    "model": "gpt-5.4-mini",
+    "instructions": "Use the python tool. Report exact outputs and errors.",
+    "tools": [
+      {
+        "type": "code_interpreter",
+        "container": {"type":"auto"}
+      }
+    ]
+  },
+  "draft": false,
+  "status": "active",
+  "instance_identity": {
+    "principal_id": "<guid-30>",
+    "client_id": "<guid-30>"
+  },
+  "blueprint": {
+    "principal_id": "<guid-31>",
+    "client_id": "<guid-32>"
+  },
+  "blueprint_reference": {
+    "type": "ManagedAgentIdentityBlueprint",
+    "blueprint_id": "a15-ci-c2cb0"
+  },
+  "agent_guid": "<guid-33>"
+}
+[P0][setup] a15-ci -> 200 (2.5s) 
+[P0][create a15-web] POST {proj}/agents/a15-web/versions?api-version=v1 -> 200 (4.1s)
+   body: {
+  "metadata": {},
+  "object": "agent.version",
+  "id": "a15-web:1",
+  "name": "a15-web",
+  "version": "1",
+  "description": "probe a15-web",
+  "created_at": 1795337741,
+  "definition": {
+    "kind": "prompt",
+    "model": "gpt-5.4-mini",
+    "instructions": "Use web search. Answer briefly.",
+    "tools": [
+      {
+        "type": "web_search"
+      }
+    ]
+  },
+  "draft": false,
+  "status": "active",
+  "instance_identity": {
+    "principal_id": "<guid-34>",
+    "client_id": "<guid-34>"
+  },
+  "blueprint": {
+    "principal_id": "<guid-35>",
+    "client_id": "<guid-36>"
+  },
+  "blueprint_reference": {
+    "type": "ManagedAgentIdentityBlueprint",
+    "blueprint_id": "a15-web-ec2db"
+  },
+  "agent_guid": "<guid-37>"
+}
+[P0][setup] a15-web -> 200 (4.1s) 
+[P0][create a15-basic] POST {proj}/agents/a15-basic/versions?api-version=v1 -> 200 (2.7s)
+   body: {
+  "metadata": {},
+  "object": "agent.version",
+  "id": "a15-basic:1",
+  "name": "a15-basic",
+  "version": "1",
+  "description": "probe a15-basic",
+  "created_at": 1795337743,
+  "definition": {
+    "kind": "prompt",
+    "model": "gpt-5.4-mini",
+    "instructions": "Reply with exactly: PONG"
+  },
+  "draft": false,
+  "status": "active",
+  "instance_identity": {
+    "principal_id": "<guid-14>",
+    "client_id": "<guid-14>"
+  },
+  "blueprint": {
+    "principal_id": "<guid-15>",
+    "client_id": "<guid-16>"
+  },
+  "blueprint_reference": {
+    "type": "ManagedAgentIdentityBlueprint",
+    "blueprint_id": "a15-basic-57a72"
+  },
+  "agent_guid": "<guid-17>"
+}
+[P0][setup] a15-basic -> 200 (2.7s) 
+######## p15-setup2.log
+===== setup2 P0 @ 2026-11-22T09:07:15Z
+[P0][create a15-oapi v2] POST {proj}/agents/a15-oapi/versions?api-version=v1 -> 200 (2.1s)
+   body: {
+  "metadata": {},
+  "object": "agent.version",
+  "id": "a15-oapi:2",
+  "name": "a15-oapi",
+  "version": "2",
+  "description": "probe a15-oapi v2",
+  "created_at": 1795338436,
+  "definition": {
+    "kind": "prompt",
+    "model": "gpt-5.4-mini",
+    "instructions": "Always call BOTH tools: ipecho getEgressIp (format=json) and ipecho2 getAllHeaders. Report the raw outputs.",
+    "tools": [
+      {
+        "type": "openapi",
+        "openapi": {
+          "name": "ipecho",
+          "description": "Public IP echo service",
+          "spec": {
+            "openapi": "3.0.1",
+            "info": {"title":"ipecho","version":"1.0"},
+            "servers": [{"url":"https://api.ipify.org"}],
+            "paths": {"/":{"get":{"operationId":"getEgressIp","summary":"Return the caller's public IP address","parameters":[{"name":"format","in":"query","required":true,"schema":{"type":"string","enum":["json"]}}],"responses":{"200":{"description":"ok","content":{"application/json":{"schema":{"type":"object","properties":{"ip":{"type":"string"}}}}}}}}}}
+          },
+          "auth": {
+            "type": "anonymous"
+          }
+        }
+      },
+      {
+        "type": "openapi",
+        "openapi": {
+          "name": "ipecho2",
+          "description": "Public IP and header echo",
+          "spec": {
+            "openapi": "3.0.1",
+            "info": {"title":"ipecho2","version":"1.0"},
+            "servers": [{"url":"https://ifconfig.me"}],
+            "paths": {"/all.json":{"get":{"operationId":"getAllHeaders","summary":"Return the caller IP as seen by the server and the X-Forwarded-For header","responses":{"200":{"description":"ok","content":{"application/json":{"schema":{"type":"object","properties":{"ip_addr":{"type":"string"},"forwarded":{"type":"string"}}}}}}}}}}
+          },
+          "auth": {
+            "type": "anonymous"
+          }
+        }
+      }
+    ]
+  },
+  "draft": false,
+  "status": "active",
+  "instance_identity": {
+    "principal_id": "<guid-22>",
+    "client_id": "<guid-22>",
+    "status": "active"
+  },
+  "blueprint": {
+    "principal_id": "<guid-23>",
+    "client_id": "<guid-24>",
+    "status": "active"
+  },
+  "blueprint_reference": {
+    "type": "ManagedAgentIdentityBlueprint",
+    "blueprint_id": "a15-oapi-cb459"
+  },
+  "agent_guid": "<guid-25>"
+}
+[P0][setup2] a15-oapi v2 -> 200 (2.1s) 
+######## p15-t1.log
+===== t1 P0 @ 2026-11-22T09:24:18Z
+[P0][t1 conversation (a15-harness)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/conversations?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 conversation (a15-harness) (retry 1)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/conversations?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 conversation (a15-harness) (retry 2)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/conversations?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 conversation (a15-harness) (retry 3)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/conversations?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 conversation (a15-harness) (retry 4)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/conversations?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 conversation (a15-harness) (retry 5)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/conversations?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 conversation (a15-harness) (retry 6)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/conversations?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 conversation (a15-harness) (retry 7)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/conversations?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 conversation (a15-harness) (retry 8)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/conversations?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 conversation (a15-harness) (retry 9)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/conversations?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 conversation (a15-harness) (retry 10)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/conversations?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 conversation (a15-harness) (retry 11)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/conversations?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 conversation (a15-harness) (retry 12)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/conversations?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 conversation (a15-harness) (retry 13)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/conversations?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 conversation (a15-harness) (retry 14)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/conversations?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 harness shell (a15-harness)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 harness shell (a15-harness) (retry 1)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 harness shell (a15-harness) (retry 2)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 harness shell (a15-harness) (retry 3)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 harness shell (a15-harness) (retry 4)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 harness shell (a15-harness) (retry 5)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 harness shell (a15-harness) (retry 6)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 harness shell (a15-harness) (retry 7)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 harness shell (a15-harness) (retry 8)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 harness shell (a15-harness) (retry 9)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 harness shell (a15-harness) (retry 10)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 harness shell (a15-harness) (retry 11)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 harness shell (a15-harness) (retry 12)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 harness shell (a15-harness) (retry 13)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P0][t1 harness shell (a15-harness) (retry 14)] POST {proj}/agents/a15-harness/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+   shell outputs: []
+[P0][T1 a15-harness] HTTP 403 (0.0s) 403: Traffic is not from an approved private endpoint. shell_outputs=0
+[P0][T1 vm-log] []
+######## p15-t2.log
+===== t2 P4 @ 2026-11-22T09:52:23Z
+[P4][t2 openapi public] POST {proj}/agents/a15-oapi/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P4][t2 openapi public (fallback: project responses+agent_reference)] POST {proj}/openai/v1/responses -> 200 (5.7s)
+   body: {
+  "metadata": {},
+  "top_logprobs": 0,
+  "temperature": 1,
+  "top_p": 0.98,
+  "service_tier": "default",
+  "prompt_cache_retention": "in_memory",
+  "model": "gpt-5.4-mini",
+  "reasoning": {
+    "effort": "none",
+    "context": "current_turn",
+    "mode": "standard"
+  },
+  "background": false,
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "tools": [
+    {
+      "type": "openapi",
+      "openapi": {
+        "name": "ipecho",
+        "description": "Public IP echo service",
+        "spec": {
+          "openapi": "3.0.1",
+          "info": {
+            "title": "ipecho",
+            "version": "1.0"
+          },
+          "servers": [
+            {
+              "url": "https://api.ipify.org"
+            }
+          ],
+          "paths": {
+            "/": {
+              "get": {
+                "operationId": "getEgressIp",
+                "summary": "Return the caller's public IP address",
+                "parameters": [
+                  {
+                    "name": "format",
+                    "in": "query",
+                    "required": true,
+                    "schema": {
+                      "type": "string",
+                      "enum": [
+                        "json"
+                      ]
+                    }
+                  }
+                ],
+                "responses": {
+                  "200": {
+                    "description": "ok",
+                    "content": {
+                      "application/json": {
+                        "schema": {
+                          "type": "object",
+                          "properties": {
+                            "ip": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "auth": {
+          "type": "anonymous"
+        }
+      }
+    },
+    {
+      "type": "openapi",
+      "openapi": {
+        "name": "ipecho2",
+        "description": "Public IP and header echo",
+        "spec": {
+          "openapi": "3.0.1",
+          "info": {
+            "title": "ipecho2",
+            "version": "1.0"
+          },
+          "servers": [
+            {
+              "url": "https://ifconfig.me"
+            }
+          ],
+          "paths": {
+            "/all.json": {
+              "get": {
+                "operationId": "getAllHeaders",
+                "summary": "Return the caller IP as seen by the server and the X-Forwarded-For header",
+                "responses": {
+                  "200": {
+                    "description": "ok",
+                    "content": {
+                      "application/json": {
+                        "schema": {
+                          "type": "object",
+                          "properties": {
+                            "ip_addr": {
+                              "type": "string"
+                            },
+                            "forwarded": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "auth": {
+          "type": "anonymous"
+        }
+      }
+    }
+  ],
+  "tool_choice": "required",
+  "truncation": "disabled",
+  "id": "resp_<id-67>",
+  "object": "response",
+  "status": "completed",
+  "created_at": 1795341145,
+  "completed_at": 1795341148,
+  "error": null,
+  "incomplete_details": null,
+  "output": [
+    {
+      "type": "openapi_call",
+      "id": "fc_<token-7>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a15-oapi",
+        "version": "2"
+      },
+      "response_id": "resp_<id-67>",
+      "call_id": "call_<id-68>",
+      "name": "ipecho_getEgressIp",
+      "arguments": "{\"format\":\"json\"}",
+      "status": "completed"
+    },
+    {
+      "type": "openapi_call_output",
+      "id": "fco_<token-8>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a15-oapi",
+        "version": "2"
+      },
+      "response_id": "resp_<id-67>",
+      "call_id": "call_<id-68>",
+      "name": "ipecho_getEgressIp",
+      "output": "{\n        \"response\": \"{\\n  \\\"ip\\\": \\\"<public-ip-11>\\\"\\n}\"\n      }",
+      "status": "completed"
+    },
+    {
+      "type": "openapi_call",
+      "id": "fc_<token-9>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a15-oapi",
+        "version": "2"
+      },
+      "response_id": "resp_<id-67>",
+      "call_id": "call_<id-69>",
+      "name": "ipecho2_getAllHeaders",
+      "arguments": "{}",
+      "status": "completed"
+    },
+    {
+      "type": "openapi_call_output",
+      "id": "fco_<token-10>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a15-oapi",
+        "version": "2"
+      },
+      "response_id": "resp_<id-67>",
+      "call_id": "call_<id-69>",
+      "name": "ipecho2_getAllHeaders",
+      "output": "{\n        \"response\": \"{\\n  \\\"ip_addr\\\": \\\"<public-ip-4>\\\",\\n  \\\"user_agent\\\": \\\"azure-agents\\\",\\n  \\\"port\\\": \\\"59870\\\",\\n  \\\"method\\\": \\\"GET\\\",\\n  \\\"encoding\\\": \\\"gzip, deflate\\\",\\n  \\\"mime\\\": \\\"*/*\\\",\\n  \\\"via\\\": \\\"1.1 google\\\",\\n  \\\"forwarded\\\": \\\"<public-ip-11>,<public-ip-13>,<public-ip-4>,34.160.11
+[P4][T2 openapi→ipify] HTTP 200 (5.7s) route=project+agent_reference(agent endpoint 403) 
+######## p15-t3.log
+===== t3 P4 @ 2026-11-22T09:52:55Z
+[P4][t3 mcp learn] POST {proj}/agents/a15-mcp/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.0s)
+   body: {"error":{"code":"403","message": "Traffic is not from an approved private endpoint."}}
+[P4][t3 mcp learn (fallback: project responses+agent_reference)] POST {proj}/openai/v1/responses -> 200 (4.6s)
+   body: {
+  "metadata": {},
+  "top_logprobs": 0,
+  "temperature": 1,
+  "top_p": 0.98,
+  "service_tier": "default",
+  "prompt_cache_retention": "in_memory",
+  "model": "gpt-5.4-mini",
+  "reasoning": {
+    "effort": "none",
+    "context": "current_turn",
+    "mode": "standard"
+  },
+  "background": false,
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "tools": [
+    {
+      "type": "mcp",
+      "server_label": "mslearn",
+      "server_url": "https://learn.microsoft.com/api/mcp",
+      "require_approval": "never"
+    }
+  ],
+  "tool_choice": "required",
+  "truncation": "disabled",
+  "id": "resp_<id-70>",
+  "object": "response",
+  "status": "completed",
+  "created_at": 1795341176,
+  "completed_at": 1795341180,
+  "error": null,
+  "incomplete_details": null,
+  "output": [
+    {
+      "type": "mcp_list_tools",
+      "id": "mcpl_<id-71>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a15-mcp",
+        "version": "1"
+      },
+      "response_id": "resp_<id-70>",
+      "server_label": "mslearn",
+      "tools": [
+        {
+          "name": "microsoft_docs_search",
+          "description": "Search official Microsoft/Azure documentation to find the most relevant and trustworthy content for a user's query. This tool returns up to 10 high-quality content chunks (each max 500 tokens), extracted from Microsoft Learn and other official sources. Each result includes the article title, URL, and a self-contained content excerpt optimized for fast retrieval and reasoning. Always use this tool to quickly ground your answers in accurate, first-party Microsoft/Azure knowledge.\n\n## Follow-up Pattern\nTo ensure completeness, use microsoft_docs_fetch when high-value pages are identified by search. The fetch tool complements search by providing the full detail. This is a required step for comprehensive results.",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string",
+                "description": "a query or topic about Microsoft/Azure products, services, platforms, developer tools, frameworks, or APIs",
+                "properties": {},
+                "default": null,
+                "required": []
+              }
+            },
+            "required": []
+          },
+          "annotations": {}
+        },
+        {
+          "name": "microsoft_code_sample_search",
+          "description": "Search for code snippets and examples in official Microsoft Learn documentation. This tool retrieves relevant code samples from Microsoft documentation pages providing developers with practical implementation examples and best practices for Microsoft/Azure products and services related coding tasks. This tool will help you use the **LATEST OFFICIAL** code snippets to empower coding capabilities.\n\n## When to Use This Tool\n- When you are going to provide sample Microsoft/Azure related code snippets in your answers.\n- When you are **generating any Microsoft/Azure related code**.\n\n## Usage Pattern\nInput a descriptive query, or SDK/class/method name to retrieve related code samples. The optional parameter `language` can help to filter results.\n\nEligible values for `language` parameter include: csharp javascript typescript python powershell azurecli al sql java kusto cpp go rust ruby php",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string",
+                "description": "a descriptive query, SDK name, method name or code snippet related to Microsoft/Azure products, services, platforms, developer tools, frameworks, APIs or SDKs",
+                "properties": {},
+                "required": []
+              },
+              "language": {
+                "type": "string",
+                "description": "Optional parameter specifying the programming language of code snippets to retrieve. Can significantly improve search quality if provided. Eligible values: csharp javascript typescript python powershell azurecli al sql java kusto cpp go rust ruby php",
+                "properties": {},
+                "default": null,
+                "required": []
+              }
+            },
+            "required": [
+              "query"
+            ]
+          },
+          "annotations": {}
+        },
+        {
+          "name": "microsoft_docs_fetch",
+          "description": "Fetch and convert a Microsoft Learn documentation webpage to markdown format. This tool retrieves the latest complete content of Microsoft documentation webpages including Azure, .NET, Microsoft 365, and other Microsoft technologies.\n\n## When to Use This Tool\n- When search results provide incomplete information or truncated content\n- When you need complete step-by-step procedures or tutorials\n- When you need troubleshooting sections, prerequisites, or detailed explanations\n- When search results reference a specific page that seems highly relevant\n- For comprehensive guides that require full context\n\n## Usage Pattern\nUse this tool AFTER microsoft_docs_search when you identify specific high-value pages that need complete content. The search tool gives you an overview; this tool gives you the complete picture.\n\n## URL Requirements\n- The URL must be a valid HTML documentation webpage from the microsoft.com domain\n- Binary files (PDF, DOCX, images, etc.) are not supported\n\n## Output Format\nmarkdown with headings, code blocks, tables, and links preserved.",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "url": {
+                "type": "string",
+                "description": "URL of the Microsoft documentation page to read",
+                "properties": {},
+                "required": []
+              }
+            },
+       
+[P4][T3 mcp→learn] HTTP 200 (4.6s) route=project+agent_reference(agent endpoint 403) 
+######## server.log
+{"t": "2026-11-22T08:51:29Z", "kind": "api", "client_ip": "10.40.2.10", "method": "GET", "path": "/health", "ua": "curl/8.5.0"}
