@@ -1,0 +1,230 @@
+===== mcp  @ 2026-11-22T05:30:25Z
+[create_version] POST {proj}/agents/a12-mcp/versions?api-version=v1 -> 200 (2.4s) {   "metadata": {},   "object": "agent.version",   "id": "a12-mcp:1",   "name": "a12-mcp",   "version": "1",   "description": "probe a12-mcp",   "created_at": 1795325427,   "definition": {     "kind": "prompt",     "model": "gpt-5.4-mini",     "instructions": "Always call the get_vm_secret tool and report its exact output.",     "tools": [       {         "type": "mcp",         "server_label": "vmmcp",         "server_url": "http://10.40.2.10:8081/mcp",         "require_approval": "never"       }     ]   },   "draft": false,   "status": "active",   "instance_identity": {     "principal_id": "2
+   full: {
+  "metadata": {},
+  "object": "agent.version",
+  "id": "a12-mcp:1",
+  "name": "a12-mcp",
+  "version": "1",
+  "description": "probe a12-mcp",
+  "created_at": 1795325427,
+  "definition": {
+    "kind": "prompt",
+    "model": "gpt-5.4-mini",
+    "instructions": "Always call the get_vm_secret tool and report its exact output.",
+    "tools": [
+      {
+        "type": "mcp",
+        "server_label": "vmmcp",
+        "server_url": "http://10.40.2.10:8081/mcp",
+        "require_approval": "never"
+      }
+    ]
+  },
+  "draft": false,
+  "status": "active",
+  "instance_identity": {
+    "principal_id": "<guid-35>",
+    "client_id": "<guid-35>"
+  },
+  "blueprint": {
+    "principal_id": "<guid-36>",
+    "client_id": "<guid-37>"
+  },
+  "blueprint_reference": {
+    "type": "ManagedAgentIdentityBlueprint",
+    "blueprint_id": "a12-mcp-c0453"
+  },
+  "agent_guid": "<guid-38>"
+}
+[agent mcp] POST {proj}/agents/a12-mcp/endpoint/protocols/openai/responses?api-version=v1 -> 200 (4.0s) {   "metadata": {},   "top_logprobs": 0,   "temperature": 1,   "top_p": 0.98,   "service_tier": "default",   "prompt_cache_retention": "in_memory",   "model": "gpt-5.4-mini",   "reasoning": {     "effort": "none",     "context": "current_turn",     "mode": "standard"   },   "background": false,   "text": {     "format": {       "type": "text"     },     "verbosity": "medium"   },   "tools": [     {       "type": "mcp",       "server_label": "vmmcp",       "server_url": "http://10.40.2.10:8081/mcp",       "require_approval": "never"     }   ],   "tool_choice": "required",   "truncation": "disabled",   "id": "resp_<id-27>",   "object": "response",   "status": "completed",   "created_at": 1795325428,   "completed_at": 1795325430,   "error": null,   "incomplete_details": null,   "output": [     {       "type": "mcp_list_tools",       "id": "mcpl_03c
+   full: {
+  "metadata": {},
+  "top_logprobs": 0,
+  "temperature": 1,
+  "top_p": 0.98,
+  "service_tier": "default",
+  "prompt_cache_retention": "in_memory",
+  "model": "gpt-5.4-mini",
+  "reasoning": {
+    "effort": "none",
+    "context": "current_turn",
+    "mode": "standard"
+  },
+  "background": false,
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "tools": [
+    {
+      "type": "mcp",
+      "server_label": "vmmcp",
+      "server_url": "http://10.40.2.10:8081/mcp",
+      "require_approval": "never"
+    }
+  ],
+  "tool_choice": "required",
+  "truncation": "disabled",
+  "id": "resp_<id-27>",
+  "object": "response",
+  "status": "completed",
+  "created_at": 1795325428,
+  "completed_at": 1795325430,
+  "error": null,
+  "incomplete_details": null,
+  "output": [
+    {
+      "type": "mcp_list_tools",
+      "id": "mcpl_<id-59>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a12-mcp",
+        "version": "1"
+      },
+      "response_id": "resp_<id-27>",
+      "server_label": "vmmcp",
+      "tools": [
+        {
+          "name": "get_vm_secret",
+          "description": "Return a secret number that only this VM knows, plus the caller IP.",
+          "input_schema": {
+            "type": "object",
+            "properties": {},
+            "required": []
+          },
+          "annotations": {}
+        }
+      ]
+    },
+    {
+      "type": "mcp_call",
+      "id": "mcp_<token-3>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a12-mcp",
+        "version": "1"
+      },
+      "response_id": "resp_<id-27>",
+      "server_label": "vmmcp",
+      "name": "get_vm_secret",
+      "arguments": "{}",
+      "output": "VM secret is 7391. caller_ip=10.40.0.84\n",
+      "status": "completed"
+    },
+    {
+      "type": "message",
+      "id": "msg_<id-60>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a12-mcp",
+        "version": "1"
+      },
+      "response_id": "resp_<id-27>",
+      "phase": "final_answer",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "VM secret is 7391. caller_ip=10.40.0.84",
+          "annotations": [],
+          "logprobs": []
+        }
+      ],
+      "status": "completed"
+    }
+  ],
+  "instructions": "Always call the get_vm_secret tool and report its exact output.",
+  "usage": {
+    "input_tokens": 206,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0
+    },
+    "output_tokens": 39,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 245
+  },
+  "parallel_tool_calls": true,
+  "agent_reference": {
+    "type": "agent_reference",
+    "name": "a12-mcp",
+    "version": "1"
+  },
+  "content_filters": [
+    {
+      "blocked": false,
+      "source_type": "prompt",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "jailbreak": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 958,
+        "check_offset": 0
+      }
+    },
+    {
+      "blocked": false,
+      "source_type": "completion",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "protected_material_text": {
+          "filtered": false,
+          "detected": false
+        },
+        "protected_material_code": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 39,
+        "check_offset": 0
+      }
+    }
+  ]
+}
+[mcp] output_text: 'VM secret is 7391. caller_ip=10.40.0.84'
+[mcp] tool items: [{"type": "mcp_list_tools", "server_label": "vmmcp"}, {"type": "mcp_call", "server_label": "vmmcp", "name": "get_vm_secret", "output": "VM secret is 7391. caller_ip=10.40.0.84\n", "status": "completed"}]

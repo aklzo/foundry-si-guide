@@ -1,0 +1,66 @@
+### [2026-11-22 20:00:05 JST] egressprobe.py t1 P0 
+Enable succeeded: 
+[stdout]
+===== t1 P0 @ 2026-11-22T11:00:07Z
+[P0][T1 a15-harness] HTTP 200 (19.7s)  shell_outputs=1
+[P0][T1 out] == https://api.ipify.org?format=json ¶ {"ip":"<public-ip-19>"} | http=200 rip=<public-ip-17> t=0.295264 ¶ == https://ifconfig.me/ip ¶ <public-ip-19> | http=200 rip=<public-ip-18> t=0.312532 ¶ == vm ¶ {"client_ip": "10.40.0.115", "secret_number": 4217} | http=200 t=0.091084 ¶ == hostname ¶ 169.254.0.2  ¶ == dns ¶ <public-ip-15> <public-ip-16> <public-ip-17> <public-ip-23> <public-ip-18>  ¶ == tcp22 ¶  rc=124 ¶ == all.json ¶ {"ip_addr":"<public-ip-19>","user_agent":"curl/7.88.1","port":"54490","method":"GET","mime":"*/*","via":"1.1 google","forwarded":"<public-ip-19>,<public-ip-18>"} ¶ == proxy env ¶ <shellId: 0 completed with exit code 0>
+[P0][T1 vm-log] ['11:00:51 10.40.0.115 GET /whoami']
+
+[stderr]
+
+### [2026-11-22 20:01:36 JST] done
+### [2026-11-22 20:05:51 JST] egressprobe.py t1 P1 
+Enable succeeded: 
+[stdout]
+===== t1 P1 @ 2026-11-22T11:05:56Z
+[P1][T1 a15-harness] HTTP 200 (53.7s)  shell_outputs=1
+[P1][T1 out] == https://api.ipify.org?format=json ¶ curl: (28) Connection timed out after 10001 milliseconds ¶  | http=000 rip=<public-ip-16> t=10.001467 ¶ == https://ifconfig.me/ip ¶ curl: (28) Connection timed out after 10001 milliseconds ¶  | http=000 rip=<public-ip-18> t=10.001838 ¶ == vm ¶ {"client_ip": "10.40.0.115", "secret_number": 4217} | http=200 t=0.052252 ¶ == hostname ¶ 169.254.0.2  ¶ == dns ¶ <public-ip-15> <public-ip-16> <public-ip-17> <public-ip-24> <public-ip-18>  ¶ == tcp22 ¶  rc=124 ¶ == all.json ¶ curl: (28) Connection timed out after 10001 milliseconds ¶  ¶ == proxy env ¶ <shellId: 0 completed with exit code 0>
+[P1][T1 vm-log] ['11:06:26 10.40.0.115 GET /whoami']
+
+[stderr]
+
+### [2026-11-22 20:07:23 JST] done
+### [2026-11-22 20:11:48 JST] egressprobe.py t1 P2 
+Enable succeeded: 
+[stdout]
+===== t1 P2 @ 2026-11-22T11:11:50Z
+[P2][T1 a15-harness] HTTP 200 (48.6s)  shell_outputs=1
+[P2][T1 out] == https://api.ipify.org?format=json ¶ curl: (28) Connection timed out after 10001 milliseconds ¶  | http=000 rip=<public-ip-15> t=10.001733 ¶ == https://ifconfig.me/ip ¶ curl: (28) Connection timed out after 10001 milliseconds ¶  | http=000 rip=<public-ip-18> t=10.001897 ¶ == vm ¶ {"client_ip": "10.40.0.115", "secret_number": 4217} | http=200 t=0.049575 ¶ == hostname ¶ 169.254.0.2  ¶ == dns ¶ <public-ip-15> <public-ip-16> <public-ip-17> <public-ip-24> <public-ip-18>  ¶ == tcp22 ¶  rc=124 ¶ == all.json ¶ curl: (28) Connection timed out after 10001 milliseconds ¶  ¶ == proxy env ¶ <shellId: 0 completed with exit code 0>
+[P2][T1 vm-log] ['11:12:19 10.40.0.115 GET /whoami']
+
+[stderr]
+
+### [2026-11-22 20:13:21 JST] done
+### [2026-11-22 20:17:33 JST] egressprobe.py t1 P3 
+Enable succeeded: 
+[stdout]
+===== t1 P3 @ 2026-11-22T11:17:37Z
+[P3][T1 a15-harness] HTTP 200 (53.5s)  shell_outputs=0
+[P3][T1 out] 
+[P3][T1 vm-log] ['11:18:06 10.40.0.108 GET /whoami']
+
+[stderr]
+
+### [2026-11-22 20:19:05 JST] done
+### [2026-11-22 20:23:49 JST] egressprobe.py t1 P4 
+Enable succeeded: 
+[stdout]
+===== t1 P4 @ 2026-11-22T11:23:51Z
+[P4][T1 a15-harness] HTTP 200 (20.0s)  shell_outputs=1
+[P4][T1 out] == https://api.ipify.org?format=json ¶ {"ip":"<public-ip-19>"} | http=200 rip=<public-ip-17> t=0.293959 ¶ == https://ifconfig.me/ip ¶ <public-ip-19> | http=200 rip=<public-ip-18> t=0.292780 ¶ == vm ¶ {"client_ip": "10.40.0.108", "secret_number": 4217} | http=200 t=0.053688 ¶ == hostname ¶ 169.254.0.2  ¶ == dns ¶ <public-ip-15> <public-ip-16> <public-ip-17> <public-ip-24> <public-ip-18>  ¶ == tcp22 ¶  rc=124 ¶ == all.json ¶ {"ip_addr":"<public-ip-19>","user_agent":"curl/7.88.1","port":"60772","method":"GET","mime":"*/*","via":"1.1 google","forwarded":"<public-ip-19>,<public-ip-18>"} ¶ == proxy env ¶ <shellId: 0 completed with exit code 0>
+[P4][T1 vm-log] ['11:24:01 10.40.0.108 GET /whoami']
+
+[stderr]
+
+### [2026-11-22 20:24:51 JST] done
+### [2026-11-22 20:26:01 JST] egressprobe.py t1 P5 a15-harness-eg
+Enable succeeded: 
+[stdout]
+===== t1 P5 @ 2026-11-22T11:26:08Z
+[P5][T1 a15-harness-eg] HTTP 200 (10.7s)  shell_outputs=1
+[P5][T1 out] == https://api.ipify.org?format=json ¶ {"ip":"<public-ip-19>"} | http=200 rip=<public-ip-17> t=0.347684 ¶ == https://ifconfig.me/ip ¶  | http=403 rip=<public-ip-18> t=0.067395 ¶ == vm ¶ curl: (7) Failed to connect to 10.40.2.10 port 8080 after 0 ms: Couldn't connect to server ¶  | http=000 t=0.000193 ¶ == hostname ¶ 169.254.0.2  ¶ == dns ¶ <public-ip-15> <public-ip-16> <public-ip-17> <public-ip-23> <public-ip-18>  ¶ == tcp22 ¶ bash: connect: Connection refused ¶ bash: line 1: /dev/tcp/github.com/22: Connection refused ¶  rc=1 ¶ == all.json ¶  ¶ == proxy env ¶ <shellId: 0 completed with exit code 0>
+[P5][T1 vm-log] []
+
+[stderr]
+
+### [2026-11-22 20:26:33 JST] done

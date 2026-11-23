@@ -1,0 +1,321 @@
+===== filesearch  @ 2026-11-22T05:25:14Z
+[upload file] POST {proj}/openai/v1/files -> 200 (3.5s) {   "object": "file",   "id": "assistant-<id-21>",   "purpose": "assistants",   "filename": "rules.txt",   "bytes": 188,   "created_at": 1795325115,   "expires_at": null,   "status": "processed",   "status_details": null } 
+   full: {
+  "object": "file",
+  "id": "assistant-<id-21>",
+  "purpose": "assistants",
+  "filename": "rules.txt",
+  "bytes": 188,
+  "created_at": 1795325115,
+  "expires_at": null,
+  "status": "processed",
+  "status_details": null
+}
+
+[create vector store] POST {proj}/openai/v1/vector_stores -> 200 (5.2s) {   "id": "vs_<id-19>",   "object": "vector_store",   "name": "vs-closed",   "status": "in_progress",   "usage_bytes": 0,   "created_at": 1795325121,   "file_counts": {     "in_progress": 1,     "completed": 0,     "failed": 0,     "cancelled": 0,     "total": 1   },   "metadata": {},   "expires_after": null,   "expires_at": null,   "last_active_at": 1795325121 }
+   full: {
+  "id": "vs_<id-19>",
+  "object": "vector_store",
+  "name": "vs-closed",
+  "status": "in_progress",
+  "usage_bytes": 0,
+  "created_at": 1795325121,
+  "file_counts": {
+    "in_progress": 1,
+    "completed": 0,
+    "failed": 0,
+    "cancelled": 0,
+    "total": 1
+  },
+  "metadata": {},
+  "expires_after": null,
+  "expires_at": null,
+  "last_active_at": 1795325121
+}
+[vector store status] GET {proj}/openai/v1/vector_stores/vs_<id-19> -> 200 (1.0s) {   "id": "vs_<id-19>",   "object": "vector_store",   "name": "vs-closed",   "status": "completed",   "usage_bytes": 1100,   "created_at": 1795325121,   "file_counts": {     "in_progress": 0,     "completed": 1,     "failed": 0,     "cancelled": 0,     "total": 1   },   "metadata": {},   "expires_after": null,   "expires_at": null,   "last_active_at": 1795325121 }
+   full: {
+  "id": "vs_<id-19>",
+  "object": "vector_store",
+  "name": "vs-closed",
+  "status": "completed",
+  "usage_bytes": 1100,
+  "created_at": 1795325121,
+  "file_counts": {
+    "in_progress": 0,
+    "completed": 1,
+    "failed": 0,
+    "cancelled": 0,
+    "total": 1
+  },
+  "metadata": {},
+  "expires_after": null,
+  "expires_at": null,
+  "last_active_at": 1795325121
+}
+[vector store files] GET {proj}/openai/v1/vector_stores/vs_<id-19>/files -> 200 (0.4s) {   "object": "list",   "data": [     {       "id": "assistant-<id-21>",       "object": "vector_store.file",       "usage_bytes": 1100,       "created_at": 1795325123,       "vector_store_id": "vs_<id-19>",       "status": "completed",       "last_error": null,       "chunking_strategy": {         "type": "static",         "static": {           "max_chunk_size_tokens": 800,           "chunk_overlap_tokens": 400         }       }     }   ],   "first_id": "assistant-<id-21>",   "last_id": "assistant-<id-21>",   "has_more": false }
+   full: {
+  "object": "list",
+  "data": [
+    {
+      "id": "assistant-<id-21>",
+      "object": "vector_store.file",
+      "usage_bytes": 1100,
+      "created_at": 1795325123,
+      "vector_store_id": "vs_<id-19>",
+      "status": "completed",
+      "last_error": null,
+      "chunking_strategy": {
+        "type": "static",
+        "static": {
+          "max_chunk_size_tokens": 800,
+          "chunk_overlap_tokens": 400
+        }
+      }
+    }
+  ],
+  "first_id": "assistant-<id-21>",
+  "last_id": "assistant-<id-21>",
+  "has_more": false
+}
+[vector store search] POST {proj}/openai/v1/vector_stores/vs_<id-19>/search -> 200 (5.2s) {   "object": "vector_store.search_results.page",   "search_query": [     "合言葉"   ],   "data": [     {       "file_id": "assistant-<id-21>",       "filename": "rules.txt",       "score": 0.03333333507180214,       "attributes": {},       "content": [         {           "type": "text",           "text": "社内規程 第 12 条: 閉域検証用の合言葉は『あおいろペンギン 4096』である。\n第 13 条: 検証が終わったらリソースグループを削除すること。"         }       ]     }   ],   "has_more": false,   "next_page": null }
+   full: {
+  "object": "vector_store.search_results.page",
+  "search_query": [
+    "合言葉"
+  ],
+  "data": [
+    {
+      "file_id": "assistant-<id-21>",
+      "filename": "rules.txt",
+      "score": 0.03333333507180214,
+      "attributes": {},
+      "content": [
+        {
+          "type": "text",
+          "text": "社内規程 第 12 条: 閉域検証用の合言葉は『あおいろペンギン 4096』である。\n第 13 条: 検証が終わったらリソースグループを削除すること。"
+        }
+      ]
+    }
+  ],
+  "has_more": false,
+  "next_page": null
+}
+[create_version] POST {proj}/agents/a12-fs/versions?api-version=v1 -> 200 (3.3s) {   "metadata": {},   "object": "agent.version",   "id": "a12-fs:1",   "name": "a12-fs",   "version": "1",   "description": "probe a12-fs",   "created_at": 1795325133,   "definition": {     "kind": "prompt",     "model": "gpt-5.4-mini",     "instructions": "Use file_search and answer briefly in Japanese.",     "tools": [       {         "type": "file_search",         "vector_store_ids": [           "vs_<id-19>"         ]       }     ]   },   "draft": false,   "status": "active",   "instance_identity": {     "principal_id": "<guid-17>",     "client_id
+   full: {
+  "metadata": {},
+  "object": "agent.version",
+  "id": "a12-fs:1",
+  "name": "a12-fs",
+  "version": "1",
+  "description": "probe a12-fs",
+  "created_at": 1795325133,
+  "definition": {
+    "kind": "prompt",
+    "model": "gpt-5.4-mini",
+    "instructions": "Use file_search and answer briefly in Japanese.",
+    "tools": [
+      {
+        "type": "file_search",
+        "vector_store_ids": [
+          "vs_<id-19>"
+        ]
+      }
+    ]
+  },
+  "draft": false,
+  "status": "active",
+  "instance_identity": {
+    "principal_id": "<guid-17>",
+    "client_id": "<guid-17>"
+  },
+  "blueprint": {
+    "principal_id": "<guid-29>",
+    "client_id": "<guid-30>"
+  },
+  "blueprint_reference": {
+    "type": "ManagedAgentIdentityBlueprint",
+    "blueprint_id": "a12-fs-44ec3"
+  },
+  "agent_guid": "<guid-31>"
+}
+[agent file_search] POST {proj}/agents/a12-fs/endpoint/protocols/openai/responses?api-version=v1 -> 200 (4.2s) {   "metadata": {},   "top_logprobs": 0,   "temperature": 1,   "top_p": 0.98,   "service_tier": "default",   "prompt_cache_retention": "in_memory",   "model": "gpt-5.4-mini",   "reasoning": {     "effort": "none",     "context": "current_turn",     "mode": "standard"   },   "background": false,   "text": {     "format": {       "type": "text"     },     "verbosity": "medium"   },   "tools": [     {       "type": "file_search",       "vector_store_ids": [         "vs_<id-19>"       ],       "max_num_results": 20,       "ranking_options": {         "ranker": "auto",         "score_threshold": 0       }     }   ],   "tool_choice": "auto",   "truncation": "disabled",   "id": "resp_<id-20>",   "object": "response",   "status": "completed",   "created_at": 1795325134,   "completed_at": 1795325136,   "error": null,   "incomplete_detail
+   full: {
+  "metadata": {},
+  "top_logprobs": 0,
+  "temperature": 1,
+  "top_p": 0.98,
+  "service_tier": "default",
+  "prompt_cache_retention": "in_memory",
+  "model": "gpt-5.4-mini",
+  "reasoning": {
+    "effort": "none",
+    "context": "current_turn",
+    "mode": "standard"
+  },
+  "background": false,
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "tools": [
+    {
+      "type": "file_search",
+      "vector_store_ids": [
+        "vs_<id-19>"
+      ],
+      "max_num_results": 20,
+      "ranking_options": {
+        "ranker": "auto",
+        "score_threshold": 0
+      }
+    }
+  ],
+  "tool_choice": "auto",
+  "truncation": "disabled",
+  "id": "resp_<id-20>",
+  "object": "response",
+  "status": "completed",
+  "created_at": 1795325134,
+  "completed_at": 1795325136,
+  "error": null,
+  "incomplete_details": null,
+  "output": [
+    {
+      "type": "file_search_call",
+      "id": "fs_<id-47>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a12-fs",
+        "version": "1"
+      },
+      "response_id": "resp_<id-20>",
+      "status": "completed",
+      "queries": [
+        "閉域検証用の合言葉は?",
+        "閉域 検証 用 合言葉",
+        "合言葉 閉域検証"
+      ]
+    },
+    {
+      "type": "message",
+      "id": "msg_<id-48>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a12-fs",
+        "version": "1"
+      },
+      "response_id": "resp_<id-20>",
+      "phase": "final_answer",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "閉域検証用の合言葉は「あおいろペンギン 4096」です。",
+          "annotations": [
+            {
+              "type": "file_citation",
+              "file_id": "assistant-<id-21>",
+              "index": 28,
+              "filename": "rules.txt"
+            }
+          ],
+          "logprobs": []
+        }
+      ],
+      "status": "completed"
+    }
+  ],
+  "instructions": "Use file_search and answer briefly in Japanese.",
+  "usage": {
+    "input_tokens": 2110,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0
+    },
+    "output_tokens": 96,
+    "output_tokens_details": {
+      "reasoning_tokens": 47
+    },
+    "total_tokens": 2206
+  },
+  "parallel_tool_calls": true,
+  "agent_reference": {
+    "type": "agent_reference",
+    "name": "a12-fs",
+    "version": "1"
+  },
+  "content_filters": [
+    {
+      "blocked": false,
+      "source_type": "prompt",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "jailbreak": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 7733,
+        "check_offset": 0
+      }
+    },
+    {
+      "blocked": false,
+      "source_type": "completion",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "protected_material_text": {
+          "filtered": false,
+          "detected": false
+        },
+        "protected_material_code": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 2382,
+        "check_offset": 0
+      }
+    }
+  ]
+}
+[fs] output_text: '閉域検証用の合言葉は「あおいろペンギン 4096」です。'
+[fs] tool items: [{"type": "file_search_call", "status": "completed", "queries": ["閉域検証用の合言葉は?", "閉域 検証 用 合言葉", "合言葉 閉域検証"]}]

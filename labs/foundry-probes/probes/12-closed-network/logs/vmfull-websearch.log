@@ -1,0 +1,222 @@
+===== websearch  @ 2026-11-22T05:29:14Z
+[create_version] POST {proj}/agents/a12-web/versions?api-version=v1 -> 200 (3.7s) {   "metadata": {},   "object": "agent.version",   "id": "a12-web:1",   "name": "a12-web",   "version": "1",   "description": "probe a12-web",   "created_at": 1795325357,   "definition": {     "kind": "prompt",     "model": "gpt-5.4-mini",     "instructions": "Use web search. Answer briefly.",     "tools": [       {         "type": "web_search"       }     ]   },   "draft": false,   "status": "active",   "instance_identity": {     "principal_id": "<guid-19>",     "client_id": "<guid-19>"   },   "blueprint": {     "principal_id": "cf4f4e93-1
+   full: {
+  "metadata": {},
+  "object": "agent.version",
+  "id": "a12-web:1",
+  "name": "a12-web",
+  "version": "1",
+  "description": "probe a12-web",
+  "created_at": 1795325357,
+  "definition": {
+    "kind": "prompt",
+    "model": "gpt-5.4-mini",
+    "instructions": "Use web search. Answer briefly.",
+    "tools": [
+      {
+        "type": "web_search"
+      }
+    ]
+  },
+  "draft": false,
+  "status": "active",
+  "instance_identity": {
+    "principal_id": "<guid-19>",
+    "client_id": "<guid-19>"
+  },
+  "blueprint": {
+    "principal_id": "<guid-43>",
+    "client_id": "<guid-44>"
+  },
+  "blueprint_reference": {
+    "type": "ManagedAgentIdentityBlueprint",
+    "blueprint_id": "a12-web-3ccfc"
+  },
+  "agent_guid": "<guid-45>"
+}
+[agent web_search] POST {proj}/agents/a12-web/endpoint/protocols/openai/responses?api-version=v1 -> 200 (5.2s) {   "metadata": {},   "top_logprobs": 0,   "temperature": 1,   "top_p": 0.98,   "service_tier": "default",   "prompt_cache_retention": "in_memory",   "model": "gpt-5.4-mini",   "reasoning": {     "effort": "none",     "context": "current_turn",     "mode": "standard"   },   "background": false,   "text": {     "format": {       "type": "text"     },     "verbosity": "medium"   },   "tools": [     {       "type": "web_search",       "return_token_budget": "default",       "search_content_types": [         "text"       ],       "user_location": {         "type": "approximate",         "country": "US"       },       "search_context_size": "medium"     }   ],   "tool_choice": "required",   "truncation": "disabled",   "id": "resp_<id-31>",   "object": "response",   "status": "completed",   "created_at": 1795325359,   "completed_at": 1795325362,   "er
+   full: {
+  "metadata": {},
+  "top_logprobs": 0,
+  "temperature": 1,
+  "top_p": 0.98,
+  "service_tier": "default",
+  "prompt_cache_retention": "in_memory",
+  "model": "gpt-5.4-mini",
+  "reasoning": {
+    "effort": "none",
+    "context": "current_turn",
+    "mode": "standard"
+  },
+  "background": false,
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "tools": [
+    {
+      "type": "web_search",
+      "return_token_budget": "default",
+      "search_content_types": [
+        "text"
+      ],
+      "user_location": {
+        "type": "approximate",
+        "country": "US"
+      },
+      "search_context_size": "medium"
+    }
+  ],
+  "tool_choice": "required",
+  "truncation": "disabled",
+  "id": "resp_<id-31>",
+  "object": "response",
+  "status": "completed",
+  "created_at": 1795325359,
+  "completed_at": 1795325362,
+  "error": null,
+  "incomplete_details": null,
+  "output": [
+    {
+      "type": "web_search_call",
+      "id": "ws_<id-64>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a12-web",
+        "version": "1"
+      },
+      "response_id": "resp_<id-31>",
+      "status": "completed",
+      "action": {
+        "type": "search",
+        "queries": [
+          "Microsoft Ignite 2026 location city official",
+          "site:microsoft.com Ignite 2026 city"
+        ],
+        "query": "Microsoft Ignite 2026 location city official"
+      }
+    },
+    {
+      "type": "message",
+      "id": "msg_<id-65>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a12-web",
+        "version": "1"
+      },
+      "response_id": "resp_<id-31>",
+      "phase": "final_answer",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "Microsoft Ignite 2026 の開催都市は **サンフランシスコ** です。オンラインでも開催されます。 ([partner.microsoft.com](https://partner.microsoft.com/en-us/blog/article/ignite-2026-overview))",
+          "annotations": [
+            {
+              "type": "url_citation",
+              "url": "https://partner.microsoft.com/en-us/blog/article/ignite-2026-overview",
+              "start_index": 60,
+              "end_index": 156,
+              "title": "Build what is next: A partner guide to Microsoft Ignite 2026"
+            }
+          ],
+          "logprobs": []
+        }
+      ],
+      "status": "completed"
+    }
+  ],
+  "instructions": "Use web search. Answer briefly.",
+  "usage": {
+    "input_tokens": 8438,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0
+    },
+    "output_tokens": 102,
+    "output_tokens_details": {
+      "reasoning_tokens": 50
+    },
+    "total_tokens": 8540
+  },
+  "parallel_tool_calls": true,
+  "agent_reference": {
+    "type": "agent_reference",
+    "name": "a12-web",
+    "version": "1"
+  },
+  "content_filters": [
+    {
+      "blocked": false,
+      "source_type": "prompt",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "jailbreak": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 19202,
+        "check_offset": 0
+      }
+    },
+    {
+      "blocked": false,
+      "source_type": "completion",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "protected_material_text": {
+          "filtered": false,
+          "detected": false
+        },
+        "protected_material_code": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 17936,
+        "check_offset": 0
+      }
+    }
+  ]
+}
+[web] output_text: 'Microsoft Ignite 2026 の開催都市は **サンフランシスコ** です。オンラインでも開催されます。 ([partner.microsoft.com](https://partner.microsoft.com/en-us/blog/article/ignite-2026-overview))'
+[web] tool items: [{"type": "web_search_call", "status": "completed", "action": {"type": "search", "queries": ["Microsoft Ignite 2026 location city official", "site:microsoft.com Ignite 2026 city"], "query": "Microsoft Ignite 2026 location city official"}}]

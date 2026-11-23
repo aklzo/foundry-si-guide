@@ -1,0 +1,6 @@
+{"t": "2026-11-22T10:52:54Z", "kind": "api", "client_ip": "10.40.2.10", "method": "GET", "path": "/health", "ua": "curl/8.5.0"}
+{"t": "2026-11-22T11:00:51Z", "kind": "api", "client_ip": "10.40.0.115", "method": "GET", "path": "/whoami", "ua": "curl/7.88.1"}
+{"t": "2026-11-22T11:06:26Z", "kind": "api", "client_ip": "10.40.0.115", "method": "GET", "path": "/whoami", "ua": "curl/7.88.1"}
+{"t": "2026-11-22T11:12:19Z", "kind": "api", "client_ip": "10.40.0.115", "method": "GET", "path": "/whoami", "ua": "curl/7.88.1"}
+{"t": "2026-11-22T11:18:06Z", "kind": "api", "client_ip": "10.40.0.108", "method": "GET", "path": "/whoami", "ua": "curl/7.88.1"}
+{"t": "2026-11-22T11:24:01Z", "kind": "api", "client_ip": "10.40.0.108", "method": "GET", "path": "/whoami", "ua": "curl/7.88.1"}

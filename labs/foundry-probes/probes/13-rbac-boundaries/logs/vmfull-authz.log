@@ -1,0 +1,692 @@
+===== authz  @ 2026-11-22T05:47:52Z
+[GET agent (before)] GET {proj}/agents/a13-target?api-version=v1 -> 200 (2.8s) {   "object": "agent",   "id": "a13-target",   "name": "a13-target",   "state": "enabled",   "configuration_state": "enabled",   "versions": {     "latest": {       "metadata": {},       "object": "agent.version",       "id": "a13-target:1",       "name": "a13-target",       "version": "1",       "description": "probe a13-target",       "created_at": 1795324879,       "definition": {         "kind": "prompt",         "model": "gpt-5.4-mini",         "instructions": "Reply with exactly: PONG"       },       "draft": false,       "status": "active",       "instance_identity": {         "principal_id": "<guid-54>",         "client_id": "<guid-54>"       },       "blueprint": {         "principal_id": "<guid-55>",         "client_id": "<guid-56>"       },       "blueprint_reference": {
+   full: {
+  "object": "agent",
+  "id": "a13-target",
+  "name": "a13-target",
+  "state": "enabled",
+  "configuration_state": "enabled",
+  "versions": {
+    "latest": {
+      "metadata": {},
+      "object": "agent.version",
+      "id": "a13-target:1",
+      "name": "a13-target",
+      "version": "1",
+      "description": "probe a13-target",
+      "created_at": 1795324879,
+      "definition": {
+        "kind": "prompt",
+        "model": "gpt-5.4-mini",
+        "instructions": "Reply with exactly: PONG"
+      },
+      "draft": false,
+      "status": "active",
+      "instance_identity": {
+        "principal_id": "<guid-54>",
+        "client_id": "<guid-54>"
+      },
+      "blueprint": {
+        "principal_id": "<guid-55>",
+        "client_id": "<guid-56>"
+      },
+      "blueprint_reference": {
+        "type": "ManagedAgentIdentityBlueprint",
+        "blueprint_id": "a13-target-8bc4e"
+      },
+      "agent_guid": "<guid-61>"
+    }
+  },
+  "agent_endpoint": {
+    "version_selector": {
+      "version_selection_rules": [
+        {
+          "type": "FixedRatio",
+          "agent_version": "@latest",
+          "traffic_percentage": 100
+        }
+      ]
+    },
+    "protocols": [
+      "responses"
+    ],
+    "protocol_configuration": {
+      "responses": {}
+    },
+    "authorization_schemes": [
+      {
+        "type": "Entra",
+        "isolation_key_source": {"kind":"Entra"}
+      }
+    ],
+    "publish_approval_status": "not_published"
+  },
+  "instance_identity": {
+    "principal_id": "<guid-54>",
+    "client_id": "<guid-54>",
+    "status": "active"
+  },
+  "blueprint": {
+    "principal_id": "<guid-55>",
+    "client_id": "<guid-56>",
+    "status": "active"
+  },
+  "blueprint_reference": {
+    "type": "ManagedAgentIdentityBlueprint",
+    "blueprint_id": "a13-target-8bc4e"
+  }
+}
+[PATCH authorization_schemes=AzureRbac] PATCH {proj}/agents/a13-target?api-version=v1 -> 200 (0.5s) {   "object": "agent",   "id": "a13-target",   "name": "a13-target",   "state": "enabled",   "configuration_state": "enabled",   "versions": {     "latest": {       "metadata": {},       "object": "agent.version",       "id": "a13-target:1",       "name": "a13-target",       "version": "1",       "description": "probe a13-target",       "created_at": 1795324879,       "definition": {         "kind": "prompt",         "model": "gpt-5.4-mini",         "instructions": "Reply with exactly: PONG"       },       "draft": false,       "status": "active",       "instance_identity": {         "principal_id": "<guid-54>",         "client_id": "<guid-54>"       },       "blueprint": {         "principal_id": "<guid-55>",         "client_id": "<guid-56>"       },       "blueprint_reference": {
+   full: {
+  "object": "agent",
+  "id": "a13-target",
+  "name": "a13-target",
+  "state": "enabled",
+  "configuration_state": "enabled",
+  "versions": {
+    "latest": {
+      "metadata": {},
+      "object": "agent.version",
+      "id": "a13-target:1",
+      "name": "a13-target",
+      "version": "1",
+      "description": "probe a13-target",
+      "created_at": 1795324879,
+      "definition": {
+        "kind": "prompt",
+        "model": "gpt-5.4-mini",
+        "instructions": "Reply with exactly: PONG"
+      },
+      "draft": false,
+      "status": "active",
+      "instance_identity": {
+        "principal_id": "<guid-54>",
+        "client_id": "<guid-54>"
+      },
+      "blueprint": {
+        "principal_id": "<guid-55>",
+        "client_id": "<guid-56>"
+      },
+      "blueprint_reference": {
+        "type": "ManagedAgentIdentityBlueprint",
+        "blueprint_id": "a13-target-8bc4e"
+      },
+      "agent_guid": "<guid-61>"
+    }
+  },
+  "agent_endpoint": {
+    "version_selector": {
+      "version_selection_rules": [
+        {
+          "type": "FixedRatio",
+          "agent_version": "@latest",
+          "traffic_percentage": 100
+        }
+      ]
+    },
+    "protocols": [
+      "responses"
+    ],
+    "protocol_configuration": {
+      "responses": {}
+    },
+    "authorization_schemes": [
+      {
+        "type": "AzureRbac"
+      }
+    ],
+    "publish_approval_status": "not_published"
+  },
+  "instance_identity": {
+    "principal_id": "<guid-54>",
+    "client_id": "<guid-54>",
+    "status": "active"
+  },
+  "blueprint": {
+    "principal_id": "<guid-55>",
+    "client_id": "<guid-56>",
+    "status": "active"
+  },
+  "blueprint_reference": {
+    "type": "ManagedAgentIdentityBlueprint",
+    "blueprint_id": "a13-target-8bc4e"
+  }
+}
+[GET agent after AzureRbac] GET {proj}/agents/a13-target?api-version=v1 -> 200 (0.2s) {   "object": "agent",   "id": "a13-target",   "name": "a13-target",   "state": "enabled",   "configuration_state": "enabled",   "versions": {     "latest": {       "metadata": {},       "object": "agent.version",       "id": "a13-target:1",       "name": "a13-target",       "version": "1",       "description": "probe a13-target",       "created_at": 1795324879,       "definition": {         "kind": "prompt",         "model": "gpt-5.4-mini",         "instructions": "Reply with exactly: PONG"       },       "draft": false,       "status": "active",       "instance_identity": {         "principal_id": "<guid-54>",         "client_id": "<guid-54>"       },       "blueprint": {         "principal_id": "<guid-55>",         "client_id": "<guid-56>"       },       "blueprint_reference": {
+   full: {
+  "object": "agent",
+  "id": "a13-target",
+  "name": "a13-target",
+  "state": "enabled",
+  "configuration_state": "enabled",
+  "versions": {
+    "latest": {
+      "metadata": {},
+      "object": "agent.version",
+      "id": "a13-target:1",
+      "name": "a13-target",
+      "version": "1",
+      "description": "probe a13-target",
+      "created_at": 1795324879,
+      "definition": {
+        "kind": "prompt",
+        "model": "gpt-5.4-mini",
+        "instructions": "Reply with exactly: PONG"
+      },
+      "draft": false,
+      "status": "active",
+      "instance_identity": {
+        "principal_id": "<guid-54>",
+        "client_id": "<guid-54>"
+      },
+      "blueprint": {
+        "principal_id": "<guid-55>",
+        "client_id": "<guid-56>"
+      },
+      "blueprint_reference": {
+        "type": "ManagedAgentIdentityBlueprint",
+        "blueprint_id": "a13-target-8bc4e"
+      },
+      "agent_guid": "<guid-61>"
+    }
+  },
+  "agent_endpoint": {
+    "version_selector": {
+      "version_selection_rules": [
+        {
+          "type": "FixedRatio",
+          "agent_version": "@latest",
+          "traffic_percentage": 100
+        }
+      ]
+    },
+    "protocols": [
+      "responses"
+    ],
+    "protocol_configuration": {
+      "responses": {}
+    },
+    "authorization_schemes": [
+      {
+        "type": "AzureRbac"
+      }
+    ],
+    "publish_approval_status": "not_published"
+  },
+  "instance_identity": {
+    "principal_id": "<guid-54>",
+    "client_id": "<guid-54>",
+    "status": "active"
+  },
+  "blueprint": {
+    "principal_id": "<guid-55>",
+    "client_id": "<guid-56>",
+    "status": "active"
+  },
+  "blueprint_reference": {
+    "type": "ManagedAgentIdentityBlueprint",
+    "blueprint_id": "a13-target-8bc4e"
+  }
+}
+[PATCH authorization_schemes=Entra] PATCH {proj}/agents/a13-target?api-version=v1 -> 200 (0.6s) {   "object": "agent",   "id": "a13-target",   "name": "a13-target",   "state": "enabled",   "configuration_state": "enabled",   "versions": {     "latest": {       "metadata": {},       "object": "agent.version",       "id": "a13-target:1",       "name": "a13-target",       "version": "1",       "description": "probe a13-target",       "created_at": 1795324879,       "definition": {         "kind": "prompt",         "model": "gpt-5.4-mini",         "instructions": "Reply with exactly: PONG"       },       "draft": false,       "status": "active",       "instance_identity": {         "principal_id": "<guid-54>",         "client_id": "<guid-54>"       },       "blueprint": {         "principal_id": "<guid-55>",         "client_id": "<guid-56>"       },       "blueprint_reference": {
+   full: {
+  "object": "agent",
+  "id": "a13-target",
+  "name": "a13-target",
+  "state": "enabled",
+  "configuration_state": "enabled",
+  "versions": {
+    "latest": {
+      "metadata": {},
+      "object": "agent.version",
+      "id": "a13-target:1",
+      "name": "a13-target",
+      "version": "1",
+      "description": "probe a13-target",
+      "created_at": 1795324879,
+      "definition": {
+        "kind": "prompt",
+        "model": "gpt-5.4-mini",
+        "instructions": "Reply with exactly: PONG"
+      },
+      "draft": false,
+      "status": "active",
+      "instance_identity": {
+        "principal_id": "<guid-54>",
+        "client_id": "<guid-54>"
+      },
+      "blueprint": {
+        "principal_id": "<guid-55>",
+        "client_id": "<guid-56>"
+      },
+      "blueprint_reference": {
+        "type": "ManagedAgentIdentityBlueprint",
+        "blueprint_id": "a13-target-8bc4e"
+      },
+      "agent_guid": "<guid-61>"
+    }
+  },
+  "agent_endpoint": {
+    "version_selector": {
+      "version_selection_rules": [
+        {
+          "type": "FixedRatio",
+          "agent_version": "@latest",
+          "traffic_percentage": 100
+        }
+      ]
+    },
+    "protocols": [
+      "responses"
+    ],
+    "protocol_configuration": {
+      "responses": {}
+    },
+    "authorization_schemes": [
+      {
+        "type": "Entra"
+      }
+    ],
+    "publish_approval_status": "not_published"
+  },
+  "instance_identity": {
+    "principal_id": "<guid-54>",
+    "client_id": "<guid-54>",
+    "status": "active"
+  },
+  "blueprint": {
+    "principal_id": "<guid-55>",
+    "client_id": "<guid-56>",
+    "status": "active"
+  },
+  "blueprint_reference": {
+    "type": "ManagedAgentIdentityBlueprint",
+    "blueprint_id": "a13-target-8bc4e"
+  }
+}
+[GET agent after Entra] GET {proj}/agents/a13-target?api-version=v1 -> 200 (0.2s) {   "object": "agent",   "id": "a13-target",   "name": "a13-target",   "state": "enabled",   "configuration_state": "enabled",   "versions": {     "latest": {       "metadata": {},       "object": "agent.version",       "id": "a13-target:1",       "name": "a13-target",       "version": "1",       "description": "probe a13-target",       "created_at": 1795324879,       "definition": {         "kind": "prompt",         "model": "gpt-5.4-mini",         "instructions": "Reply with exactly: PONG"       },       "draft": false,       "status": "active",       "instance_identity": {         "principal_id": "<guid-54>",         "client_id": "<guid-54>"       },       "blueprint": {         "principal_id": "<guid-55>",         "client_id": "<guid-56>"       },       "blueprint_reference": {
+   full: {
+  "object": "agent",
+  "id": "a13-target",
+  "name": "a13-target",
+  "state": "enabled",
+  "configuration_state": "enabled",
+  "versions": {
+    "latest": {
+      "metadata": {},
+      "object": "agent.version",
+      "id": "a13-target:1",
+      "name": "a13-target",
+      "version": "1",
+      "description": "probe a13-target",
+      "created_at": 1795324879,
+      "definition": {
+        "kind": "prompt",
+        "model": "gpt-5.4-mini",
+        "instructions": "Reply with exactly: PONG"
+      },
+      "draft": false,
+      "status": "active",
+      "instance_identity": {
+        "principal_id": "<guid-54>",
+        "client_id": "<guid-54>"
+      },
+      "blueprint": {
+        "principal_id": "<guid-55>",
+        "client_id": "<guid-56>"
+      },
+      "blueprint_reference": {
+        "type": "ManagedAgentIdentityBlueprint",
+        "blueprint_id": "a13-target-8bc4e"
+      },
+      "agent_guid": "<guid-61>"
+    }
+  },
+  "agent_endpoint": {
+    "version_selector": {
+      "version_selection_rules": [
+        {
+          "type": "FixedRatio",
+          "agent_version": "@latest",
+          "traffic_percentage": 100
+        }
+      ]
+    },
+    "protocols": [
+      "responses"
+    ],
+    "protocol_configuration": {
+      "responses": {}
+    },
+    "authorization_schemes": [
+      {
+        "type": "Entra"
+      }
+    ],
+    "publish_approval_status": "not_published"
+  },
+  "instance_identity": {
+    "principal_id": "<guid-54>",
+    "client_id": "<guid-54>",
+    "status": "active"
+  },
+  "blueprint": {
+    "principal_id": "<guid-55>",
+    "client_id": "<guid-56>",
+    "status": "active"
+  },
+  "blueprint_reference": {
+    "type": "ManagedAgentIdentityBlueprint",
+    "blueprint_id": "a13-target-8bc4e"
+  }
+}
+[PATCH authorization_schemes=AzureRbac+AgentBlueprint] PATCH {proj}/agents/a13-target?api-version=v1 -> 200 (0.4s) {   "object": "agent",   "id": "a13-target",   "name": "a13-target",   "state": "enabled",   "configuration_state": "enabled",   "versions": {     "latest": {       "metadata": {},       "object": "agent.version",       "id": "a13-target:1",       "name": "a13-target",       "version": "1",       "description": "probe a13-target",       "created_at": 1795324879,       "definition": {         "kind": "prompt",         "model": "gpt-5.4-mini",         "instructions": "Reply with exactly: PONG"       },       "draft": false,       "status": "active",       "instance_identity": {         "principal_id": "<guid-54>",         "client_id": "<guid-54>"       },       "blueprint": {         "principal_id": "<guid-55>",         "client_id": "<guid-56>"       },       "blueprint_reference": {
+   full: {
+  "object": "agent",
+  "id": "a13-target",
+  "name": "a13-target",
+  "state": "enabled",
+  "configuration_state": "enabled",
+  "versions": {
+    "latest": {
+      "metadata": {},
+      "object": "agent.version",
+      "id": "a13-target:1",
+      "name": "a13-target",
+      "version": "1",
+      "description": "probe a13-target",
+      "created_at": 1795324879,
+      "definition": {
+        "kind": "prompt",
+        "model": "gpt-5.4-mini",
+        "instructions": "Reply with exactly: PONG"
+      },
+      "draft": false,
+      "status": "active",
+      "instance_identity": {
+        "principal_id": "<guid-54>",
+        "client_id": "<guid-54>"
+      },
+      "blueprint": {
+        "principal_id": "<guid-55>",
+        "client_id": "<guid-56>"
+      },
+      "blueprint_reference": {
+        "type": "ManagedAgentIdentityBlueprint",
+        "blueprint_id": "a13-target-8bc4e"
+      },
+      "agent_guid": "<guid-61>"
+    }
+  },
+  "agent_endpoint": {
+    "version_selector": {
+      "version_selection_rules": [
+        {
+          "type": "FixedRatio",
+          "agent_version": "@latest",
+          "traffic_percentage": 100
+        }
+      ]
+    },
+    "protocols": [
+      "responses"
+    ],
+    "protocol_configuration": {
+      "responses": {}
+    },
+    "authorization_schemes": [
+      {
+        "type": "AzureRbac"
+      },
+      {
+        "type": "AgentBlueprint"
+      }
+    ],
+    "publish_approval_status": "not_published"
+  },
+  "instance_identity": {
+    "principal_id": "<guid-54>",
+    "client_id": "<guid-54>",
+    "status": "active"
+  },
+  "blueprint": {
+    "principal_id": "<guid-55>",
+    "client_id": "<guid-56>",
+    "status": "active"
+  },
+  "blueprint_reference": {
+    "type": "ManagedAgentIdentityBlueprint",
+    "blueprint_id": "a13-target-8bc4e"
+  }
+}
+[GET agent after AzureRbac+AgentBlueprint] GET {proj}/agents/a13-target?api-version=v1 -> 200 (0.2s) {   "object": "agent",   "id": "a13-target",   "name": "a13-target",   "state": "enabled",   "configuration_state": "enabled",   "versions": {     "latest": {       "metadata": {},       "object": "agent.version",       "id": "a13-target:1",       "name": "a13-target",       "version": "1",       "description": "probe a13-target",       "created_at": 1795324879,       "definition": {         "kind": "prompt",         "model": "gpt-5.4-mini",         "instructions": "Reply with exactly: PONG"       },       "draft": false,       "status": "active",       "instance_identity": {         "principal_id": "<guid-54>",         "client_id": "<guid-54>"       },       "blueprint": {         "principal_id": "<guid-55>",         "client_id": "<guid-56>"       },       "blueprint_reference": {
+   full: {
+  "object": "agent",
+  "id": "a13-target",
+  "name": "a13-target",
+  "state": "enabled",
+  "configuration_state": "enabled",
+  "versions": {
+    "latest": {
+      "metadata": {},
+      "object": "agent.version",
+      "id": "a13-target:1",
+      "name": "a13-target",
+      "version": "1",
+      "description": "probe a13-target",
+      "created_at": 1795324879,
+      "definition": {
+        "kind": "prompt",
+        "model": "gpt-5.4-mini",
+        "instructions": "Reply with exactly: PONG"
+      },
+      "draft": false,
+      "status": "active",
+      "instance_identity": {
+        "principal_id": "<guid-54>",
+        "client_id": "<guid-54>"
+      },
+      "blueprint": {
+        "principal_id": "<guid-55>",
+        "client_id": "<guid-56>"
+      },
+      "blueprint_reference": {
+        "type": "ManagedAgentIdentityBlueprint",
+        "blueprint_id": "a13-target-8bc4e"
+      },
+      "agent_guid": "<guid-61>"
+    }
+  },
+  "agent_endpoint": {
+    "version_selector": {
+      "version_selection_rules": [
+        {
+          "type": "FixedRatio",
+          "agent_version": "@latest",
+          "traffic_percentage": 100
+        }
+      ]
+    },
+    "protocols": [
+      "responses"
+    ],
+    "protocol_configuration": {
+      "responses": {}
+    },
+    "authorization_schemes": [
+      {
+        "type": "AzureRbac"
+      },
+      {
+        "type": "AgentBlueprint"
+      }
+    ],
+    "publish_approval_status": "not_published"
+  },
+  "instance_identity": {
+    "principal_id": "<guid-54>",
+    "client_id": "<guid-54>",
+    "status": "active"
+  },
+  "blueprint": {
+    "principal_id": "<guid-55>",
+    "client_id": "<guid-56>",
+    "status": "active"
+  },
+  "blueprint_reference": {
+    "type": "ManagedAgentIdentityBlueprint",
+    "blueprint_id": "a13-target-8bc4e"
+  }
+}
+[PATCH authorization_schemes=NoSuchScheme(対照)] PATCH {proj}/agents/a13-target?api-version=v1 -> 200 (0.4s) {   "object": "agent",   "id": "a13-target",   "name": "a13-target",   "state": "enabled",   "configuration_state": "enabled",   "versions": {     "latest": {       "metadata": {},       "object": "agent.version",       "id": "a13-target:1",       "name": "a13-target",       "version": "1",       "description": "probe a13-target",       "created_at": 1795324879,       "definition": {         "kind": "prompt",         "model": "gpt-5.4-mini",         "instructions": "Reply with exactly: PONG"       },       "draft": false,       "status": "active",       "instance_identity": {         "principal_id": "<guid-54>",         "client_id": "<guid-54>"       },       "blueprint": {         "principal_id": "<guid-55>",         "client_id": "<guid-56>"       },       "blueprint_reference": {
+   full: {
+  "object": "agent",
+  "id": "a13-target",
+  "name": "a13-target",
+  "state": "enabled",
+  "configuration_state": "enabled",
+  "versions": {
+    "latest": {
+      "metadata": {},
+      "object": "agent.version",
+      "id": "a13-target:1",
+      "name": "a13-target",
+      "version": "1",
+      "description": "probe a13-target",
+      "created_at": 1795324879,
+      "definition": {
+        "kind": "prompt",
+        "model": "gpt-5.4-mini",
+        "instructions": "Reply with exactly: PONG"
+      },
+      "draft": false,
+      "status": "active",
+      "instance_identity": {
+        "principal_id": "<guid-54>",
+        "client_id": "<guid-54>"
+      },
+      "blueprint": {
+        "principal_id": "<guid-55>",
+        "client_id": "<guid-56>"
+      },
+      "blueprint_reference": {
+        "type": "ManagedAgentIdentityBlueprint",
+        "blueprint_id": "a13-target-8bc4e"
+      },
+      "agent_guid": "<guid-61>"
+    }
+  },
+  "agent_endpoint": {
+    "version_selector": {
+      "version_selection_rules": [
+        {
+          "type": "FixedRatio",
+          "agent_version": "@latest",
+          "traffic_percentage": 100
+        }
+      ]
+    },
+    "protocols": [
+      "responses"
+    ],
+    "protocol_configuration": {
+      "responses": {}
+    },
+    "authorization_schemes": [
+      {
+        "type": "NoSuchScheme"
+      }
+    ],
+    "publish_approval_status": "not_published"
+  },
+  "instance_identity": {
+    "principal_id": "<guid-54>",
+    "client_id": "<guid-54>",
+    "status": "active"
+  },
+  "blueprint": {
+    "principal_id": "<guid-55>",
+    "client_id": "<guid-56>",
+    "status": "active"
+  },
+  "blueprint_reference": {
+    "type": "ManagedAgentIdentityBlueprint",
+    "blueprint_id": "a13-target-8bc4e"
+  }
+}
+[GET agent after NoSuchScheme(対照)] GET {proj}/agents/a13-target?api-version=v1 -> 200 (0.2s) {   "object": "agent",   "id": "a13-target",   "name": "a13-target",   "state": "enabled",   "configuration_state": "enabled",   "versions": {     "latest": {       "metadata": {},       "object": "agent.version",       "id": "a13-target:1",       "name": "a13-target",       "version": "1",       "description": "probe a13-target",       "created_at": 1795324879,       "definition": {         "kind": "prompt",         "model": "gpt-5.4-mini",         "instructions": "Reply with exactly: PONG"       },       "draft": false,       "status": "active",       "instance_identity": {         "principal_id": "<guid-54>",         "client_id": "<guid-54>"       },       "blueprint": {         "principal_id": "<guid-55>",         "client_id": "<guid-56>"       },       "blueprint_reference": {
+   full: {
+  "object": "agent",
+  "id": "a13-target",
+  "name": "a13-target",
+  "state": "enabled",
+  "configuration_state": "enabled",
+  "versions": {
+    "latest": {
+      "metadata": {},
+      "object": "agent.version",
+      "id": "a13-target:1",
+      "name": "a13-target",
+      "version": "1",
+      "description": "probe a13-target",
+      "created_at": 1795324879,
+      "definition": {
+        "kind": "prompt",
+        "model": "gpt-5.4-mini",
+        "instructions": "Reply with exactly: PONG"
+      },
+      "draft": false,
+      "status": "active",
+      "instance_identity": {
+        "principal_id": "<guid-54>",
+        "client_id": "<guid-54>"
+      },
+      "blueprint": {
+        "principal_id": "<guid-55>",
+        "client_id": "<guid-56>"
+      },
+      "blueprint_reference": {
+        "type": "ManagedAgentIdentityBlueprint",
+        "blueprint_id": "a13-target-8bc4e"
+      },
+      "agent_guid": "<guid-61>"
+    }
+  },
+  "agent_endpoint": {
+    "version_selector": {
+      "version_selection_rules": [
+        {
+          "type": "FixedRatio",
+          "agent_version": "@latest",
+          "traffic_percentage": 100
+        }
+      ]
+    },
+    "protocols": [
+      "responses"
+    ],
+    "protocol_configuration": {
+      "responses": {}
+    },
+    "authorization_schemes": [
+      {
+        "type": "NoSuchScheme"
+      }
+    ],
+    "publish_approval_status": "not_published"
+  },
+  "instance_identity": {
+    "principal_id": "<guid-54>",
+    "client_id": "<guid-54>",
+    "status": "active"
+  },
+  "blueprint": {
+    "principal_id": "<guid-55>",
+    "client_id": "<guid-56>",
+    "status": "active"
+  },
+  "blueprint_reference": {
+    "type": "ManagedAgentIdentityBlueprint",
+    "blueprint_id": "a13-target-8bc4e"
+  }
+}

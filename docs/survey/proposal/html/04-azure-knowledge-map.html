@@ -91,7 +91,7 @@ footer {
 <main>
 <h1 id="04-前提-azure-知識マップ-foundry-提案・設計に必要なサブセット">04. 前提 Azure 知識マップ(Foundry 提案・設計に必要なサブセット)</h1><div class="toc"><strong>このページの内容</strong><ul><li><a href="#結論サマリー">結論サマリー</a></li><li><a href="#領域別マップ">領域別マップ</a></li><li><a href="#資格との対応">資格との対応</a></li><li><a href="#読む順序の推奨-オンボーディング">読む順序の推奨(オンボーディング)</a></li></ul></div>
 <p><a href="index.html">← 提案実務ガイド TOP</a></p>
-<blockquote><p><strong>最終更新:</strong> 2026-07-31 / 2026-09-26(資格表を更新: AI-102 退役 → AI-103。hosted agent の同時セッション上限、capability settings への移行中を注記)/ 2026-10-06(監視に保護テーブルと Privileged Monitoring Data Reader、ID に利用者委任の 2 方式、IaC に Terraform での hosted agent 管理を追加) / 2026-10-14(IaC に capability settings の設定ページの 301〈取り下げか移設中か要確認〉と AI Search のエンドポイントを組み立てない注意)<br>本リポジトリの調査ドキュメントは、いくつかの Azure 基礎知識を「知っている前提」で書かれている。<strong>AZ-104(管理者)の全範囲は不要</strong>で、必要なのは特定のサブセット+設計寄り(AZ-305)の観点。このマップは「どの知識が・どの設計判断で・なぜ要るか」を整理し、チームのオンボーディングとスキルギャップ確認に使う。</p></blockquote>
+<blockquote><p><strong>最終更新:</strong> 2026-07-31 / 2026-09-26(資格表を更新: AI-102 退役 → AI-103。hosted agent の同時セッション上限、capability settings への移行中を注記)/ 2026-10-06(監視に保護テーブルと Privileged Monitoring Data Reader、ID に利用者委任の 2 方式、IaC に Terraform での hosted agent 管理を追加) / 2026-10-14(IaC に capability settings の設定ページの 301〈取り下げか移設中か要確認〉と AI Search のエンドポイントを組み立てない注意) / 2026-11-22(Azure AI Search → Foundry IQ (Azure AI Search) の改称、azd の Foundry 拡張の GA と <code>az cognitiveservices agent</code> の削除予定、サブネットの shared IP の GA・PE の予約範囲・TLS 検査と Entra、cost controls〈preview〉と Cost Management Reader、Azure Policy の新しい統制〈preview、日本リージョンなし〉、RBAC の注意 2 点、顧客 AKS への配置〈coming soon〉)<br>本リポジトリの調査ドキュメントは、いくつかの Azure 基礎知識を「知っている前提」で書かれている。<strong>AZ-104(管理者)の全範囲は不要</strong>で、必要なのは特定のサブセット+設計寄り(AZ-305)の観点。このマップは「どの知識が・どの設計判断で・なぜ要るか」を整理し、チームのオンボーディングとスキルギャップ確認に使う。</p></blockquote>
 <h2 id="結論サマリー">結論サマリー</h2>
 <ul>
 <li><strong>最優先はネットワークと Entra ID。</strong>閉域案件・ツール認証(OBO)はこの2つが分からないと設計も顧客説明もできない。</li>
@@ -108,17 +108,17 @@ footer {
 </tr></thead><tbody>
 <tr>
 <td>VNet / サブネット / サブネット委任</td>
-<td>BYO VNet 注入(<code>Microsoft.App/environments</code> 委任、/27 以上・本番は /24 起点〈/27 は本番非推奨と明記〉、<strong>作成後変更不可</strong>)のサイジングと IP 設計。hosted agent は既定 1 セッション = 1 IP なので同時セッション数から逆算。アドレス空間は RFC1918 を推奨(RFC 6598 の可否は公式ページ間で揺れ)</td>
+<td>BYO VNet 注入(<code>Microsoft.App/environments</code> 委任、/27 以上・本番は /24 起点〈/27 は本番非推奨と明記〉、<strong>作成後変更不可</strong>)のサイジングと IP 設計。hosted agent は既定 1 セッション = 1 IP なので同時セッション数から逆算。アドレス空間は RFC1918 を推奨(RFC 6598 の可否は公式ページ間で揺れ)。※2026-11-22: <strong>shared subnet IPs が GA</strong> になり、セッションは IP を共有する(計画上 /24 = 60,000 セッション)— 逆算の対象はサブスクリプション × リージョンの同時セッションクォータに変わった。新たに <strong>PE を <code>192.168.0.0/24</code> に置かない</strong>(サンドボックス内部と重なる)・VNet と重ねてはいけない予約範囲の一覧、ネットワーク構成は最初の hosted agent 作成時に確定、が加わった(<a href="../../casebook/html/02-pitfalls-index.html#d-ネットワークと閉域">casebook P-N05・N24</a>)</td>
 <td><a href="../../architecture/html/07-usecase-regulated-edge.html">architecture 07</a></td>
 </tr>
 <tr>
 <td>Private Endpoint / Private DNS ゾーン</td>
-<td>閉域のインバウンド設計(Foundry は DNS ゾーン3種)。PE は自動作成されない</td>
+<td>閉域のインバウンド設計(Foundry は DNS ゾーン3種)。PE は自動作成されない。※2026-11-22: BYO Cosmos DB 等の private DNS ゾーンは<strong>エージェントサブネットのある VNet にリンク</strong>する(ハブだけにリンクすると Agents ページがタイムアウト)。カスタム DNS からは 168.63.129.16 への転送が要る(<a href="../../casebook/html/02-pitfalls-index.html#d-ネットワークと閉域">casebook P-N22</a>)</td>
 <td>同上</td>
 </tr>
 <tr>
 <td>Azure Firewall / UDR / 強制トンネリング</td>
-<td>アウトバウンド制御。Managed VNet の FQDN ルールで Firewall が自動作成・SKU 変更不可</td>
+<td>アウトバウンド制御。Managed VNet の FQDN ルールで Firewall が自動作成・SKU 変更不可。※2026-11-22: FW の <strong>TLS 検査</strong>はエージェントサブネットの Entra / マネージド ID の通信(<code>login.microsoftonline.com</code> など 3 FQDN)を除外する(private CA trust は効かない = <a href="../../casebook/html/02-pitfalls-index.html#d-ネットワークと閉域">casebook P-N23</a>)。hosted agent の egress controls は GA になったが Firewall の補完</td>
 <td>同上</td>
 </tr>
 <tr>
@@ -156,7 +156,7 @@ footer {
 </tr>
 <tr>
 <td>RBAC のスコープ設計</td>
-<td>Foundry 5ロール(User / Project Manager / Account Owner / Owner / Agent Consumer)+ agent スコープ。改名中は GUID 指定</td>
+<td>Foundry 5ロール(User / Project Manager / Account Owner / Owner / Agent Consumer)+ agent スコープ。改名中は GUID 指定。※2026-11-22: <code>agents/write</code> を持つ主体はエージェントを介さずにモデルを呼べる、エージェントスコープの割り当てはプロジェクトのファイルを分離しない(信頼境界はプロジェクト)、<strong>Foundry のロールではコストが見えない</strong>(Cost Management Reader を RG / サブスクリプションに別付与)(<a href="../../casebook/html/02-pitfalls-index.html#c-id-と-rbac">casebook P-I14〜I16</a>)</td>
 <td>同上</td>
 </tr>
 <tr>
@@ -194,7 +194,7 @@ footer {
 </tr>
 <tr>
 <td>Azure Monitor アラート / アクショングループ</td>
-<td>予算アラート(<strong>ハードリミットは存在しない</strong>)、クォータ逼迫検知</td>
+<td>予算アラート(<strong>ハードリミットは存在しない</strong>。※2026-11-22: Foundry の cost controls〈preview〉で GPT / o-series の超過を HTTP 429 で止められるようになったが、PTU・ツール・hosted は対象外で判定できなければ通す。アラートは Event Grid 経由 = <a href="../../casebook/html/02-pitfalls-index.html#f-モデル-クォータ-コスト">casebook P-M25</a>)、クォータ逼迫検知</td>
 <td><a href="02-cost-estimation.html">02 コスト手順</a></td>
 </tr>
 <tr>
@@ -216,7 +216,7 @@ footer {
 </tr>
 <tr>
 <td>Azure Policy</td>
-<td>承認済みモデル限定(GA)・プレビューモデル禁止(プレビュー)・プレビュー UI 無効化タグ</td>
+<td>承認済みモデル限定(GA)・プレビューモデル禁止(プレビュー)・プレビュー UI 無効化タグ。※2026-11-22: エージェント種別・hosted のコンテナイメージ・ツール(<code>toolControls</code>)・egress を縛る組み込み定義が加わったが、<strong>いずれも preview で Canada Central / Spain Central / Korea Central のみ</strong>(日本リージョンなし、反映 30〜60 分)。Model router では Azure Policy は作成・更新時だけ評価し、要求時のルーティング先は絞らない(<a href="../../casebook/html/02-pitfalls-index.html#d-ネットワークと閉域">casebook P-N25・M22</a>)</td>
 <td><a href="../../features/html/01-platform-projects.html">features 01</a></td>
 </tr>
 <tr>
@@ -226,12 +226,12 @@ footer {
 </tr>
 <tr>
 <td>タグ / Cost Management</td>
-<td>チャージバック(project タグはプレビュー)・部門按分</td>
+<td>チャージバック(project タグはプレビュー)・部門按分。※2026-11-22: Foundry ポータルの Manage &gt; Cost(preview)はコストを 8〜24 時間遅れで出し、エージェント名のタグは 2026-11 以降の利用から。閲覧には Cost Management Reader が要る(<a href="../../casebook/html/02-pitfalls-index.html#c-id-と-rbac">casebook P-I16</a>)</td>
 <td><a href="02-cost-estimation.html">02 コスト手順</a></td>
 </tr>
 <tr>
 <td>IaC(Bicep / Terraform)</td>
-<td>Foundry は <code>Microsoft.CognitiveServices/accounts</code>。<strong>capability host / ネットワーク注入は冪等更新が効かない</strong>という Foundry 固有の癖。capability host は後継の <strong>capability settings</strong>(プレビュー、API <code>2026-07-15-preview</code>、UK South / Canada Central のみ、既存プロジェクトへの追加・変更不可)へ移行中( <a href="https://learn.microsoft.com/en-us/azure/foundry/how-to/configure-capability-settings" title="https://learn.microsoft.com/en-us/azure/foundry/how-to/configure-capability-settings">configure-capability-settings</a> 、2026-09-22 版)。※2026-10-06: Terraform で hosted agent を扱う公式手順が出た — azd の <code>--infra=terraform</code>(インフラのみ)と AzAPI の <code>azapi_data_plane_resource</code>(名前付きエージェントまで管理)。eject は閉域の <code>network:</code> 構成に非対応(<a href="../../casebook/html/02-pitfalls-index.html#j-iac-cli-ci-cd">casebook P-C13</a>)。※2026-10-14: capability settings の設定ページ(上記 URL)は 301 で agents/environment-setup(capability settings の記述なし)へ転送されるようになり、取り下げか移設中か要確認。当面は安定版 ARM API の capability host を基準に学ぶ(<a href="../../casebook/html/02-pitfalls-index.html#j-iac-cli-ci-cd">casebook P-C06</a>)。AI Search の管理 API <code>2026-09-01-preview</code> の自動生成 DNS ラベル(preview)を使うとエンドポイントが <code>&lt;name&gt;-&lt;label&gt;.sg.search.windows.net</code> になるので、IaC ではサービス名からエンドポイントを組み立てず <code>properties.endpoint</code> を読む(<a href="../../casebook/html/02-pitfalls-index.html#j-iac-cli-ci-cd">casebook P-C17</a>)</td>
+<td>Foundry は <code>Microsoft.CognitiveServices/accounts</code>。<strong>capability host / ネットワーク注入は冪等更新が効かない</strong>という Foundry 固有の癖。capability host は後継の <strong>capability settings</strong>(プレビュー、API <code>2026-07-15-preview</code>、UK South / Canada Central のみ、既存プロジェクトへの追加・変更不可)へ移行中( <a href="https://learn.microsoft.com/en-us/azure/foundry/how-to/configure-capability-settings" title="https://learn.microsoft.com/en-us/azure/foundry/how-to/configure-capability-settings">configure-capability-settings</a> 、2026-09-22 版)。※2026-10-06: Terraform で hosted agent を扱う公式手順が出た — azd の <code>--infra=terraform</code>(インフラのみ)と AzAPI の <code>azapi_data_plane_resource</code>(名前付きエージェントまで管理)。eject は閉域の <code>network:</code> 構成に非対応(<a href="../../casebook/html/02-pitfalls-index.html#j-iac-cli-ci-cd">casebook P-C13</a>)。※2026-10-14: capability settings の設定ページ(上記 URL)は 301 で agents/environment-setup(capability settings の記述なし)へ転送されるようになり、取り下げか移設中か要確認。当面は安定版 ARM API の capability host を基準に学ぶ(<a href="../../casebook/html/02-pitfalls-index.html#j-iac-cli-ci-cd">casebook P-C06</a>)。AI Search の管理 API <code>2026-09-01-preview</code> の自動生成 DNS ラベル(preview)を使うとエンドポイントが <code>&lt;name&gt;-&lt;label&gt;.sg.search.windows.net</code> になるので、IaC ではサービス名からエンドポイントを組み立てず <code>properties.endpoint</code> を読む(<a href="../../casebook/html/02-pitfalls-index.html#j-iac-cli-ci-cd">casebook P-C17</a>)。※2026-11-22: <strong>azd の Foundry 拡張群が GA</strong>(2026-11-05、<code>microsoft.foundry</code> 1.0・<code>azure.ai.agents</code> 1.x、azd 1.37.0 以上)になり、CI/CD の標準の CLI は azd。GA の前後に破壊的変更(<code>toolboxes</code> への改名・preview 機能の <code>AZD_ALPHA_ENABLE_AGENTS_*</code> opt-in・評価コマンドの別拡張化)があるので版を固定して学ぶ(<a href="../../casebook/html/02-pitfalls-index.html#j-iac-cli-ci-cd">casebook P-C18</a>)。<strong><code>az cognitiveservices agent</code> は Deprecated で、2027-02-28 後の最初の Azure CLI リリースで削除</strong>(P-C01)。hosted agent の egress 規則を含む RAI ポリシーは安定版 <code>2026-09-01</code> で書く(古い api-version のエクスポートは egress 規則が落ちる = P-N25)。チームの環境構築は Foundry Dev Pack(2026-11-18 GA)で一括導入できる</td>
 <td><a href="../../architecture/html/09-operations.html">architecture 09</a></td>
 </tr>
 </tbody></table></div>
@@ -244,7 +244,7 @@ footer {
 </tr></thead><tbody>
 <tr>
 <td><strong>AI Search の SKU / レプリカ / パーティション</strong></td>
-<td>RAG の月額固定費の支配項。ベクトルクォータは<strong>サービス作成日で異なる</strong>。S3 HD はナレッジベース不可</td>
+<td>RAG の月額固定費の支配項。ベクトルクォータは<strong>サービス作成日で異なる</strong>。S3 HD はナレッジベース不可。※2026-11-22: 製品名は <strong>Foundry IQ (Azure AI Search)</strong> に改称(リソース種別 <code>Microsoft.Search</code>・<code>*.search.windows.net</code>・API 版・RBAC ロール名・課金メーター名は不変で、学ぶ中身は同じ)。Serverless は閉域の取り込み(private ingestion)ができず Dedicated と相互移行できない、インデクサーは累積 48 時間 / 24 時間の窓を共有する — SKU の選定で閉域の要否を先に決める(<a href="../../casebook/html/02-pitfalls-index.html#e-rag-とナレッジ">casebook P-R19</a>)。データプレーンの安定版 <code>2026-10-01</code> で LLM クエリプランニング・answer synthesis が GA</td>
 <td><a href="../../architecture/html/04-usecase-chat-rag.html">architecture 04</a></td>
 </tr>
 <tr>
@@ -273,7 +273,7 @@ footer {
 </tr>
 <tr>
 <td>AKS</td>
-<td>大規模 self-host(LangGraph 等を Foundry に載せない判断をした場合)のみ。<strong>Foundry マネージド路線では不要</strong></td>
+<td>大規模 self-host(LangGraph 等を Foundry に載せない判断をした場合)のみ。<strong>Foundry マネージド路線では不要</strong>。※2026-11-22: Foundry の hosted agent を<strong>顧客の AKS クラスター上で動かす配置(BYO-AKS)</strong>が coming soon(限定プレビュー受付中、public preview は 12 月上旬が目標。Learn の手順は未公開)。採用するとクラスター・ネットワーク・ノードプール・容量の運用は顧客側になるので、AKS の知識の必要度が上がる</td>
 </tr>
 <tr>
 <td>VM</td>

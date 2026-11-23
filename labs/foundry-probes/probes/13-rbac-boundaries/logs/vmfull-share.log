@@ -1,0 +1,489 @@
+===== share  @ 2026-11-22T05:37:19Z
+[ops upload F] POST {proj}/openai/v1/files -> 200 (3.2s) {   "object": "file",   "id": "assistant-<id-142>",   "purpose": "assistants",   "filename": "secret-ops.txt",   "bytes": 37,   "created_at": 1795325840,   "expires_at": null,   "status": "processed",   "status_details": null } 
+   full: {
+  "object": "file",
+  "id": "assistant-<id-142>",
+  "purpose": "assistants",
+  "filename": "secret-ops.txt",
+  "bytes": 37,
+  "created_at": 1795325840,
+  "expires_at": null,
+  "status": "processed",
+  "status_details": null
+}
+
+[create_version] POST {proj}/agents/a13-share/versions?api-version=v1 -> 200 (1.0s) {   "metadata": {},   "object": "agent.version",   "id": "a13-share:1",   "name": "a13-share",   "version": "1",   "description": "probe a13-share",   "created_at": 1795324882,   "definition": {     "kind": "prompt",     "model": "gpt-5.4-mini",     "instructions": "Answer briefly. Quote file contents when asked."   },   "draft": false,   "status": "active",   "instance_identity": {     "principal_id": "<guid-57>",     "client_id": "<guid-57>"   },   "blueprint": {     "principal_id": "<guid-58>",     "client_id":
+   full: {
+  "metadata": {},
+  "object": "agent.version",
+  "id": "a13-share:1",
+  "name": "a13-share",
+  "version": "1",
+  "description": "probe a13-share",
+  "created_at": 1795324882,
+  "definition": {
+    "kind": "prompt",
+    "model": "gpt-5.4-mini",
+    "instructions": "Answer briefly. Quote file contents when asked."
+  },
+  "draft": false,
+  "status": "active",
+  "instance_identity": {
+    "principal_id": "<guid-57>",
+    "client_id": "<guid-57>"
+  },
+  "blueprint": {
+    "principal_id": "<guid-58>",
+    "client_id": "<guid-96>"
+  },
+  "blueprint_reference": {
+    "type": "ManagedAgentIdentityBlueprint",
+    "blueprint_id": "a13-share-c2b2d"
+  },
+  "agent_guid": "<guid-97>"
+}
+--- ac1
+[ac1 (a) upload file] POST {proj}/openai/v1/files -> 403 (0.0s) {   "error": {     "code": "UserError",     "severity": null,     "message": "Identity(object id: <guid-9>) does not have permissions for Microsoft.CognitiveServices/accounts/AIServices/agents/write actions. Please refer to https://learn.microsoft.com/en-us/azure/foundry/concepts/rbac-foundry to fix the permissions issue.",     "messageFormat": null,     "messageParameters": null,     "referenceCode": null,     "detailsUri": null,     "target": null,     "details": [],     "innerError": {       "code": "ForbiddenError",       "innerError": null     },     "debugInfo
+   full: {
+  "error": {
+    "code": "UserError",
+    "severity": null,
+    "message": "Identity(object id: <guid-9>) does not have permissions for Microsoft.CognitiveServices/accounts/AIServices/agents/write actions. Please refer to https://learn.microsoft.com/en-us/azure/foundry/concepts/rbac-foundry to fix the permissions issue.",
+    "messageFormat": null,
+    "messageParameters": null,
+    "referenceCode": null,
+    "detailsUri": null,
+    "target": null,
+    "details": [],
+    "innerError": {
+      "code": "ForbiddenError",
+      "innerError": null
+    },
+    "debugInfo": null,
+    "additionalInfo": null
+  },
+  "correlation": {
+    "operation": "<hex-58>",
+    "request": "ee06d0cc2e9a03c1"
+  },
+  "environment": "japaneast",
+  "location": "japaneast",
+  "time": "2026-11-22T05:37:23.8854541+00:00",
+  "componentName": null,
+  "statusCode": 403
+}
+[ac1 (b) list files] GET {proj}/openai/v1/files -> 403 (0.1s) {   "error": {     "code": "UserError",     "severity": null,     "message": "Identity(object id: <guid-9>) does not have permissions for Microsoft.CognitiveServices/accounts/AIServices/agents/read actions. Please refer to https://learn.microsoft.com/en-us/azure/foundry/c
+   full: {
+  "error": {
+    "code": "UserError",
+    "severity": null,
+    "message": "Identity(object id: <guid-9>) does not have permissions for Microsoft.CognitiveServices/accounts/AIServices/agents/read actions. Please refer to https://learn.microsoft.com/en-us/azure/foundry/concepts/rbac-foundry to fix the permissions issue.",
+    "messageFormat": null,
+    "messageParameters": null,
+    "referenceCode": null,
+    "detailsUri": null,
+    "target": null,
+    "details": [],
+    "innerError": {
+      "code": "ForbiddenError",
+      "innerError": null
+    },
+    "debugInfo": null,
+    "additionalInfo": null
+  },
+  "correlation": {
+    "operation": "<hex-59>",
+    "request": "4aa6da2a3c278882"
+  },
+  "environment": "japaneast",
+  "location": "japaneast",
+  "time": "2026-11-22T05:37:23.9385491+00:00",
+  "componentName": null,
+  "statusCode": 403
+}
+[ac1 (c) input_file=F (ops のファイル)] POST {proj}/agents/a13-share/endpoint/protocols/openai/responses?api-version=v1 -> 400 (1.7s) {"error":{"message":"Error while downloading file.","type":"invalid_request_error","param":"url","code":"invalid_value","request_id":"<hex-60>"}}
+   full: {"error":{"message":"Error while downloading file.","type":"invalid_request_error","param":"url","code":"invalid_value","request_id":"<hex-60>"}}
+[share] ac1 (c) text: ''
+[ac1 (d) ロールのない a12-basic] POST {proj}/agents/a12-basic/endpoint/protocols/openai/responses?api-version=v1 -> 403 (0.7s) {   "error": {     "code": "UserError",     "severity": null,     "message": "Identity(object id: <guid-9>) does not have permissions for Microsoft.CognitiveServices/accounts/AIServices/agents/write actions. Please refer to https://learn.microsoft.com/en-us/azure/foundry/concepts/rbac-foundry to fix the permissions issue.",     "messageFormat": null,     "messageParameters": null,     "referenceCode": null,     "detailsUri": null,     "target": null,     "details": [],     "innerError": {       "code": "ForbiddenError",       "innerError": null     },     "debugInfo": null,     "additionalInfo": null   },   "correlation": {     "operation": "<hex-61>",     "request": "e32a668268bf88cd"   },   "environment": "japaneast",   "location": "japaneast",   "time": "2026-11-22T05:37:26.291223+00:00",   "componentName": null,   "statusCode": 403 
+   full: {
+  "error": {
+    "code": "UserError",
+    "severity": null,
+    "message": "Identity(object id: <guid-9>) does not have permissions for Microsoft.CognitiveServices/accounts/AIServices/agents/write actions. Please refer to https://learn.microsoft.com/en-us/azure/foundry/concepts/rbac-foundry to fix the permissions issue.",
+    "messageFormat": null,
+    "messageParameters": null,
+    "referenceCode": null,
+    "detailsUri": null,
+    "target": null,
+    "details": [],
+    "innerError": {
+      "code": "ForbiddenError",
+      "innerError": null
+    },
+    "debugInfo": null,
+    "additionalInfo": null
+  },
+  "correlation": {
+    "operation": "<hex-61>",
+    "request": "e32a668268bf88cd"
+  },
+  "environment": "japaneast",
+  "location": "japaneast",
+  "time": "2026-11-22T05:37:26.291223+00:00",
+  "componentName": null,
+  "statusCode": 403
+}
+[ac1 R1 (store)] POST {proj}/agents/a13-share/endpoint/protocols/openai/responses?api-version=v1 -> 200 (2.4s) {   "metadata": {},   "top_logprobs": 0,   "temperature": 1,   "top_p": 0.98,   "service_tier": "default",   "prompt_cache_retention": "in_memory",   "model": "gpt-5.4-mini",   "reasoning": {     "effort": "none",     "context": "current_turn",     "mode": "standard"   },   "background": false,   "text": {     "format": {       "type": "text"     },     "verbosity": "medium"   },   "tools": [],   "tool_choice": "auto",   "truncation": "disabled",   "id": "resp_<id-88>",   "object": "response",   "status": "completed",   "created_at": 1795325846,   "completed_at": 1795325847,   "error": null,   "incomplete_details": null,   "output": [     {       "type": "message",       "id": "msg_<id-89>",       "agent_reference": {         "type": "agent_reference",         "name": "a13-share",         "version": "1"
+   full: {
+  "metadata": {},
+  "top_logprobs": 0,
+  "temperature": 1,
+  "top_p": 0.98,
+  "service_tier": "default",
+  "prompt_cache_retention": "in_memory",
+  "model": "gpt-5.4-mini",
+  "reasoning": {
+    "effort": "none",
+    "context": "current_turn",
+    "mode": "standard"
+  },
+  "background": false,
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "tools": [],
+  "tool_choice": "auto",
+  "truncation": "disabled",
+  "id": "resp_<id-88>",
+  "object": "response",
+  "status": "completed",
+  "created_at": 1795325846,
+  "completed_at": 1795325847,
+  "error": null,
+  "incomplete_details": null,
+  "output": [
+    {
+      "type": "message",
+      "id": "msg_<id-89>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a13-share",
+        "version": "1"
+      },
+      "response_id": "resp_<id-88>",
+      "phase": "final_answer",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "Got it — I’ll remember that your lucky number is 31337.",
+          "annotations": [],
+          "logprobs": []
+        }
+      ],
+      "status": "completed"
+    }
+  ],
+  "instructions": "Answer briefly. Quote file contents when asked.",
+  "usage": {
+    "input_tokens": 29,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0
+    },
+    "output_tokens": 19,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 48
+  },
+  "parallel_tool_calls": true,
+  "agent_reference": {
+    "type": "agent_reference",
+    "name": "a13-share",
+    "version": "1"
+  },
+  "content_filters": [
+    {
+      "blocked": false,
+      "source_type": "prompt",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "jailbreak": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 867,
+        "check_offset": 0
+      }
+    },
+    {
+      "blocked": false,
+      "source_type": "completion",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "protected_material_text": {
+          "filtered": false,
+          "detected": false
+        },
+        "protected_material_code": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 55,
+        "check_offset": 0
+      }
+    }
+  ]
+}
+[ac1 create conversation C1] POST {proj}/openai/v1/conversations -> 403 (0.0s) {   "error": {     "code": "UserError",     "severity": null,     "message": "Identity(object id: <guid-9>) does not have permissions for Microsoft.CognitiveServices/accounts/AIServices/agents/write actions. Please refer to https://learn.microsoft.com/en-us/azure/foundry/concepts/rbac-foundry to fix the permissions issue.",     "messageFormat": null,     "messageParameters": null,     "referenceCode": null,     "detailsUri": null,     "target": null,     "details": [],     "innerError": {       "code": "ForbiddenError",       "innerError": null     },     "debugInfo
+   full: {
+  "error": {
+    "code": "UserError",
+    "severity": null,
+    "message": "Identity(object id: <guid-9>) does not have permissions for Microsoft.CognitiveServices/accounts/AIServices/agents/write actions. Please refer to https://learn.microsoft.com/en-us/azure/foundry/concepts/rbac-foundry to fix the permissions issue.",
+    "messageFormat": null,
+    "messageParameters": null,
+    "referenceCode": null,
+    "detailsUri": null,
+    "target": null,
+    "details": [],
+    "innerError": {
+      "code": "ForbiddenError",
+      "innerError": null
+    },
+    "debugInfo": null,
+    "additionalInfo": null
+  },
+  "correlation": {
+    "operation": "<hex-62>",
+    "request": "1835d5798a7ffbb3"
+  },
+  "environment": "japaneast",
+  "location": "japaneast",
+  "time": "2026-11-22T05:37:28.7603824+00:00",
+  "componentName": null,
+  "statusCode": 403
+}
+--- rd(2 人目の Agent Consumer)
+[rd (e) previous_response_id=R1] POST {proj}/agents/a13-share/endpoint/protocols/openai/responses?api-version=v1 -> 200 (1.8s) {   "metadata": {},   "top_logprobs": 0,   "temperature": 1,   "top_p": 0.98,   "service_tier": "default",   "prompt_cache_retention": "in_memory",   "previous_response_id": "resp_<id-88>",   "model": "gpt-5.4-mini",   "reasoning": {     "effort": "none",     "context": "current_turn",     "mode": "standard"   },   "background": false,   "text": {     "format": {       "type": "text"     },     "verbosity": "medium"   },   "tools": [],   "tool_choice": "auto",   "truncation": "disabled",   "id": "resp_<id-90>",   "object": "response",   "status": "completed",   "created_at": 1795325849,   "completed_at": 1795325850,   "error": null,   "incomplete_details": null,   "output": [     {       "type": "message",       "id": "msg_<id-91>",       "agent_reference": {  
+   full: {
+  "metadata": {},
+  "top_logprobs": 0,
+  "temperature": 1,
+  "top_p": 0.98,
+  "service_tier": "default",
+  "prompt_cache_retention": "in_memory",
+  "previous_response_id": "resp_<id-88>",
+  "model": "gpt-5.4-mini",
+  "reasoning": {
+    "effort": "none",
+    "context": "current_turn",
+    "mode": "standard"
+  },
+  "background": false,
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "tools": [],
+  "tool_choice": "auto",
+  "truncation": "disabled",
+  "id": "resp_<id-90>",
+  "object": "response",
+  "status": "completed",
+  "created_at": 1795325849,
+  "completed_at": 1795325850,
+  "error": null,
+  "incomplete_details": null,
+  "output": [
+    {
+      "type": "message",
+      "id": "msg_<id-91>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a13-share",
+        "version": "1"
+      },
+      "response_id": "resp_<id-90>",
+      "phase": "final_answer",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "Your lucky number is 31337.",
+          "annotations": [],
+          "logprobs": []
+        }
+      ],
+      "status": "completed"
+    }
+  ],
+  "instructions": "Answer briefly. Quote file contents when asked.",
+  "usage": {
+    "input_tokens": 60,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0
+    },
+    "output_tokens": 12,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 72
+  },
+  "parallel_tool_calls": true,
+  "agent_reference": {
+    "type": "agent_reference",
+    "name": "a13-share",
+    "version": "1"
+  },
+  "content_filters": [
+    {
+      "blocked": false,
+      "source_type": "prompt",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "jailbreak": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 1017,
+        "check_offset": 0
+      }
+    },
+    {
+      "blocked": false,
+      "source_type": "completion",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "protected_material_text": {
+          "filtered": false,
+          "detected": false
+        },
+        "protected_material_code": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 27,
+        "check_offset": 0
+      }
+    }
+  ]
+}
+[share] rd (e) text: 'Your lucky number is 31337.'
+[rd (f) GET R1 (project)] GET {proj}/openai/v1/responses/resp_<id-88> -> 403 (0.0s) {   "error": {     "code": "UserError",     "severity": null,     "message": "Identity(object id: <guid-11>) does not have permissions for Microsoft.CognitiveServices/accounts/AIServices/agents/read actions. Please refer to https://learn.microsoft.com/en-us/azure/foundry/c
+   full: {
+  "error": {
+    "code": "UserError",
+    "severity": null,
+    "message": "Identity(object id: <guid-11>) does not have permissions for Microsoft.CognitiveServices/accounts/AIServices/agents/read actions. Please refer to https://learn.microsoft.com/en-us/azure/foundry/concepts/rbac-foundry to fix the permissions issue.",
+    "messageFormat": null,
+    "messageParameters": null,
+    "referenceCode": null,
+    "detailsUri": null,
+    "target": null,
+    "details": [],
+    "innerError": {
+      "code": "ForbiddenError",
+      "innerError": null
+    },
+    "debugInfo": null,
+    "additionalInfo": null
+  },
+  "correlation": {
+    "operation": "<hex-63>",
+    "request": "a3d5fde430ac27af"
+  },
+  "environment": "japaneast",
+  "location": "japaneast",
+  "time": "2026-11-22T05:37:30.6042632+00:00",
+  "componentName": null,
+  "statusCode": 403
+}
+[rd (f2) GET R1 (agent endpoint)] GET {proj}/agents/a13-share/endpoint/protocols/openai/responses/resp_<id-88>?api-version=v1 -> 404 (1.1s) {"error":{"message":"Response with id 'resp_<id-88>' not found.","type":"invalid_request_error","param":null,"code":null,"request_id":"<hex-29>"}}
+   full: {"error":{"message":"Response with id 'resp_<id-88>' not found.","type":"invalid_request_error","param":null,"code":null,"request_id":"<hex-29>"}}
+[rd (h) input_file=F] POST {proj}/agents/a13-share/endpoint/protocols/openai/responses?api-version=v1 -> 400 (0.9s) {"error":{"message":"Error while downloading file.","type":"invalid_request_error","param":"url","code":"invalid_value","request_id":"<hex-30>"}}
+   full: {"error":{"message":"Error while downloading file.","type":"invalid_request_error","param":"url","code":"invalid_value","request_id":"<hex-30>"}}
+[share] rd (h) text: ''

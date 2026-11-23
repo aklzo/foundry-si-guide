@@ -2,7 +2,7 @@
 
 [← 提案実務ガイド TOP](./README.md)
 
-> **最終更新:** 2026-08-02(初版)/ 2026-09-26(Foundry 名指しの日本事例 3 件追加・巡回先 URL 更新)/ 2026-10-06(差分確認: 期間内〈2026-09-29〜10-06〉の新規公開は見当たらず。前回未収録の JBS〈2026-09-11 公開〉を 1 件追加)/ **更新頻度:** 四半期(下記「探し方」の巡回先を確認) / 2026-10-14(差分確認: News Center Japan の RSS で期間内〈2026-10-06〜10-14〉の日本の Foundry 事例は見当たらず。追加なし)
+> **最終更新:** 2026-08-02(初版)/ 2026-09-26(Foundry 名指しの日本事例 3 件追加・巡回先 URL 更新)/ 2026-10-06(差分確認: 期間内〈2026-09-29〜10-06〉の新規公開は見当たらず。前回未収録の JBS〈2026-09-11 公開〉を 1 件追加)/ **更新頻度:** 四半期(下記「探し方」の巡回先を確認) / 2026-10-14(差分確認: News Center Japan の RSS で期間内〈2026-10-06〜10-14〉の日本の Foundry 事例は見当たらず。追加なし) / 2026-11-22(差分確認〈2026-10-14 以降・Ignite 2026〉: NTT データの継続改善の事例〈Azure ブログ 2026-11-17〉とグローバルの Gulf Air〈Tech Community 2026-11-20〉を追加。News Center Japan の RSS に期間内の日本企業の Foundry 事例はなし)
 > **収録基準:** **Microsoft 公式(customers.microsoft.com / news.microsoft.com / 公式ブログ)が公開している事例のみ。**ベンダーや媒体の二次記事は含めない。効果数値は出典の表現のまま引用する(「約」「目標」を落とさない)。
 
 ## 使い方と注意(先に読む)
@@ -25,6 +25,7 @@
 | **日立システムズ** | IT サービス(SIer) | 製造業の現場業務を支援する「製造業向けアシスタントAI」を Foundry で開発しパッケージ提供 | **Microsoft Foundry**(+ Defender for Cloud) | Playground で事前に精度確認し開発工数を大幅削減(定量値なし) | [Customer Story(日本語、2026-01-20)](https://www.microsoft.com/ja-jp/customers/story/25948-hitachi-systems-microsoft-foundry) |
 | **ソフトバンク** | 通信 | AI 駆動型コールセンター(RAG・マルチエージェント協調・独自の音声コントローラー) | **Microsoft Foundry + Azure OpenAI in Foundry Models + Azure AI Speech**(App Service / SQL Database) | 初期応答時間の短縮(定量値なし) | [Customer Story(日本語、2025-11-18)](https://www.microsoft.com/ja-jp/customers/story/25684-softbank-corp-azure-ai-foundry) |
 | **日本ビジネスシステムズ(JBS)** | IT サービス(SIer) | Microsoft Copilot を起点に、Copilot Studio・GitHub Copilot・Foundry IQ 等を組み合わせた AI エージェント プラットフォームを全社展開(Microsoft 365 外の自社知識は Foundry IQ で知識基盤を構築)。社内実践を「JBS AI Agent Factory」として顧客へ提供 | **Microsoft Copilot / Copilot Studio + Microsoft Foundry + Foundry IQ**(+ Fabric / Entra ID。主軸は Copilot Studio で、Foundry は製品欄と知識基盤の説明に登場) | 一次レビューの AI エージェントで**レビュー業務工数を 17% 削減し、レビュー待ちも従来の 1/3**。IR の取材レポート作成(1 件 1 時間以上の手作業)を AI が代行し大幅な工数削減 | [Customer Story(日本語、2026-09-11)](https://www.microsoft.com/ja-jp/customers/story/27149-japan-business-systems-microsoft-copilot) |
+| **NTT データ**(Ignite 2026) | IT サービス | プログラム管理のエージェントに「観測 → 評価 → 最適化」の継続改善ループを適用し、品質の問題を見つけて体系的に改善。1,000 以上の社内プロジェクトへの展開に向けて検証中(Ignite 2026 のセッション BRK249 で紹介) | **Microsoft Foundry**(observability・evaluations・optimization = Ignite 2026 の continuous improvement) | 定量値なし(展開規模の予定のみ) | [Azure Blog(2026-11-17、Continuous improvement comes to Microsoft Foundry)](https://azure.microsoft.com/en-us/blog/continuous-improvement-comes-to-microsoft-foundry/) |
 
 **エージェント型だが名義は Azure OpenAI Service(2024 年の公式まとめより):**
 
@@ -62,6 +63,7 @@
 | **Accenture** | 責任ある AI 統制つきでユースケース量産 | Azure AI Foundry | **4 か月で 17 ユースケース**、構築時間最大 50% 短縮見込み | [Customer Story](https://www.microsoft.com/en/customers/story/23953-accenture-azure-ai-foundry) |
 | **Air India** | 顧客サービスのエージェント(仮想アシスタント) | Azure OpenAI / Foundry Models / Agent Service | **1 日 4 万件**の問い合わせ処理、数百万ドル削減 | [Azure Blog](https://azure.microsoft.com/en-us/blog/ai-agents-at-work-the-new-frontier-in-business-automation/) |
 | **Atomicwork** | 社内 IT/サービスデリバリのエージェント「Atom」 | Azure AI Foundry | **6 か月で問い合わせの 65% を自動化**、応答遅延 75% 減 | [ja-jp 記事](https://news.microsoft.com/ja-jp/2025/05/07/250507-how-agentic-ai-is-driving-ai-first-business-transformation-for-customers-to-achieve-more/) |
+| **Gulf Air**(2026-11 追加) | 運航分析・経営判断支援アプリ「Falcon Eye」の音声エージェントとチャットエージェントを 2026-11-09 に本番公開。約 1 万問の評価用の質問を生成し、100 問単位のバッチ評価 → トレースと Insights で原因を分析 → 修正 → 再評価を回した(直前にも 400 問の評価を実施) | **Microsoft Foundry**(評価・トレース・Insights・Agent optimizer、API と Postgres MCP で運航データに接続) | 定量的な業務効果の記載なし(「これまでにない信頼度でエージェントを本番に出せた」という定性評価) | [Tech Community(2026-11-20、Microsoft と Gulf Air の共著)](https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/gulf-airs-continuous-improvement-journey-with-microsoft-foundry/4574913) |
 
 **Copilot Studio 側の事例**(「入口は Copilot Studio」という分業を説明する材料): Dow(輸送費の隠れ損失を数分で特定・年数億ドル削減見込み)/ Eneco(月 24,000 チャット、70% をオペレーター無しで解決)/ Virgin Money(100 万+ 対話)/ T-Mobile(83,000 ユーザー)/ BDO Colombia(業務負荷 50% 減)— 出典は同上 ja-jp 記事。
 
@@ -78,6 +80,7 @@
 | 日付 | 内容 |
 | --- | --- |
 | 2026-08-02 | 初版。日本のエージェント型 8 件+生成 AI 10 件+グローバル主要事例を公式出典つきで収録 |
+| 2026-11-22 | 差分確認(Ignite 2026〈11-17 開幕〉を含む)。News Center Japan の RSS(10-14〜11-22)では、期間内の記事は Ignite の基調・Microsoft IQ・デジタル主権・教育が中心で、日本企業の Foundry 事例は**見当たらなかった**。Ignite 期間の Microsoft 公式ブログ(Azure ブログ・devblogs・Tech Community の 46 本)から Foundry 名指しの顧客事例を 2 件追加 — **NTT データ**(Azure ブログ 2026-11-17。継続改善ループをプログラム管理エージェントに適用、定量値なし)と **Gulf Air**(Tech Community 2026-11-20。評価・Insights で改善して音声とチャットのエージェントを本番公開、定量値なし)。AEMO(Microsoft IQ)・Rockwell Automation(Azure の AI 基盤)はブログに登場するが Foundry の名指しではないため対象外。Customer Stories の検索ページは JavaScript で一覧を描画し、curl では取得できなかった(次回の四半期更新でブラウザで確認)。追加した 2 件の URL は curl で 200 を確認(Tech Community は 301 の転送先の URL で記載) |
 | 2026-10-14 | 差分確認(四半期更新の間の軽い確認)。News Center Japan の RSS で、期間内(2026-10-06〜10-14)に公開された Microsoft 公式の日本の Foundry 事例は**見当たらなかった**(期間内の記事は Azure Maia・Windows・幹部紹介のみ)。Customer Stories の検索ページは今回は見ていない(次回の四半期更新で確認)。追加・削除なし |
 | 2026-10-06 | 差分確認(四半期更新の間の軽い確認)。News Center Japan の RSS と Customer Stories の検索で、期間内(2026-09-29〜10-06)に公開された Microsoft 公式の日本の Foundry 事例は**見当たらなかった**。前回(2026-09-26)に未収録だった **JBS(2026-09-11 公開、Copilot Studio 主軸で Foundry IQ を併用)**を 1 件追加。既存の出典 URL の再確認は次回の四半期更新で行う |
 | 2026-09-26 | Foundry 名指しの日本事例を 3 件追加(マネーフォワード〈2026-08-03 公開〉・日立システムズ・ソフトバンク〈初版で未収録だった既存記事〉)。巡回先の URL 変更 3 件(AI ケーススタディ検索 → Customer Stories 検索、News Center Japan、adoption)を反映。既存出典 URL はすべて生存確認済み |

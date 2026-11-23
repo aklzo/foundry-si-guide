@@ -1,0 +1,31 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8"><meta name="figure-size" content="1600x675"><link rel="stylesheet" href="../../tools/figure.css"><style>
+.tl{position:relative;height:620px}
+.line{position:absolute;left:0;right:0;top:300px;height:8px;background:var(--border);border-radius:4px}
+.ev{position:absolute;width:214px;font-size:21px;line-height:1.3}
+.ev .d{font-weight:800;font-size:22px}
+.ev .box{border:2px solid var(--border);border-radius:10px;padding:8px 10px;background:#fff}
+.ev.up{bottom:342px}.ev.dn{top:350px}
+.ev::after{content:"";position:absolute;left:14px;width:3px;background:var(--muted)}
+.ev.up::after{top:100%;height:26px}.ev.dn::after{bottom:100%;height:42px}
+.ev.hot .box{border-color:var(--dep);background:var(--dep-bg)}.ev.hot .d{color:var(--dep)}
+.ev.bill .box{border-color:var(--preview);background:var(--preview-bg)}.ev.bill .d{color:var(--preview)}
+.mon{position:absolute;top:312px;font-size:17px;color:var(--muted);font-weight:700}
+.acts{position:absolute;left:0;right:0;top:0;display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.acts div{border:2px solid var(--accent);background:var(--accent-bg);border-radius:12px;padding:10px 14px;font-size:21px;font-weight:700}
+.acts b{color:var(--accent);margin-right:6px}
+</style></head><body><div class="tl">
+<div class="acts"><div><b>①</b>使っている機能を公式 GA 一覧で引き直す</div><div><b>②</b>Workflows は 12-01 までに MAF へ</div><div><b>③</b>旧カスタムエージェントは外部エージェントへ</div></div>
+<div class="line"></div>
+<div class="ev up hot" style="left:0"><div class="box"><div class="d">11-30</div>Claude Sonnet 4.5 リタイア</div></div>
+<div class="ev dn hot" style="left:120px"><div class="box"><div class="d">12-01</div>Workflows 廃止 → MAF</div></div>
+<div class="ev up bill" style="left:230px"><div class="box"><div class="d">12-01</div>Copilot harness 課金開始</div></div>
+<div class="ev dn hot" style="left:350px"><div class="box"><div class="d">2027-01-14</div>gpt-4o(2024-05-13)</div></div>
+<div class="ev up" style="left:470px"><div class="box"><div class="d">02-15 / 02-22</div>Cohere embed v3・Claude 4.5</div></div>
+<div class="ev dn" style="left:590px"><div class="box"><div class="d">02-28 以降</div>az の agent コマンド削除</div></div>
+<div class="ev up" style="left:710px"><div class="box"><div class="d">03-31 / 04-14</div>Agents (classic)・gpt-4.1</div></div>
+<div class="ev dn" style="left:830px"><div class="box"><div class="d">04-20 / 04-30</div>prompt flow・Content Safety 一部</div></div>
+<div class="ev up hot" style="left:950px"><div class="box"><div class="d">05-07</div>カスタムエージェント終了</div></div>
+<div class="ev dn" style="left:1070px"><div class="box"><div class="d">2029-03-31</div>Language の CLU・CQA など</div></div>
+<div class="mon" style="left:0;top:318px">▲ 基準日 11-22</div>
+<div class="mon" style="left:1310px;top:330px;width:250px;line-height:1.5"><span class="pill dep">赤</span>影響大<br><span class="pill preview">黄</span>課金開始</div>
+</div></body></html>

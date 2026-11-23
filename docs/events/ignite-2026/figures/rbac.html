@@ -1,0 +1,27 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8"><meta name="figure-size" content="1600x675"><link rel="stylesheet" href="../../tools/figure.css"><style>
+body{padding:18px 30px}
+.t{display:grid;grid-template-columns:300px repeat(6,1fr);gap:4px;font-size:21px;grid-auto-rows:minmax(48px,auto)}
+.t div{border-radius:6px;padding:4px 6px;display:flex;align-items:center;gap:4px}
+.hd{background:var(--fg);color:#fff;font-weight:700;font-size:18px;line-height:1.15;justify-content:center;text-align:center}
+.op{background:var(--panel);font-weight:700;font-size:20px}
+.y{background:#e3f5e8;color:var(--ga);justify-content:center;font-weight:800;font-size:23px}
+.n{background:#f6f8fa;color:#b3bac1;justify-content:center;font-size:21px}
+.p{background:#fff3cd;color:var(--preview);justify-content:center;font-weight:700;font-size:16px;text-align:center;line-height:1.15}
+.n.m{color:var(--dep);background:#fff0f0;font-weight:800}
+.pill{font-size:13px;padding:0 6px;margin:0;vertical-align:2px}
+.note{margin-top:8px;font-size:18px;padding:6px 12px}
+</style></head><body><div class="t">
+<div></div><div class="hd">Agent<br>Consumer</div><div class="hd">Project<br>Runtime User</div><div class="hd">Foundry<br>User</div><div class="hd">Project<br>Manager</div><div class="hd">Account<br>Owner</div><div class="hd">Foundry<br>Owner</div>
+<div class="op">エージェントを呼ぶ</div><div class="y">○<span class="pill meas">実測</span></div><div class="n m">×<span class="pill meas">実測</span></div><div class="y">○<span class="pill meas">実測</span></div><div class="y">○</div><div class="n">×</div><div class="y">○</div>
+<div class="op">エージェントを作る</div><div class="n m">×<span class="pill meas">実測</span></div><div class="n m">×<span class="pill meas">実測</span></div><div class="y">○<span class="pill meas">実測</span></div><div class="y">○</div><div class="n">×</div><div class="y">○</div>
+<div class="op">モデルを直接呼ぶ</div><div class="n m">×<span class="pill meas">実測</span></div><div class="n m">×<span class="pill meas">実測</span></div><div class="y">○<span class="pill meas">実測</span></div><div class="y">○</div><div class="n">×</div><div class="y">○</div>
+<div class="op">接続を作る</div><div class="n">×</div><div class="n">×</div><div class="n m">×<span class="pill meas">実測</span></div><div class="y">○</div><div class="y">○</div><div class="y">○</div>
+<div class="op">接続のシークレットを読む</div><div class="n">×</div><div class="n">×</div><div class="y">○<span class="pill meas">実測</span></div><div class="y">○</div><div class="y">○</div><div class="y">○</div>
+<div class="op">API キーを取る</div><div class="n">×</div><div class="n">×</div><div class="p">アカウントに<br>付けたとき<span class="pill meas">実測</span></div><div class="n">×</div><div class="y">○</div><div class="y">○</div>
+<div class="op">モデルをデプロイする</div><div class="n">×</div><div class="n">×</div><div class="n">×</div><div class="n">×</div><div class="y">○</div><div class="y">○</div>
+<div class="op">ロールを付与する</div><div class="n">×</div><div class="n">×</div><div class="n">×</div><div class="p">Foundry User・<br>Agent Consumer<span class="pill meas">実測</span></div><div class="p">5 ロールだけ<span class="pill meas">実測</span></div><div class="p">5 ロールだけ</div>
+<div class="op">利用量のメトリクスを見る</div><div class="n">×</div><div class="n">×</div><div class="y">○<span class="pill meas">実測</span></div><div class="p">空で返る<span class="pill meas">実測</span></div><div class="y">○<span class="pill meas">実測</span></div><div class="n">×</div>
+<div class="op">コストの金額を見る</div><div class="n">×</div><div class="n">×</div><div class="n">×</div><div class="n">×</div><div class="n">×</div><div class="n">×</div>
+</div>
+<div class="note"><span class="pill meas">実測</span> は 2026-11-22 に Japan East で確かめた結果。印のない ○ / × はロール定義(<code>az role definition list</code>)の読み。コストの金額は <b>Cost Management Reader</b> を別に付ける。</div>
+</body></html>

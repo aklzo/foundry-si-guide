@@ -1,0 +1,20 @@
+### [2026-11-22 21:12:35 JST] az network list-service-tags --location japaneast(19:44 取得)を tagip.py で照合(20:09〜20:33 に実行した結果を記録し直したもの。IP は他のログと同じ番号の伏せ字に置き換え)
+# T1 harness(P0・P4・P5)= <public-ip-19> / T2 OpenAPI(P0・P4)= <public-ip-20>・(P5)= <public-ip-21> / T6 VM = <public-ip-22> / T2 の X-Forwarded-For の手前 = <public-ip-25>・<public-ip-27>(100.100.209.x)と <public-ip-26>・<public-ip-28>・<public-ip-29>(100.64.17.x)
+changeNumber=246 cloud=Public tags=1595
+<public-ip-19>: 2 tags
+   /15  AzureCloud                                    region=-            systemService=-
+   /15  AzureCloud.japaneast                          region=japaneast    systemService=-
+<public-ip-20>: 2 tags
+   /17  AzureCloud.japaneast                          region=japaneast    systemService=-
+   /12  AzureCloud                                    region=-            systemService=-
+<public-ip-21>: 2 tags
+   /16  AzureCloud.japaneast                          region=japaneast    systemService=-
+   /14  AzureCloud                                    region=-            systemService=-
+<public-ip-22>: 2 tags
+   /20  AzureCloud.japaneast                          region=japaneast    systemService=-
+   /13  AzureCloud                                    region=-            systemService=-
+<public-ip-25>: 0 tags
+<public-ip-27>: 0 tags
+<public-ip-26>: 0 tags
+<public-ip-28>: 0 tags
+<public-ip-29>: 0 tags

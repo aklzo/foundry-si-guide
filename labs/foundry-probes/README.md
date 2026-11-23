@@ -4,7 +4,7 @@
 
 目的は動くアプリを作ることではなく、**各機能が実際にどう振る舞うか(発見メモ)と、どこで詰まるか(つまりどころ)を一次記録として残す**こと。各 probe は「観点ごとにリクエストを投げて生の応答を観察する」スクリプトで、実行ログ(`logs/`)がそのまま `NOTES.md` の根拠になる。
 
-## probe 一覧(01〜09 は 2026-08-04、10 は 2026-09-30 ライブ実測。**2026-10-06 に 01〜11 を再実測**)
+## probe 一覧(01〜09 は 2026-08-04、10 は 2026-09-30 ライブ実測。**2026-10-06 に 01〜11 を再実測**。12〜15 は 2026-11-22 実測)
 
 | # | 機能 | サーベイでの位置 | 主な発見 / つまりどころ | NOTES |
 | --- | --- | --- | --- | --- |
@@ -19,6 +19,10 @@
 | 09 | 継続評価(evaluation_rules) | 05 / プレビュー | **prompt agent スコープ必須(生 response 不可)**・配線から結果取得まで SDK で完結(**2026-10-06 訂正**: 自動ランは `evals.runs` に 1 応答 1 ランで出る。出なかった真因は probe の `sampling_rate=1.0` = **1%**〈百分率〉。さらに**エージェントエンドポイント経由の応答はランが全件 failed〈404〉**で、プロジェクトの Responses+`agent_reference` で呼ぶ必要がある) | [NOTES](./probes/09-continuous-eval/NOTES.md) |
 | 10 | hosted agent の版更新と会話の継続 | arch 09 §6.3 / hosted agent GA | **会話は版をまたいで続く**(履歴はエージェント単位)・起動中のセッションは旧版のまま、**休止明けに現行の版で再開**(版の明示固定も休止明けは効かない)・ロールバックも同じ・旧版の削除はセッションが残ると 409 → `force=true` で履歴もファイルも残して現行版へ(※2026-10-06 `--scenario release` で再測定: 交絡を除いても**休止〈idle・`stop_session`〉明けは現行のセレクタの版**で再開し、公式の「作成時の版に束縛」は起動中だけ成り立つ。ただし同日の maf-ports Port 11〈MAF の hosted agent〉では公式どおり v1 のままで、構成により割れる) | [NOTES](./probes/10-hosted-version-continuity/NOTES.md) |
 | 11 | トレース本文の保護テーブル振り分け(`AppGenAIContent`) | arch 09 §3.6 / プレビュー | **2026-10-06・japaneast(flag 未登録)ではどの発生源も二重書き**(従来テーブルにも本文が残る)・振り分けは取り込み側で**属性名**で決まる(gen_ai.* 以外のキーは対象外)・**MAF のメッセージイベント〈AppTraces の Message 本体〉は対象外**・プラットフォーム側スパンはオプトインなしで本文を記録・AppGenAIContent は最大数分遅れて届く(同時のこともある) | [NOTES](./probes/11-trace-content-routing/NOTES.md) |
+| 12 | 閉域(PNA Disabled+BYO VNet 注入+standard setup、2026-11-22) | 03 / 07・arch 07 | **Cosmos Serverless で standard が組める**・注入ありのアカウントは**アカウントの capability host が自動作成**(明示作成は 400 / 409)・`Microsoft.ContainerService` 未登録・NAT なしでも prompt agent と File Search / Code Interpreter(ファイル入出力も可)/ Web search / OpenAPI / MCP が動く(OpenAPI と MCP はエージェントサブネットから VM に到達)・外からは 403「Public access is disabled」・**Copilot harness のサンドボックスは閉域でも公開インターネットに出る**(NSG・UDR で止まるかは 15)・閉域だけ `input_file` が 400 | [NOTES](./probes/12-closed-network/NOTES.md) / [COST](./probes/12-closed-network/COST.md) |
+| 13 | 権限の境界(UAMI × ロール × スコープ、2026-11-22) | 03 / 07 | Foundry User @プロジェクトはプロジェクトの Responses 可・アカウントの `/openai/v1` は 401・**Project Runtime User 単体はどの経路も 403**・**API キーでエージェントのエンドポイントも通る**(一覧だけ 403)・`disableLocalAuth` は約 1 分で 403 `AuthenticationTypeDisabled`・**他人の `previous_response_id` で続きが読める**(会話と GET は分離)・Foundry User は接続を作れない・PM は Agent Consumer も付与可で metrics は空・**Memory はプロジェクトの経路なら `x-memory-user-id` で他人の記憶が読める**(エンドポイントではヘッダー無視) | [NOTES](./probes/13-rbac-boundaries/NOTES.md) |
+| 14 | Agent Optimizer の利用可否(2026-11-22) | 05 / Limited preview | **申請・有効化なしで estimate(200)と最小ジョブ(201 → 約 2 分で succeeded)が通る**・SDK / REST から prompt agent を最適化できる・**閉域のプロジェクトでも成功**・実費は 1 ジョブ数円(estimate の low 付近) | [NOTES](./probes/14-optimizer-access/NOTES.md) |
+| 15 | エージェントの外向き通信の経路(委任サブネットの NSG / UDR・harness の egress controls、2026-11-22) | 03 / 07・arch 07 | **NAT なし・既定の送信なしでも OpenAPI / MCP / Copilot harness の shell は公開側に届く**(送信元は AzureCloud.japaneast の Azure 公開 IP)・**どれも委任サブネットの NSG(宛先 /32)・UDR(/32・0.0.0.0/0 → None)で止まり、外すと戻る**・Web search は 0.0.0.0/0 → None でも動く(サブネットを通らない)・Code Interpreter は外に出ない・ツールなしの prompt agent と harness の応答は 0.0.0.0/0 → None でも返る・**harness の egress controls(RAI ポリシー、preview)は Deny のホスト名だけ 403**、ただし付けると VNet 内 8080 番・公開 22 番も即時拒否・**purge したアカウントと同じ名前で作り直すとエージェントのエンドポイントだけ 70 分以上 403**(名前を変えると出ない) | [NOTES](./probes/15-egress-paths/NOTES.md) / [COST](./probes/15-egress-paths/COST.md) |
 
 ## 検証対象外(理由つき — 今後の候補)
 
@@ -37,6 +41,8 @@
 > **リソース状態:** 検証用の基盤(RG `rg-foundry-probes`)は 2026-08-04 の実測完了後に**削除済み**(コスト停止)。2026-10-06 の再実測でも新規に作成(baseName `fprobes1006`)し、実測後に RG を削除・アカウントを purge した。再実行は下記手順で新規デプロイする。NOTES と `logs/`(ローカル)が一次記録として残る。
 >
 > **probe 10 は専用の最小基盤**(`probes/10-hosted-version-continuity/infra.bicep` = Foundry アカウント+プロジェクト+実行者の Foundry User。モデル・App Insights なし)で実測し、2026-09-30 に RG `rg-foundry-probes-p10` ごと削除・アカウントを purge 済み。main.bicep の基盤でも実行できる(Foundry User の割り当て込み)。
+
+> **probe 12〜15 は専用の環境**(RG `rg-ignite26-verify`、15 の harness の追試は `rg-ignite26-verify2`。閉域は `probes/12-closed-network/infra.bicep`、公開の basic 構成は `probes/13-rbac-boundaries/infra.bicep`)で 2026-11-22 に実測し、**実測後に RG ごと削除済み**(アカウントは purge。手順と費用は `probes/12-closed-network/deploy.sh`・各 probe の `COST.md`)。12〜15 の `logs/` は一次記録として git 管理に含める。サブスクリプション ID・テナント ID・マネージド ID などの GUID・メールアドレス・公開 IP・リソース名の乱数部分は `tools/scrub_logs.py` で伏せ字にし、資格情報は含めない。
 
 ## 実行の前提
 

@@ -1,0 +1,60 @@
+/* docs/events の図版(figures/*.html → images/fig-*.png)共通スタイル。
+   配色は docs/survey/tools/md2html.py と同じトークン。
+   図はスライド本文域(12.33 x 5.2 in)と同じ 1600x675 で描く。タイトル・出典は図に入れない
+   (Markdown の見出し・キャプション、スライドのタイトル・フッターが持つ)。
+   スライドで読める下限: 本文 20px・補足 18px(1600px 幅を 12.33in に縮めて約 11pt / 10pt)。 */
+:root {
+  --fg: #1c1e21; --muted: #57606a; --border: #d8dee4; --bg: #ffffff; --panel: #f7f9fb;
+  --accent: #0f6cbd; --accent-bg: #e8f1fb;
+  --ga: #1a7f37; --ga-bg: #dafbe1;
+  --preview: #9a6700; --preview-bg: #fff8c5;
+  --dep: #cf222e; --dep-bg: #ffebe9;
+  --priv: #8250df; --priv-bg: #fbefff;
+  --unk: #57606a; --unk-bg: #eef1f4;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  font-family: "Noto Sans CJK JP", "Noto Sans JP", "Yu Gothic UI", "Hiragino Sans", Meiryo, sans-serif;
+  color: var(--fg); background: var(--bg);
+  width: 1600px; height: 675px; overflow: hidden;
+  padding: 26px 34px; font-size: 23px; line-height: 1.4;
+  word-break: auto-phrase; /* 日本語を文節で折り返す(Chrome 119+) */
+}
+h2 { font-size: 27px; margin: 0 0 10px; }
+ul { list-style: none; margin: 0; padding: 0; }
+li { margin-bottom: 8px; }
+li:has(> .pill) { display: flex; align-items: baseline; gap: 4px; }
+li > .pill { flex-shrink: 0; }
+.row { display: flex; gap: 18px; align-items: stretch; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; height: 100%; }
+.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; height: 100%; }
+.card { border: 2px solid var(--border); border-radius: 14px; padding: 16px 18px; background: var(--bg); }
+.card.accent { border-color: var(--accent); background: var(--accent-bg); }
+.card .t { font-weight: 800; font-size: 26px; margin-bottom: 8px; }
+.card .d { color: var(--muted); font-size: 19px; }
+.node { border: 2px solid var(--border); border-radius: 12px; padding: 10px 14px; text-align: center;
+  font-weight: 700; background: #fff; }
+.node.on { border-color: var(--accent); background: var(--accent-bg); color: var(--accent); }
+.node.bad { border-color: var(--dep); background: var(--dep-bg); color: var(--dep); }
+.pill {
+  display: inline-block; font-size: 17px; font-weight: 700; padding: 1px 10px; border-radius: 999px;
+  margin-right: 6px; vertical-align: 2px; white-space: nowrap;
+}
+.pill.ga { color: var(--ga); background: var(--ga-bg); }
+.pill.preview { color: var(--preview); background: var(--preview-bg); }
+.pill.split { color: var(--priv); background: var(--priv-bg); }
+.pill.dep { color: var(--dep); background: var(--dep-bg); }
+.pill.soon { color: var(--unk); background: var(--unk-bg); }
+/* 出典が食い違うときは出典名つきのピルを並べる(「発表 GA」+「公式一覧 Preview」) */
+.pill.ann { color: var(--ga); background: #fff; border: 2px solid var(--ga); padding: 0 8px; }
+.pill.doc { color: var(--preview); background: #fff; border: 2px solid var(--preview); padding: 0 8px; }
+/* 根拠の種類: 実機で確かめた結果か、公式の記述・ロール定義からの読みか */
+.pill.meas { color: #fff; background: var(--accent); }
+.pill.desk { color: var(--muted); background: #fff; border: 2px solid var(--border); padding: 0 8px; }
+.arrow { align-self: center; font-size: 34px; color: var(--muted); }
+.warn { border-left: 7px solid var(--dep); background: var(--dep-bg); border-radius: 8px; padding: 9px 14px; font-size: 21px; margin-top: 10px; }
+.note { border-left: 7px solid var(--accent); background: var(--accent-bg); border-radius: 8px; padding: 9px 14px; font-size: 21px; margin-top: 10px; }
+.muted { color: var(--muted); }
+.small { font-size: 19px; }
+.legend { position: absolute; right: 34px; bottom: 16px; font-size: 18px; color: var(--muted); }

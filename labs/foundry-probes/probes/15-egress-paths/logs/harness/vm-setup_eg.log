@@ -1,0 +1,9 @@
+### [2026-11-22 20:04:28 JST] egressprobe.py setup_eg P5prep /subscriptions/<sub>/resourceGroups/rg-ignite26-verify2/providers/Microsoft.CognitiveServices/accounts/aif-<sfx>/raiPolicies/rai-p15h-egress
+Enable succeeded: 
+[stdout]
+===== setup_eg P5prep @ 2026-11-22T11:04:30Z
+[P5prep][setup_eg] a15-harness-eg -> 200 (27.6s)  rai_config={"rai_policy_name": "/subscriptions/<sub>/resourceGroups/rg-ignite26-verify2/providers/Microsoft.CognitiveServices/accounts/aif-<sfx>/raiPolicies/rai-p15h-egress"}
+
+[stderr]
+
+### [2026-11-22 20:05:32 JST] done

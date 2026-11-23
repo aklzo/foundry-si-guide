@@ -1,0 +1,5 @@
+### [2026-11-22 15:02:37 JST] B6: 実行者(Foundry User @公開アカウント。ops とは別の ID)が x-memory-user-id: user-bob(ops が書いた scope)を付けて読む
+[project] [x-memory-user-id: user-bob] HTTP 200 text=エメラルドグリーンです。 null
+[project] [X-Probe: none] HTTP 200 text=UNKNOWN null
+[agent] [x-memory-user-id: user-bob] HTTP 200 text=UNKNOWN null
+[agent] [X-Probe: none] HTTP 200 text=UNKNOWN null

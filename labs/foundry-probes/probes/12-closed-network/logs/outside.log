@@ -1,0 +1,11 @@
+### [2026-11-22 14:14:04 JST] A2: VNet の外(WSL)から呼ぶ。呼び出し元ユーザーには閉域アカウントの Foundry User を付けてある
+[dns] aif-<sfx>.services.ai.azure.com -> <public-ip-2> 
+[alias] ('<token-1>.japaneast.cloudapp.azure.com', ['aif-<sfx>.services.ai.azure.com', 'aif-<sfx>.privatelink.services.ai.azure.com', 'japaneast.api.cognitive.microsoft.com', 'cognitivejpeprod.trafficmanager.net', 'cognitivejpeprod.azure-api.net'], ['<public-ip-2>'])
+[dns] aif-<sfx>.openai.azure.com -> <public-ip-2> 
+[alias] ('<token-1>.japaneast.cloudapp.azure.com', ['aif-<sfx>.openai.azure.com', 'aif-<sfx>.privatelink.openai.azure.com', 'japaneast.api.cognitive.microsoft.com', 'cognitivejpeprod.trafficmanager.net', 'cognitivejpeprod.azure-api.net'], ['<public-ip-2>'])
+[dns] aif-<sfx>.cognitiveservices.azure.com -> <public-ip-2> 
+[alias] ('<token-1>.japaneast.cloudapp.azure.com', ['aif-<sfx>.cognitiveservices.azure.com', 'aif-<sfx>.privatelink.cognitiveservices.azure.com', 'japaneast.api.cognitive.microsoft.com', 'cognitivejpeprod.trafficmanager.net', 'cognitivejpeprod.azure-api.net'], ['<public-ip-2>'])
+[outside] GET https://aif-<sfx>.services.ai.azure.com/api/projects/proj/agents?api-version=v1 -> HTTP 403 {"error":{"code":"403","message": "Public access is disabled. Please configure private endpoint."}}
+[outside] POST https://aif-<sfx>.services.ai.azure.com/api/projects/proj/openai/v1/responses -> HTTP 403 {"error":{"code":"403","message": "Public access is disabled. Please configure private endpoint."}}
+[outside] POST https://aif-<sfx>.openai.azure.com/openai/v1/responses -> HTTP 403 {"error":{"code":"403","message": "Public access is disabled. Please configure private endpoint."}}
+[outside] POST https://aif-<sfx>.cognitiveservices.azure.com/openai/v1/responses -> HTTP 403 {"error":{"code":"403","message": "Public access is disabled. Please configure private endpoint."}}

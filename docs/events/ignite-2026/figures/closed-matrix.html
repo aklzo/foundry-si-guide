@@ -1,0 +1,34 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8"><meta name="figure-size" content="1600x675"><link rel="stylesheet" href="../../tools/figure.css"><style>
+.g{display:grid;grid-template-columns:1.45fr 0.95fr 0.72fr 1fr;gap:12px;height:480px;zoom:1.18}
+.col{border-radius:14px;padding:12px 14px;border:3px solid}
+.col h2{font-size:25px;margin:0 0 2px}.col .s{font-size:17px;color:var(--muted);margin-bottom:10px}
+.col ul{font-size:20px}.col li{display:block;margin-bottom:8px;line-height:1.3}
+.ok{border-color:var(--ga);background:#f3fbf5}.ok h2{color:var(--ga)}
+.pub{border-color:var(--accent);background:var(--accent-bg)}.pub h2{color:var(--accent)}
+.sp{border-color:var(--preview);background:#fffcea}.sp h2{color:var(--preview)}
+.ng{border-color:var(--dep);background:var(--dep-bg)}.ng h2{color:var(--dep)}
+.ex{display:block;font-size:16px;color:var(--muted)}
+.pill{font-size:15px;padding:0 8px;margin:0 0 0 4px;vertical-align:1px}
+.lg{margin-top:12px;font-size:19px;color:var(--muted)}
+</style></head><body><div class="g">
+<div class="col ok"><h2>○ 閉域で動く</h2><div class="s">VNet 注入(パターン C)で社内にも届く</div><ul>
+<li>prompt agent<span class="pill meas">実測</span></li>
+<li>File Search<span class="pill meas">実測</span></li>
+<li>Code Interpreter<span class="pill meas">実測</span><span class="ex">ファイルの入出力も動いた。外へは出られない</span></li>
+<li>OpenAPI・MCP<span class="pill meas">実測</span><span class="ex">社内 API に届く。公開の URL にも出る(NSG・UDR で止まる)</span></li>
+<li>Copilot harness<span class="pill meas">実測</span><span class="ex">公開側にも出る(NSG・UDR・egress controls で止まる)</span></li>
+<li>Agent Optimizer<span class="pill meas">実測</span></li>
+<li>Foundry IQ・評価・Functions・managed compute</li></ul></div>
+<div class="col pub"><h2>△ 公開経路で動く</h2><div class="s">外向きは Microsoft の公開経路</div><ul>
+<li>Web search / Web IQ<span class="pill meas">実測</span></li>
+<li>Grounding with Bing・SharePoint</li>
+<li>M365 / Teams 公開の受信<span class="ex">REST だけ</span></li></ul></div>
+<div class="col sp"><h2>? 未検証</h2><div class="s">公式ページで記述が割れ、今回は試していない</div><ul>
+<li>Browser Automation</li><li>Work IQ</li><li>A2A(送信)</li></ul></div>
+<div class="col ng"><h2>× 閉域では使えない</h2><div class="s">設計から外すか公開側に置く</div><ul>
+<li>input_file(添付)<span class="pill meas">実測</span><span class="ex">閉域でだけ 400 になる</span></li>
+<li>Memory</li><li>Computer Use・画像生成</li><li>Logic Apps・Foundry MCP Server</li>
+<li>voice の電話・SIP・発信</li><li>Workflows の外向き(12-01 廃止)</li></ul></div>
+</div>
+<div class="lg"><span class="pill meas">実測</span> = 2026-11-22 に Japan East の閉域プロジェクトで確かめた。印のない項目は公式ドキュメントの記述による。</div>
+</body></html>

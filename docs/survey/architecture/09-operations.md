@@ -2,7 +2,7 @@
 
 [← アーキテクチャ TOP](./README.md)
 
-> **最終更新:** 2026-07-30(公式ドキュメントとの突合検証で訂正) / 2026-09-26(hosted agent 同時セッション上限・デプロイ種別・Prompt caching・評価リージョン/シナリオ・Monitor 設定・トラフィック分割などを 2026-09 時点の一次情報で再検証)/ 2026-09-30(§3.6 hosted agent のトレースの中身と閲覧者の選定基準、§6.3 会話の続きの agent 単位の制約を Port 15 のライブ検証から追加。同日、§6.3 に版更新・ロールバック・旧版削除と会話の継続を foundry-probes probe 10 の実測で追加)/ 2026-10-06(§3.6 に第 4 案「同じ App Insights のまま中身だけ保護テーブルに隔離」〈`AppGenAIContent`、2026-09-30 から既定の振り分け〉と Agent 365 への送出を追加、§4 に評価の権限・合成評価器・`azure-ai-projects` 2.8.0、§6.3 に公式の本番リリース手順と「既存セッションは作成時の版に束縛」の両論併記・カナリアの公式間不整合、§6.4 に hosted agent の Terraform、§1 に GPT-6.1 Sol と normalized token のキャッシュ消費を反映) / 2026-10-14(差分更新: §3.6 に `azure-ai-agentserver-responses` 2.3.0 のテレメトリ送出の既定〈background〉・LangChain tracer の内容記録の既定・Privileged Monitoring Data Reader の付与先・公式の確認手順の限界、§4 に Learn のラベル外しと GA 一覧表の 3 者併記・トレース評価の版固定〈2.7.0〉・Rubric 評価器と `score_model` の区別・評価レベル混在の食い違い、§1.5 に Bing ツールでキャッシュが効かない件、§5.2 に Flex processing と Model router の既定プール、§6.2 に capability settings 設定ページの 301 とプロビジョニング ID の経路差、§6.3〜6.4 に invoke の版束縛の記述と azd 拡張の破壊的変更を追加)
+> **最終更新:** 2026-07-30(公式ドキュメントとの突合検証で訂正) / 2026-09-26(hosted agent 同時セッション上限・デプロイ種別・Prompt caching・評価リージョン/シナリオ・Monitor 設定・トラフィック分割などを 2026-09 時点の一次情報で再検証)/ 2026-09-30(§3.6 hosted agent のトレースの中身と閲覧者の選定基準、§6.3 会話の続きの agent 単位の制約を Port 15 のライブ検証から追加。同日、§6.3 に版更新・ロールバック・旧版削除と会話の継続を foundry-probes probe 10 の実測で追加)/ 2026-10-06(§3.6 に第 4 案「同じ App Insights のまま中身だけ保護テーブルに隔離」〈`AppGenAIContent`、2026-09-30 から既定の振り分け〉と Agent 365 への送出を追加、§4 に評価の権限・合成評価器・`azure-ai-projects` 2.8.0、§6.3 に公式の本番リリース手順と「既存セッションは作成時の版に束縛」の両論併記・カナリアの公式間不整合、§6.4 に hosted agent の Terraform、§1 に GPT-6.1 Sol と normalized token のキャッシュ消費を反映) / 2026-10-14(差分更新: §3.6 に `azure-ai-agentserver-responses` 2.3.0 のテレメトリ送出の既定〈background〉・LangChain tracer の内容記録の既定・Privileged Monitoring Data Reader の付与先・公式の確認手順の限界、§4 に Learn のラベル外しと GA 一覧表の 3 者併記・トレース評価の版固定〈2.7.0〉・Rubric 評価器と `score_model` の区別・評価レベル混在の食い違い、§1.5 に Bing ツールでキャッシュが効かない件、§5.2 に Flex processing と Model router の既定プール、§6.2 に capability settings 設定ページの 301 とプロビジョニング ID の経路差、§6.3〜6.4 に invoke の版束縛の記述と azd 拡張の破壊的変更を追加) / 2026-11-22(features 差分更新〈10-14 以降+Ignite 2026〉の波及: §3 に外部エージェントの Tracing GA・外部エージェント登録 GA〈Control Plane の custom agents は 2027-05-07 廃止〉・Insights GA・継続 / スケジュール評価の専用ページ・プロジェクト単位の Monitor・MAF のスパン名 `invoke_workflow`、§4 に品質ルーブリックの GA 明記〈built-in-evaluators は preview 表記のまま〉・safety / task-level rubric・Human in the loop・決定モデル judge・音声評価器〈いずれも preview〉、red teaming 4 リージョンへの統一・data generation 表から Japan West が消えた件・SDK 2.11.0 と MAF の上限解消、§1 に prompt cache 書込課金〈12 時間 TTL は 2026-11-01 利用分から〉と GPT-6.2 系の PTU 重み・Batch / PTU の手動移行、§2 に会話データの 60 日保持・shared subnet IPs によるサブネット計画値・BYO-AKS・Azure AI Gateway と Foundry の APIM 連携の縮小、§5 に cost controls〈preview〉と Cost Management Reader・hosted の課金〈割り当て量・idle 待機〉・Copilot harness の課金開始 2026-12-01・Model router の課金とプール 45 / 50 の両論、§6 に azd Foundry 拡張 GA・`az cognitiveservices agent` の非推奨化・egress の IaC は API 版 2026-09-01・memory snapshots で `$HOME` が残らない件・idle timeout 上限 240 分の確定)
 
 ユースケースを問わず横断で効く運用設計をまとめる。**この領域は「Foundry がやってくれない範囲」が広く、見積もりの抜けが出やすい。**
 
@@ -10,12 +10,13 @@
 
 1. **Foundry は自動フェイルオーバーも DR も提供しない。**「Foundry itself doesn't provide automatic failover or disaster recovery」と明記されている。マルチリージョンは自前設計。
 2. **Agent Service の状態(会話・エージェント定義)には DR 機能がない。**「復旧はレプリカの昇格ではなく再構築で行う」。Cosmos DB の継続バックアップが唯一の救済で、**インシデント発生後には有効化できない。**
-3. **エージェントの blue-green / canary は組み込み機能がない。**必要ならエージェント API の前段にルーティング層(APIM 等)を自分で置く。**※2026-10-06:** hosted agent の本番昇格ページ(preview)は同一エンドポイントで 90/10 のカナリアを示しており、「分割不可」と書く他の公式ページと食い違う(§6.3)。
+3. **エージェントの blue-green / canary は組み込み機能がない。**必要ならエージェント API の前段にルーティング層(APIM 等)を自分で置く。**※2026-10-06:** hosted agent の本番昇格ページ(preview)は同一エンドポイントで 90/10 のカナリアを示しており、「分割不可」と書く他の公式ページと食い違う(§6.3)。2026-11-22 の再確認でも食い違いは継続(hosted-agents 2026-11-16 版も「Traffic splitting between versions isn't supported」)。
 4. **Azure Monitor のレガシー `Latency` メトリクスを使ってはいけない。**Azure OpenAI 用に設計されておらず誤った診断になると明記されている。
-5. **リスク・安全性評価と AI Red Teaming は日本リージョンで実行できない。**評価用に別リージョンのプロジェクトを構える設計になる。
+5. **リスク・安全性評価と AI Red Teaming は日本リージョンで実行できない。**評価用に別リージョンのプロジェクトを構える設計になる。**2026-11-22:** 新設の safety rubric 評価器(preview)も Americas / Europe のみで日本なし、cloud red teaming は 4 リージョン(East US 2 / France Central / North Central US / Sweden Central)に記述が統一された。一方 **Insights(GA)は Japan East / West で使える**(§4.4)。
 6. **capabilityHost は作成後に更新できない。**構成変更は **capability host の削除・再作成**が前提(プロジェクト削除は不要。同名+異構成での再作成は 400 になる)で、IaC の冪等更新が効かない。
 7. **hosted agent は App Insights を接続すると、プラットフォーム側で会話の中身(ツール結果を含む)まで記録され、コンテナ側の設定では止められない。**中身を残せない要件なら「接続しない」を最初に選ぶ。**公式は 2026-09-30 以降、中身(GenAI の機微属性 7 種)を専用テーブル `AppGenAIContent` に振り分けるとする**ので、閲覧者を分けたいなら「同じ App Insights のままそのテーブルを Protected にする」(preview)か「App Insights を 2 つに分ける」を選ぶ(§3.6)。振り分けは既定だが、**閲覧制限(Protected 化)は自分で設定しない限り掛からない。**ただし **2026-10-06 の実測(フラグ未登録)では本文が従来の `AppDependencies` と `AppGenAIContent` に二重書きされ、従来テーブルの本文は通常のリーダーで読めた**ので、案 4 は「フラグ登録または移行完了 + Protected + ロール限定 + `gen_ai.*` 以外に本文を書く計装の停止」の 4 点をそろえ、従来テーブルに本文が残っていないことを KQL で確認してから採る([実測] [probe 11](../../../labs/foundry-probes/probes/11-trace-content-routing/NOTES.md) 2026-10-06)。
 8. **hosted agent の版を切り替えても、起動中の会話は作成時の版のまま応答し続ける(公式・実測とも一致)。休止(idle 経過・`stop_session`)明けの版は 2026-10-06 の実測で構成によって割れた** — 公式と Port 11(MAF ホスティング)は作成時の版、probe 10(Agent Server SDK だけの最小エージェント)は現行セレクタの版(`version_ref` 固定も同じ)。原因は未切り分け(§6.3)。本番は「production を具体版にピン留め → 候補を版固定セッションで検証 → 昇格 → 新しいセッションで確認」の公式手順で出し、**受入試験に「`stop_session` 後・idle 明けにどの版が答えるか」を入れる**。旧版で会話を最後まで続けさせたいならエージェント名を分ける。応答の `agent_reference.version` は答えた版ではない。
+9. **(2026-11-22 追加)コストの上限は cost controls(preview)で一部だけ掛けられる。**予算超過の要求を HTTP 429(`x-ms-budget-cause: budget_exceeded`)で止められるが、**対象は GPT / o-series のみで PTU・ツール料金・hosted agent のコンピュートは数えず、判定が間に合わなければ要求は通る(fail-open)**。コストの閲覧には Foundry ロールとは別に **Cost Management Reader** が要る(§5.3)。「ハードリミットはない」前提の予算アラート+自動化は、対象外の費目のために残す。
 
 ---
 
@@ -57,7 +58,8 @@
 | モデルデプロイ / リソース | 32 |
 | PTU / デプロイ 最大 | 100,000 |
 | カスタム HTTP ヘッダー数 | 10(超過で **HTTP 431**)。**将来 API ではパススルー廃止予定のため依存禁止** |
-| **hosted agent 同時セッション**(既定) | **2,000 / サブスクリプション / リージョン**(Canada Central / East US 2 / **Japan East** / North Central US / South Africa North / Southeast Asia / Sweden Central)、**その他の hosted 対応リージョンは 1,000**。全 Foundry アカウント・プロジェクト合算で、プロビジョニング中・実行中のセッションのみカウント(idle / stopped は含まない)。増枠はサポート申請。超過時は 429 `session_quota_exceeded` / `regional_session_quota_exceeded`(2026-09-26 確認: [limits-quotas-regions](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/limits-quotas-regions) ms.date 2026-09-07。旧記載「50」から変更) |
+| **hosted agent 同時セッション**(既定) | **2,000 / サブスクリプション / リージョン**(Canada Central / East US 2 / **Japan East** / North Central US / South Africa North / Southeast Asia / Sweden Central)、**その他の hosted 対応リージョンは 1,000**。全 Foundry アカウント・プロジェクト合算で、プロビジョニング中・実行中のセッションのみカウント(idle / stopped は含まない)。増枠はサポート申請。超過時は 429 `session_quota_exceeded` / `regional_session_quota_exceeded`(2026-09-26 確認: [limits-quotas-regions](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/limits-quotas-regions) ms.date 2026-09-07。旧記載「50」から変更)。**2026-11-22:** limits-quotas-regions 2026-11-18 版でも 2,000 / 1,000 は不変。Ignite の shared subnet IPs(GA)はサブネット側の制約を緩めただけで、**このクォータは増えていない**(§2.7) |
+| プロジェクトの接続数 | **120**(limits-quotas-regions 2026-11-18 版で明記。2026-11-22 追加) |
 | エージェントあたりツール / バージョン | 128 / 1,000(Agent Service 固定上限) |
 | クライアントタイムアウト推奨 | 推論モデル最大 29 分 / 非ストリーミング 29 分 / **ストリーミング 60 秒** |
 
@@ -83,7 +85,7 @@ Normalized TPM  = Input TPM × (1 - キャッシュ率) + (output:input 比 × O
 
 **モデル選択が PTU 効率を大きく変える。**同じ 1 PTU あたりの Input TPM が、gpt-4.1 = 3,000 に対し gpt-4.1-nano = 59,400(約 20 倍)。**小型モデルで足りるタスクを大型モデルに投げると PTU コストが桁で変わる。**
 
-**GPT-6 系は別方式:** `gpt-6-astra`(2026-09-03)/ `gpt-6-sol`(2026-09-22)/ **`gpt-6.1-sol`(2026-09-29)**は上記の output:input 比ではなく、**トークン区分ごとの正規化コストの合計**で Normalized TPM を出す専用手順になっている(1 PTU あたり 600 / 3,000 / 3,000。gpt-6.1-sol のレイテンシ目標は 99% > 50 TPS)。**この方式ではキャッシュ済み入力もキャッシュ書き込みも PTU 容量を消費する**(短コンテキストの重みはキャッシュ読取 0.1〈gpt-6.1-sol は 0.05〉・キャッシュ書込 1.25・出力 5.0、長コンテキストは入力 2.0・出力 7.5)。旧版は「すべてのデプロイでキャッシュトークンは使用率から 100% 控除」と一律に書いていたが、**2026-10-02 版で「normalized token accounting を使わないモデルだけ」に限定された**([provisioned-throughput-sizing](https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/provisioned-throughput-sizing) ms.date 2026-10-02、2026-10-06 確認)。また `gpt-image-2` は Global / Data Zone でも最小 100 PTU・増分 100 と例外的。
+**GPT-6 系は別方式:** `gpt-6-astra`(2026-09-03)/ `gpt-6-sol`(2026-09-22)/ **`gpt-6.1-sol`(2026-09-29)**は上記の output:input 比ではなく、**トークン区分ごとの正規化コストの合計**で Normalized TPM を出す専用手順になっている(1 PTU あたり 600 / 3,000 / 3,000。gpt-6.1-sol のレイテンシ目標は 99% > 50 TPS)。**この方式ではキャッシュ済み入力もキャッシュ書き込みも PTU 容量を消費する**(短コンテキストの重みはキャッシュ読取 0.1〈gpt-6.1-sol は 0.05〉・キャッシュ書込 1.25・出力 5.0、長コンテキストは入力 2.0・出力 7.5)。旧版は「すべてのデプロイでキャッシュトークンは使用率から 100% 控除」と一律に書いていたが、**2026-10-02 版で「normalized token accounting を使わないモデルだけ」に限定された**([provisioned-throughput-sizing](https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/provisioned-throughput-sizing) ms.date 2026-10-02、2026-10-06 確認)。また `gpt-image-2` は Global / Data Zone でも最小 100 PTU・増分 100 と例外的。**2026-11-22 更新(同ページの本文更新):** normalized token 会計の対象に **`gpt-6-luna`(1 PTU あたり 59,400)・`gpt-6.2-sol`(2,950)・`gpt-6.2-astra`(750)** が加わり(6.2 系のキャッシュ読取の重みは 6.1 Sol と同じ 0.05、最小 15 PTU・増分 5)、**キャッシュ書込は 30 分 TTL(重み 1.25)と 12 時間 TTL(重み 2.5)の 2 種**に分かれた。GPT-6 以降の PTU-M はプロンプトキャッシュのブレークポイントに対応する(GPT-5.6 以前の PTU は非対応)。6.2 系の PTU 提供リージョンは region-availability の表に行がなく要確認(features/02)。
 
 **運用上の注意:** PTU デプロイは**一時停止できない(削除のみが課金停止)。**課金は分単位で即時反映されるが、「トラフィックに合わせて PTU を上下させる運用は非推奨」(コストで Reservation に劣り、スケールアップ時にキャパシティが無い可能性がある)。推奨形は **PTU でベースライン + Standard でスパイク。**
 
@@ -101,9 +103,9 @@ Normalized TPM  = Input TPM × (1 - キャッシュ率) + (output:input 比 × O
 
 - **条件:** プロンプト最低 **1,024 トークン**、かつ**先頭 1,024 トークンが完全一致。**以降は 128 トークン単位でヒット。**1 文字違えばヒットしない。**
 - **保持ポリシー(gpt-5.5 以前):** `prompt_cache_retention` で `in_memory`(非アクティブ 5〜10 分、最終使用から 1 時間以内に必ず消去)/ `24h`(extended。最大 24 時間)を選ぶ。**gpt-5.4 以前の既定は `in_memory`、gpt-5.5 は extended が既定。**128 トークン単位のヒットも gpt-5.5 以前のみ。
-- **gpt-5.6 以降は仕組みが変わった:** `prompt_cache_retention` は適用外(非推奨)で、**`prompt_cache_options.ttl`(`30m` のみ・既定。最低 30 分保持)**と**キャッシュブレークポイント**(implicit / explicit モード。1 リクエストで新規書込は最大 4 つ)で制御し、`prompt_cache_key` で関連リクエストのヒット率を上げる。旧モデルにこれらのパラメータを送ると 400。
+- **gpt-5.6 以降は仕組みが変わった:** `prompt_cache_retention` は適用外(非推奨)で、**`prompt_cache_options.ttl`**と**キャッシュブレークポイント**(implicit / explicit モード。1 リクエストで新規書込は最大 4 つ)で制御し、`prompt_cache_key` で関連リクエストのヒット率を上げる。旧モデルにこれらのパラメータを送ると 400。**2026-11-22 更新(prompt-caching 11-06 本文更新):** TTL は **`30m`(既定)に加えて `12h`**(Responses API・Decisions API の対応デプロイ。旧記載「`30m` のみ」は更新)、読込は直近 50 ブレークポイントまで。**12 時間 TTL のキャッシュ書込は 2026-11-01 の利用分から課金**が始まり、PTU では 12 時間書込の重みが 2.5(30 分は 1.25 — §1.3)。12 時間 TTL は「長く効く」代わりに書込単価が上がるので、呼び出し間隔が 30 分を超えるプレフィックスにだけ使う(本ドキュメントの判断)
 - **課金:** Standard はキャッシュ読取が入力単価から割引、**Provisioned は最大 100% 割引(PTU 使用率から全額控除)。****※2026-10-06: GPT-6 Astra / Sol / 6.1 Sol(normalized token accounting)は例外**で、キャッシュ読取・書込が重みに応じて PTU を消費する(§1.3)。キャッシュ率でサイジング例の「-27%」を見込むのは GPT-5.x 以前のモデルに限る。
-- **⚠ gpt-5.6 以降はキャッシュ書き込みが課金対象**(それ以前は無料)。Standard(従量)では `usage` に **`cache_write_tokens` が別掲される**ので読取(`cached_tokens`)と書込を比較して監視する(PTU-M ではブレークポイントも `cache_write_tokens` も非対応)。書込課金を避けたい Standard リクエストは `prompt_cache_options.mode=explicit` + ブレークポイントなしでキャッシュを無効化できる(2026-09-26 確認: [prompt-caching](https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/prompt-caching) ms.date 2026-08-11。旧記載「書込は別掲されず cached_tokens でしか監視できない」「新しいモデルは既定 24h」は更新)。
+- **⚠ gpt-5.6 以降はキャッシュ書き込みが課金対象**(それ以前は無料)。Standard(従量)では `usage` に **`cache_write_tokens` が別掲される**ので読取(`cached_tokens`)と書込を比較して監視する(PTU-M ではブレークポイントも `cache_write_tokens` も非対応 — **2026-11-22: GPT-6 以降の PTU-M はブレークポイント対応に変わった**。GPT-5.6 以前の PTU は非対応のまま。PTU-M での `cache_write_tokens` の扱いは記載を確認できていない)。書込課金を避けたい Standard リクエストは `prompt_cache_options.mode=explicit` + ブレークポイントなしでキャッシュを無効化できる(2026-09-26 確認: [prompt-caching](https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/prompt-caching) ms.date 2026-08-11。旧記載「書込は別掲されず cached_tokens でしか監視できない」「新しいモデルは既定 24h」は更新)。
 - **設計への効き方:** システムプロンプト・ツール定義・共通コンテキストを**プロンプトの先頭に固定配置**し、可変部分を後ろに置く。これだけで PTU 必要量が 2〜3 割変わる。
 - **⚠ Grounding with Bing Search / Custom Search を使うとキャッシュがヒットしない(2026-10-14 追加):** bing-tools(ms.date 2026-10-12)の既知事項に、両ツールが毎リクエストに現在時刻入りの指示を追加するためプロンプトキャッシュがヒットしない、と追記された。Bing ツールを付けたエージェントでは、長いシステムプロンプトをキャッシュ前提で見積もったコスト・PTU は成立しない(Web search ツールには同様の記載なし)
 
@@ -114,6 +116,7 @@ Normalized TPM  = Input TPM × (1 - キャッシュ率) + (output:input 比 × O
 - **クォータは「enqueued tokens」でオンライン系と完全分離。**ファイル投入時にトークン数がカウントされ終端状態まで占有する。
 - 入力ファイル最大 200MB(BYO Blob なら 1GB)、1 ファイル最大 100,000 リクエスト。
 - **設計への効き方:** 「夜間に全文書を分類する」「過去ログを一括要約する」といった処理を**リアルタイム経路から切り離して Batch に回すだけでモデルコストが半減する。**PoC 段階でこの切り分けを設計に入れておく。
+- **⚠ Batch と PTU はモデル更改が自動で進まない(2026-11-22 追加、リタイア表 11-18 版):** `gpt-4o` 2024-05-13(**2027-01-14** に延長、後継 `gpt-5.1`)は Global / Data Zone Standard だけ自動アップグレードされ、**PTU と Batch は手動移行**。2026-11-19 に到来した o-series の後継 `gpt-5.6-sol` / `-terra` は **Batch・Regional Standard で提供されない**(`gpt-5.6-sol` は Global Provisioned のカバレッジも限定的 — 脚注 4)ので、Batch の移行先は別モデルになる(代替の指定: Global / US Data Zone Batch → `gpt-5.4` / `gpt-5.4-mini`、EU Data Zone Batch → `gpt-4.1` / `gpt-4.1-mini`〈これ自体 2027-04-14 リタイア〉、Regional Standard → `gpt-5.1`)。Batch ジョブの定義(デプロイ名・モデル)は期限前に差し替えを計画に入れる
 
 ---
 
@@ -131,6 +134,8 @@ Normalized TPM  = Input TPM × (1 - キャッシュ率) + (output:input 比 × O
 | Foundry プロジェクト | 顧客 | 各リージョンで作成 |
 
 **Basic セットアップは「人的ミスや自動化による損失に対してほぼ復旧能力を提供しない」**と明記。本番は Standard 一択。
+
+> **2026-11-22 追記 — hosted agent を顧客の AKS で動かす選択肢(BYO-AKS):** Foundry の API・azd・エンドポイントはそのままにランタイムだけを顧客の AKS(セッションごとに pod sandboxing の軽量 VM)で動かす構成が発表された。**ステータスは「限定プレビュー受付中、public preview は 2026 年 12 月上旬が目標」**(devblogs 2026-11-18。Book of News は preview と書く → 両論、Learn に専用ページなし)。責任分界は「Foundry = エージェントのライフサイクルと統合部品 / 顧客 = クラスター・ネットワーク・ノードプール・ストレージ・容量」で、**上表の「Microsoft 側で担保」がランタイム部分について顧客側に移る**。egress controls・private CA trust はマネージド hosted が対象で BYO-AKS では顧客のネットワーク制御を使う。GA 時期・リージョンは未公表なので、本番の BCDR 設計には入れない(features/03)
 
 ### 2.2 マルチリージョン戦略と RTO/RPO(公式目安)
 
@@ -164,6 +169,8 @@ Normalized TPM  = Input TPM × (1 - キャッシュ率) + (output:input 比 × O
 - **データ主権:** 地政学的境界を独立したスタンプとして扱い、境界内でのみ active-active / active-passive を適用。**性能ベースルーティングはデータ主権要件と衝突する。**最も確実なのは地政学的リージョンごとに完全独立のゲートウェイを建てること。
 - **ゲートウェイ冗長性:** APIM は 2 ユニット以上 × 2 ゾーン以上、カスタム実装なら最低 3 インスタンスを AZ 分散。
 
+> **2026-11-22 追記 — ゲートウェイの選択肢と Foundry 側の扱いが変わった:** Foundry が使えるゲートウェイは、従来の APIM と **Azure AI Gateway(APIM とは別のリソース型 `Microsoft.ApiManagement/aigateways`、`az aigateway`)** の 2 系統になった(ステータスは GA 一覧表 Manage > AI Gateway = Preview / manage-costs の「AI gateway token limits = GA」で両論、製品ページにラベルなし — features/01)。**既存の APIM はそのまま動き移行も不要**だが、Foundry UI から APIM を紐付ける旧体験は縮小し、**新しい APIM の紐付けは Foundry から作れない・プロジェクト単位のトークン上限は Foundry では読み取り専用(変更は APIM のポリシー XML を直接編集)・カスタム MCP エンドポイントの APIM 自動登録は廃止**(enable-ai-api-management-gateway-portal 2026-11-09 版)。→ 下のポリシー群は **APIM 側の IaC で持つ**前提にし、Foundry のポータル設定に依存しない。Foundry 自身のクォータ・コスト・ガバナンス機能はゲートウェイなしで使えると明記された(cost controls は APIM / AI Gateway の背後でも、ゲートウェイ通過後に判定される — §5.3)。
+
 **APIM の主要ポリシー:** `llm-token-limit`(TPM 上限とトークンクォータ。`estimate-prompt-tokens` で**バックエンド到達前にプロンプトを弾ける**)/ `llm-emit-token-metric`(カスタムディメンション付きで App Insights へ)/ `llm-semantic-cache-store` `-lookup`(Azure Managed Redis 必須)/ `llm-content-safety` / backend pool(round-robin / weighted / **priority-based** / session-aware)/ circuit breaker(**バックエンドの `Retry-After` 値を動的トリップ期間として適用**)。
 
 ### 2.5 Agent 状態の DR(最重要のリスク開示)
@@ -178,7 +185,9 @@ Normalized TPM  = Input TPM × (1 - キャッシュ率) + (output:input 比 × O
 | Azure Storage | アップロードファイル | Blob コンテナー 2 種(`azureml-blobstore` / `agents-blobstore`) |
 | Azure AI Search | エージェントが作ったベクトルストア | Search Index Data Contributor + Search Service Contributor |
 
-Cosmos DB の RU/s 不足は **capability host のプロビジョニング失敗の直接原因**になる。コンテナーは基本 3 個(`thread-message-store` 系)に加え、**Responses API を使うエージェントの初回起動で 2 個(`agent-definitions-v1` / `run-state-v1`)が追加される**(排他ではなく追加関係。 https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/use-your-own-resources )点にも注意。
+Cosmos DB の RU/s 不足は **capability host のプロビジョニング失敗の直接原因**になる。コンテナーは基本 3 個(`thread-message-store` 系)に加え、**Responses API を使うエージェントの初回起動で 2 個(`agent-definitions-v1` / `run-state-v1`)が追加される**(排他ではなく追加関係。 https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/use-your-own-resources )点にも注意。**2026-11-22 追記:** hosted agent の durable state store(サーバー側のキー・バリューストア、ライフサイクル表記なし)を使うと、standard 構成ではプロジェクトの Cosmos DB に **`<workspaceId>-state-storage-v1` コンテナが初回アクセス時に自動作成**される(上の 5 個とは別。agent-state-store 2026-11-18 版)→ RU・容量・継続バックアップの対象に入れる。
+
+**会話データの保持期間(2026-11-22 追記、limits-quotas-regions 2026-11-18 版で新記載):** basic 構成は Microsoft 管理の Cosmos DB に conversations / items / responses を **60 日**保存して自動削除し(期限切れの会話は 404)、standard 構成は自前 Cosmos DB の `run-state-v1` コンテナで**既定 TTL 60 日(変更可)**。A2A の task / context も最終書き込みから 60 日、音声エージェントの保存会話・音声も 60 日。→ **「会話は残り続ける」前提の DR・監査設計は成り立たない**。60 日を超えて残す必要があるなら、TTL を変える(standard)か、アプリ側の監査ログ・会話ストアに複製する(§3.1 の「トレースを監査証跡にしない」と同じ考え方)。逆に削除要件(個人データ)は TTL だけに頼らず、削除 API と Cosmos DB の継続バックアップの保持期間の両方で説明する(本ドキュメントの判断)
 
 **DR 補償策(公式リスト):**
 
@@ -207,7 +216,7 @@ Cosmos DB の RU/s 不足は **capability host のプロビジョニング失敗
 2. Cosmos DB / Azure OpenAI / Storage に **Resource Health アラート**
 3. App Insights の**可用性テスト**(複数地点からエージェントエンドポイントを常時プローブ)
 4. アクショングループ(メール / SMS / インシデント管理)でフェイルオーバー判断を迅速化
-5. **委任サブネットの IP 使用率は Azure portal に露出していない。**枯渇の先行指標は「data proxy の HTTP 5xx」「hosted agent のセッション作成・再開時の **HTTP 429 `subnet_exhausted`**」「新規プロジェクトのプロビジョニング失敗」で、**プラットフォームからの事前警告はない。**定期的にエージェントセッションを作る合成監視で補う。容量目安は既定 IP:セッション = 1:1 で /27 ≈ 20・/26 ≈ 50・/24 ≈ 250 セッション(サポート申請で 1:10 まで)、本番は /24 以上・使用率 80% 未満で設計([agents-networking-deep-dive](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/agents-networking-deep-dive) ms.date 2026-09-07)。
+5. **委任サブネットの IP 使用率は Azure portal に露出していない。**枯渇の先行指標は「data proxy の HTTP 5xx」「hosted agent のセッション作成・再開時の **HTTP 429 `subnet_exhausted`**」「新規プロジェクトのプロビジョニング失敗」で、**プラットフォームからの事前警告はない。**定期的にエージェントセッションを作る合成監視で補う。~~容量目安は既定 IP:セッション = 1:1 で /27 ≈ 20・/26 ≈ 50・/24 ≈ 250 セッション(サポート申請で 1:10 まで)~~(agents-networking-deep-dive 2026-09-07 版)→ **2026-11-22 更新: shared subnet IPs が GA**(devblogs 2026-11-18。全員に既定で有効・申請不要)になり、hosted のセッションが 1 つずつ IP を消費する方式ではなくなった。計画値(保証値ではない)は **/27 ≈ 7,500・/26 ≈ 15,000・/25 ≈ 30,000・/24 ≈ 60,000 セッション**で、サブネットを共有する全プロジェクトの合計([agents-networking-deep-dive](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/agents-networking-deep-dive) ms.date 2026-11-09)。**実際の同時実行はサブスクリプション × リージョンの同時セッションクォータ(既定 2,000 / 1,000 — §1.2)で頭打ち**になるので、見積もりの律速はサブネットからクォータに移った。prompt agent はプロジェクトあたり約 10 IP の固定プール。データプロキシ・プロジェクトのネットワーク部品は引き続き IP を消費し、枯渇の兆候(データプロキシの 5xx・`subnet_exhausted`・プロビジョニング失敗)と合成監視は変わらない。サブネットのサイズは割り当て後に変更できず、/27 が最小で本番は /24 以上(同ページ)。プラットフォームから IP 使用率は見えないままなので、データプロキシの健全性と hosted のセッション作成・再開の成功率を先行指標として監視する
 
 ---
 
@@ -215,16 +224,17 @@ Cosmos DB の RU/s 不足は **capability host のプロビジョニング失敗
 
 ### 3.1 トレーシング
 
-- **ステータス:** prompt / hosted エージェントは **GA**、**workflow と外部エージェントはプレビュー。Tracing の VNet 対応もプレビュー。**
+- **ステータス:** prompt / hosted / **外部(external)**エージェントは **GA**、**workflow エージェント(Workflows 自体が 2026-12-01 廃止)だけがプレビュー。Tracing の VNet 対応もプレビュー。**(2026-11-22 更新: GA 一覧表 updated_at 2026-11-17 版が「GA for prompt, hosted, and external agents; Preview for workflow agents」に変わった。旧: workflow と外部エージェントはプレビュー。外部エージェントの登録は §3.4)
 - **サーバーサイドトレースが出発点:** Foundry プロジェクトに Application Insights を接続するだけで**コード変更なしに**数分でトレースが出る。**ポータルでは直近 90 日分**を検索・フィルタできる。
 - **キャプチャ内容:** ユーザー入力とエージェント出力、ツール呼び出しと結果、**トークン消費**、所要時間・レイテンシ、リトライ、コスト。
 - **Conversation ビュー(トレースリプレイ相当):** Response ID / Trace ID から Conversation ID を辿り、会話履歴・順序付きアクション・ツール呼び出し・入出力を再生できる。
 - **保存先は App Insights。**保持期間・サンプリング・課金は App Insights / Log Analytics の設定に従う(**Foundry 側の上乗せ課金はない**)。
 - **必要ロール:** ログ参照に **Log Analytics Reader**。対象テーブルが Protected なら Privileged Monitoring Data Reader も必要。**公式では 2026-09-30 以降、会話の中身(`gen_ai.input.messages` 等の 7 属性)は専用テーブル `AppGenAIContent` に入る**(2026-10-06 の実測では従来テーブルとの二重書き)ので、中身を読ませる相手だけにこのロールを付ける設計ができる(§3.6 案 4)。**2026-10-14 追記:** Privileged Monitoring Data Reader は**接続先 App Insights リソースに付与すれば App Insights と Foundry の両方の画面で本文を読める**(Foundry は App Insights の API でクエリするため、リンク先 Log Analytics ワークスペースへの付与は不要。ワークスペース中心のクエリを直接打つ ID だけワークスペースにも付与 — traces-sensitive-content 2026-10-06 版)。トレース評価・トレース→データセット生成ではプロジェクトのマネージド ID にもロールが要る(§4.3)。
 - **⚠ クライアント側(自前計装・コンテナ)のトレースは既定で間引かれる([実測] [maf-ports](../../../labs/maf-ports/README.md) Port 1・Port 4、2026-10-06):** `azure-monitor-opentelemetry` 1.8.x(1.8.9 / 1.8.10 で確認)の既定サンプラーは **rate-limited(5 spans/秒)**で、ワークフロー開始直後のスパンの山(`workflow.run` / executor / `invoke_agent`)が落ちてトレースが歯抜けになる(Port 4 のローカル再現では 87 本中 27 本しか残らず、親スパンが残っても子は独立に再サンプリングされる)。全件が要るなら `configure_azure_monitor(..., sampling_ratio=1.0)` か `OTEL_TRACES_SAMPLER=always_on`(`microsoft.rate_limited` 指定時は kwargs の `sampling_ratio` が勝つ)。**「トレースの配線は 2 行」にはサンプリングの 3 行目が要る。**取り込み量(= 課金)とのトレードオフなので、本番の比率は意図して決める
+- **⚠ MAF のワークフローのスパン名が変わった(2026-11-22 追加):** MAF Python 1.25.0 で `workflow.run` は OpenTelemetry GenAI 規約の **`invoke_workflow`** になった(python-2026-significant-changes)。**`workflow.run` で絞り込む KQL・アラート・ダッシュボードは修正が要る**(§3.2 の「属性名・スパン名を 1 箇所に抽象化」の実例)。同時に MAF は Python 3.11 以上・MCP SDK 2.x が必須になった(§6.4)
 - **⚠ 照会側の既定にも注意:** `az monitor app-insights query` は既定で**直近 1 時間**しか見ない(`--offset` 既定 1h が KQL 内の期間指定より優先される)。過去分を数えるときは `--offset` を付けるか Log Analytics を直接引く(同実測。一時的に過少件数を返したこともある)
 - **トレースは監査証跡の代わりにしない(本ドキュメントの判断、2026-10-06 の実測で理由が増えた):** ①既定サンプリングで間引かれる(上記)②会話の中身を含みうるので閲覧者を絞る必要があり(§3.6)、監査の閲覧者と要件が合わない ③ポータルの表示は 90 日・保持は App Insights の設定次第。承認・実行の記録は、サンプリングの影響を受けないアプリ側の監査ログ(追記専用ストア等)に持つ
-- **取り込みの Entra 認証(プレビュー、2026-08 新設):** 接続済み App Insights への取り込みをキーから**プロジェクトのマネージド ID** に切り替えられる(App Insights 側でローカル認証を無効化して Entra のみに強制)。`disableLocalAuth` を全面適用する規制案件で効く([trace-ingestion-entra-authentication](https://learn.microsoft.com/en-us/azure/foundry/observability/how-to/trace-ingestion-entra-authentication) ms.date 2026-08-06)。
+- **取り込みの Entra 認証(プレビュー、2026-08 新設):** 接続済み App Insights への取り込みをキーから**プロジェクトのマネージド ID** に切り替えられる(App Insights 側でローカル認証を無効化して Entra のみに強制)。`disableLocalAuth` を全面適用する規制案件で効く([trace-ingestion-entra-authentication](https://learn.microsoft.com/en-us/azure/foundry/observability/how-to/trace-ingestion-entra-authentication) ms.date 2026-08-06)。**2026-11-22:** ページの h1・本文から「(preview)」が外れた(updated_at 2026-11-17)が、GA の明記はなく GA 一覧表にも行がないので、GA とは扱わない。
 - **セキュリティ:** トレースはプロンプト・出力・ツール引数などの機微情報を含みうる。**テレメトリ到達前にマスクする**のが公式ベストプラクティス。**ただし hosted agent のサーバーサイドトレースはアプリ側でマスクできない**(コンテナで内容記録をオフにしても、プラットフォーム側のスパンは会話の中身を記録する — §3.6)。マスクできない中身は「記録させない(接続しない)」か「読み手を絞る(`AppGenAIContent` の保護、または App Insights の分離)」で扱う。
 
 ### 3.2 OpenTelemetry GenAI セマンティック規約のステータス(設計に効く)
@@ -261,6 +271,13 @@ Foundry は OpenTelemetry のセマンティック規約に従ってトレース
 
 OpenTelemetry の GenAI セマンティック規約に沿って計装すれば、Application Insights 側と App Service の Agents タブでは集計される。**「Foundry のダッシュボードを見せる」ことが要件に入っていないかを事前に確認する。**
 
+**2026-11-22 更新 — 外部エージェントの登録が GA になり、ギャップは縮んだ:** Foundry 外(App Service・他クラウド・オンプレ・AKS など)で動くエージェントを **external agent として登録**すると、接続済み App Insights に送った OpenTelemetry トレースで trace view・Insights・トレース評価・スケジュール評価が使える(Tech Community 2026-11-18「External agents … now generally available」・`azure-ai-projects` 2.11.0・GA 一覧表の Tracing 行。[register-external-agent](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/register-external-agent) ms.date 2026-11-11)。Foundry が持つのは登録メタデータだけで、**ランタイムのホスト・プロキシ・呼び出しはしない**(上の引用の「マネージドエージェントしか見えない」は、登録しない場合に限った話になった)。設計で押さえる点:
+
+- **照合キーはトップレベルの `invoke_agent` スパンの `gen_ai.agent.id`** = 登録時の `otel_agent_id`(省略時はエージェント名)。計装は `microsoft-opentelemetry` ディストロを起動時に 1 回呼ぶ(LangChain / LangGraph は `instrumentation_options` で自動付与)。対象フレームワークは LangGraph / LangChain / CrewAI 等
+- **現時点の非対応: 人手評価(human evaluation)と AI red teaming のターゲット化**(register-external-agent の Current limitations)。**イベント起動の継続評価は Foundry エージェントの応答完了で動くため外部エージェントには使えず、スケジュール型のトレース評価(trace source の `agent_id` = `otel_agent_id`)で代替する**(continuous-scheduled-evaluation)。Insights の修正案は一般的な助言のみ
+- 品質・ルーブリック評価には本文の記録(`enable_sensitive_data=True`)が要る — 記録範囲・閲覧者・保持・マスキングを §3.6 と同じ基準で先に決める
+- 前提ロールはプロジェクトの Foundry User と、トレース閲覧に接続先 App Insights の Reader か Monitoring Reader。登録を削除してもスパンは App Insights に残る
+
 ### 3.5 Agent Monitoring Dashboard(プレビュー)
 
 Foundry ポータル → Build → エージェント → Monitor タブ。データソースは接続済み App Insights。
@@ -272,7 +289,9 @@ Foundry ポータル → Build → エージェント → Monitor タブ。デ�
 
 設定パネルの内訳(2026-09-26 確認、[how-to-monitor-agents-dashboard](https://learn.microsoft.com/en-us/azure/foundry/observability/how-to/how-to-monitor-agents-dashboard) ms.date 2026-09-03): **Recurring evaluations(プレビュー)** / Red team scans(プレビュー)/ Alerts(プレビュー)の 3 項目に整理された(旧版の Continuous evaluation / Scheduled evaluations は **Recurring evaluations に統合**され、その中で「固定スケジュールの scheduled」と「ライブトラフィックをサンプリングする continuous」を選ぶ形。継続的評価のステータス不明瞭は解消しプレビュー確定)。ダッシュボード自体も View agent metrics (preview)。なお GA 一覧表では Red teaming 機能自体は GA だが、**Monitor 設定内の Red team scans(定期スキャン)はプレビュー表記**のまま。**継続的評価の `max_hourly_runs` 既定は 100/時**で、到達すると評価 run がスキップされる。**プロジェクトのマネージド ID に Foundry User ロールが必要**(未付与だとルール作成が失敗する)。**※2026-10-06 実測:** `sampling_rate` は百分率(1.0 = 1%)、継続評価が completed になるのはプロジェクトの Responses + `agent_reference` で呼んだ prompt agent の応答で、エージェントエンドポイント経由の応答は failed(§4.3)。
 
-**Foundry 外のエージェントも監視できる:** Foundry Control Plane に AI Gateway 経由で登録し、同一 App Insights に OTel GenAI 規約準拠のテレメトリを送れば、継続的評価とエラーレート追跡が使える。
+**2026-11-22 更新(Monitor 周りのラベルと構成):** how-to-monitor-agents-dashboard(ms.date 2026-11-11)から「View agent metrics (preview)」の見出しとプレビュー定型文が消え、Monitor 設定の「Recurring evaluations」もラベルなしになった(**Scheduled red teaming runs・Evaluation Alerts は (preview) のまま**)。継続評価には専用ページ [continuous-scheduled-evaluation](https://learn.microsoft.com/en-us/azure/foundry/observability/how-to/continuous-scheduled-evaluation)(ms.date 2026-11-11、ラベルなし)ができ、評価ルールは **継続評価(応答完了で起動、`max_hourly_runs` 既定 100、超過分はスキップ)/ スケジュール型トレース評価 / スケジュール型データセット評価(固定クエリを定時にエージェントへ送って採点)**の 3 種になった(スケジュール型は `azure-ai-projects` 2.11.0 で追加。`provisioning_status` が succeeded になるまで更新・削除しない)。一方 **GA 一覧表(updated_at 2026-11-17)は Monitoring = Preview のまま** → **Learn = ラベルなし / GA 一覧表 = Preview の両論で、本書はダッシュボードと継続評価をプレビュー扱いに維持**する(SLA の根拠は GA 一覧表)。新ページのサンプルは `max_hourly_runs` だけで `sampling_rate`(probe 09 で百分率と確認)が出てこない — 扱いは要確認。あわせて **プロジェクト単位の Monitor(Build > Monitor、preview)**が新設され、プロジェクト内の全エージェント・モデルのトークン・エラー・評価結果と**プロジェクト / エージェント / モデル別の推定コスト**を 1 画面で見られる(monitor-project ms.date 2026-11-09。サブスクリプション単位の Manage とは別)。
+
+~~**Foundry 外のエージェントも監視できる:** Foundry Control Plane に AI Gateway 経由で登録し、同一 App Insights に OTel GenAI 規約準拠のテレメトリを送れば、継続的評価とエラーレート追跡が使える。~~ → **2026-11-22 訂正: Control Plane の custom agents(AI Gateway 経由で登録した Foundry 外エージェント)は 2027-05-07 に廃止され、新規追加はすでに不可**([migrate-custom-to-external-agent](https://learn.microsoft.com/en-us/azure/foundry/control-plane/migrate-custom-to-external-agent))。Foundry 外のエージェントの監視・評価は **external agent の登録(GA、§3.4)**に移す。既存の custom agent は**同じ OpenTelemetry agent ID(`gen_ai.agent.id`)で external agent として登録し直す**。**external agent はトラフィックをプロキシせずゲートウェイでのブロックもしない**ので、呼び出し経路(APIM・呼び出し URL・認証)はそのまま残し、**移行中は元の custom agent と APIM の API を消さない**(消すと呼び出し経路が切れる)と公式が明記。また外部エージェントには継続評価が使えないので、custom agent で使っていた継続評価はスケジュール型トレース評価に置き換える。
 
 ### 3.6 トレースに会話の中身を残すか(hosted agent の選定基準)
 
@@ -292,6 +311,8 @@ hosted agent で「会話の中身をどこに残し、誰が読めるか」は�
 - **会話履歴の保存とトレースは別物。**会話履歴(`store: true` の応答。`previous_response_id` で続けるため)の保存先を変えるのが Standard setup(BYO Cosmos DB 等)で、トレースに中身が入るかどうかは Basic / Standard どちらでも「接続したか」だけで決まる
 
 **2026-09-30 から — 中身は専用テーブル `AppGenAIContent` に振り分けられる(公式では既定。2026-10-06 の実測ではまだ従来テーブルとの二重書き)**
+
+> **2026-11-22 再確認:** traces-sensitive-content(en updated_at 2026-10-19、ms.date 07-21)は h1 が「(preview)」のまま、移行の記述(2026-09-30 以降は従来テーブルに値を送らない)と検証手順も不変 → 下の実測との両論併記を継続する(再測定はしていない)。
 
 > **⚠ 両論併記(2026-10-06 実測):** 公式は「移行日 2026-09-30 以降に取り込むデータは、既定で中身が `AppGenAIContent` だけに入る」と書く。一方、**2026-10-06 の japaneast 実測**(サブスクリプションの feature flag は `protectGenAISensitiveData` / `optOutProtectGenAISensitiveData` とも未登録、MAF 1.20 のクライアント側スパンで中身の記録を有効にして 1 往復)では、**会話本文は `AppDependencies.Properties` の `gen_ai.input.messages` / `gen_ai.output.messages` / `gen_ai.system_instructions` と `AppGenAIContent`(InputMessages / OutputMessages / SystemInstructions 列)の両方に二重書きされた**。`AppDependencies` 側の内部プロパティ `_MS.GenAIContentId` が `AppGenAIContent.Id` と一致して両者を対応づけ、`AppGenAIContent` への着信は約 5 分遅れた。`AppTraces` にもメッセージのログイベントが残った(これが振り分け対象かは未確認)。**つまりこのサブスクリプション・リージョンでは移行日以降の既定動作はまだ有効になっておらず、従来テーブルの本文は通常の Log Analytics Reader で読める。**早期有効化フラグを登録した後の挙動は未検証(サブスクリプション全体の設定変更になるため実施していない)。**[実測] [probe 11](../../../labs/foundry-probes/probes/11-trace-content-routing/NOTES.md)(2026-10-06、同条件)で発生源を 4 種に広げても結果は同じ** — 合成した `gen_ai.*` スパン、ログレコードの `gen_ai.*` 属性、prompt agent のプラットフォーム側スパン、MAF のクライアント側スパンの**すべてが二重書き**(`_MS.GenAIContentId` は `AppGenAIContent.Id` と 1 対 1)。**`gen_ai.*` 以外の属性名に入れた同じ本文と、MAF のメッセージイベント(`AppTraces` の Message 本体)は振り分け対象外**。`AppGenAIContent` の着信遅れは 0〜約 6 分で一定しない(直後に 0 件でも未振り分けと判断しない)。hosted agent のプラットフォーム側スパン(`responsesapi`)も Port 11 のライブで二重書きだった(本節末の表)。
 
@@ -330,8 +351,9 @@ hosted agent で「会話の中身をどこに残し、誰が読めるか」は�
 1. 会話の中身(利用者の入力・回答・参照した社内文書)を運用ログに残してよいか → 不可なら**案 3**(Agent 365 のデータ収集も止める)
 2. 残すなら、誰が読めるか。運用担当と分析担当は同じ人たちか → 同じなら**案 1**。分けたいなら**まず案 4**(App Insights 1 つのまま、ロールで分ける。ただし上の 4 点がそろい、従来テーブルに本文が残っていないことを KQL で確認できた場合だけ。確認できないうちは案 2)。中身を別リソースに置きたい・preview の保護手順に依存したくないなら**案 2**
 3. 保持期間と利用者への告知。公式は、有効化した後の告知・アクセス制御・保持期間を**顧客の責任**としている
-4. 継続評価やトレースを使う評価を使うか → 使うなら案 1・2・4(案 3 では使えない)。案 4 ではプロジェクト MI に Privileged Monitoring Data Reader を付ける(§4.3)
+4. 継続評価やトレースを使う評価を使うか → 使うなら案 1・2・4(案 3 では使えない)。案 4 ではプロジェクト MI に Privileged Monitoring Data Reader を付ける(§4.3)。**2026-11-22 追記:** GA になった **Insights**(トレースを GPT ジャッジで横断分析)も同じで、利用者とプロジェクト MI に Monitoring Reader、保護テーブルなら Privileged Monitoring Data Reader が要る([agent-insights](https://learn.microsoft.com/en-us/azure/foundry/observability/how-to/agent-insights) ms.date 2026-11-10。アプリ専用認証で起動した run はプロジェクト MI で分析する)。HITL の注釈・データセット生成、外部エージェント、プロジェクト単位の Monitor の各ページも保護テーブル用の追加ロールを前提に書かれており、**中身に触れる経路(人・MI)が機能を足すたびに増える**ので、付与先の一覧を管理する
 5. **2026-09-30 より前から接続している環境か** → 移行日前の中身は既存テーブルに残り、保持期間が切れるまで Log Analytics Reader で読める。案 4 に移るなら旧データの保持期間・削除と opt-out フラグの有無を確認する(本ドキュメントの判断)
+6. **(2026-11-22 追加)azd で新規に作るプロジェクトか** → `azure.ai.agents` 拡張 1.1.0(2026-11-12)以降は、生成する Bicep / Terraform に **Application Insights を既定で含める**(ネットワーク分離プロジェクト向けの private App Insights も)。プロジェクトへの「接続」まで生成物が行うなら、それだけで案 1 の状態(プラットフォーム側が中身を記録)になる → 案 3 を選んだ案件は生成された IaC から接続を外したことを確認する(生成物の中身は未確認 — 本ドキュメントの判断)
 
 **業界の標準との関係:** OpenTelemetry の生成 AI 規約は中身の記録を**オプトイン(既定では記録しない)**とし、Microsoft の手順書も「本番では中身の記録を無効にする」「個人データは記録前にマスク・最小化する」とする。Foundry では**接続そのものがオプトインに当たり、接続すれば中身が入る**設計。2026-09-30 からの専用テーブル化は「記録はするが、読める人をテーブル単位で絞れる」方向への変更で、記録がオプトインになったわけではない(振り分けは既定、閲覧制限は設定次第)。委任アクセスと組み合わせると、利用者ごとに絞った中身がトレースの閲覧者には全部見える点に注意する([casebook P-O12](../casebook/02-pitfalls-index.md))。
 
@@ -355,8 +377,22 @@ hosted agent で「会話の中身をどこに残し、誰が読めるか」は�
 - **RAG アプリ:** Retrieval + Groundedness + Relevance + Content Safety
 - **エージェントアプリ:** Tool Call Accuracy + Task Adherence + Intent Resolution + Rubric + Content Safety。**2026-10-06 注記:** built-in-evaluators の現行版は推奨を **Output Quality + Tool Use Quality + Rubric + Content Safety** に置き換えた(下の合成評価器)
 - 全アプリ共通でリスク・安全性評価器(Hate / Sexual / Violence / Self-Harm)を追加
+- **2026-11-22 確認:** built-in-evaluators(updated_at 2026-11-17)の「Combining evaluators」は上の 3 行のまま(エージェントは Output Quality + Tool Use Quality + Rubric + Content Safety)。**音声エージェント**には録音そのものを会話単位で採点する**音声評価器 4 種**(`builtin.task_completion_audio` / `coherence_audio` / `customer_satisfaction_audio` / `groundedness_audio`。conversation レベルのみ・judge は gpt-realtime 系のデプロイ)が加わったが、voice-agent-observability(11-11)が「Voice agent monitoring and evaluation are in preview」と書くので**プレビュー扱い**(音声の会話全体評価はスケジュール型のみで、イベント起動の継続評価は不可)
+- **⚠ Groundedness Pro(preview)は Azure AI Content Safety の groundedness を使う**と built-in-evaluators に明記されている。**Content Safety の Groundedness detection は 2027-04-30 廃止予定**(Content Safety whats-new)だが、Groundedness Pro 評価器への影響は公式に記載がない(要確認)→ 長期運用の評価パイプラインでは LLM ジャッジ型の Groundedness を主に使う(本ドキュメントの判断)
 
 **合成(composite)評価器(preview、2026-10 追加):** 複数の品質評価器を **1 回の LLM ジャッジ呼び出しにまとめる**評価器。`builtin.output_quality`(Fluency / Coherence / Intent Resolution / Task Adherence / Groundedness / Task Completion)と `builtin.tool_use_quality`(Tool Call Accuracy / Tool Call Success / Tool Input Accuracy / Tool Output Utilization / Tool Selection)の 2 種で、ターン単位・会話単位(`messages` を渡す)の両方に対応する。主結果は「該当する全コンポーネントが合格なら 1、1 つでも不合格なら 0」の 2 値で、どのコンポーネントが落ちたかは `<composite>_reason` / `_properties` に入る。ジャッジは **GPT-5.6 系を推奨**(最安は `gpt-5.6-luna`)([agent-evaluators](https://learn.microsoft.com/en-us/azure/foundry/concepts/evaluation-evaluators/agent-evaluators) / [built-in-evaluators](https://learn.microsoft.com/en-us/azure/foundry/concepts/built-in-evaluators)、2026-10-06 確認。Tech Community「Evaluate More, Spend Less」2026-10-02)。**設計への効き方:** 評価コストとレイテンシ(ジャッジ呼び出し回数)が下がるので継続評価の `max_hourly_runs`(§3.5)に余裕が出る。一方、主結果が 2 値なので**本番ゲートの閾値は個別コンポーネントの値で決める**(本ドキュメントの判断)。
+
+**ルーブリックと「人が決めた基準」(2026-11-22 追加 — Ignite 2026 の「継続改善ループ」):** 評価の基準を誰がどう持つかの選択肢が増えた。ステータスは GA 一覧表に個別行がないものが多く、Learn の個別ページの表記で判断している(features/05)。
+
+| 評価器・仕組み | 何を採点するか | ステータス | 設計への効き方 |
+| --- | --- | --- | --- |
+| **品質ルーブリック**(Rubric 評価器) | エージェント定義・プロンプト・データセット・トレースから生成した重み付きの次元で採点。モードは `likert`(既定。1〜5 を 0〜1 に正規化、`pass_threshold` 既定 0.5)か `boolean`(全チェック合格で合格、重み不可)。次元は最大 20 | **GA**(continuous-scheduled-evaluation 2026-11-11 が「Rubric evaluators are generally available」と明記、TC 2026-11-18 も GA)。**ただし built-in-evaluators の見出しは「Rubric evaluators (preview)」のまま** → 提案書では両論を併記 | 本番ゲートに載せられる唯一の生成型評価器になった。1〜5 と合否を併用するならルーブリック評価器を 2 つ同じ run に入れる。ルーブリックの生成はサービス側で動きモデル不要(評価実行にはデプロイが要る) |
+| **Safety rubric** | 安全方針の説明とアプリ文脈から「禁止行為」と「応じるべき依頼」の 2 つの合否を採点(過剰拒否も検出) | **プレビュー**(safety-rubric-evaluators ms.date 2026-11-10) | **対応リージョンは Americas 11・Europe 10 のみで日本なし**(Australia East は既存ルーブリックでの評価のみ)。Microsoft ホストのモデルで採点するので自前デプロイ不要。本番の安全性ゲートは既存の安全性評価器・AI Red Teaming と併用する |
+| **Task-level rubric** と **Human in the loop** | 専門家がトレースに評価・期待出力を注釈 → 注釈付きトレースを評価データセットに追加(行ごとの基準を自動生成)→ 信頼できるデータセットに `golden` タグを付けて版比較の基準にする | **プレビュー**(human-in-the-loop 4 ページ・task-level-rubric-evaluator とも「(preview)」) | 「誰が注釈を付けるか」「golden dataset の所有者」を運用体制に入れる。**golden タグは中身を検証しない**、方針変更時は期待出力と基準を先に直す。行ごとの生成失敗はジョブ全体では成功扱い(`rubric_metadata.generation_status` を確認)。`azure-ai-projects`>=2.11.0 |
+| **決定モデル judge** | 生成モデルではなく確率を返す決定モデル(Microsoft-Decision-1)をジャッジに使う。説明文なし、閾値付近だけ人か生成 judge で再評価する併用を推奨 | **プレビュー**(decision-model-judge ms.date 2026-11-17)。**対応モデルは両論: Learn は「Microsoft-Decision-1.1 isn't supported as an evaluation judge. Use Microsoft-Decision-1 instead.」/ Azure ブログ 11-17・TC 11-18 は 1.1 も可** → Learn に従い Decision-1 のみ | **Microsoft-Decision-1 自体がプレビューで 2027-02-04 リタイア**(後継の記載なし)。継続評価のコストを下げる用途でも期限を追跡する。コンテキスト 32,768 トークン・テキストと JSON のみ。Agent Optimizer を駆動する評価器には理由文を返す生成 judge を推奨 |
+| **ベンチマーク評価** | 組み込みのベンチマークデータセットでモデル・エージェント版を比較 | **プレビュー**(benchmark-evaluations) | ファインチューニング後の劣化確認・モデル更改の比較に使える(ポータル手順のみ) |
+
+**multi-turn evaluation(会話単位の評価)は両論:** Book of News(Ignite 2026)は「Multi-turn evaluation, now generally available」、Learn はページにより preview(トレースからの会話評価・ポータルの full conversations)→ 本書は §4.3 のとおりプレビュー扱いを維持する。**traces→dataset** も Tech Community 2026-11-18 は GA、GA 一覧表は「Convert traces to evaluation datasets = Preview」のままなのでプレビュー扱い。
 
 **評価レベル:** `turn`(既定)と `conversation` がある。**レベルの異なる評価器を同一 run に混在させられない。****2026-10-14 更新(公式間で食い違い):** cloud-evaluation-conversations(2026-10-07 版)・built-in-evaluators(10-08 公開)は「`messages` 形式なら異なるレベルの評価器を同じ run に混在でき、conversation レベルでは turn 専用評価器を**スキップ**する(run は失敗しない)」に変わった一方、troubleshooting(09-28 版)は「turn 専用評価器を conversation レベルで使うと incompatible evaluation level エラー」のまま。**CI のゲートでは「スキップされた評価器」を失敗として検出する仕組みを入れる**(スキップだと結果が欠けたまま合格しうる)。会話レベル対応は Output Quality / Tool Use Quality / Deflection Rate / Customer Satisfaction / Task Completion / Coherence / Groundedness の 7 種(`builtin.deflection_rate` はリファレンスに記載がなく要確認)。
 
@@ -377,26 +413,31 @@ hosted agent で「会話の中身をどこに残し、誰が読めるか」は�
 ### 4.3 クラウド評価の実行
 
 - **`azure-ai-projects>=2.2.0` + OpenAI 互換 evals API**(`client.evals.create`、評価器は `builtin.*` 名で指定)。**Entra ID 認証必須(キー不可)。**ドキュメントの最低要件は 2.2.0 のままだが、PyPI 最新は **2.7.0**(2026-09-18。2026-10-14 時点の最新は次項の 2.8.0)。**評価・データ生成ジョブの作成は Python / JS 2.4.0 で long-running operation 化**しており、作成直後に結果を読むコードはポーリング待ちへの書き換えが必要。2.5.0 以降は **Python 3.10+ / `openai>=3.0.0`** が前提(7・8 月号ブログ 2026-09-09)。
-- **`azure-ai-projects` 2.8.0(2026-10-02、PyPI 公開 10-05):** changelog は **Agent Optimization API・データ生成ジョブ API・評価器のライフサイクル / 生成ジョブ API を GA** とし、トレース評価サンプルを GA の `azure_ai_trace_data_source` に、会話シミュレーション(`azure_ai_user_conversation_simulation`)を GA 扱いにした(SFT / RFT 向けのデータ生成シナリオは `_PREVIEW` 付きに改名)。一方 **GA 一覧表(2026-10-06 時点で 09-29 以降の更新なし)は Agent optimizer を Limited preview**、cloud-evaluation は会話単位の評価・トレース起点の評価をプレビューと書いたまま → **SDK の「GA」と GA 一覧表が食い違う(両論併記)。SLA の根拠には GA 一覧表を使う。**なお MAF の `agent-framework-foundry` 1.14 は `azure-ai-projects<2.8.0` を要求するので、MAF と同居する評価コードは 2.8.0 に上げられない(2026-10-06 確認。**2026-10-14 の 1.14.1 でも同じ上限**)
+- **`azure-ai-projects` 2.8.0(2026-10-02、PyPI 公開 10-05):** changelog は **Agent Optimization API・データ生成ジョブ API・評価器のライフサイクル / 生成ジョブ API を GA** とし、トレース評価サンプルを GA の `azure_ai_trace_data_source` に、会話シミュレーション(`azure_ai_user_conversation_simulation`)を GA 扱いにした(SFT / RFT 向けのデータ生成シナリオは `_PREVIEW` 付きに改名)。一方 **GA 一覧表(2026-10-06 時点で 09-29 以降の更新なし)は Agent optimizer を Limited preview**、cloud-evaluation は会話単位の評価・トレース起点の評価をプレビューと書いたまま → **SDK の「GA」と GA 一覧表が食い違う(両論併記)。SLA の根拠には GA 一覧表を使う。**~~なお MAF の `agent-framework-foundry` 1.14 は `azure-ai-projects<2.8.0` を要求するので、MAF と同居する評価コードは 2.8.0 に上げられない(2026-10-06 確認。**2026-10-14 の 1.14.1 でも同じ上限**)~~ → **2026-11-22 解消: `agent-framework-foundry` 1.16.2 で上限が `<3` に緩和**され、MAF と同じ環境で 2.8.0 以降(最新 2.11.0)の GA 型を使える。代わりに MAF 全体が Python 3.11 以上、hosting 系が `mcp>=2.2.0,<3` を要求する(§6.4)
 - **2026-10-14 更新 — Learn の機能ページからプレビュー表記が外れ始めた(GA 一覧表は不変):** Rubric 評価器(rubric-evaluators)・traces→dataset・合成データセット生成・会話データセット評価・会話シミュレーション、Agent optimizer の概要の h1 から「(preview)」とプレビュー定型文が消えた(いずれも「generally available」の明記はない)。一方 **GA 一覧表は updated_at 2026-09-23 のまま**(Convert traces to evaluation datasets = Preview / Agent optimizer = Limited preview)、built-in-evaluators の見出しも「Rubric evaluators (preview)」のまま。→ **SDK 2.8.0 = GA / Learn の機能ページ = ラベルなし / GA 一覧表 = Preview の 3 者併記**で、本書は GA 一覧表に従い**プレビュー扱いを維持**する(SLA を論点にする提案では GA 一覧表の改訂を待つ)。**トレース評価(deployed-conversations / deployed-interactions)は Learn でも preview** で、deployed-conversations(2026-10-07 版)は preview のトレース評価ワークフローに **`azure-ai-projects==2.7.0`(`@azure/ai-projects@2.7.0`)を固定**し `azure_ai_trace_data_source_preview` を使う。SDK 2.8.0 のサンプルは GA の `azure_ai_trace_data_source` に移行済みなので、**同じプロジェクトで「2.8.0 の GA 型」と「2.7.0 固定の preview 手順」が混在しうる** → 評価パイプラインはワークフローごとに版を分けて固定するか、SDK リポジトリのサンプルを正とする。トレース評価の時間窓は 15 分以上(会話の両端に 5 分の非アクティブ緩衝)。合成シード(Simulation seed)は 2.8.0 では作れずポータル必須。Quality Grader は deprecated で評価に使えない(built-in-evaluators の一覧は「(preview)」のままでページ間不一致)
+- **2026-11-22 更新 — 要求版がさらに割れた:** `azure-ai-projects` の最新は **2.11.0**(PyPI 2026-11-13。JS 2.11.0・Java 2.10.0・.NET `Azure.AI.Projects` 3.0.0 GA)。**新しいページ群(Insights・HITL・safety / task-level rubric・外部エージェント・スケジュール型評価・ルーブリックのスコアリングモード)は >=2.11.0** を要求する一方、**トレース評価(deployed-conversations)は依然 `==2.7.0` 固定の preview 手順**、合成シードの「2.8.0 では不可」の注記も残る(2.10.0 で解消済み)。→ 評価パイプラインは**ワークフローごとに版を固定する**方針を続ける(1 つの環境で全機能を最新版に揃えられない)。2.11.0 で Insights が `.beta.agent_insight_monitors` → `.agent_insight_monitors` に移り引数の形も変わった(**beta → GA の破壊的変更**)。.NET 3.0.0 は Insights・Memory・RedTeams・Schedules 等に実験属性 `AAIP001` を付けたので、2.0.x から上げると警告の抑止が要る(features/08)
+- **2026-11-22 追加 — 評価 run が推定コストを返す:** モデルターゲットの評価 run が `latency.target` と **`estimated_cost.target`**(USD・`completeness`・`pricing_version`・モデル別トークン)を返すようになった(cloud-evaluation-results ms.date 10-30。**Global Standard デプロイでトークンと価格データがそろう場合のみ**)。同じデータセットを複数モデルで評価し、品質と推定コストを並べてモデルを選ぶ使い方ができる(§5.2)
+- **2026-11-22 更新 — azd の評価コマンドが変わった:** `azd ai agent eval` は `azure.ai.agents` 拡張 beta.22(2026-10-23)で**廃止**され、独立した **`azure.ai.evaluations` 拡張の `azd ai eval`(preview、1.0.0-beta.2 以上、設定は `azure.eval.yaml`)**に移った([azure-developer-cli-evaluation](https://learn.microsoft.com/en-us/azure/foundry/observability/how-to/azure-developer-cli-evaluation) ms.date 2026-10-25)。`microsoft.foundry` 拡張には含まれず別途インストールが要る。**A2A / Activity プロトコル・長時間実行・ストリーミングのエージェントはターゲット評価不可でトレース評価を使う**。保存済みの評価定義は拡張を上げても置き換わらない、azd は終了コードを潰すのでゲート違反と運用エラーはメッセージで区別する、`generate` は課金ジョブ。**quickstart-evaluate-hosted-agent は旧 `azd ai agent eval` のまま**でページ間不一致 → CI の評価ゲートは `azd ai eval` で組み直す(§6.4)
 - **評価の権限(2026-09-29 新設の [evaluation-permissions](https://learn.microsoft.com/en-us/azure/foundry/observability/how-to/evaluation-permissions)):** 基本は実行する ID(本人・CI のワークロード ID)に **Foundry User**。ただし**モデルを呼ぶ評価は Foundry User を Foundry アカウントのスコープで**付ける(プロジェクトだけの割り当てではモデル推論が認可されない)。継続・定期評価ルールはプロジェクト MI に Foundry User(§3.5)。**トレース評価・トレース→データセット生成はプロジェクト MI に接続先 App Insights の Reader**、Log Analytics ワークスペースが「Require workspace permissions」なら MI に Log Analytics Reader(DataActionsOnly モードなら Log Analytics Data Reader)、**保護テーブル(`AppGenAIContent` を Protected にした場合 — §3.6 案 4)を読むなら MI に Privileged Monitoring Data Reader も**。BYO ストレージを Entra 接続するなら MI に Storage Blob Data Contributor。**閉域・最小権限の案件では「人の閲覧権限」と別に「プロジェクト MI の読み取り権限」を設計項目に入れる**
 - 上限: **1 行あたり最大 2MB / バッチ評価あたり最大 100,000 行。**評価 run 作成はテナント / サブスクリプション / プロジェクトの各レベルでレート制限され、超過時は `retry-after` 付きで返る(**指数バックオフ必須**)。
-- シナリオは 2026-08〜09 に「評価単位(個別ターン / 会話全体)× 出発点」で再編された([cloud-evaluation](https://learn.microsoft.com/en-us/azure/foundry/observability/how-to/cloud-evaluation) 2026-09-07 更新): **個別ターン** = 既存データセット評価(GA)/ モデル・エージェントのターゲット評価(GA)/ デプロイ済みインタラクション評価(GA。ただしトレース起点の評価はプレビュー)/ 合成クエリ生成(プレビュー)、**会話全体** = 会話データセット評価(プレビュー)/ デプロイ済み会話評価(プレビュー)/ 会話シミュレーション(プレビュー)。**会話単位の評価はいまもすべてプレビュー**なので、マルチターン品質を本番ゲートにするなら SLA なしを前提にする(2026-10-14: 会話データセット評価・会話シミュレーションは Learn のページからプレビュー表記が外れたが、GA 一覧表は未改訂なので本書はプレビュー扱いのまま — 上の 3 者併記)。
+- シナリオは 2026-08〜09 に「評価単位(個別ターン / 会話全体)× 出発点」で再編された([cloud-evaluation](https://learn.microsoft.com/en-us/azure/foundry/observability/how-to/cloud-evaluation) 2026-09-07 更新): **個別ターン** = 既存データセット評価(GA)/ モデル・エージェントのターゲット評価(GA)/ デプロイ済みインタラクション評価(GA。ただしトレース起点の評価はプレビュー)/ 合成クエリ生成(プレビュー)、**会話全体** = 会話データセット評価(プレビュー)/ デプロイ済み会話評価(プレビュー)/ 会話シミュレーション(プレビュー)。**会話単位の評価はいまもすべてプレビュー**なので、マルチターン品質を本番ゲートにするなら SLA なしを前提にする(2026-10-14: 会話データセット評価・会話シミュレーションは Learn のページからプレビュー表記が外れたが、GA 一覧表は未改訂なので本書はプレビュー扱いのまま — 上の 3 者併記。2026-11-22: Book of News は multi-turn evaluation を GA と書くが、Learn はページにより preview のまま — §4.1)。
 - **`azure-ai-evaluation` はローカル評価専用。**クラウド / バッチ評価は `azure-ai-projects` を使う。
 - **⚠ ルーブリック評価器(`score_model`)は `pass_threshold` が実質必須([実測] [Port 9 critique-loop](../../../labs/maf-ports/ports/critique-loop/README.md)、2026-10-06):** 省略するとサービスが 0.0 とみなし、`pass_threshold 0.0 must be within range [1.0, 5.0]` で **run 全体が失敗**する。SDK は省略を許し、提出時・`--dry-run` ではエラーにならず、run のエラーを読んで初めて分かる(3.0 を設定してルーブリック込みのクラウド評価が完走: 50 秒・ジャッジ 15 回・約 5.5 万トークン)。CI の評価ゲートでは評価器定義のスキーマ検証を自前で入れる。評価器カタログ(`project.evaluators`)は SDK 2.8.0 changelog が GA、Learn は preview で食い違う。**2026-10-14 注記:** ここでの「ルーブリック」は openai ネイティブの `score_model` グレーダーに自由記述のルーブリックを書いたもので、**Foundry の Rubric 評価器(生成型)とは別物**。Rubric 評価器は各次元 1〜5 の加重平均を **0〜1 に正規化**し、**合格閾値は 0.0〜1.0・既定 0.5**(rubric-evaluators 2026-09-30 版)で、`score_model` の [1.0, 5.0] とは尺度が違う。両方を CI ゲートに使うなら閾値の尺度を取り違えない。
-- **継続評価(§3.5)が効く条件([実測] [probe 09](../../../labs/foundry-probes/probes/09-continuous-eval/NOTES.md)、2026-10-06):** ①**`sampling_rate` は百分率**で、`1.0` は 1%(全件なら 100)— 08-04 以来「自動ランが出ない」としていた真因はこの誤り ②**prompt agent をプロジェクトの Responses API + `agent_reference` で呼んだ応答**には 1 応答 = 1 ランが 16 秒以内に作られ completed になる ③**エージェントエンドポイント経由(公開エンドポイント)の応答は、ランは作られるが failed**(AOAI 404「Response … not found」)④結果は `evals.runs.list` / `output_items` で SDK から取れる。`builtin.violence` は japaneast で errored(原因未確認)。**本番の呼び出し経路がエージェントエンドポイント(Teams / M365・A2A・hosted の公開エンドポイント)なら、継続評価は現状そのままでは効かない前提で、トレース評価やバッチ評価で代替する**(本ドキュメントの判断)
+- **継続評価(§3.5)が効く条件([実測] [probe 09](../../../labs/foundry-probes/probes/09-continuous-eval/NOTES.md)、2026-10-06):** ①**`sampling_rate` は百分率**で、`1.0` は 1%(全件なら 100)— 08-04 以来「自動ランが出ない」としていた真因はこの誤り ②**prompt agent をプロジェクトの Responses API + `agent_reference` で呼んだ応答**には 1 応答 = 1 ランが 16 秒以内に作られ completed になる ③**エージェントエンドポイント経由(公開エンドポイント)の応答は、ランは作られるが failed**(AOAI 404「Response … not found」)④結果は `evals.runs.list` / `output_items` で SDK から取れる。`builtin.violence` は japaneast で errored(原因未確認)。**本番の呼び出し経路がエージェントエンドポイント(Teams / M365・A2A・hosted の公開エンドポイント)なら、継続評価は現状そのままでは効かない前提で、トレース評価やバッチ評価で代替する**(本ドキュメントの判断)。**2026-11-22:** 代替先として**スケジュール型のトレース評価・データセット評価が公式の評価ルールになった**(§3.5。外部エージェントもこの経路)ので、「エージェントエンドポイント経由 = スケジュール型トレース評価」を既定の設計にできる。新ページで再測定はしていない
 
 ### 4.4 リージョン制約(日本の案件で必ず効く)
 
 | 機能 | 対応リージョン |
 |---|---|
 | バッチ評価 | 広範(**Japan East / Japan West を含む**) |
-| **リスク・安全性評価器** | **22 リージョンに拡大**(米州 11: Brazil South / Canada Central / Canada East / Central US / East US / East US 2 / North Central US / South Central US / West Central US / West US / West US 3、欧州 10: France Central / Germany West Central / Italy North / Norway East / Poland Central / Spain Central / Sweden Central / Switzerland North / Switzerland West / West Europe、APAC は **Australia East のみ**)。**日本は依然非対応**(evaluation-regions-limits-virtual-network 2026-08-18 更新で確認。旧記載の 6 リージョンから拡大) |
+| **リスク・安全性評価器** | **22 リージョンに拡大**(米州 11: Brazil South / Canada Central / Canada East / Central US / East US / East US 2 / North Central US / South Central US / West Central US / West US / West US 3、欧州 10: France Central / Germany West Central / Italy North / Norway East / Poland Central / Spain Central / Sweden Central / Switzerland North / Switzerland West / West Europe、APAC は **Australia East のみ**)。**日本は依然非対応**(evaluation-regions-limits-virtual-network 2026-08-18 更新で確認。旧記載の 6 リージョンから拡大。2026-11-22: updated_at 11-17 版でも同じ 22 リージョン) |
+| **Safety rubric 評価器(preview、2026-11-22 追加)** | 生成・評価とも **Americas 11・Europe 10 のみ**(リスク・安全性評価器と同じ顔ぶれ)。**Australia East は既存・手動作成のルーブリックでの評価のみ**で自動生成は不可。**日本なし** |
 | Groundedness Pro | East US 2 / Sweden Central のみ |
 | Protected material | **East US 2 のみ** |
-| **AI Red Teaming** | **公式2ページ間で記載が揺れる**(evaluation-regions-limits-virtual-network は East US 2 / North Central US の 2 リージョン、ai-red-teaming-agent は +France Central / Sweden Central / Switzerland West の 5 リージョン)。**いずれにせよ日本・APAC 非対応** |
-| Agent playground 評価 | 米国 8 + 欧州 7 リージョン(**APAC なし**) |
-| 合成データ生成 / トレース→データセット生成 | 広範(**Japan East・Japan West を含む**。2026-10-01 版で Japan West・Korea Central・Southeast Asia 等が追加 — 旧記載「Japan West は含まない」は更新) |
+| **AI Red Teaming** | ~~公式2ページ間で記載が揺れる(evaluation-regions-limits-virtual-network は East US 2 / North Central US の 2 リージョン、ai-red-teaming-agent は +France Central / Sweden Central / Switzerland West の 5 リージョン)~~ → **2026-11-22: 両ページ(updated_at 11-17)とも cloud red teaming = East US 2 / France Central / North Central US / Sweden Central の 4 リージョンで一致**(概念ページから Switzerland West が消え、表に France Central・Sweden Central が加わった)。**日本・APAC 非対応は不変** |
+| Agent playground 評価 | 米国 8 + 欧州 7 リージョン(**APAC なし**。2026-11-22 も不変) |
+| 合成データ生成 / トレース→データセット生成 | 広範。~~Japan East・Japan West を含む(2026-10-01 版で Japan West・Korea Central・Southeast Asia 等が追加)~~ → **2026-11-22: 現行表(updated_at 11-17)の APAC は Australia East / Japan East / Korea Central / South India / Southeast Asia で、Japan West・Switzerland West・UK West が見当たらない(要確認)**。国内 DR 側(Japan West)でデータ生成・HITL のデータセット生成を回す設計は避ける |
+| **Insights(GA、2026-11-22 追加)** | **31 リージョン(Japan East / Japan West を含む)**(agent-insights ms.date 2026-11-10)。前提は GPT-5 以降の GPT モデルのデプロイ(分析モデルの料金が掛かる) |
 
 > **設計への含意:** 本番推論は Japan East、**安全性評価と Red Teaming は別リージョンの評価専用プロジェクト**という分離構成になる。**プロンプト・応答が評価のために国外に渡る**ため、法務確認が必須。評価だけなら Agent 用のフル構成(Cosmos DB / AI Search / capability host)は不要で、評価専用の Bicep テンプレートが用意されている。
 
@@ -406,7 +447,7 @@ PyRIT ベース。**Attack Success Rate = 成功攻撃数 ÷ 総攻撃数**を�
 
 - **エージェント固有リスク(クラウドのみ):** Prohibited actions(禁止 / 高リスク / 不可逆アクション)、Sensitive data leakage、Task adherence。
 - **XPIA(間接プロンプトインジェクション):** メールや文書などツール経由の外部データに悪意ある指示を埋め込み、エージェントが不正実行するかを検証。攻撃戦略に `Indirect Jailbreak` がある。
-- **サポート対象:** hosted prompt agent / hosted container agent は対応。**workflow エージェント・非 Foundry エージェント・Function tool 呼び出し・Browser automation・Connected Agent・Computer Use は非対応。**
+- **サポート対象:** hosted prompt agent / hosted container agent は対応。**workflow エージェント・非 Foundry エージェント・Function tool 呼び出し・Browser automation・Connected Agent・Computer Use は非対応。****2026-11-22:** 外部エージェントとして登録した Foundry 外のエージェント(§3.4、GA)も **red teaming のターゲットにできない**(register-external-agent の Current limitations)。対応マトリクス自体は不変、Monitor 設定の定期スキャンは「Scheduled red teaming runs (preview)」。
 - **既知の限界:** 合成データのため実データ分布を代表しない、**生成モデルで ASR を判定するため非決定的で偽陽性がありうる(対処前に必ずレビュー)。**
 - **「purple environment」(本番相当リソースの非本番環境)での実行を推奨。**
 
@@ -420,7 +461,10 @@ PyRIT ベース。**Attack Success Rate = 成功攻撃数 ÷ 総攻撃数**を�
 |---|---|
 | モデルトークン | 入力 / 出力 / キャッシュ読取(**gpt-5.6 以降はキャッシュ書込も**) |
 | **Foundry Agent Service 本体** | **プロンプトとワークフローを使う Foundry ネイティブエージェントの作成・実行に追加課金はない** |
-| **Hosted agents** | **vCPU 時間 + メモリ GiB 時間** |
+| **Hosted agents** | **vCPU 時間 + メモリ GiB 時間**。**2026-11-22 明記(hosted-agents 2026-11-16 版):** 課金は**セッションに割り当てた CPU / メモリ × compute の稼働時間**で、使用率ではなく割り当て量に掛かる。**idle timeout に達して停止するまでの待機時間も課金対象**で、`stop` で課金が止まる → 処理が終わったら idle を待たずにセッションを止める。サンドボックスは 0.25 vCPU / 0.5 GiB 〜 16 vCPU / 32 GiB の 7 段 |
+| **Microsoft Copilot harness(prompt agent のマネージドハーネス、public preview。2026-11-22 追加)** | **2026-12-01 から**サンドボックスに従量課金(**0.0994 USD / vCPU 時・0.0118 USD / GiB 時**、devblogs 2026-10-28。Learn・料金ページへの掲載は要確認)。無料期間中に作った PoC は 12-01 以降の稼働分から課金される |
+| **Model router** | **ルーティング料(入力 100 万トークンあたり)+選ばれたモデルの利用料**(自前 PTU が応答した場合はルーティング料のみ — model-router FAQ、2026-11-22 追加) |
+| **Insights(GA)/ Agent Optimizer** | 分析・最適化に使うモデル(Insights は GPT-5 以降の GPT)のトークン料金。Insights はスケジュールを有効にすると即時実行されることがある |
 | File Search ストレージ | **ベクトルストレージ GB/日**(1 GB 無料) |
 | Code Interpreter | **セッション単位** |
 | Web Search / Custom Search | **1,000 トランザクション単位** |
@@ -442,9 +486,10 @@ PyRIT ベース。**Attack Success Rate = 成功攻撃数 ÷ 総攻撃数**を�
 | レバー | 効果 |
 |---|---|
 | **Batch API** | Global Standard 比 **50% 割引** |
-| **Prompt caching** | Provisioned は最大 100% 割引。**サイジング例で必要 PTU 110 → 80(-27%)**(GPT-6 系の normalized token モデルはキャッシュも PTU を消費するので効きが小さい — §1.3) |
-| **Model router** | Balanced モードで品質 1〜2% 以内、Cost モードで 5〜6% 帯の最安モデルを選択(2026-10-14: 既定プールに Fireworks 3 モデル〈Microsoft 施設外・US のみ〉と Grok が入った。データ所在要件があるなら custom subset で絞る — [07](./07-usecase-regulated-edge.md)) |
-| **Flex processing(preview、2026-10-14 追加)** | Global Standard への要求単位で `service_tier: "flex"` を指定すると Standard 比 **50% 割引**。専用デプロイ不要・同期応答。**latency / service SLA なし**、Global Standard のみ。対象は 2026-10-12 版で 7 モデル(GPT-6.1 Sol / GPT-6 Sol・Luna・Astra / GPT-5.6 Sol・Luna・Terra。旧: 5.6 Sol のみ)。Batch の 24 時間を待てない非対話処理の選択肢([08 E3](./08-usecase-specialized.md#e3-大量バッチ処理)) |
+| **Prompt caching** | Provisioned は最大 100% 割引。**サイジング例で必要 PTU 110 → 80(-27%)**(GPT-6 系の normalized token モデルはキャッシュも PTU を消費するので効きが小さい — §1.3)。**GPT-5.6 以降は従量でもキャッシュ書込が課金対象**(12 時間 TTL の書込は 2026-11-01 利用分から)なので、見積もりに「ヒット率」だけでなく「書込量 × 書込単価」を入れる。可変部分が先頭にあるプロンプトは書込ばかり増える(§1.5) |
+| **Model router** | Balanced モードで品質 1〜2% 以内、Cost モードで 5〜6% 帯の最安モデルを選択(2026-10-14: 既定プールに Fireworks 3 モデル〈Microsoft 施設外・US のみ〉と Grok が入った。データ所在要件があるなら custom subset で絞る — [07](./07-usecase-regulated-edge.md))。**2026-11-22 更新:** プールは **Learn = 45 モデル / Book of News = 「top 50 models」の両論**(Learn を正とする)。Fireworks は**サブスクリプションで Fireworks を有効化したときだけ**ルーティング対象(10-14 の要確認は解消)、router 経由の Claude は同じリソースに Global Standard でデプロイした version 1(Anthropic 基盤)だけで Data Zone の router は Claude に流さない。課金はルーティング料+選ばれたモデル(§5.1)。**Azure Policy は作成・更新時の評価だけで要求時のルーティング先を絞らない**ので、統制はサブセット指定で行う |
+| **Flex processing(preview、2026-10-14 追加)** | Global Standard への要求単位で `service_tier: "flex"` を指定すると Standard 比 **50% 割引**。専用デプロイ不要・同期応答。**latency / service SLA なし**、Global Standard のみ。対象は 2026-10-12 版で 7 モデル(GPT-6.1 Sol / GPT-6 Sol・Luna・Astra / GPT-5.6 Sol・Luna・Terra。旧: 5.6 Sol のみ)。Batch の 24 時間を待てない非対話処理の選択肢([08 E3](./08-usecase-specialized.md#e3-大量バッチ処理))。2026-11-22: 対象は 10-12 版のままで、`gpt-6.1-terra`・GPT-6.2 系は対象外 |
+| **評価 run の推定コスト(2026-11-22 追加)** | モデルターゲットの評価 run が `estimated_cost.target` を返す(Global Standard のみ)。同じデータセットで複数モデルを評価し、**品質ゲートを満たす最安モデル**を選ぶ根拠にする(§4.3)。決定モデル judge(preview)は入力 100 万トークンあたり $0.042(TC 2026-11-20)でジャッジ費用を下げられるが、judge は Decision-1 のみで 2027-02-04 リタイア(§4.1) |
 | **PTU Reservations** | 1 か月 / 1 年コミットで時間課金より割引(**割引率は公開ドキュメントに記載なし**) |
 | **Spillover** | PTU 使用率を最大化(バースト分だけ Standard へ) |
 | **小型モデル** | gpt-4.1-nano は PTU 効率が gpt-4.1 の約 20 倍 |
@@ -453,10 +498,17 @@ PyRIT ベース。**Attack Success Rate = 成功攻撃数 ÷ 総攻撃数**を�
 
 ### 5.3 ショーバック / チャージバック
 
-- **プロジェクト単位の配賦(プレビュー):** 全 Foundry プロジェクトの使用量に**自動的に `project` タグが付く**(手動タグ付け不要)。Cost analysis で Tag フィルタを使う。**⚠ Models sold by Azure のみ対応で、Azure Marketplace 経由のモデルは未対応。**
+- **プロジェクト単位の配賦(プレビュー):** 全 Foundry プロジェクトの使用量に**自動的に `project` タグが付く**(手動タグ付け不要)。Cost analysis で Tag フィルタを使う。**⚠ Models sold by Azure のみ対応で、Azure Marketplace 経由のモデルは未対応。****2026-11-22 追記:** エージェント名のタグ(`agent.name`)は **2026-11 以降の利用分から**付与され、それ以前のエージェント利用は直接のモデルコストとして計上される(manage-costs 2026-11-09 版)。別の Foundry リソースのデプロイを呼んだ分はそのリソース側に計上。要求単位の独自タグでコストを分ける caller attribution は private preview(TC 2026-11-19)
+- **Cost in Foundry(preview、2026-11-22 追加):** Azure Cost Management のデータをポータルで見る画面が新設された — サブスクリプション横断は **Manage > Cost**、プロジェクト内(エージェント別・デプロイ別)は **Monitor > Cost**(GA 一覧表 Manage > Cost = Preview)。**⚠ Foundry ロールではコストが見えない**(Cost Management はリソースではなく RG / サブスクリプションで認可を判定する)→ プロジェクトのコストは Foundry リソースを含む RG に **Cost Management Reader**、エージェント・デプロイ別やサブスクリプション横断はサブスクリプションに付与する(そのスコープの Foundry 以外の支出も見える点を権限設計で説明する — cost-management-permissions)。**コストは利用の 8〜24 時間後に出る**(利用量は数分)。プロジェクト / エージェント / デプロイ別の内訳はタグ付きの課金だけなので合計より小さくなる
 - **メーターの見え方の罠:** Cost Analysis のサービスフィルタに「Azure OpenAI」は無い(Cognitive Services 分類の下の Service tier で絞る)。**パートナー / コミュニティモデルのメーターは Foundry リソースではなくリソースグループ配下に出る**ため、**Cost Analysis はリソースグループスコープにする。**
-- **概算値と実請求はズレる:** ポータルの Estimated cost は**割引や契約価格を反映せず、Provisioned(PTU)も含まない。**課金イベントが Cost Analysis に現れるまで**取り込みタイミングにより遅延がある**(公式は具体的な時間を明示していない。分単位の比較ではなくトレンドで照合する)。財務照合には Cost Management と請求書を使う。**さらに prompt agent と非 Foundry エージェントのコストは Overview の概算に含まれない。**
+- **概算値と実請求はズレる:** ポータルの Estimated cost は**割引や契約価格を反映せず、Provisioned(PTU)も含まない。**課金イベントが Cost Analysis に現れるまで**取り込みタイミングにより遅延がある**(~~公式は具体的な時間を明示していない~~ → 2026-11-22: manage-costs が「コストは利用の 8〜24 時間後」と明記。分単位の比較ではなくトレンドで照合する)。財務照合には Cost Management と請求書を使う。**さらに prompt agent と非 Foundry エージェントのコストは Overview の概算に含まれない。**
 - **⚠ ハードリミットが無い:** 「OpenAI にはハードリミットがあるが、**Azure OpenAI には現状その機能がない**」。予算超過での自動停止が要件なら、予算アラートのアクショングループから起動する**自動化を自作する必要がある。**
+- **2026-11-22 更新 — cost controls(preview)で一部の費目は止められるようになった:** Foundry リソースまたはプロジェクトに予算(米ドルまたはトークン)× 対象(リソース・プロジェクト全体、またはプロジェクト・デプロイ・エージェント・hosted セッションのフィルター)× リセット周期(日 / 週 / 月)× アクション(Send alert / **Block usage**)を設定する([cost-controls](https://learn.microsoft.com/en-us/azure/foundry/concepts/cost-controls) ms.date 2026-11-18、「Foundry cost controls are in public preview」)。ブロックされた要求は **HTTP 429+`x-ms-budget-cause: budget_exceeded`**(ゲートウェイのトークン上限の 429 / 403 とはヘッダーで区別できる)、アラートは Event Grid へ要求ごとに再送されるので重複排除が要る。**「ハードリミット」とみなせない理由(設計で説明すること):**
+  - **対象は GPT と o-series のみ**(Claude・DeepSeek 等は非対象)。**PTU・ツール料金(web search 等)・hosted agent のコンピュートは数えない**、model router は完全には数えない、新しい GPT モデルは価格が入るまで約 1 週間計上されない
+  - **時間内に判定できなければ要求は通る(fail-open)**、変更の反映は最大 15 分、しきい値をまたぐ要求自体は完了しうる。Spending は請求と突合しない推定(段階価格等を反映しないので請求より早くしきい値に達しうる)
+  - **プロジェクトの cost control はブロックしない**(ブロックはリソースの cost control で)。**cost control を持つプロジェクトは削除できない**(環境の作り直し・IaC の destroy 手順に影響)。終了日が必須、名前・予算種別は変更不可。ユーザー / Entra グループ単位の予算は不可
+  - 利用状況の表示には Foundry リソース単位で 1 つの App Insights が要る(ブロック自体には不要)
+  - → **GPT 系の暴走の安全弁としては使えるが、上限を契約・SLA の根拠にはしない**。対象外の費目(PTU・ツール・hosted・非 GPT モデル)は従来どおり予算アラート+自動化、テナント・部門単位の厳密な上限は APIM の `llm-token-limit` で持つ(本ドキュメントの判断)
 - **消費者別の粒度が要るなら APIM。**`llm-emit-token-metric` のディメンション(既定8種: API ID / Operation ID / Product ID / User ID / Subscription ID / Location / Gateway ID / Backend ID。テナント ID 等はカスタムディメンション〈最大5個〉で追加)を付ければ、Foundry が提供しない粒度でチャージバックできる。
 
 ### 5.4 PTU Reservations の注意点
@@ -495,6 +547,8 @@ PyRIT ベース。**Attack Success Rate = 成功攻撃数 ÷ 総攻撃数**を�
 > **2026-09-26 追記:** 後継として **capability settings(プレビュー、API `2026-07-15-preview`)** が追加され、capability-hosts ページは「参考として保持」扱いになった(configure-capability-settings ms.date 2026-09-22)。アカウント / プロジェクトの `capabilitySettings`(`documentStore` / `vectorStore` / `blobStore`)で宣言し、プロジェクトはアカウント既定を継承・個別上書きする。**提供は UK South / Canada Central のみの段階展開**で日本リージョンは当面 capability host(後方互換フロー)。**capability settings も既存プロジェクトへの追加・更新は不可(プロジェクトの削除・再作成)**なので、「作り直し前提」の設計原則は変わらない。プロビジョニングは呼び出し元 ID(CI/CD の SP 等)で行われ、Storage Blob Data Contributor / Cosmos DB Operator が必要。
 >
 > **2026-10-14 更新:** (1) **要確認 — 設定ページ(configure-capability-settings)は 301 で agents/environment-setup に転送され、転送先に capability settings の記述がない**。capability-hosts・standard-agent-setup・virtual-networks は旧 URL を参照したまま capability settings を前提に書かれ、create-resource-terraform(10-09 版)の対応表は「Configure capability host for bring-your-own-resources」行を復活させた。取り下げか移設中かは判断できないので、パイプラインは capability host 前提のまま組む。(2) 上の「呼び出し元 ID がプロビジョニング」は **ARM REST / Bicep で capability settings を送る経路だけ**の話で、virtual-networks の現行版は「**ポータルと旧 capability host 経路は引き続きプロジェクト MI がプロビジョニング**」「実行時に BYO リソースへ届くのはどちらでもプロジェクト MI」と経路を区別した(旧記載は capability settings の設定ページだけに基づいており、経路の区別がなかった)→ CI/CD の SP に BYO リソースのデータロールを付けるかは、どの経路で作るかで決める
+>
+> **2026-11-22 再確認:** 旧 URL は引き続き 301 で agents/environment-setup(ms.date 2026-11-15)へ転送され、転送先に capability settings の記述はない(旧 URL を参照するページはむしろ増えた — features/01 の要確認)。capability settings の API 版は `2026-07-15-preview` のまま(ARM の最新は安定版 `2026-09-01` / プレビュー `2026-09-15-preview`)。**パイプラインは引き続き capability host 前提**で組む
 
 ### 6.3 エージェントのバージョニングとリリース
 
@@ -515,7 +569,7 @@ PyRIT ベース。**Attack Success Rate = 成功攻撃数 ÷ 総攻撃数**を�
   - **実装例(2026-10-06):** maf-ports の Port 11 [hn-briefing-hosted](../../../labs/maf-ports/ports/hn-briefing-hosted/README.md) のデプロイスクリプトに `--candidate`(production が具体版に固定されていなければ現行版へピン留め → 候補作成 → `version_ref` の候補専用セッションで試験 → production のセレクタが動いていないことを確認)と `--promote <版>`(`active` の版にだけ切り替え。ロールバックも同じ操作)を実装した。ルーティング更新はプロトコル・認可の設定を保持してセレクタだけを差し替える(作り直すと他の設定が消える)
 - **同節の明記事項:** 「**既存セッションは作成時の版に束縛され、エンドポイントのセレクタを変えても移行しない**」「セッションやロールバック要件が依存している間は旧版とイメージを残す」「**エージェントや版の削除はロールバック操作ではない**」と明記している(次項のとおり、実測では構成によって食い違った)。**2026-10-14 注記:** invoke-hosted-agent(ms.date 2026-10-13)も「sessions are bound to a version when they're created」を理由に `azd ai agent invoke` の `--version` と `--session-id` の併用を禁じており、公式側の記述は一貫して「束縛」。休止明けの挙動に触れたページはなく、両論は解消していない。手順全体に `[TO VERIFY]`(公開前に全ツールで通しの検証をする旨の執筆者コメント)が残っており、手順自体もまだ固まりきっていない
 - **hosted agent の版を更新しても、会話は続けられる。ただし「既存の会話にどの版が答えるか」は 2026-10-06 の実測で構成によって割れた([probe 10](../../../labs/foundry-probes/probes/10-hosted-version-continuity/NOTES.md) 2026-09-30・2026-10-06 / [Port 11](../../../labs/maf-ports/ports/hn-briefing-hosted/README.md) 2026-10-06)。**会話履歴はエージェント+利用者の単位で保存され、どの版からも読める(両方の実測で一致)。
-  - **起動中**のセッション(最後のアクセスから idle_timeout 以内。既定 15 分)は、ルーティングを新版に切り替えても**作成時の版のまま**応答する — 公式・probe 10・Port 11 の 3 者で一致。ロールバックも起動中の会話には効かない
+  - **起動中**のセッション(最後のアクセスから idle_timeout 以内。既定 15 分。**上限は 2026-11-22 に 240 分で確定** — hosted-agents 2026-11-16 版が「2 through 240 minutes」に改訂され、10-14 の Learn 60 分 / REST・azd 240 分の両論は解消)は、ルーティングを新版に切り替えても**作成時の版のまま**応答する — 公式・probe 10・Port 11 の 3 者で一致。ロールバックも起動中の会話には効かない
   - **新しい会話**は切り替えた時点の版で始まる(3 者で一致。公式の本番リリース手順は新しい会話にはそのまま効く)
   - **休止(idle_timeout の経過、または `stop_session`)の後の次のターン**が割れた(下表)
 
@@ -540,18 +594,21 @@ PyRIT ベース。**Attack Success Rate = 成功攻撃数 ÷ 総攻撃数**を�
   - **通常の改修:** 既存の会話が旧版のまま続いても、休止明けに新版へ移っても困らない改修なら、昇格だけでよい
   - **旧版で会話を最後まで続けさせたい場合**(新版が旧版の会話履歴・`$HOME` の形式と互換がない等): セレクタの切り替えでは保証できない(probe 10 の構成では休止すると新版で再開する)→ **エージェント名を分ける**(新しい会話は新しいエージェントで始め、旧エージェントは既存の会話が終わるまで残す。会話は agent をまたいで引き継げない)
   - **すべての会話をすぐ新版へ移したい修正**(権限・業務ルールの不具合など)と**問題の版からの緊急退避:** 第一手は**中間層で新版に固定した新しいセッションを作って渡す**(`version_ref` でのセッション作成は公式手順の部品)。`stop_session` は probe 10 の構成では次のターンで現行の版に作り直させたが、**Port 11(MAF ホスティング)では `stop_session` 後も旧版のままだった** → 移行手段に使うなら自分の構成で効くことを先に確かめる。旧版の `force=true` 削除は、公式がロールバック手段と位置づけていない最後の手段(旧記載「緊急退避は `force=true` で削除」を第一手から格下げ)
+  - **⚠ memory snapshots(preview、2026-11-22 追加)を有効にした版では、休止をまたいで `$HOME` が残らない:** 起動高速化のため版の準備時に初期化済みプロセスを取り込む機能で、**idle で中断・再開すると `$HOME`・ローカルファイル・プロセスメモリが残らない**(復元されるのは版の起動時点の状態で、セッションのチェックポイントではない — use-hosted-agent-memory-snapshots ms.date 2026-11-14)。上の「休止明けも同じセッション ID のまま `$HOME` を引き継ぐ」は**スナップショット無効の版の話**になる → 状態は durable state store 等の外部に置き、`$HOME` の永続性に頼るエージェントでは有効にしない。有効化は版ごと(既存の版は編集不可なので新しい版を作る)で、初回の取り込みに失敗した版は `failed` になり通常のコールドスタートには黙って切り替わらない → 候補版の `active` 確認(公式 6 段階の 3 段目)に含める
   - 新版は旧版が書いた履歴と `$HOME` を読むので、ツール呼び出しの形式やファイル形式を変える版は後方互換を持たせる。受入試験に「更新前に始めた会話の続き」「ロールバック後の続き」「(使うなら)旧版削除後の続き」も入れる
   - **用語の注意:** Foundry の「セッション」はサンドボックス(コンテナ+`$HOME`)で、会話(履歴)とは別物。休止しても**別のセッションにはならず**、同じセッション ID(最長 30 日)のままコンテナだけが止まる。次の発言で起動し直すときの版が、probe 10 の構成では現行の版、Port 11・公式では作成時の版だった(Copilot Studio・AgentCore の「セッションが終わり、新しいセッションから新版」とはどちらも違う)
   - **切り替わる時点の例(probe 10 の構成のように休止明けに移る場合。idle_timeout 15 分):** 10:10 に修正版へ切り替えたとき、10:00 から 5 分おきに話し続けている利用者は**旧版のまま**(15 分以上の間が空いた後の発言から新版)、9:50 以来 30 分ぶりに戻った利用者と新しく始めた利用者は新版。**Port 11・公式のように束縛される場合は、既存の会話はセッションの有効期限(最長 30 日)まで旧版**で、新版になるのは新しく始めた会話だけ
   - **コードを直しても、会話履歴に残った誤りは消えない。**旧版が出した誤った回答・ツール結果は履歴に残り、新版はそれを文脈として読む。影響の大きいバグでは、対象の利用者に新しい会話を始めてもらうか、新版側で旧版の出力を含む会話を検知して注意を促す
 - **他製品の例(2026-09-30 確認):** Copilot Studio は「進行中の会話を妨げないよう、公開した内容は新しいセッションから有効」(多くのチャネルは 30 分無操作でセッション終了、Teams は `start over` か公開から最大 1 時間)([publish channels](https://learn.microsoft.com/en-us/microsoft-copilot-studio/publication-fundamentals-publish-channels) ms.date 2026-09-16)。AWS AgentCore Runtime は既存セッションが旧版のスナップショットで終了まで続く(15 分無操作・最長 8 時間)([runtime how it works](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-how-it-works.html))。LangGraph は再デプロイした最新の graph を既存スレッドにもすぐ適用し、状態スキーマの後方互換を利用者側に求める([backward compatibility](https://docs.langchain.com/oss/python/langgraph/backward-compatibility))。Foundry hosted agent は、**probe 10 の構成では「休止の切れ目で新版」、Port 11・公式では「セッション(最長 30 日)が続く限り旧版」**で、どちらでも**履歴と `$HOME` が切れ目を越えて残る**点が他製品と違う
-- **モデルデプロイの version upgrade を自動アップグレードにしない**(テストスイート検証前に応答が変わるのを防ぐ)。
+- **モデルデプロイの version upgrade を自動アップグレードにしない**(テストスイート検証前に応答が変わるのを防ぐ)。**2026-11-22 追記:** 逆に PTU と Batch はそもそも自動で上がらない(`gpt-4o` 2024-05-13 は Standard 系だけ自動アップグレード、PTU・Batch は手動 — §1.6)。また**リタイア日は「到来」の後でも延びることがある**(リタイア表 11-18 版で MAI-Image-2.5 系・Kimi-K2.7-Code・model-router 旧 2 版・gpt-chat-latest 06-24 版が到来扱いの後に延長)ので、移行計画は期限の直前にリタイア表を再確認してから確定する。
+- **(2026-11-22 追加)Content Safety の分類器更新で判定が変わりうる:** 2026-10 の分類器更新が Spain Central から段階展開中で、完了時期・日本リージョンへの到達時期は未記載(features/06)。ガードレールのブロック結果が展開前後・リージョン間で変わりうるので、**代表データ(遮断すべき入力と通すべき入力の両方)での再試験をリリース手順と定期点検に入れ**、本番の遮断率が急に変わったらこの更新を疑う。
 - **非決定性への対処:** 「Foundry Agent Service で定義したエージェントは非決定的に振る舞うため、望ましい品質水準をどう測り維持するかを決めなければならない。**現実的なユーザーの質問とシナリオに対する理想的な応答をチェックするテストスイートを作って実行せよ。**」→ §4 のクラウド評価を CI のゲートに組み込む形になる。
 
 ### 6.4 IaC
 
 - **Bicep テンプレート集:** `microsoft-foundry/foundry-samples` の `infrastructure/infrastructure-setup-bicep/` に番号付きシナリオ(private network basic / standard agent setup / APIM 併用 / managed VNet / 評価専用など)。既存リソースの ARM Resource ID を渡して再利用できる。
 - 主要リソース種別: `Microsoft.CognitiveServices/accounts`(kind `AIServices`)/ `accounts/projects` / `accounts/deployments`(`sku.name` でデプロイ種別、`properties.spilloverDeploymentName` で spillover)/ `capabilityHosts`(アカウントスコープとプロジェクトスコープの 2 階層。後継の `properties.capabilitySettings` はプレビュー・一部リージョンのみ → §6.2。2026-10-14: 設定ページが 301 で消え、取り下げか移設中か要確認)。
+- **API 版(2026-11-22 追加):** `Microsoft.CognitiveServices/accounts` の ARM テンプレートリファレンスは安定版 **`2026-09-01`** / プレビュー **`2026-09-15-preview`** まで掲載。Foundry の手順で使う版は機能ごとにばらつき、**egress ルール入りの RAI ポリシー(ガードレール)= `2026-09-01`**、プロジェクトの `toolControls`(ツールを縛る Azure Policy 用、preview)= `2026-09-15-preview`、private CA trust・capability settings = `2026-07-15-preview`。**⚠ `az group export` 等で `egressPolicy` を持たない古い API 版(例 `2026-07-01`)で RAI ポリシーを書き出すと、コンテンツフィルターは残るが egress ルールが消える** → hosted agent の network egress controls(2026-11 に GA、Transform rules・secretRef は preview)を IaC で持つなら RAI ポリシーは `2026-09-01` で定義し、エクスポートからの IaC 化では egress ルールの有無を差分で確認する(features/01・06)
 - **推奨プラクティス:** ARM/Bicep で両リージョンへ同一デプロイし、**CI/CD パイプラインを両リージョンにデプロイしてドリフトを防ぐ。**ロール割当・VNet / Private Endpoint / DNS も両方に用意する。
 - **閉域環境では公開端末から `azd up` / `azd deploy` ができない。**VNet 内のセルフホスト GitHub Actions runner / Azure DevOps agent が公式の推奨パターンで、**CI/CD 基盤の追加コストとして見積もりに入れる。**
 - **hosted agent の Terraform(2026-10-06 追加):** 経路が 2 つあり、**どちらが「エージェントの版」を持つかが違う**([cli-infrastructure](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/cli-infrastructure) ms.date 2026-09-16 / [set-up-ci-cd-cli](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/set-up-ci-cd-cli) 2026-09-23 / [deploy-hosted-agent-terraform](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/deploy-hosted-agent-terraform) 2026-09-23。Tech Community「Deploying hosted agents in Foundry Agent Service via Terraform」2026-10-01)
@@ -562,7 +619,15 @@ PyRIT ベース。**Attack Success Rate = 成功攻撃数 ÷ 総攻撃数**を�
   | **Terraform 単独**(azd 不要) | 基盤は別構成(プラットフォームチーム)、エージェント定義は AzAPI の `azapi_data_plane_resource`(type `Microsoft.Foundry/agents@v1`、`parent_id` は ARM ID ではなく**プロジェクトのデータプレーン エンドポイント**) | **名前付きエージェントを管理**し、定義が変われば Foundry が新しい版を作る(版ごとの Terraform リソースは作らない。変更のない apply は新しいリリース ID にならない) | AzAPI 2.9.0+ / Terraform 1.4+。イメージは**ダイジェスト固定**、`rai_policy_name` には**ポリシーの ARM ID 全体**を渡す(無効な参照でも `active` になりうる → 遮断テスト必須)。apply 成功 ≠ 版が `active` → readiness ゲート(`terraform_data` + スクリプト)を挟む。**state に設定値が残るので環境変数に秘密を入れない**(プロジェクト接続の参照を使う)。**state lock は他の書き手(ポータル・SDK・別パイプライン)を止めない** → 名前付きエージェントの書き手を 1 つにし、エンドポイントの昇格(セレクタ)は Terraform 構成と所有者を分ける |
 
   どちらの経路でも、本番は §6.3 の公式手順(ピン留め → 候補検証 → 昇格)と組み合わせる。公式のサンプル(community-maintained の `simple-hosted-agent-deploy-azapi`)はローカル state 既定なので、共有環境ではリモート state とリリース統制を足す。手順ページ自体に `[TO VERIFY]`(公開前の通し検証)の執筆者コメントが残っている
-- **ツールチェーンの版固定:** 7・8 月号ブログ(2026-09-09)のセットアップ基準は azd 1.32.0 以降 + `azure.ai.agents` 拡張 1.0.0-beta.13(プレビュー)以降。az / azd / 拡張 / Foundry Skill を一括導入する **Foundry DevPack**(0.1.3 はプレビュー。winget / brew / curl)は開発端末向けで、CI ランナーでは版を明示してインストールする。`azd ai agent` 系はまだ beta 拡張である点を CI 設計に織り込む。**2026-10-14 追記 — 拡張の版上げで CI が壊れる実例が続いた:** `azure.ai.agents` 1.0.0-beta.18(2026-09-30)はエージェント定義を azure.yaml(または明示のルート `$ref`)に必須化し、`AGENT_DEFINITION_PATH`・入れ子の `config:`・旧 AgentManifest を**拒否**する破壊的変更、beta.19(10-08)は prompt-memory / GitHub Copilot ツールセットのプロパティ名を **camelCase に変更(snake_case は拒否)**、`azd ai agent init` の `--manifest` / `-m` を非推奨の別名にした(`--template` / `-t` が正式。クイックスタートの例は `-m` のまま)。同時期の `azure.ai.toolboxes` beta.10・`azure.ai.routines` beta.9 も camelCase 化を含む。azd 本体は 1.35.1。→ **CI ランナーでは azd 本体と各拡張の版を固定し、版上げは検証環境で azure.yaml の受理と `azd deploy` の通しを確認してから**行う
+
+  **2026-11-22 更新:** deploy-hosted-agent-terraform(11-04 版)は前提に**既存のガードレール(RAI ポリシー)の ARM リソース ID**とコンテナプロトコル 2.0.0 を加えた → RAI ポリシーは Terraform 単独の経路でも先に(上の API 版で)作っておく。プロバイダー・モジュールの現行は AzureRM **5.14.0**(新リソース `azurerm_cognitive_account_project_connection_entra_id`。5.10.0 で `azurerm_cognitive_deployment` に `spillover_deployment_name`)・AzAPI **2.14.0**・AVM `avm-ptn-aiml-ai-foundry` **0.14.0**。azd 側は `azure.ai.agents` 1.1.0 から生成する Bicep / Terraform に Application Insights を既定で含める(§3.6 の選び方 6)
+- **ツールチェーンの版固定:** 7・8 月号ブログ(2026-09-09)のセットアップ基準は azd 1.32.0 以降 + `azure.ai.agents` 拡張 1.0.0-beta.13(プレビュー)以降。az / azd / 拡張 / Foundry Skill を一括導入する **Foundry DevPack**(0.1.3 はプレビュー。winget / brew / curl)は開発端末向けで、CI ランナーでは版を明示してインストールする。~~`azd ai agent` 系はまだ beta 拡張である点を CI 設計に織り込む。~~(2026-11-22: 拡張は GA — 下の項)**2026-10-14 追記 — 拡張の版上げで CI が壊れる実例が続いた:** `azure.ai.agents` 1.0.0-beta.18(2026-09-30)はエージェント定義を azure.yaml(または明示のルート `$ref`)に必須化し、`AGENT_DEFINITION_PATH`・入れ子の `config:`・旧 AgentManifest を**拒否**する破壊的変更、beta.19(10-08)は prompt-memory / GitHub Copilot ツールセットのプロパティ名を **camelCase に変更(snake_case は拒否)**、`azd ai agent init` の `--manifest` / `-m` を非推奨の別名にした(`--template` / `-t` が正式。クイックスタートの例は `-m` のまま)。同時期の `azure.ai.toolboxes` beta.10・`azure.ai.routines` beta.9 も camelCase 化を含む。azd 本体は 1.35.1。→ **CI ランナーでは azd 本体と各拡張の版を固定し、版上げは検証環境で azure.yaml の受理と `azd deploy` の通しを確認してから**行う
+- **2026-11-22 更新 — azd の Foundry 拡張が GA、`az` の hosted agent コマンドは非推奨:**
+  - **azd の Foundry 拡張群が 2026-11-05 に GA**(`microsoft.foundry` 1.0・`azure.ai.agents` 1.0.0。現行は 1.2.0〈11-17〉、azd 本体 1.39.1)。**最小 azd は 1.37.0**。上の「`azd ai agent` 系はまだ beta 拡張」は解消した。ただし **evaluations / dataset 拡張は 1.0.0-beta.2、finetune / models は preview** のまま(§4.3)
+  - **GA までの破壊的変更**(beta.21 以前の定義・スクリプトを壊す): beta.22 で `toolbox` の単数表記を廃止し **`toolboxes` リスト**に、**`azd ai agent eval` を廃止して `azd ai eval`(`azure.ai.evaluations` 拡張)へ**、managed harness / voice / long-running の preview を **`AZD_ALPHA_ENABLE_AGENTS_MANAGED_HARNESS` / `_VOICE` / `_LONG_RUNNING` の個別 opt-in** に分離(voice は 1.2.0 でフラグ不要に)。1.0.0 で素の `image` 指定だけでは ACR の作成を抑止しなくなった(`docker.imagePassthrough: true` か `AZD_AGENT_SKIP_ACR=true`)。1.1.0 で Azure Policy の事前チェック。→ 拡張を上げる前に azure.yaml と CI を直す
+  - **`az cognitiveservices agent`(hosted agent 管理コマンド)は Deprecated で、2027-02-28 後の最初の Azure CLI リリースで削除**(Azure CLI 2.92.0 のリリースノート、移行先の記載なし)→ **CI/CD の標準 CLI は azd**(と SDK / REST)にし、`az` はリソース・プロジェクト・デプロイ管理(`az cognitiveservices account` 系、GA)に限る。cost control の CLI は Azure CLI 2.93.0 以上の Core コマンド(`account costcontrol` / `account project costcontrol`、preview)
+  - **Foundry Dev Pack は 2026-11-18 に GA(0.1.6)**。開発端末向けの一括導入で、CI ランナーでは引き続き版を明示して入れる(devblogs の CI 例は `Azure/setup-azd@v2` で azd 1.37.0 を固定し `azd ext install microsoft.foundry azure.ai.evaluations`)
+  - **SDK の版上げで注意する点:** .NET `Azure.AI.Projects` 3.0.0 GA(11-21)は Insights・Memory・RedTeams・Schedules 等に実験属性 `AAIP001` → 2.0.x から上げると警告の抑止と型の改名・移動への対応が要る。MAF は `azure-ai-projects` の上限が解消した代わりに **Python 3.11 以上(1.25.0)・MCP SDK 2.x 必須(1.23.0。hosting は `mcp>=2.2.0,<3`)**、旧メモリ API は 2026-12-31 以降に削除(`FileMemoryProvider` へ手動移行)、ワークフローのスパン名が `invoke_workflow` に変わった(§3.1)。CI のランナーイメージの Python 版と、トレースを読むクエリを同時に直す(features/08)
 
 ---
 
@@ -574,6 +639,7 @@ PyRIT ベース。**Attack Success Rate = 成功攻撃数 ÷ 総攻撃数**を�
 - [ ] PTU サイジングを式で算出し、**キャッシュ率を織り込む**
 - [ ] PTU 購入前に**必ずデプロイを先に作成**してキャパシティ確認 → その後 Reservation 購入
 - [ ] Batch に回せる処理を切り分けた(50% 割引)
+- [ ] PTU・Batch で使うモデルの更改を手動移行として計画した(`gpt-4o` 2024-05-13 は 2027-01-14、Standard 系だけ自動アップグレード。o-series 後継の `gpt-5.6` 系は Batch・Regional Standard にない)。GPT-5.6 以降はキャッシュ書込の課金と 12 時間 TTL の書込重み(PTU 2.5)を見積もりに入れた(2026-11-22 追加)
 
 **信頼性**
 - [ ] PTU デプロイ全てに **spillover を有効化**
@@ -583,6 +649,7 @@ PyRIT ベース。**Attack Success Rate = 成功攻撃数 ÷ 総攻撃数**を�
 - [ ] Storage は GZRS、AI Search は Standard 以上 + レプリカ 3
 - [ ] Foundry アカウント / Cosmos DB / AI Search / Storage に削除ロック
 - [ ] **スレッド添付ファイルは復旧不可**であることをステークホルダーと合意
+- [ ] 会話データの保持 60 日(basic は自動削除、standard は `run-state-v1` の既定 TTL)を前提に、長期保存・削除要件の置き場所を決めた。durable state store を使うなら Cosmos DB に増えるコンテナを RU・バックアップに入れた(2026-11-22 追加)
 
 **可観測性**
 - [ ] App Insights を接続、Log Analytics Reader を配布
@@ -596,24 +663,30 @@ PyRIT ベース。**Attack Success Rate = 成功攻撃数 ÷ 総攻撃数**を�
 - [ ] Agent 365 のデータ収集(`a365LoggingEnabled`、Agent 365 有効テナントでは既定 true)を案件の方針に合わせた(中身を残さない要件・データ所在要件なら false)
 - [ ] `gen_ai.*` 属性名への直接依存を 1 箇所に抽象化
 - [ ] hosted agent のコンテナが `azure-ai-agentserver-responses` 2.3.0 以降なら、テレメトリ送出の既定(`AGENTSERVER_FLUSH_MODE=background`)で欠落が許容できるか判断し、必要なら `async` を明示した。LangChain の tracer を使うなら内容記録の既定(有効)を意図して設定した(2026-10-14 追加)
-- [ ] 委任サブネットの IP 枯渇に対する合成監視
+- [ ] 委任サブネットの IP 枯渇に対する合成監視(shared subnet IPs〈GA〉で hosted のセッション数の律速は同時セッションクォータに移ったが、データプロキシ・プロジェクトの IP 消費と `subnet_exhausted` の監視は残る。2026-11-22)
+- [ ] Foundry 外のエージェントは external agent として登録した(Control Plane の custom agents は 2027-05-07 廃止・新規追加不可。同じ `gen_ai.agent.id` で登録し直し、移行中は元の登録と APIM API を消さない。継続評価の代わりにスケジュール型トレース評価)(2026-11-22 追加)
+- [ ] MAF のワークフローのトレースを `workflow.run` で絞るクエリ・アラートを `invoke_workflow` に直した(MAF Python 1.25.0〜。2026-11-22 追加)
 
 **評価**
 - [ ] 評価器の組み合わせを決定(RAG / エージェントで別)
 - [ ] **使用ツールが評価器の限定サポートリストに入っていないか確認**
-- [ ] **安全性評価と Red Teaming 用に別リージョンのプロジェクトを設計**し、越境の法務確認
+- [ ] **安全性評価と Red Teaming 用に別リージョンのプロジェクトを設計**し、越境の法務確認(safety rubric〈preview〉も日本なし、red teaming は 4 リージョン。data generation の表から Japan West が消えた — 要確認。2026-11-22)
 - [ ] 継続的評価の `max_hourly_runs` をトラフィックに合わせて調整(`sampling_rate` は百分率。エージェントエンドポイント経由の応答では継続評価のランが failed になる実測あり)
 - [ ] ルーブリック評価器に `pass_threshold`(1.0〜5.0)を設定した(省略すると run 全体が失敗)。これは `score_model` グレーダーの尺度で、Foundry の Rubric 評価器は 0〜1・既定 0.5(2026-10-14 追記)
-- [ ] 評価パイプラインの `azure-ai-projects` の版をワークフローごとに固定した(トレース評価の Learn 手順は 2.7.0 固定、GA 型は 2.8.0、MAF 同居は 2.8.0 不可)。conversation レベルで turn 専用評価器がスキップされたことを検出できる(2026-10-14 追加)
+- [ ] 評価パイプラインの `azure-ai-projects` の版をワークフローごとに固定した(トレース評価の Learn 手順は 2.7.0 固定、GA 型は 2.8.0 以上、Insights・HITL・safety / task-level rubric・スケジュール型評価・外部エージェントは 2.11.0 以上。~~MAF 同居は 2.8.0 不可~~ → `agent-framework-foundry` 1.16.2 で上限解消〈2026-11-22〉)。conversation レベルで turn 専用評価器がスキップされたことを検出できる(2026-10-14 追加)
 - [ ] 評価の権限を設計した(モデルを呼ぶ評価は Foundry User をアカウントスコープ、トレース評価はプロジェクト MI に App Insights の Reader、保護テーブルなら Privileged Monitoring Data Reader)
-- [ ] `azure-ai-projects` 2.8.0 の「GA」と GA 一覧表の Preview / Limited preview 表記の食い違いを、SLA の説明で区別した(MAF 同居なら 2.8.0 は不可)
+- [ ] `azure-ai-projects` 2.8.0 の「GA」と GA 一覧表の Preview / Limited preview 表記の食い違いを、SLA の説明で区別した(2026-11-22: 品質ルーブリックは Learn が GA を明記〈built-in-evaluators は preview 表記〉、Insights は GA〈表に行なし〉、継続評価・Monitor は Learn ラベルなし / 表 = Preview、multi-turn evaluation は BoN = GA / Learn = preview)
+- [ ] 決定モデル judge を使うなら Microsoft-Decision-1(preview、2027-02-04 リタイア)であることと、Learn は 1.1 を judge 非対応とする点を確認した。Groundedness Pro を使うなら Content Safety の Groundedness detection 廃止(2027-04-30)の影響を確認する(2026-11-22 追加)
+- [ ] CI の評価ゲートを `azd ai eval`(`azure.ai.evaluations` 拡張、preview)で組み直した(`azd ai agent eval` は廃止)(2026-11-22 追加)
 - [ ] Agents playground の既定 ON 評価をコスト観点で棚卸し
 
 **コスト**
 - [ ] `project` タグでプロジェクト別チャージバック(**Marketplace モデルは対象外**)
 - [ ] Cost Analysis は**リソースグループスコープ**
 - [ ] FT モデルのホスティング料、PTU の削除忘れ、playground 評価を定期棚卸し
-- [ ] 予算アラート + 自動化(**ハードリミットは存在しない**)
+- [ ] 予算アラート + 自動化(**ハードリミットは存在しない**。2026-11-22: cost controls〈preview〉で GPT / o-series だけは HTTP 429 で止められるが、PTU・ツール・hosted のコンピュートは対象外で fail-open。cost control を持つプロジェクトは削除不可)
+- [ ] コストを見る人に Cost Management Reader を RG またはサブスクリプションで付与した(Foundry ロールではコストが見えない)。`agent.name` タグは 2026-11 以降の利用分から(2026-11-22 追加)
+- [ ] hosted agent は処理後に `stop` でセッションを止める運用にした(idle で止まるまでの待機も課金)。Copilot harness(preview)は 2026-12-01 から課金されるので PoC の稼働を棚卸しした(2026-11-22 追加)
 
 **CI/CD**
 - [ ] dev/stg/prod は **Foundry リソースごと分離**
@@ -626,3 +699,7 @@ PyRIT ベース。**Attack Success Rate = 成功攻撃数 ÷ 総攻撃数**を�
 - [ ] Terraform を使うなら、どの経路(azd + Terraform 基盤 / Terraform 単独で AzAPI)が版を持つかを決め、リモート state・書き手の一本化・環境変数に秘密を置かないことを決めた(ejection は `network:` 非対応)
 - [ ] 版更新・ロールバックのときに既存の会話をどう扱うか決めた(休止明けの版は構成で割れる — 公式・Port 11 は作成時の版、probe 10 は現行セレクタの版。受入試験で `stop_session` 後・idle 明け・休止中ロールバック後の版を `version_indicator` で確認。旧版で続けさせるならエージェント名を分ける。すぐ移すなら版固定の新しいセッションを中間層で渡し、`force=true` 削除は最後の手段。別 agent への切り替えは会話を引き継げない。§6.3)
 - [ ] デプロイが新しい版を作ったことを確認する判定を入れた(同じ zip・定義の再デプロイは既存の版を返す)。版の判定に応答の `agent_reference.version` を使っていない
+- [ ] CI/CD の CLI を azd(Foundry 拡張 GA、azd 1.37.0 以上)に統一し、`az cognitiveservices agent` を使うスクリプトを置き換えた(2027-02-28 後の最初の Azure CLI リリースで削除)。拡張の版上げ前に `toolboxes`・`AZD_ALPHA_ENABLE_AGENTS_*`・ACR 作成の既定変更に azure.yaml と CI を合わせた(2026-11-22 追加)
+- [ ] egress ルールを持つ RAI ポリシーを API 版 `2026-09-01` で IaC 化した(古い版でのエクスポートは `egressPolicy` が落ちる)。Terraform 単独の hosted 配置では RAI ポリシーを先に作った(2026-11-22 追加)
+- [ ] memory snapshots(preview)を有効にする版では `$HOME` が休止をまたいで残らない前提で状態を外部に置いた(2026-11-22 追加)
+- [ ] Content Safety の分類器更新(2026-10、段階展開中)に備え、代表データでのガードレール再試験をリリース手順と定期点検に入れた(2026-11-22 追加)

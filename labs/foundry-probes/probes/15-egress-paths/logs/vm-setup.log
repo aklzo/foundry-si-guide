@@ -1,0 +1,14 @@
+### [2026-11-22 17:53:44 JST] egressprobe.py setup P0 
+Enable succeeded: 
+[stdout]
+===== setup P0 @ 2026-11-22T08:53:46Z
+[P0][setup] a15-harness -> 200 (101.4s) 
+[P0][setup] a15-oapi -> 200 (3.8s) 
+[P0][setup] a15-mcp -> 200 (2.7s) 
+[P0][setup] a15-ci -> 200 (2.5s) 
+[P0][setup] a15-web -> 200 (4.1s) 
+[P0][setup] a15-basic -> 200 (2.7s) 
+
+[stderr]
+
+### [2026-11-22 17:56:18 JST] done

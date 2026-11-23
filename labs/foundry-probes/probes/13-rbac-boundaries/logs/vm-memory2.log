@@ -1,0 +1,24 @@
+### [2026-11-22 15:00:58 JST] vmprobe.py memory2 find
+Enable succeeded: 
+[stdout]
+===== memory2 find @ 2026-11-22T06:01:02Z
+[ops items:list scope=<候補 <guid-9>>] POST {pubproj}/memory_stores/ms13/items:list?api-version=v1 -> 200 (1.0s) {   "data": [],   "first_id": "",   "last_id": "",   "has_more": false,   "object": "list" }
+[ops items:list scope=<候補 <tid>_<guid-9>>] POST {pubproj}/memory_stores/ms13/items:list?api-version=v1 -> 200 (0.3s) {   "data": [],   "first_id": "",   "last_id": "",   "has_more": false,   "object": "list" }
+[ops items:list scope=<候補 <tid>:<guid-9>>] POST {pubproj}/memory_stores/ms13/items:list?api-version=v1 -> 400 (0.1s) {   "error": {     "code": "bad_request",     "message": "Scope must contain only letters, digits, _, -, ., %, +, @, or /, and must not exceed 256 characters. [Request ID: <hex-23>]",     "type": "invalid_request_error",     "details": [],     "additionalInfo": {       "reque
+[ops items:list scope=<候補 <tid>/<guid-9>>] POST {pubproj}/memory_stores/ms13/items:list?api-version=v1 -> 400 (0.3s) {   "error": {     "code": "bad_request",     "message": "Memory list failed with code '': {\"code\":\"InvalidArgument\",\"message\":\"scope is invalid: \\u0022<tenant>/<guid-9>\\u0022 must only contain A-Z, a-z, 0-9, \\u0027-\\u0027, and \\u00
+[ops items:list scope=<候補 <guid-9>@<tid>>] POST {pubproj}/memory_stores/ms13/items:list?api-version=v1 -> 400 (0.8s) {   "error": {     "code": "bad_request",     "message": "Memory list failed with code '': {\"code\":\"InvalidArgument\",\"message\":\"scope is invalid: \\u0022<guid-9>@<tenant>\\u0022 must only contain A-Z, a-z, 0-9, \\u0027-\\u0027, and \\u00
+[ops items:list scope=<候補 <tid>.<guid-9>>] POST {pubproj}/memory_stores/ms13/items:list?api-version=v1 -> 400 (0.2s) {   "error": {     "code": "bad_request",     "message": "Memory list failed with code '': {\"code\":\"InvalidArgument\",\"message\":\"scope is invalid: \\u0022<tenant>.<guid-9>\\u0022 must only contain A-Z, a-z, 0-9, \\u0027-\\u0027, and \\u00
+[ops items:list scope=<候補 <tid>-<guid-9>>] POST {pubproj}/memory_stores/ms13/items:list?api-version=v1 -> 200 (0.2s) {   "data": [],   "first_id": "",   "last_id": "",   "has_more": false,   "object": "list" }
+[memory2] ac1 scope found: None
+[ops write via project responses (x-memory-user-id: user-bob)] POST {pubproj}/openai/v1/responses -> 200 (3.2s) {   "metadata": {},   "top_logprobs": 0,   "temperature": 1,   "top_p": 0.98,   "service_tier": "default",   "prompt_cache_retention": "in_memory",   "model": "gpt-5.4-mini",   "reasoning": {     "effort": "none",     "context": "current_turn",     "mode": "standard"   },   "background": false,   "text": {     "format": {       "type": "text"     },     "verbosity": "medium"   },   "tools": [     {       "type": "memory_search",       "memory_store_name": "ms13",       "scope": "user-bob"     }   ],   "tool_choice": "auto",   "truncation": "disabled",   "id": "resp_<id-87>",   "object": "response",   "status": "completed",   "created_at": 1795327266,   "completed_at": 1795327268,   "error": null,   "incomplete_details": null,   "output": [     {       "type": "memory_command_preview_call",       "id": "fc_<token-7>
+
+[stderr]
+
+### [2026-11-22 15:01:45 JST] vmprobe.py memory2 read
+Enable succeeded: 
+[stdout]
+===== memory2 read @ 2026-11-22T06:01:47Z
+[ops items:list scope=user-bob(ヘッダーの値で入ったか)] POST {pubproj}/memory_stores/ms13/items:list?api-version=v1 -> 200 (0.9s) {   "data": [     {       "memory_id": "dXNlci1ib2I_<hex-24>",       "updated_at": 1795327268,       "scope": "user-bob",       "content": "The user stated on November 22, 2026 that a preferred color is emerald green.",       "kind": "chat_summary"     },     {       "memory_id": "dXNlci1ib2I_<hex-25>",       "updated_at": 1795327268,       "scope": "user-bob",       "content": "The user likes emerald green.",       "kind": "user_profile"     }   ]
+
+[stderr]
+

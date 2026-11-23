@@ -1,0 +1,23 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8"><meta name="figure-size" content="1600x675"><link rel="stylesheet" href="../../tools/figure.css"><style>
+.grid2{grid-template-columns:1.2fr 1fr;height:500px;zoom:1.22}
+.rename{display:flex;align-items:center;gap:12px;font-size:25px;font-weight:800;margin-bottom:6px}
+.old{color:var(--muted);text-decoration:line-through}.nw{color:var(--accent)}
+.fl{display:grid;grid-template-columns:160px 30px 200px 30px 1fr;align-items:center;gap:6px;margin-top:12px}
+.fl .node{font-size:20px}
+.srcs{display:flex;flex-direction:column;gap:6px;font-size:19px}
+.srcs div{border:1.5px solid var(--border);border-radius:8px;padding:4px 8px}
+.path{display:grid;grid-template-columns:170px 1fr;gap:10px;align-items:center;margin-bottom:12px;font-size:21px}
+.path .node{font-size:19px}
+</style></head><body><div class="grid2">
+<div><div class="rename"><span class="old">Azure AI Search</span>▶<span class="nw">Foundry IQ (Azure AI Search)</span></div>
+<div class="muted small">API・権限・課金名はそのまま</div>
+<div class="fl"><div class="node">エージェント</div><div class="arrow">▶</div><div class="node on">ナレッジベース<br><span class="small">API は GA・接続は Preview</span></div><div class="arrow">▶</div>
+<div class="srcs"><div><span class="pill ga">GA</span>SharePoint(indexed)</div><div><span class="pill ga">GA</span>Azure SQL・ファイル</div><div><span class="pill preview">Preview</span>Fabric・MCP・Work IQ</div><div><span class="pill preview">Preview</span>ナレッジグラフ</div></div></div>
+<div class="warn">トークンなしで権限付きの文書が返るかは Learn で食い違う。ユーザーのトークンを渡す</div></div>
+<div><h2>Web 検索は経路で中身が違う</h2>
+<div class="path"><div class="node">直付け</div><div><span class="pill ga">GA</span><b>Web IQ</b></div></div>
+<div class="path"><div class="node">Toolbox 経由</div><div><b>Bing</b> のまま(契約条項が違う)</div></div>
+<h2 style="margin-top:20px">画面を操作するツール</h2>
+<div class="path"><div class="node">Browser<br>Automation</div><div><span class="pill ann">機能ページ GA</span><span class="pill doc">移行ガイド Preview</span><br>閉域の可否もページで割れる</div></div>
+<div class="path"><div class="node">Computer Use</div><div><span class="pill ann">機能ページ GA</span><span class="pill doc">移行ガイド Preview</span><br>申請制。Japan East 対象外</div></div></div>
+</div></body></html>

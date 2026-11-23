@@ -15,8 +15,8 @@ d = Diagram(
     "D1: 規制業種・閉域 — BYO VNet(standard agent setup)",
     width=1560,
     height=860,
-    subtitle="ネットワーク構成とデータストア構成(capability host / capability settings〈設定ページは 2026-10 に 301・要確認〉とも)は作成時にしか"
-    "決められない(変更 = 再作成)。設計は「閉域で使えない機能」の一覧から始める",
+    subtitle="ネットワーク構成(最初の hosted agent 作成時に確定)とデータストア構成(capability host / settings〈設定ページは 301・要確認〉)は"
+    "後から変えられない(変更 = 再作成)。設計は「閉域で使えない機能」の一覧から始める",
 )
 
 # --- 社内ネットワーク(Azure 外・左) ---------------------------------------------------
@@ -38,14 +38,14 @@ storage = d.node(1085, 205, az("storage/storage-accounts.png"), "Storage")
 search = d.node(1205, 205, icon("search"), "AI Search", note="閉域 RAG の本命")
 
 d.cluster(300, 330, 1270, 710, "VNet", kind="sub")
-d.text(318, 665, "RFC1918 のみ\n172.17.0.0/16 は不可")
+d.text(318, 632, "RFC1918 のみ\n172.17.0.0/16 は不可\nPE は 192.168.0.0/24 に\n置かない")
 pe_f = d.node(390, 470, az("network/private-endpoint.png"), "PE", note="Approved のみ", icon_size=52)
 
-d.cluster(460, 380, 880, 690, "委任サブネット", kind="focus", sublabel="作成時のみ注入・/24・名前 ≤ 63 バイト")
+d.cluster(460, 380, 880, 690, "委任サブネット", kind="focus", sublabel="作成時のみ注入・/24・IP 共有(GA)")
 vm = d.node(560, 470, icon("containerapp"), "hosted agent\n(Micro VM)", status="GA")
 tools = d.box(760, 470, 150, 38, "Tools Service")
 proxy = d.box(760, 555, 150, 44, "Data Proxy\n(single-tenant)")
-egress = d.box(560, 640, 160, 36, "egress controls", status="Preview")
+egress = d.box(560, 640, 160, 36, "egress controls", status="GA")
 
 pe_d = d.node(960, 555, az("network/private-endpoint.png"), "PE × 3", note="自動作成されない",
               note_color=ORANGE, icon_size=48)
@@ -81,11 +81,11 @@ d.edge(fw, ms)
 
 d.notes(
     [
-        ("制約", "閉域非対応: Memory・Logic Apps・Browser Automation・Computer Use・Image Generation・Fabric Data Agent。Tracing VNet はプレビュー"),
+        ("制約", "閉域非対応: Memory・Logic Apps・Computer Use・Image Generation・Fabric Data Agent・voice agents の電話チャネル。Browser Automation は公式間で両論。Tracing VNet はプレビュー"),
         ("注意", "Bing / Web search / SharePoint / Work IQ は動くが公開経由(web search は egress サブネットも迂回)→ 全閉域要件なら Policy で禁止"),
         ("閉域", "hosted agent の VNet 注入は Foundry アカウント作成時のみ(後付け不可)。閉域のツール対応表は公式テンプレート(15 / 11)の構成が対象"),
         ("制約", "File Search は公式表記「PE 経由で対応」だが Blob Storage のファイル連携は非対応 → Blob の文書は AI Search ツールに寄せる"),
-        ("閉域", "出口 Firewall の TLS インスペクション禁止(証明書が接続を壊す)→ 金融の SSL 可視化ポリシーと衝突。例外承認を初期に取る"),
+        ("閉域", "出口 Firewall の TLS インスペクション禁止(private CA trust〈Preview〉でも Entra / MI の 3 FQDN は除外必須)→ 金融の SSL 可視化ポリシーと衝突。例外承認を初期に取る"),
     ],
     source="出典: docs/survey/architecture/07 §2〜3",
 )

@@ -77,7 +77,7 @@ d.notes(
         ("認証", "新エージェントモデルは作成時に固有 identity(旧モデルは publish で ID が変わり RBAC 再割当)。本番の資格情報はフェデレーテッド一択"),
         ("制約", "hosted agent はツールを直付けできない(Toolbox 前提)→ コードファーストに進む予定なら最初から Toolbox で組む"),
         ("注意", "更新系は冪等キー + 金額・件数の上限チェックをツール側に置く。プロンプトの「10 万円以上は承認」は統制ではない"),
-        ("注意", "Toolbox は GA だが prompt agent からの利用は Azure ブログが Preview と表記(要確認)。Azure Functions ツールも公式表記が矛盾(要確認)"),
+        ("注意", "Toolbox は GA。prompt agent からの利用はブログ = Preview / Learn = 区別なしの両論。OpenAPI ツールは OAuth ID パススルー非対応(2026-11)。Azure Functions ツールは公式表記が矛盾(要確認)"),
     ],
     source="出典: docs/survey/architecture/05 B1",
 )

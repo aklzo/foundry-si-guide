@@ -1,0 +1,12 @@
+### [2026-11-22 18:06:05 JST] gpt-5.4-mini の容量 10 → 50(P0 の T3 で 429 rate_limit_exceeded。容量自体は無料)
+{
+  "name": "gpt-5.4-mini",
+  "sku": {
+    "capacity": 50,
+    "family": null,
+    "name": "GlobalStandard",
+    "size": null,
+    "tier": null
+  },
+  "state": "Succeeded"
+}

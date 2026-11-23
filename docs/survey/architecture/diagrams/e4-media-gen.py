@@ -15,7 +15,7 @@ d = Diagram(
     "E4: 画像・動画生成 — キューによる負荷平準化が実質必須",
     width=1540,
     height=800,
-    subtitle="画像は 6〜36 RPM、Sora 2 は 2 job RPM + 同時 2 ジョブ + 24h 失効。Azure Architecture Center に"
+    subtitle="画像は 6〜36 RPM、動画は非同期ジョブ(Sora 2 は 2026-11-02 リタイア)。Azure Architecture Center に"
     "メディア生成の公式パターンはなく、Queue-Based Load Leveling / Competing Consumers を当てる",
 )
 
@@ -37,9 +37,9 @@ state = d.node(690, 492, az("databases/azure-cosmos-db.png"), "ジョブ状態",
 d.cluster(830, 140, 1130, 565, "Foundry(モデルデプロイ)", kind="sub")
 img = d.node(980, 230, icon("model"), "画像: gpt-image-2 / 2.5・\nFLUX.2(同期 API)", status="GA",
              note="RPM のみ・Data Zone は 1/3", note_color=ORANGE)
-vid = d.node(980, 445, icon("model"), "動画: Sora 2\n(非同期ジョブ)", status="Preview",
-             note="2 job RPM・同時 2・24h 失効", note_color=ORANGE)
-d.pill(vid.x1 - 6 + 56, vid.y0 + 2, "廃止予定")  # sora-2: 2026-10-15 リタイア・後継未掲載
+vid = d.node(980, 445, icon("model"), "動画: fal(Kling 等)\n/ 旧 Sora 2(非同期ジョブ)", status="Preview",
+             note="DPA 対象外・24h 失効(Sora 2)", note_color=ORANGE)
+d.pill(vid.x1 - 6 + 56, vid.y0 + 2, "Sora 2 退役", color=(207, 34, 46), bg=(255, 235, 233))  # sora-2: 2026-11-02 リタイア(retired-models)
 
 blob = d.node(1265, Y, az("storage/blob-storage.png"), "自社 Blob", note="成功後すぐ退避")
 review = d.box(1415, Y, 150, 48, "Content Safety\n+ 人手レビュー", fill=(255, 248, 230), border=(196, 140, 40))
@@ -72,10 +72,10 @@ d.steps_panel(40, 628, 1500, [
 
 d.notes(
     [
-        ("期限", "sora-2 は 2026-10-15 リタイアで後継未掲載 → 動画生成を長期案件の前提に置かない(gpt-image-1 は 10-23 リタイア)"),
+        ("期限", "sora-2 は 2026-11-02 リタイア(retired-models。sold・region 表は掲載継続で要確認)、gpt-image-1 も 10-28 リタイア → 動画生成を長期案件の前提に置かない"),
         ("制約", "画像は TPM なし RPM のみ(gpt-image-2: Tier1 6〜Tier6 36)。Data Zone は Global の約 1/3、2.5 系は全 Tier 5 RPM 固定"),
-        ("制約", "Sora 2 のジョブは作成後 24h で失効し、自社 Blob への直接出力(BYO)は記載なし → 成功後すぐ退避する"),
-        ("注意", "Sora 2 は IP・フォトリアル・実在人物・顔入り入力画像を拒否 → 企画段階で用途が成立するか先に確認"),
+        ("制約", "動画ジョブは作成後 24h で失効(Sora 2 の記載)し、自社 Blob への直接出力(BYO)は記載なし → 成功後すぐ退避する"),
+        ("注意", "fal の動画モデル(Preview)は Microsoft の Product Terms・DPA の対象外 → 規制案件・顧客データ入力には使わない"),
         ("注意", "画像は C2PA・透かしを自動付与(gpt-image-1・2.5 系は対応表になし)。動画は対象外 → 自前付与を検討"),
     ],
     source="出典: docs/survey/architecture/08 E4",

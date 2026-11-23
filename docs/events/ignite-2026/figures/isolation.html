@@ -1,0 +1,32 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8"><meta name="figure-size" content="1600x675"><link rel="stylesheet" href="../../tools/figure.css"><style>
+body{padding:18px 30px}
+.g{display:grid;grid-template-columns:470px 1fr;gap:26px;height:580px;zoom:1.1}
+h2{font-size:25px;margin:0 0 10px}
+.lay{display:flex;flex-direction:column;gap:10px}
+.lv{border:3px solid var(--accent);border-radius:14px;padding:10px 16px;font-size:21px;line-height:1.35}
+.lv b{font-size:24px;color:var(--accent)}
+.lv.in{margin-left:34px;border-style:dashed}
+.lv.in2{margin-left:68px;border-style:dotted}
+.warn{font-size:20px;line-height:1.4}
+.sh{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.sh div{border:2px solid var(--dep);background:var(--dep-bg);border-radius:10px;padding:7px 12px;font-size:19px;line-height:1.35}
+.sh div.d{border-color:var(--border);background:#fff}
+.sh b{font-size:21px}
+.pill{font-size:13px;padding:0 6px;margin:0 0 0 6px;vertical-align:3px}
+.okrow{margin-top:9px;border:2px solid var(--ga);background:#f3fbf5;border-radius:10px;padding:7px 12px;font-size:19px}
+</style></head><body><div class="g">
+<div><h2>権限の境界</h2><div class="lay">
+<div class="lv"><b>アカウント</b><br>モデルのデプロイ・API キー・ネットワーク</div>
+<div class="lv in"><b>プロジェクト</b><br>エージェント・ファイル・接続・評価</div>
+<div class="lv in2"><b>エージェント</b><br>「呼ぶ」権限(Agent Consumer)だけを絞れる</div>
+</div><div class="warn"><b>API キーはエージェント単位の権限を迂回する</b><span class="pill meas">実測</span><br>エンドポイント・ファイル・メモリまでキーで通る。<code>disableLocalAuth</code> で止める(約 1 分で効き、拒否は 403)</div></div>
+<div><h2>プロジェクトの中で分けられないもの</h2><div class="sh">
+<div><b>応答の続き</b><span class="pill meas">実測</span><br>他人の応答 ID を <code>previous_response_id</code> に入れると、続きの回答で中身が読める</div>
+<div><b>メモリ</b><span class="pill meas">実測</span><br>プロジェクトの経路では <code>x-memory-user-id</code> で他人の記憶が読める(エージェントのエンドポイントでは無視される)</div>
+<div><b>接続のシークレット</b><span class="pill meas">実測</span><br>プロジェクトに付けた Foundry User で読める</div>
+<div><b>ファイル</b><span class="pill meas">実測</span><br>他人のファイル ID を添付に指定しても受理される(内容が渡るかは未確認)</div>
+<div class="d"><b>Code Interpreter のコンテナー</b><br>同じプロジェクトで共有(公式)</div>
+<div class="d"><b>他人の hosted セッション</b><br>Foundry User は一覧できる(公式)</div>
+<div class="d" style="grid-column:span 2"><b>ナレッジベースの権限絞り込み</b> ユーザーのトークンがないとき、絞らずに返すと書くページと返さないと書くページがある(公式)</div>
+</div><div class="okrow"><b>分かれていたもの</b><span class="pill meas">実測</span> 会話と応答の取得は呼び出し元ごとに分かれる(他人の ID では 404)</div></div>
+</div></body></html>

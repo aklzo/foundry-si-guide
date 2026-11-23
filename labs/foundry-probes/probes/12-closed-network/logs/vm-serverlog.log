@@ -1,0 +1,40 @@
+### [2026-11-22 14:30:56 JST] vmprobe.py serverlog 20
+Enable succeeded: 
+[stdout]
+===== serverlog 20 @ 2026-11-22T05:31:03Z
+{"t": "2026-11-22T05:14:25Z", "kind": "api", "client_ip": "10.40.2.10", "method": "GET", "path": "/health", "ua": "curl/8.5.0"}
+{"t": "2026-11-22T05:23:28Z", "kind": "api", "client_ip": "10.40.2.10", "method": "GET", "path": "/health", "ua": "curl/8.5.0"}
+{"t": "2026-11-22T05:29:46Z", "kind": "api", "client_ip": "10.40.2.10", "method": "GET", "path": "/openapi.json", "ua": "Python-urllib/3.12"}
+{"t": "2026-11-22T05:29:50Z", "kind": "api", "client_ip": "10.40.0.84", "method": "GET", "path": "/whoami", "ua": "azure-agents"}
+{"t": "2026-11-22T05:30:28Z", "kind": "mcp", "client_ip": "10.40.0.84", "method": "POST", "path": "/mcp", "ua": "AzureAIFoundryAgentRuntime/244898599", "rpc": "server/discover", "id": 1}
+{"t": "2026-11-22T05:30:28Z", "kind": "mcp", "client_ip": "10.40.0.142", "method": "POST", "path": "/mcp", "ua": "AzureAIFoundryAgentRuntime/244898599", "rpc": "initialize", "id": 2}
+{"t": "2026-11-22T05:30:28Z", "kind": "mcp", "client_ip": "10.40.0.84", "method": "GET", "path": "/mcp", "ua": "AzureAIFoundryAgentRuntime/244898599"}
+{"t": "2026-11-22T05:30:28Z", "kind": "mcp", "client_ip": "10.40.0.84", "method": "POST", "path": "/mcp", "ua": "AzureAIFoundryAgentRuntime/244898599", "rpc": "notifications/initialized", "id": null}
+{"t": "2026-11-22T05:30:28Z", "kind": "mcp", "client_ip": "10.40.0.142", "method": "POST", "path": "/mcp", "ua": "AzureAIFoundryAgentRuntime/244898599", "rpc": "tools/list", "id": 4}
+{"t": "2026-11-22T05:30:28Z", "kind": "mcp", "client_ip": "10.40.0.142", "method": "POST", "path": "/mcp", "ua": "AzureAIFoundryAgentRuntime/244898599", "rpc": "tools/list", "id": 3}
+{"t": "2026-11-22T05:30:28Z", "kind": "mcp", "client_ip": "10.40.0.142", "method": "DELETE", "path": "/mcp", "ua": "AzureAIFoundryAgentRuntime/244898599"}
+{"t": "2026-11-22T05:30:30Z", "kind": "mcp", "client_ip": "10.40.0.84", "method": "POST", "path": "/mcp", "ua": "AzureAIFoundryAgentRuntime/244898599", "rpc": "initialize", "id": 1}
+{"t": "2026-11-22T05:30:30Z", "kind": "mcp", "client_ip": "10.40.0.84", "method": "GET", "path": "/mcp", "ua": "AzureAIFoundryAgentRuntime/244898599"}
+{"t": "2026-11-22T05:30:30Z", "kind": "mcp", "client_ip": "10.40.0.142", "method": "POST", "path": "/mcp", "ua": "AzureAIFoundryAgentRuntime/244898599", "rpc": "notifications/initialized", "id": null}
+{"t": "2026-11-22T05:30:30Z", "kind": "mcp", "client_ip": "10.40.0.84", "method": "POST", "path": "/mcp", "ua": "AzureAIFoundryAgentRuntime/244898599", "rpc": "tools/call", "id": 2}
+{"t": "2026-11-22T05:30:30Z", "kind": "mcp", "client_ip": "10.40.0.142", "method": "DELETE", "path": "/mcp", "ua": "AzureAIFoundryAgentRuntime/244898599"}
+
+[stderr]
+
+### [2026-11-22 14:33:18 JST] vmprobe.py serverlog 10
+Enable succeeded: 
+[stdout]
+===== serverlog 10 @ 2026-11-22T05:33:20Z
+{"t": "2026-11-22T05:30:28Z", "kind": "mcp", "client_ip": "10.40.0.84", "method": "POST", "path": "/mcp", "ua": "AzureAIFoundryAgentRuntime/244898599", "rpc": "notifications/initialized", "id": null}
+{"t": "2026-11-22T05:30:28Z", "kind": "mcp", "client_ip": "10.40.0.142", "method": "POST", "path": "/mcp", "ua": "AzureAIFoundryAgentRuntime/244898599", "rpc": "tools/list", "id": 4}
+{"t": "2026-11-22T05:30:28Z", "kind": "mcp", "client_ip": "10.40.0.142", "method": "POST", "path": "/mcp", "ua": "AzureAIFoundryAgentRuntime/244898599", "rpc": "tools/list", "id": 3}
+{"t": "2026-11-22T05:30:28Z", "kind": "mcp", "client_ip": "10.40.0.142", "method": "DELETE", "path": "/mcp", "ua": "AzureAIFoundryAgentRuntime/244898599"}
+{"t": "2026-11-22T05:30:30Z", "kind": "mcp", "client_ip": "10.40.0.84", "method": "POST", "path": "/mcp", "ua": "AzureAIFoundryAgentRuntime/244898599", "rpc": "initialize", "id": 1}
+{"t": "2026-11-22T05:30:30Z", "kind": "mcp", "client_ip": "10.40.0.84", "method": "GET", "path": "/mcp", "ua": "AzureAIFoundryAgentRuntime/244898599"}
+{"t": "2026-11-22T05:30:30Z", "kind": "mcp", "client_ip": "10.40.0.142", "method": "POST", "path": "/mcp", "ua": "AzureAIFoundryAgentRuntime/244898599", "rpc": "notifications/initialized", "id": null}
+{"t": "2026-11-22T05:30:30Z", "kind": "mcp", "client_ip": "10.40.0.84", "method": "POST", "path": "/mcp", "ua": "AzureAIFoundryAgentRuntime/244898599", "rpc": "tools/call", "id": 2}
+{"t": "2026-11-22T05:30:30Z", "kind": "mcp", "client_ip": "10.40.0.142", "method": "DELETE", "path": "/mcp", "ua": "AzureAIFoundryAgentRuntime/244898599"}
+{"t": "2026-11-22T05:32:48Z", "kind": "api", "client_ip": "10.40.0.124", "method": "GET", "path": "/whoami", "ua": "curl/7.88.1"}
+
+[stderr]
+

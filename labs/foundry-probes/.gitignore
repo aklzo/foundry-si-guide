@@ -8,3 +8,13 @@ uv.lock
 
 # bicep のビルド出力
 *.json
+
+# 12〜15 は実測ログを一次記録として残す(ID・メール・公開 IP は tools/scrub_logs.py で伏せ字。資格情報は書かない)
+!probes/12-closed-network/logs/
+!probes/13-rbac-boundaries/logs/
+!probes/14-optimizer-access/logs/
+!probes/15-egress-paths/logs/
+probes/12-closed-network/infra.outputs.json
+
+# 鍵と vm-config.json(deploy.sh の既定の置き場)
+.work/

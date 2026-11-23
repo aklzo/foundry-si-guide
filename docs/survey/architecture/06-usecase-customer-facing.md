@@ -2,7 +2,7 @@
 
 [← アーキテクチャ TOP](./README.md)
 
-> **最終更新:** 2026-07-30(公式ドキュメントとの突合検証で訂正) / 2026-09-26(定期更新: hosted agent の同時セッション既定上限とサブネット換算表・ユーザー単位分離〈`x-ms-user-identity`〉・S3 HD の Foundry IQ 対応・Secure Multitenant RAG 記事の改訂・AI Gateway の閉域要件を反映) / 2026-10-14(既定ストリーミングでも応答末尾がガードレール適用前に届きうる注記をガードレールとチェックリストに、hosted agent のユーザー分離ページの整理〈新機能ではない〉・Foundry User の全セッション管理・MAF 既定ストアの分割と旧データ非互換を ③〜⑤ に追加、On Your Data は本日が期限当日)
+> **最終更新:** 2026-07-30(公式ドキュメントとの突合検証で訂正) / 2026-09-26(定期更新: hosted agent の同時セッション既定上限とサブネット換算表・ユーザー単位分離〈`x-ms-user-identity`〉・S3 HD の Foundry IQ 対応・Secure Multitenant RAG 記事の改訂・AI Gateway の閉域要件を反映) / 2026-10-14(既定ストリーミングでも応答末尾がガードレール適用前に届きうる注記をガードレールとチェックリストに、hosted agent のユーザー分離ページの整理〈新機能ではない〉・Foundry User の全セッション管理・MAF 既定ストアの分割と旧データ非互換を ③〜⑤ に追加、On Your Data は本日が期限当日) / 2026-11-22(features 差分更新〈10-14 以降+Ignite 2026〉の波及: Cost in Foundry・cost controls〈preview、HTTP 429 で予算超過を止められるが GPT / o-series のみ・PTU 等は数えない・fail-open、コスト閲覧に Cost Management Reader〉で旧記載「ハードリミットが存在しない」を限定、Azure AI Gateway〈新リソース型〉と Foundry UI からの APIM 紐付けの縮小・トークン上限の読み取り専用化、Model router の Policy が要求時に効かない件、hosted のサブネット IP 共有 GA で閉域の上限表を差し替え〈同時セッション上限 2,000 / 1,000 は不変〉、content filter の入力側 Off、分類器 2026-10 更新の段階展開、Modified Abuse Monitoring の縮小、テキスト透かし、Baseten / fal の DPA 対象外、`agents/write` とエージェントスコープの限界〈ファイルは分離されない〉、On Your Data の retired 表記)
 
 社内利用と外部公開の間には、**アーキテクチャ上の断絶**がある。社内なら「Entra ID で認証すれば概ね安全」が成り立つが、外部公開では (1) 不特定多数からの攻撃、(2) テナント間のデータ分離、(3) 一部利用者による資源の占有、(4) 利用量に応じた課金按分 — の 4 つが同時に効いてくる。
 
@@ -74,8 +74,11 @@
 - **ガードレールの介入点を 4 つとも設計する:** User input / **Tool call(プレビュー)** / **Tool response(プレビュー)** / Output。エージェントに明示割当したガードレールはモデル側の設定を**完全に上書きする**ため、Tool 系を置き忘れるとその経路が未スキャンになる。
 - **⚠ フェイルオープンに注意:** 「**コンテンツフィルタリングシステムが利用不能な場合、リクエストはフィルタリングなしで完了する(HTTP 200)。**」判別は `content_filter_results` 内のエラーオブジェクト(`code: "content_filter_error"`)でしかできない。**公式のベストプラクティスは「常に `finish_reason` を確認し、`content_filter_results` にエラーが無い(= フィルターが実行された)ことを検証せよ」。**規制業種ではこの検証を必須実装にする。
 - **⚠ ストリーミングの末尾はガードレール適用前に届きうる(2026-10-14 追加):** content-streaming(2026-10-13 公開版)は、**既定(バッファあり)のストリーミングでも応答の最後の区切りはフィルター適用前に返ることがある**と注記した。試験では gpt-4o+補完側のブロック型カスタムブロックリストで、**末尾の約 15〜30 語**に入った禁止語が `finish_reason: "stop"` のまま届いた(同じ応答は `stream: false` ならブロック、後ろに文が続けばストリーム途中でブロック)。公式は「ポリシー違反の内容が利用者に届くことを許容できないなら、**非ストリーミングにするか、ストリームの最終区切りに自前のフィルターをかけよ**」と書く(同ページの「既定は返す前に完全に検査済み」という記述とは食い違う)。不特定多数に見せる画面で禁止語・個人情報の流出が許されないなら、どちらかを実装範囲に入れる。Asynchronous Filter はもともと遅れて検査するので同じ対策がより強く要る
+- **分類器の更新でブロック結果が変わりうる(2026-11-22 追加):** Content Safety の What's new「October 2026 Content Safety Model Update」で、テキストの 4 有害カテゴリと Prompt Shields(直接 / 間接攻撃)の分類器が更新され、**Spain Central を最初のリージョンとして段階展開中**(展開中はリージョン間で結果が一時的に異なりうる、完了時期・日本リージョンへの到達時期は未記載)。PII・Task adherence・ブロックリスト・保護素材・画像は対象外。**外部公開の画面では誤ブロック・すり抜けが利用者に直接見えるので、代表的な入力・攻撃文のセットを固定し、判定が急に変わったら再試験する手順をリリース運用に入れる**([09](./09-operations.md))。
+- **ブロッキングレベルの読み方(2026-11-22 訂正):** guardrails-overview の表は名前が「Severity levels」→「**Blocking levels**」になり、**Low = High のみブロック(最も緩い)/ Medium = Medium 以上 / High = Low 以上をブロック(最も厳しい)**と定義し直された。「Off」は**出力側だけが承認制(Modified Guardrails)で、入力側の Off は全顧客が選べる**(旧記載は入出力とも承認制と読めた — [features 06](../features/06-safety-guardrails.md))。外部公開で入力側を Off にする設計は取らないが、社内向けに入力側を緩めた設定を顧客向けに流用しないよう、環境ごとにガードレールを分ける。
 - **Claude を使う場合は Foundry の組込みフィルターが効かない。**APIM の `llm-content-safety` ポリシーでゲートウェイ層から Content Safety を噛ませるか、アプリ層で直接呼ぶ。
 - **AI Red Teaming** を「purple environment」(本番相当リソースの非本番環境)で回す。ただし ASR の判定は生成モデルが行うため**非決定的で偽陽性がありうる**ので、対処前に必ずレビューする。
+- **生成テキストの透かし(2026-11-22 追加):** GPT の出力にも機械検出用の透かしを入れられるようになった(対応は gpt-6.2-sol / -astra、ほかのモデルは対応予定)。**デプロイ単位の `properties.textWatermarking`**(`Disabled` が既定 / `RequestControlled` = ヘッダー `x-ms-oai-enable-text-watermark: true` の要求だけ / `AlwaysEnabled`)で、**同じリソースの別デプロイ・フェイルオーバー先・ロールバック用デプロイには自動で広がらない**。一般向けに生成文を出すサービスで透明性の義務(EU AI Act の行動規範等)を説明するなら、APIM のバックエンドプールに入る全デプロイに同じ設定を入れ、`RequestControlled` ならゲートウェイ・リトライ経路がヘッダーを落とさないか試験する([features 06](../features/06-safety-guardrails.md))。
 
 ### コスト暴走の抑制
 
@@ -83,10 +86,19 @@
 
 **⚠ Azure OpenAI にはハードリミットが存在しない。**「OpenAI にはハードリミットがあるが、Azure OpenAI には現状その機能がない」と明記されている。予算超過での自動停止が要件なら、**予算アラートのアクショングループから起動する自動化を自作する。**
 
+> **2026-11-22 更新 — Foundry に予算で止める仕組み(cost controls、preview)が出たが、ハードリミットの代わりにはならない:** Foundry リソースかプロジェクトに予算(米ドルかトークン)を置き、しきい値で **Send alert / Block usage** を選べる([cost-controls](https://learn.microsoft.com/en-us/azure/foundry/concepts/cost-controls) ms.date 2026-11-18)。ブロックされた要求は **HTTP 429+ヘッダー `x-ms-budget-cause: budget_exceeded`**(ゲートウェイのトークン上限の 429 / 403 とはヘッダーで区別できる)。ただし外部公開の「コスト暴走の止め」として使うには穴が多い:
+>
+> - **数えるのは GPT と o-series だけ**(Claude・DeepSeek 等は非対象)、**PTU・ツール料金(web search 等)・hosted agent のコンピュートは数えない**、model router は完全には数えられない、新しい GPT モデルは価格が入るまで約 1 週間計上されない。
+> - 変更の反映は最大 15 分、しきい値をまたぐ要求自体は完了しうる、**時間内に判定できなければ要求は通る(fail-open)**。Spending は定価等のスナップショットで値付けする推定で、請求と突合しない。
+> - プロジェクトの cost control は数えるだけでブロックしない(ブロックはリソースの cost control)。**cost control を持つプロジェクトは削除できない**、終了日が必須。
+> - **コストの閲覧は Foundry のロールに含まれない** — Manage > Cost・Fleet のコストを見るには RG / サブスクリプションに **Cost Management Reader** 等を別に付与する(サブスクリプションに付けると Foundry 以外の支出も見える)。コストは利用の 8〜24 時間後に出る。
+>
+> → **外部公開では「最後の安全弁」として cost controls(Block)を置きつつ、主の抑止は従来どおり下の多層防御(アプリ層・APIM 層)で持つ**(本ドキュメントの判断)。Cost in Foundry(Manage > Cost / プロジェクトの Monitor > Cost)のエージェント別内訳は `agent.name` タグ付きの課金だけで、タグは 2026-11 以降の利用分から([features 01](../features/01-platform-projects.md))。
+
 現実的な多層防御:
 1. **アプリ層** — ユーザー単位のリクエスト数 / 日次トークン上限
 2. **APIM 層** — `llm-token-limit` で TPM 上限とトークンクォータ。**`estimate-prompt-tokens=true` にすると上限超過プロンプトをバックエンド到達前に遮断できる**(公式は「不要なバックエンドリクエストを削減できる」と記載。課金抑止の明記はない。なおストリーミング時は設定にかかわらず常にプロンプトが推定される)
-3. **Foundry 層** — デプロイ単位のクォータ、Control Plane のプロジェクト単位トークン制限(**TPM 超過は 429、総トークンクォータ超過は 403**)
+3. **Foundry 層** — デプロイ単位のクォータ、Control Plane のプロジェクト単位トークン制限(**TPM 超過は 429、総トークンクォータ超過は 403**。2026-11-22: この上限は Foundry 側では**読み取り専用**になり、変更は APIM のポリシー XML を Azure portal かコードで編集 — enforce-limits-models 2026-11-06 版)、cost controls の Block(preview、上の注記)
 4. **モデル層** — Model router の Cost モード、小型モデルへの振り分け、Batch への切り出し
 
 **セマンティックキャッシュ**(APIM `llm-semantic-cache-store` / `-lookup`、RediSearch モジュール有効の Azure Managed Redis 必須。**モジュールは新規キャッシュ作成時のみ有効化可**)は、FAQ 的な問い合わせが多い外部向けチャットで効果が大きい。**バックエンド呼び出し自体を削減する**ため、レイテンシとコストの両方に効く。
@@ -124,6 +136,8 @@ Azure Architecture Center のマルチテナンシーガイダンスに、より
 
 **テナント専用モデルデプロイを作る正当化理由は 5 つ**と明示されている: (1) **TPM クォータをテナント別に割り当て、トークン使用量を追跡して正確にコスト配賦する**(PTU なら特定顧客に割り当て、他は別の課金モデルにできる)、(2) **コンテンツフィルターポリシーはモデルデプロイ単位**なのでテナント別ブロックリスト等が要る場合、(3) モデル種別・バージョンの独立したライフサイクル管理、(4) テナント固有のファインチューニング、(5) データレジデンシ(一部テナントはリージョナル、他はグローバル)。
 
+> **2026-11-22 追記 — (5) を Model router で済ませる場合の落とし穴:** model router の FAQ・model-router-policy は「**Azure Policy は作成・更新時の評価だけで、要求時のルーティング先は絞らない**」と明記した。承認モデルに限るにはデプロイの **model subset** と Auto(preview)の `properties.instant.routing.models` を併用する。さらに **Auto(preview)は常に Global Standard で処理**、**router 経由の Claude は Global Standard の version 1(Anthropic 基盤)だけが対象で、Data Zone の router は Claude に流さない**、Fireworks のモデルは有効化したサブスクリプションでのみプールに入る。→ **データ所在要件のあるテナントは「Data Zone の router + subset」に限定し、Auto は使わない**。課金はルーティング料+選ばれたモデルの利用料(自前 PTU が応答した場合はルーティング料のみ)([features 02](../features/02-models.md))。
+
 ### ⚠ 公式が明示している 3 つの落とし穴(そのまま提案書のリスク欄に使える)
 
 > **共有された Azure OpenAI リソースは、モデルデプロイごとのセキュリティ分離を提供しない。テナントが、使う権限のないモデルを使えてしまう可能性がある。ファインチューン済みモデルを使うときは Azure OpenAI インスタンスを共有するな。**機微情報が露出し、テナント固有のデータやリソースへの不正アクセスを許す可能性がある。
@@ -150,7 +164,7 @@ Azure Architecture Center のマルチテナンシーガイダンスに、より
 
 ### RAG のマルチテナント分離(Secure Multitenant RAG)
 
-**⚠ 前提が変わった:** この記事は以前、冒頭で「**Azure OpenAI On Your Data は非推奨で、リタイアが近づいている。**On Your Data のワークロードは **Foundry Agent Service + Foundry IQ** へ移行することを推奨する」と明記していた。**「オーケストレーターを挟まずモデルが直接データを読む」構成は事実上終わっている**(On Your Data は 2026-10-14 リタイア — use-your-data 2026-09-10 版。**2026-10-14 = 本日が期限当日**で、出典の表記は未来形のまま)。
+**⚠ 前提が変わった:** この記事は以前、冒頭で「**Azure OpenAI On Your Data は非推奨で、リタイアが近づいている。**On Your Data のワークロードは **Foundry Agent Service + Foundry IQ** へ移行することを推奨する」と明記していた。**「オーケストレーターを挟まずモデルが直接データを読む」構成は事実上終わっている**(On Your Data は 2026-10-14 リタイア — use-your-data 2026-09-10 版。~~2026-10-14 = 本日が期限当日で、出典の表記は未来形のまま~~ **2026-11-22: 出典は「retired on October 14, 2026, and is no longer supported」の過去形になった**)。
 
 > **2026-09-26 更新:** [Secure Multitenant RAG](https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/secure-multitenant-rag)(2026-08-19 版、2026-09-21 更新)は On Your Data への言及を削除し、単一テナント構成の変種として「**Responses API の file search ツール**」版を追加した。アプリが認証済みリクエストからテナント文脈と認可ルールを導出し、**許可された vector store と file-attribute フィルタを file search ツールに設定**してから Responses API を呼ぶ形。ただし記事自身が「アプリ制御の取得(AI Search を直接クエリ)より、索引・取得・テナントルーティング・認可強制の制御が弱い」と明記しているので、マルチテナントでは下記の API 層パターンが本筋のまま。
 
@@ -172,6 +186,8 @@ API 層の責務として公式に列挙されているのは、テナント専�
 - **学習と推論の要件を分けて考える。**モデル分離は「テナント固有モデル / 共有モデル / チューニング済み共有モデル」の 3 方式。
 - **データ主権に関する明示的な警告:** 「テナントのデータから共有モデルを学習するなら、**テナントがそのデータ利用を理解し同意していることを確認せよ。識別情報が除去されていることを確認せよ。****あるテナントが、自分のデータが別のテナントに提供されるモデルの学習に使われることに反対した場合にどうするかを検討せよ。**例えばそのテナントのデータを学習データセットから除外する必要があるかもしれない。」
 - 「**モデルは、それを学習させた生データと同程度の機密性で扱え。**」
+- **顧客データを Microsoft 側に保存させない前提は、新しいモデルでは崩れる(2026-11-22 追加):** abuse-monitoring・data-privacy・limited-access の 3 ページに「What's changing with Modified Abuse Monitoring」が追加され、**2026-11-01 以降に提供開始したモデルは、今後告知される日付(モデルごとに 30 日前以上に通知)から Modified Abuse Monitoring の対象外**になる(既存の承認があっても Microsoft の新しいデータ保持・アクセス・安全監視の方式に従う。2026-11-01 より前のモデルは不変)。2026-11-17 公開の gpt-6.2-sol / -astra が該当。新方式の中身(保存期間・人手レビューの有無)は未公表 → **テナントとの契約で「プロンプトを Microsoft に保存させない」と約束している SaaS は、採用モデルの提供開始日を確認し、新しいモデルへの切り替えを契約上の変更として扱う**([features 06](../features/06-safety-guardrails.md))。
+- **Microsoft の DPA が効かないモデル提供元がある(2026-11-22 追加):** Foundry のカタログから使える **Baseten / fal(いずれも preview)は Microsoft Product Terms・DPA の対象外**(Fireworks は DPA 適用だが EU Data Boundary 対象外、推論は Microsoft 施設外)。Baseten の pay-per-token はリタイア予告が 30 日。**テナントのデータを流す経路にこれらを入れない**か、テナントに提供元ごとの条件を開示する([features 02](../features/02-models.md))。
 - **Foundry Tools のスケール上限:** 「多くの API が秒あたりの最大リクエスト数をサポートする。**単一の Foundry tool リソースをテナント間で共有してデプロイしている場合、テナント数の増加に応じて複数リソースへスケールする必要があるかもしれない。**」
 - **アンチパターン 2 つ:** 「**分離要件を考慮しない**」(法的・契約要件の違反に加え、**性質の大きく異なる複数テナントのデータで学習するとモデル精度が落ちる**)、「**ノイジーネイバー**」(大規模テナントのモデル学習が計算リソースを食い尽くして小規模テナントを枯渇させないよう、**リソースガバナンスと監視で緩和せよ**)。
 
@@ -179,7 +195,7 @@ API 層の責務として公式に列挙されているのは、テナント専�
 
 **① 会話・スレッドの分離** — 前述の BOLA 対策に加え、**basic セットアップでは会話が Microsoft 管理ストレージにあり所在と保持を細かく制御できない。**SaaS なら standard セットアップ(BYO Cosmos DB)か自前セッションストアを選ぶ。
 
-**② ベクトルストア / インデックスの分離** — テナントごとにインデックスを分けるか、単一インデックス + セキュリティフィルタか。**⚠ AI Search の S3 HD ティアと agentic retrieval(Foundry IQ):** search-limits 2026-08-04 版では S3 HD のナレッジソース / ナレッジベース上限が 0(= Foundry IQ 不可)だったが、**2026-09-16 版で「1 パーティション 1,000 / サービス 3,000」に変わった**。ただし「一部の古い S3 HD サービスは非対応」の脚注付きで、S3 HD のインデクサはプレビュー(マルチテナント実行のみ・shared private link 非対応)。「マルチテナントだから S3 HD」を選ぶなら、**対象サービスで knowledge base を作れるかを先に実機確認**する(2026-09-26 更新)。
+**② ベクトルストア / インデックスの分離** — テナントごとにインデックスを分けるか、単一インデックス + セキュリティフィルタか(2026-11-22: Azure AI Search は「Foundry IQ (Azure AI Search)」に改称。リソース型・エンドポイント・課金名は不変。Entra ID ベースの ACL 取り込みは `2026-10-01` で GA になったが、テナントの ID 基盤が Entra 以外の SaaS ではセキュリティフィルタが本筋 — [04 A2](./04-usecase-chat-rag.md#a2-全社ナレッジ検索-ai-search-自前索引・本番の標準形))。**⚠ AI Search の S3 HD ティアと agentic retrieval(Foundry IQ):** search-limits 2026-08-04 版では S3 HD のナレッジソース / ナレッジベース上限が 0(= Foundry IQ 不可)だったが、**2026-09-16 版で「1 パーティション 1,000 / サービス 3,000」に変わった**。ただし「一部の古い S3 HD サービスは非対応」の脚注付きで、S3 HD のインデクサはプレビュー(マルチテナント実行のみ・shared private link 非対応)。「マルチテナントだから S3 HD」を選ぶなら、**対象サービスで knowledge base を作れるかを先に実機確認**する(2026-09-26 更新)。
 
 File Search を使うなら、**`structured_inputs` で `vector_store_ids` をリクエスト単位に上書きできる**ため、エージェント定義を増やさずにテナント別コーパスを切り替えられる。ただし **hosted agent から Toolbox 経由で Code Interpreter / File Search を使うとユーザー分離がない**点に注意(Code Interpreter は同一プロジェクトの全ユーザーが同じコンテナ文脈を共有、File Search はツール構成・実行時に渡した vector store に全ユーザーがアクセス可能 — code-interpreter / file-search 各ページ 2026-08-05 版で 2026-09-26 再確認)。
 
@@ -187,32 +203,34 @@ File Search を使うなら、**`structured_inputs` で `vector_store_ids` を�
 
 **④ セッションプールでのデータ混在** — 同時エージェントセッション上限(後述)を踏まえてセッションをプールする場合、**プラットフォームは会話状態を分離するが、エージェントコンテナー自身が保存するデータ(ファイル・DB 行・キャッシュ)は自動分割されない。**アプリ側で **agent session とエンドユーザー ID の両方でキー付け**しないと、同一プールセッション内のユーザーが互いのデータを読める。**2026-10-14 追記:** MAF のホスティング(agent-framework の foundry-hosted-agent、ms.date 2026-10-08)を使う場合、Foundry 上の既定の Python ストアは最初から**プラットフォームのユーザー ID × サンドボックスのセッション ID** で状態を分けて保存し(最終書き込みから 30 日で期限切れ)、状態操作ごとにプラットフォームの call ID を要求する。ただし**分割済みストアは旧来の分割なしデータを読まない**ので、MAF ホスティングの更新後は古い `previous_response_id` や会話 ID を使い回さず新しい会話から始める(利用者に「続きから」を約束している画面は移行時の扱いを決めておく)。自作の保存先(ファイル・DB)には引き続き自分でキーを付ける。
 
-**⑤ プロジェクト RBAC の限界** — 「Foundry プロジェクトに `Foundry User` ロールを持つプリンシパルは、**そのプロジェクト内のすべてのエージェントと対話できる。**」テナント別のアクセス制御を Foundry の RBAC で表現するのは無理で、**アプリの認証認可層が担う。****2026-10-14 追記:** ユーザー分離のページは、プロジェクトの **Foundry User** を持つ管理者・自動化が**利用者を問わず全セッションを一覧・管理できる**と明記した(セッションのファイルや会話内容の読み取りまで含むかは記載なし)。開発者に普通に付けるロールなので、**本番プロジェクトでは開発者に Foundry User を付けない**(開発・検証プロジェクトとリソースごと分ける)前提で権限を設計する(本ドキュメントの判断)。
+**⑤ プロジェクト RBAC の限界** — 「Foundry プロジェクトに `Foundry User` ロールを持つプリンシパルは、**そのプロジェクト内のすべてのエージェントと対話できる。**」テナント別のアクセス制御を Foundry の RBAC で表現するのは無理で、**アプリの認証認可層が担う。****2026-11-22 追記(rbac-foundry 2026-11-18 版):** エージェントスコープで `Foundry Agent Consumer` を割り当てても、**プロジェクトのファイルは分離されない** — file ID に呼び出し元単位のアクセス制御がなく、**prompt agent を呼べる主体はプロジェクト内の任意の file ID を `input_file` で参照できる**。テナントがファイルを上げる SaaS で「テナントごとにエージェントを分けたから安全」とはならないので、**テナント間でファイルを共有させないならプロジェクト(またはリソース)を信頼境界として分ける**。また `…/agents/write` を持つ主体はエージェントを介さずプロジェクトの Responses エンドポイントでモデルを呼べる(テナント向けのエージェント作成 API を公開する SaaS は、この権限をテナントに渡さない)。**2026-10-14 追記:** ユーザー分離のページは、プロジェクトの **Foundry User** を持つ管理者・自動化が**利用者を問わず全セッションを一覧・管理できる**と明記した(セッションのファイルや会話内容の読み取りまで含むかは記載なし)。開発者に普通に付けるロールなので、**本番プロジェクトでは開発者に Foundry User を付けない**(開発・検証プロジェクトとリソースごと分ける)前提で権限を設計する(本ドキュメントの判断)。
 
 ### ⚠ 同時エージェントセッションの上限が設計制約になる
 
 **2026-09-26 更新 — 上限は 2 段で効く:**
 
-1. **サブスクリプション × リージョン単位の同時 hosted agent セッション既定上限:** **2,000**(Canada Central / East US 2 / **Japan East** / North Central US / South Africa North / Southeast Asia / Sweden Central)、**それ以外の hosted agent 対応リージョンは 1,000**。同一サブスクリプション・リージョンの全 Foundry アカウント・プロジェクトの合算で、プロビジョニング中・実行中のセッションだけが数えられる(idle / 停止中は数えないが、再開にはクォータが要る)。超過は 429 `session_quota_exceeded`、リージョン容量不足は 429 `regional_session_quota_exceeded`。引き上げはサポート申請(出典: [limits-quotas-regions](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/limits-quotas-regions) 2026-09-07 版。2026-07-20 版には記載なし)。
-2. **閉域(BYO VNet)ではサブネットの使用可能 IP:** 既定で同時セッションと使用可能 IP が 1:1。サポート申請で **1 IP あたり 10 セッション(1:10)** まで拡大可。IP 枯渇は 429 `subnet_exhausted`(ポータルでは IP 使用率を監視できず、事前警告もない)。
+1. **サブスクリプション × リージョン単位の同時 hosted agent セッション既定上限:** **2,000**(Canada Central / East US 2 / **Japan East** / North Central US / South Africa North / Southeast Asia / Sweden Central)、**それ以外の hosted agent 対応リージョンは 1,000**。同一サブスクリプション・リージョンの全 Foundry アカウント・プロジェクトの合算で、プロビジョニング中・実行中のセッションだけが数えられる(idle / 停止中は数えないが、再開にはクォータが要る)。超過は 429 `session_quota_exceeded`、リージョン容量不足は 429 `regional_session_quota_exceeded`。引き上げはサポート申請(出典: [limits-quotas-regions](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/limits-quotas-regions) 2026-09-07 版。2026-07-20 版には記載なし)。**2026-11-22 再確認: 2,000 / 1,000 は 2026-11-18 版でも不変**(Ignite の shared subnet IPs はクォータ増ではない)。セッションは hosted agent のコンピュートと保存ファイル状態の単位で、会話の数ではない(deep-dive 11-09 版)。
+2. **閉域(BYO VNet)ではサブネットの使用可能 IP:** ~~既定で同時セッションと使用可能 IP が 1:1。サポート申請で 1 IP あたり 10 セッション(1:10)まで拡大可。~~ **2026-11-22 更新: hosted agent のセッションがサブネットの IP を共有する方式(shared subnet IPs)が GA**(devblogs 2026-11-18「Shared subnet IPs — Generally available」。全員に既定で有効、申請不要。各セッションは引き続き VM 分離のサンドボックス)。IP 枯渇は引き続き 429 `subnet_exhausted`、データプロキシの 5xx、新規プロジェクト作成の失敗で現れる(ポータルでは IP 使用率を監視できず、事前警告もない)。
 
-旧版の「同時セッションは既定で約 50 が上限(`/26` が maximum supported)」は、[agents-networking-deep-dive](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/agents-networking-deep-dive) 2026-09-07 版で**サブネット換算表(`/21` で約 2,000 まで)に置き換わった**。**大規模 SaaS でサブスクリプション / リージョン分割が要るか**は、1. のクォータと 2. のサブネットの小さい方で判断する。
+旧版の「同時セッションは既定で約 50 が上限(`/26` が maximum supported)」は、[agents-networking-deep-dive](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/agents-networking-deep-dive) 2026-09-07 版で**サブネット換算表(`/21` で約 2,000 まで)に置き換わり**、さらに **2026-11-09 版で IP 共有前提の計画値(`/24` で 60,000)に置き換わった**。**大規模 SaaS でサブスクリプション / リージョン分割が要るか**は、**ほぼ 1. のクォータで決まる**ようになった(Ignite の「より多くのセッション」はサブネット側の制約緩和で、クォータ増ではない。サブネットを大きくしてもクォータは自動で増えない)。
 
-関連する実効上限(閉域構成の場合、agents-networking-deep-dive 2026-09-07 版):
+関連する実効上限(閉域構成の場合、agents-networking-deep-dive 2026-11-09 版・networking-options 2026-10-28 版):
 
 | 項目 | 値 |
 |---|---|
-| Hosted agent | セッションごとに Micro VM = **1 IP 消費**。プラットフォーム更新時は新旧並走で一時的に増加 |
-| Prompt agent | **バージョンは IP を消費しない**。プロジェクト単位のネットワーク部品(データプロキシ)は IP を消費(旧版の「約 10 IP の静的プール」という数値は現行版に無い)。プロンプトエージェント数のハード上限なし |
-| IP 計画の単位 | **セッション数と使用可能 IP で計画する**(pod 単位で計画しない — 旧版の「約 1 IP / 10 pod」は削除) |
-| `/27`(32 IP) | 約 **20** 同時セッション(本番非推奨) |
-| `/26`(64 IP) | 約 **50** |
-| `/25` / `/24` / `/23` / `/22` / `/21` | 約 100 / **250** / 500 / 1,000 / 2,000(あくまで IP 換算。実際は 1. のクォータで頭打ち) |
-| Foundry インスタンスあたりプロジェクト数 | 低負荷時 約 250、**高負荷時 約 25 まで低下** |
+| Hosted agent | セッションはサブネットの IP を共有し、各セッションは VM 分離のサンドボックス(旧版の「セッションごとに Micro VM = 1 IP 消費」から変更)。プラットフォーム更新時は新旧並走で一時的に IP 消費が増える |
+| Prompt agent | **バージョンは IP を消費しない**。プロジェクト単位のネットワーク部品(データプロキシ)は IP を消費。networking-options は「プロジェクトあたり最大約 10 IP の静的プール」と書く(deep-dive には数値なし)。プロンプトエージェント数のハード上限なし。下の計画値の対象外 |
+| IP 計画の単位 | **同時セッション数・プロジェクト単位のネットワーク部品・運用の余裕(更新・スケール時)で計画する**。容量はサブネットを共有する**全プロジェクトの合計**で、サブネット構成は Foundry アカウント単位 |
+| `/27` | 計画上 約 **7,500** 同時セッション(最小サイズ。本番は `/24` 以上) |
+| `/26` / `/25` | 約 15,000 / 30,000 |
+| `/24` / `/23` / `/22` / `/21` / `/20` | 約 **60,000** / 120,000 / 240,000 / 480,000 / 960,000(保証値ではない計画値。実際は 1. のクォータで頭打ち — 例: クォータ 1,000 なら `/24` でも 1,000) |
+| Foundry インスタンスあたりプロジェクト数 | 低負荷時 約 250、**高負荷時 約 25 まで低下**(IP 枯渇時は新規プロジェクトの作成が失敗) |
 | Foundry インスタンスあたり hosted agent | 旧版の「約 200」は現行版に記載なし(要確認) |
-| 推奨稼働率 | **サブネット使用率 80% 未満** |
+| 推奨稼働率 | 旧版の「サブネット使用率 80% 未満」は 2026-11-09 版に数値なし(「更新・スケール時の余裕を見よ」のみ) |
 
-**→ 閉域マルチテナントで hosted agent を使うなら、委任サブネットは `/24` 以上を確保する**(公式は本番の出発点を `/24`、ピーク同時実行が大きければそれ以上)。
+(2026-09-07 版の IP 換算表〈`/27` 約 20・`/24` 約 250〉と 1:10 の申請は、IP 共有の GA で役目を終えた。サブネットのサイズは割り当て後に変更できない点、**ネットワーク構成は最初の hosted agent 作成時に確定し後から変えられない**点、**hosted agent では private endpoint を `192.168.0.0/24` に置かない**(サンドボックス内部のネットワークと重なる)点は新たに明記された)
+
+**→ 閉域マルチテナントで hosted agent を使うなら、委任サブネットは `/24` 以上を確保する**(公式は本番の最小を `/24`。IP 共有で同時セッションの制約はクォータ側に移ったが、プロジェクト数の上限と更新時の並走があるので `/24` を割らない)。
 
 ### テナント別の計測と課金按分
 
@@ -220,7 +238,8 @@ File Search を使うなら、**`structured_inputs` で `vector_store_ids` を�
 
 - Foundry の `project` タグによるコスト配賦は**プレビューで、かつ Models sold by Azure のみ対応**(Marketplace 経由のモデルは未対応)。
 - Estimated cost は**割引や契約価格を反映せず、Provisioned(PTU)も含まない。**しかも **prompt agent と非 Foundry エージェントのコストは Overview の概算に含まれない。**
-- 課金イベントが Cost Analysis に現れるまで、**取り込みタイミングにより遅延がある**(公式は具体的な時間を示していない。分単位で比較せずトレンドで照合せよと記載)。
+- 課金イベントが Cost Analysis に現れるまで、**取り込みタイミングにより遅延がある**(公式は具体的な時間を示していない。分単位で比較せずトレンドで照合せよと記載)。**2026-11-22 追記:** 新設の Cost in Foundry(preview)の各ページは「**コストは利用の 8〜24 時間後**(利用量は数分)」と明記。
+- **2026-11-22 追記 — Cost in Foundry(preview)でもテナント別は取れない:** Manage > Cost / プロジェクトの Monitor > Cost はプロジェクト・エージェント・デプロイ別の内訳を出すが、**内訳はタグ付きの課金だけ**(合計より小さくなる)、**エージェント名のタグ(`agent.name`)は 2026-11 以降の利用分から**、別リソースのデプロイを呼んだ分はそのリソース側に計上。要求単位の独自タグでコストを分ける **caller attribution は private preview**(Tech Community 2026-11-19、Azure OpenAI から開始)。閲覧には Foundry ロールとは別に **Cost Management Reader** が要る。→ テナント別のチャージバックは引き続き下の APIM で取る。
 
 **→ テナント別のメータリングは APIM で取る。**`llm-emit-token-metric` の**既定ディメンションは API ID / Operation ID / Product ID / User ID / Subscription ID / Location / Gateway ID / Backend ID の8種**(Tenant ID や Client IP は既定に含まれない。テナント ID はポリシー式による**カスタムディメンション〈最大5個〉**として追加する)。これを App Insights に送れば、Foundry が提供しない粒度でチャージバックできる。**SaaS 案件では APIM が事実上必須。**
 
@@ -265,6 +284,14 @@ File Search を使うなら、**`structured_inputs` で `vector_store_ids` を�
 - **⚠ Foundry がパブリックアクセス無効でも、新ポータルから作った AI Gateway は自動的にパブリックになる。**データプレーン操作を完結させるには Azure portal でゲートウェイのネットワーク分離を別途設定する必要がある。**閉域 Foundry と組み合わせる APIM は Standard v2 / Premium v2 + Private Endpoint、または VNet 注入の Premium v2**(ポータルの「Create new」は Basic v2 を作るので本番・閉域には既存 APIM を使う)。
 - 新規プロジェクトは既定で AI Gateway が有効、既存プロジェクトは手動追加。プロジェクトごとにトークン上限を設定できる(2026-09-26 追記: [enable-ai-api-management-gateway-portal](https://learn.microsoft.com/en-us/azure/foundry/configuration/enable-ai-api-management-gateway-portal) 2026-08-03 版。MCP ツールを AI Gateway 経由にする機能は別途プレビュー)。
 
+> **2026-11-22 更新 — ゲートウェイが 2 系統に再編され、Foundry UI からの APIM 連携は縮小した**(enable-ai-api-management-gateway-portal 2026-11-09 版・enforce-limits-models 2026-11-06 版・[Azure AI Gateway overview](https://learn.microsoft.com/en-us/azure/ai-gateway/overview) 2026-10-23 版):
+>
+> - Foundry が使えるゲートウェイは **Azure AI Gateway(APIM とは別の新リソース型 `Microsoft.ApiManagement/aigateways`、`az aigateway`)**と従来の APIM の 2 系統。AI Gateway はハブのゲートウェイが承認済みモデルを安定したエイリアスで公開し、各プロジェクトが connected models として使う hub-and-spoke。Foundry ポータルの Manage > Gateways の連携 UI は段階展開中。
+> - **既存 APIM はそのまま動き移行も不要**だが、**新しい APIM の紐付けは Foundry から作れない**、**プロジェクト単位のトークン上限は Foundry では読み取り専用**(変更は APIM のポリシー XML)、**カスタム MCP エンドポイントの APIM 自動登録は廃止**(ゲートウェイ経由の URL を手で指定。直接のエンドポイントを使うとゲートウェイのポリシーを迂回する)。
+> - 公式は「**Foundry 自身の統制(アクセス制御・デプロイポリシー・クォータ・コンテンツフィルター・トレース・評価・コストの可視化)にゲートウェイは不要**」と明記した(Control Plane も「Foundry governance」に改称し、AI gateway は前提でなくなった)。**C3 でゲートウェイを入れる理由は従来どおり、テナント別のレート制限・メータリング・複数バックエンドの負荷分散**に絞って説明する。
+> - **ステータスは両論:** GA 一覧表は Manage > AI Gateway = **Preview**(11-17 版でも不変)、cost の概要ページ(manage-costs 2026-11-09 版)は「AI gateway token limits: Manage > Gateways = GA」、Azure AI Gateway 製品ページにはライフサイクル表記なし(要確認)。本書は GA 一覧表を正として**プレビュー扱い**を維持する。BYOM(ゲートウェイ越しのモデルを Agent Service で使う)は Copilot harness では非対応([features 01](../features/01-platform-projects.md))。
+> - AI Gateway の **automatic model selection**(エイリアス配下を model router がランク付け、preview)はルーティング料の無料期間中([features 02](../features/02-models.md))。
+
 **APIM をゲートウェイにする場合の設計ルール**([09 章](./09-operations.md#2-4-apim-をゲートウェイに置く場合の設計ルール-公式))を参照。特に「**ラウンドロビン / フェイルオーバー先は必ず同一モデル・同一バージョン**」「**ステートフル API はバックエンドをピン留めし、切替不能なら 429 を返す**」の 2 点は外部公開で効いてくる。
 
 ### モデルデプロイの冗長化
@@ -286,6 +313,7 @@ File Search を使うなら、**`structured_inputs` で `vector_store_ids` を�
 - [ ] **`content_filter_results` のエラー検出**を実装したか(フェイルオープン対策)
 - [ ] ストリーミング応答の**末尾(約 15〜30 語)がガードレール適用前に届きうる**ことを前提に、流出が許されない画面は非ストリーミングにするか最終区切りをアプリ側で再検査したか(2026-10-14 追加)
 - [ ] Claude を使うなら Content Safety を自前で噛ませたか
+- [ ] Content Safety の**分類器更新(2026-10 更新を段階展開中)**でブロック結果が変わったときの再試験用に、代表的な入力・攻撃文のセットを固定したか(2026-11-22 追加)
 - [ ] AI Red Teaming を purple environment で回したか
 
 **マルチテナント**
@@ -294,13 +322,16 @@ File Search を使うなら、**`structured_inputs` で `vector_store_ids` を�
 - [ ] hosted agent を使うなら**コンテナプロトコル 2.0.0**か(中間層は `x-ms-user-identity` を送り、カスタムロールで `UserIdentityImpersonation/action` を付与。委任された利用者どうしは隔てられないので、利用者ごとのセッション ID 割り当てはアプリが持つ)
 - [ ] 本番プロジェクトで **Foundry User** を持つ ID(全利用者のセッションを一覧・管理できる)を限定したか(2026-10-14 追加)
 - [ ] セッションプールでの**エージェント自身の保存データ**をユーザー ID でキー付けしたか
-- [ ] **同時 hosted agent セッションのサブスクリプション × リージョン既定上限(1,000、Japan East 等は 2,000)**と、閉域ならサブネット IP(既定 1:1)の両方に対する設計を持っているか
-- [ ] 閉域なら委任サブネットを `/24` 確保したか
+- [ ] **同時 hosted agent セッションのサブスクリプション × リージョン既定上限(1,000、Japan East 等は 2,000)**と、閉域ならサブネット IP の両方に対する設計を持っているか(2026-11-22: サブネット IP 共有の GA で `/24` の計画値は 6 万セッションになり、実質の上限はクォータ側。サブネットを広げてもクォータは増えない)
+- [ ] 閉域なら委任サブネットを `/24` 確保したか(hosted agent では private endpoint を `192.168.0.0/24` に置かない)
+- [ ] テナントがファイルを上げるなら、**エージェントスコープの RBAC ではファイルが分離されない**ことを踏まえてプロジェクトを分けたか(2026-11-22 追加)
 
 **キャパシティとコスト**
 - [ ] PTU サイジングにキャッシュ率を織り込んだか
 - [ ] PTU + Spillover + Standard のフェイルオーバーチェーンを組んだか
 - [ ] **APIM でテナント別トークンメトリクス**を取る設計にしたか(Foundry 単体では粒度不足)
 - [ ] `llm-token-limit` の `counter-key` をテナント ID にしたか
-- [ ] **ハードリミットが存在しない**ことを踏まえた予算超過時の自動化を用意したか
+- [ ] **ハードリミットが存在しない**ことを踏まえた予算超過時の自動化を用意したか(2026-11-22: cost controls〈preview〉の Block は GPT / o-series のみ・PTU / ツール / hosted コンピュートを数えない・判定遅延時は fail-open なので、最後の安全弁として置き、アプリ層・APIM 層の上限を主にする。コスト閲覧用に Cost Management Reader を付与したか)
+- [ ] Model router をテナントのデータ所在要件に使うなら、**Data Zone の router + model subset** に限定し Auto(常に Global Standard)を止めたか(Azure Policy は要求時のルーティング先を絞らない — 2026-11-22 追加)
+- [ ] 「Microsoft にプロンプトを保存させない」と契約している場合、**2026-11-01 以降に提供開始したモデルは Modified Abuse Monitoring の対象外になる**ことを確認したか。Baseten / fal(DPA 対象外)をテナントデータの経路に入れていないか(2026-11-22 追加)
 - [ ] セマンティックキャッシュのキーに tenant / user / model version / prompt version を含めたか

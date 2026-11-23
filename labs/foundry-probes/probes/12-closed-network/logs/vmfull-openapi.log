@@ -1,0 +1,274 @@
+===== openapi  @ 2026-11-22T05:29:46Z
+[create_version] POST {proj}/agents/a12-openapi/versions?api-version=v1 -> 200 (2.6s) {   "metadata": {},   "object": "agent.version",   "id": "a12-openapi:1",   "name": "a12-openapi",   "version": "1",   "description": "probe a12-openapi",   "created_at": 1795325388,   "definition": {     "kind": "prompt",     "model": "gpt-5.4-mini",     "instructions": "Always call the vmapi whoami operation and report client_ip and secret_number.",     "tools": [       {         "type": "openapi",         "openapi": {           "name": "vmapi",           "description": "API on the VNet VM",           "spec": {             "openapi": "3.0.1",             "info": {"title":"vm-probe-api","vers
+   full: {
+  "metadata": {},
+  "object": "agent.version",
+  "id": "a12-openapi:1",
+  "name": "a12-openapi",
+  "version": "1",
+  "description": "probe a12-openapi",
+  "created_at": 1795325388,
+  "definition": {
+    "kind": "prompt",
+    "model": "gpt-5.4-mini",
+    "instructions": "Always call the vmapi whoami operation and report client_ip and secret_number.",
+    "tools": [
+      {
+        "type": "openapi",
+        "openapi": {
+          "name": "vmapi",
+          "description": "API on the VNet VM",
+          "spec": {
+            "openapi": "3.0.1",
+            "info": {"title":"vm-probe-api","version":"1.0"},
+            "servers": [{"url":"http://10.40.2.10:8080"}],
+            "paths": {"/whoami":{"get":{"operationId":"whoami","summary":"Return the caller IP address as seen by the VM and a secret number","responses":{"200":{"description":"ok","content":{"application/json":{"schema":{"type":"object","properties":{"client_ip":{"type":"string"},"secret_number":{"type":"integer"}}}}}}}}}}
+          },
+          "auth": {
+            "type": "anonymous"
+          }
+        }
+      }
+    ]
+  },
+  "draft": false,
+  "status": "active",
+  "instance_identity": {
+    "principal_id": "<guid-39>",
+    "client_id": "<guid-39>"
+  },
+  "blueprint": {
+    "principal_id": "<guid-40>",
+    "client_id": "<guid-41>"
+  },
+  "blueprint_reference": {
+    "type": "ManagedAgentIdentityBlueprint",
+    "blueprint_id": "a12-openapi-8ccbc"
+  },
+  "agent_guid": "<guid-42>"
+}
+[agent openapi] POST {proj}/agents/a12-openapi/endpoint/protocols/openai/responses?api-version=v1 -> 200 (2.7s) {   "metadata": {},   "top_logprobs": 0,   "temperature": 1,   "top_p": 0.98,   "service_tier": "default",   "prompt_cache_retention": "in_memory",   "model": "gpt-5.4-mini",   "reasoning": {     "effort": "none",     "context": "current_turn",     "mode": "standard"   },   "background": false,   "text": {     "format": {       "type": "text"     },     "verbosity": "medium"   },   "tools": [     {       "type": "openapi",       "openapi": {         "name": "vmapi",         "description": "API on the VNet VM",         "spec": {           "openapi": "3.0.1",           "info": {             "title": "vm-probe-api",             "version": "1.0"           },           "servers": [             {               "url": "http://10.40.2.10:8080"             }           ],           "paths": {             "/whoami": {               "get": {                 "operationId": "whoami",                 "
+   full: {
+  "metadata": {},
+  "top_logprobs": 0,
+  "temperature": 1,
+  "top_p": 0.98,
+  "service_tier": "default",
+  "prompt_cache_retention": "in_memory",
+  "model": "gpt-5.4-mini",
+  "reasoning": {
+    "effort": "none",
+    "context": "current_turn",
+    "mode": "standard"
+  },
+  "background": false,
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "tools": [
+    {
+      "type": "openapi",
+      "openapi": {
+        "name": "vmapi",
+        "description": "API on the VNet VM",
+        "spec": {
+          "openapi": "3.0.1",
+          "info": {
+            "title": "vm-probe-api",
+            "version": "1.0"
+          },
+          "servers": [
+            {
+              "url": "http://10.40.2.10:8080"
+            }
+          ],
+          "paths": {
+            "/whoami": {
+              "get": {
+                "operationId": "whoami",
+                "summary": "Return the caller IP address as seen by the VM and a secret number",
+                "responses": {
+                  "200": {
+                    "description": "ok",
+                    "content": {
+                      "application/json": {
+                        "schema": {
+                          "type": "object",
+                          "properties": {
+                            "client_ip": {
+                              "type": "string"
+                            },
+                            "secret_number": {
+                              "type": "integer"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "auth": {
+          "type": "anonymous"
+        }
+      }
+    }
+  ],
+  "tool_choice": "required",
+  "truncation": "disabled",
+  "id": "resp_<id-61>",
+  "object": "response",
+  "status": "completed",
+  "created_at": 1795325389,
+  "completed_at": 1795325391,
+  "error": null,
+  "incomplete_details": null,
+  "output": [
+    {
+      "type": "openapi_call",
+      "id": "fc_<token-4>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a12-openapi",
+        "version": "1"
+      },
+      "response_id": "resp_<id-61>",
+      "call_id": "call_<id-62>",
+      "name": "vmapi_whoami",
+      "arguments": "{}",
+      "status": "completed"
+    },
+    {
+      "type": "openapi_call_output",
+      "id": "fco_<token-5>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a12-openapi",
+        "version": "1"
+      },
+      "response_id": "resp_<id-61>",
+      "call_id": "call_<id-62>",
+      "name": "vmapi_whoami",
+      "output": "{\n        \"response\": \"{\\n  \\\"client_ip\\\": \\\"10.40.0.84\\\",\\n  \\\"secret_number\\\": 4217\\n}\"\n      }",
+      "status": "completed"
+    },
+    {
+      "type": "message",
+      "id": "msg_<id-63>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a12-openapi",
+        "version": "1"
+      },
+      "response_id": "resp_<id-61>",
+      "phase": "final_answer",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "client_ip: 10.40.0.84  \nsecret_number: 4217",
+          "annotations": [],
+          "logprobs": []
+        }
+      ],
+      "status": "completed"
+    }
+  ],
+  "instructions": "Always call the vmapi whoami operation and report client_ip and secret_number.",
+  "usage": {
+    "input_tokens": 210,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0
+    },
+    "output_tokens": 41,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 251
+  },
+  "parallel_tool_calls": true,
+  "agent_reference": {
+    "type": "agent_reference",
+    "name": "a12-openapi",
+    "version": "1"
+  },
+  "content_filters": [
+    {
+      "blocked": false,
+      "source_type": "prompt",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "jailbreak": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 1097,
+        "check_offset": 0
+      }
+    },
+    {
+      "blocked": false,
+      "source_type": "completion",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "protected_material_text": {
+          "filtered": false,
+          "detected": false
+        },
+        "protected_material_code": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 43,
+        "check_offset": 0
+      }
+    }
+  ]
+}
+[openapi] output_text: 'client_ip: 10.40.0.84  \nsecret_number: 4217'
+[openapi] tool items: [{"type": "openapi_call", "name": "vmapi_whoami", "status": "completed"}, {"type": "openapi_call_output", "name": "vmapi_whoami", "output": "{\n        \"response\": \"{\\n  \\\"client_ip\\\": \\\"10.40.0.84\\\",\\n  \\\"secret_number\\\": 4217\\n}\"\n      }", "status": "completed"}]

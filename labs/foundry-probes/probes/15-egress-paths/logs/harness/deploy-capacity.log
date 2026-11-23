@@ -1,0 +1,12 @@
+### [2026-11-22 19:57:08 JST] gpt-5.4-mini の容量 10 → 50(前回 P0 の 429 を避けるため最初から。容量自体は無料)
+{
+  "name": "gpt-5.4-mini",
+  "sku": {
+    "capacity": 50,
+    "family": null,
+    "name": "GlobalStandard",
+    "size": null,
+    "tier": null
+  },
+  "state": "Succeeded"
+}

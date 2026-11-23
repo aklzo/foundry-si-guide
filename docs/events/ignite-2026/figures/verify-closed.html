@@ -1,0 +1,44 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8"><meta name="figure-size" content="1600x675"><link rel="stylesheet" href="../../tools/figure.css"><style>
+body{padding:0;position:relative}
+.b{position:absolute;border-radius:12px;padding:8px 14px;font-size:20px;line-height:1.3}
+.b b{display:block;font-size:22px}
+.zone{border:3px solid var(--accent);background:#f5f9fe}
+.zone>.h{font-size:22px;font-weight:800;color:var(--accent)}
+.ms{border:3px dashed var(--muted);background:#fafbfc}.ms>.h{font-size:22px;font-weight:800;color:var(--muted)}
+.box{border:2px solid var(--border);background:#fff}
+.okb{border:3px solid var(--ga);background:#f3fbf5}
+.ngb{border:3px solid var(--dep);background:var(--dep-bg)}
+.mk{font-weight:800}.mk.o{color:var(--ga)}.mk.x{color:var(--dep)}.mk.t{color:var(--preview)}
+.sub{color:var(--muted);font-size:18px}
+.lab{position:absolute;font-size:19px;font-weight:700;line-height:1.25}
+svg{position:absolute;left:0;top:0}
+</style></head><body>
+<div class="b box" style="left:20px;top:70px;width:232px;height:160px"><b>VNet の外</b>利用者の PC<br><span class="sub">Foundry User を付けていても</span></div>
+<div class="lab" style="left:268px;top:92px;color:var(--dep)">403</div>
+<div class="lab" style="left:268px;top:162px;color:var(--dep);font-size:17px;font-weight:400">Public access is<br>disabled</div>
+<div class="b zone" style="left:440px;top:14px;width:735px;height:648px"><div class="h">顧客の VNet(Japan East)</div></div>
+<div class="b box" style="left:520px;top:62px;width:625px;height:125px"><b>プライベートエンドポイント</b>Foundry・Blob・Cosmos DB(Serverless)・AI Search<br><span class="sub">名前はプライベート IP に解決される</span></div>
+<div class="lab" style="left:452px;top:290px;color:var(--ga);writing-mode:vertical-rl">○ 200</div>
+<div class="b okb" style="left:520px;top:228px;width:625px;height:182px"><b>エージェントのサブネット(委任・NAT なし)</b>動いた: prompt agent・File Search・<br>Code Interpreter・Agent Optimizer<br><span class="mk x">×</span> 添付(input_file)だけ 400 で失敗</div>
+<div class="lab" style="left:815px;top:428px;color:var(--ga)">○ OpenAPI・MCP<br><span style="font-weight:400;font-size:17px;color:var(--muted)">サブネット経由。公開の URL にも届く</span></div>
+<div class="b box" style="left:520px;top:508px;width:625px;height:128px"><b>検証用 VM</b>社内 API・MCP サーバーの代わり(http でも届いた)<br><span class="sub">専用サブネットでなく普通のサブネットに置いた</span></div>
+<div class="b ms" style="left:1195px;top:14px;width:392px;height:648px"><div class="h">Microsoft 管理側</div></div>
+<div class="b okb" style="left:1215px;top:58px;width:352px;height:100px"><b><span class="mk o">○</span> Web search</b><span class="sub">公開経路で検索し、出典つきで回答</span></div>
+<div class="b okb" style="left:1215px;top:172px;width:352px;height:122px"><b><span class="mk o">○</span> Code Interpreter</b><span class="sub">ファイルの入出力も動いた。サンドボックスから外へは出られない</span></div>
+<div class="b ngb" style="left:1215px;top:308px;width:352px;height:178px"><b><span class="mk t">△</span> Copilot harness</b><span style="font-size:18px">社内の VM に届き、<b style="display:inline;font-size:18px">公開インターネットにも出る</b><br><span class="sub">サブネット経由で、NSG・UDR で止まる</span></span></div>
+<div class="b ngb" style="left:1215px;top:560px;width:352px;height:80px;border-style:dashed"><b>公開インターネット</b></div>
+<svg width="1600" height="675" style="z-index:5;pointer-events:none"><defs>
+<marker id="g" markerUnits="userSpaceOnUse" markerWidth="22" markerHeight="22" refX="18" refY="11" orient="auto"><path d="M0,0 L22,11 L0,22 z" fill="#1a7f37"/></marker>
+<marker id="r" markerUnits="userSpaceOnUse" markerWidth="22" markerHeight="22" refX="18" refY="11" orient="auto"><path d="M0,0 L22,11 L0,22 z" fill="#cf222e"/></marker>
+<marker id="m" markerUnits="userSpaceOnUse" markerWidth="22" markerHeight="22" refX="18" refY="11" orient="auto"><path d="M0,0 L22,11 L0,22 z" fill="#57606a"/></marker>
+</defs>
+<line x1="252" y1="140" x2="432" y2="140" stroke="#cf222e" stroke-width="5" marker-end="url(#r)"/><text x="446" y="150" font-size="34" font-weight="800" fill="#cf222e">×</text>
+<polyline points="520,580 495,580 495,165 516,165" fill="none" stroke="#1a7f37" stroke-width="5" marker-end="url(#g)"/>
+<line x1="800" y1="410" x2="800" y2="505" stroke="#1a7f37" stroke-width="5" marker-end="url(#g)"/>
+<line x1="1145" y1="285" x2="1212" y2="115" stroke="#57606a" stroke-width="4" marker-end="url(#m)"/>
+<line x1="1145" y1="300" x2="1212" y2="230" stroke="#57606a" stroke-width="4" marker-end="url(#m)"/>
+<line x1="1145" y1="325" x2="1212" y2="375" stroke="#57606a" stroke-width="4" marker-end="url(#m)"/>
+<line x1="1390" y1="486" x2="1390" y2="555" stroke="#cf222e" stroke-width="5" marker-end="url(#r)"/>
+<line x1="1212" y1="470" x2="1150" y2="560" stroke="#9a6700" stroke-width="5" stroke-dasharray="10 6" marker-end="url(#m)"/>
+</svg>
+</body></html>

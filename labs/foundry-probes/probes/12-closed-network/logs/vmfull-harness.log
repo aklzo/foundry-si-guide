@@ -1,0 +1,45 @@
+===== harness  @ 2026-11-22T05:31:41Z
+[create harness agent] POST {proj}/agents/a12-harness/versions?api-version=v1 -> 200 (57.5s) {   "metadata": {},   "object": "agent.version",   "id": "a12-harness:1",   "name": "a12-harness",   "version": "1",   "description": "probe a12-harness",   "created_at": 1795325509,   "definition": {     "kind": "prompt",     "harness": {       "type": "microsoft_copilot_preview"     },     "model": "gpt-5.4-mini",     "instructions": "You are a network test agent. Use the shell tool."   },   "draft": false,   "status": "active",   "instance_identity": {     "principal_id": "<guid-18>",     "client_id": "<guid-18>"   },   "blueprint": {   
+   full: {
+  "metadata": {},
+  "object": "agent.version",
+  "id": "a12-harness:1",
+  "name": "a12-harness",
+  "version": "1",
+  "description": "probe a12-harness",
+  "created_at": 1795325509,
+  "definition": {
+    "kind": "prompt",
+    "harness": {
+      "type": "microsoft_copilot_preview"
+    },
+    "model": "gpt-5.4-mini",
+    "instructions": "You are a network test agent. Use the shell tool."
+  },
+  "draft": false,
+  "status": "active",
+  "instance_identity": {
+    "principal_id": "<guid-18>",
+    "client_id": "<guid-18>"
+  },
+  "blueprint": {
+    "principal_id": "<guid-32>",
+    "client_id": "<guid-33>"
+  },
+  "blueprint_reference": {
+    "type": "ManagedAgentIdentityBlueprint",
+    "blueprint_id": "a12-harness-8e895"
+  },
+  "agent_guid": "<guid-34>"
+}
+[create conversation (agent endpoint)] POST {proj}/agents/a12-harness/endpoint/protocols/openai/conversations?api-version=v1 -> 200 (1.0s) {   "id": "conv_<id-22>",   "object": "conversation",   "metadata": {},   "created_at": 1795325559 }
+   full: {
+  "id": "conv_<id-22>",
+  "object": "conversation",
+  "metadata": {},
+  "created_at": 1795325559
+}
+[harness shell egress] POST {proj}/agents/a12-harness/endpoint/protocols/openai/responses?api-version=v1 -> 200 (11.0s) {"id":"caresp_<id-23>","object":"response","output":[{"type":"shell_call","id":"lsh_<id-24>","call_id":"call_<id-25>","action":{"commands":["hostname -I"],"timeout_ms":null,"max_output_length":65536},"status":"completed","environment":null,"response_id":"caresp_<id-23>","agent_reference":{"type":"agent_reference","name":"a12-harness","version":"1"}},{"type":"shell_call_output","id":"lsho_<id-26>","call_id":"call_<id-25>","status":"completed","output":[{"stdout":"169.254.0.2\n<shellId: 2 completed with exit code 0>","stderr":"","outcome":{"type":"exit","exit_code":0}}],"max_output_length":65536,"response_id":"caresp_<id-23>","agent_reference":{
+   full: {"id":"caresp_<id-23>","object":"response","output":[{"type":"shell_call","id":"lsh_<id-24>","call_id":"call_<id-25>","action":{"commands":["hostname -I"],"timeout_ms":null,"max_output_length":65536},"status":"completed","environment":null,"response_id":"caresp_<id-23>","agent_reference":{"type":"agent_reference","name":"a12-harness","version":"1"}},{"type":"shell_call_output","id":"lsho_<id-26>","call_id":"call_<id-25>","status":"completed","output":[{"stdout":"169.254.0.2\n<shellId: 2 completed with exit code 0>","stderr":"","outcome":{"type":"exit","exit_code":0}}],"max_output_length":65536,"response_id":"caresp_<id-23>","agent_reference":{"type":"agent_reference","name":"a12-harness","version":"1"}},{"type":"shell_call","id":"lsh_<id-49>","call_id":"call_<id-50>","action":{"commands":["getent hosts aif-<sfx>.services.ai.azure.com"],"timeout_ms":null,"max_output_length":65536},"status":"completed","environment":null,"response_id":"caresp_<id-23>","agent_reference":{"type":"agent_reference","name":"a12-harness","version":"1"}},{"type":"shell_call_output","id":"lsho_<id-51>","call_id":"call_<id-50>","status":"completed","output":[{"stdout":"10.40.1.9       aif-<sfx>.privatelink.services.ai.azure.com aif-<sfx>.services.ai.azure.com\n<shellId: 3 completed with exit code 0>","stderr":"","outcome":{"type":"exit","exit_code":0}}],"max_output_length":65536,"response_id":"caresp_<id-23>","agent_reference":{"type":"agent_reference","name":"a12-harness","version":"1"}},{"type":"shell_call","id":"lsh_<id-52>","call_id":"call_<id-53>","action":{"commands":["curl -s -m 10 http://10.40.2.10:8080/whoami"],"timeout_ms":null,"max_output_length":65536},"status":"completed","environment":null,"response_id":"caresp_<id-23>","agent_reference":{"type":"agent_reference","name":"a12-harness","version":"1"}},{"type":"shell_call_output","id":"lsho_<id-54>","call_id":"call_<id-53>","status":"completed","output":[{"stdout":"{\"client_ip\": \"10.40.0.124\", \"secret_number\": 4217}\n<shellId: 0 completed with exit code 0>","stderr":"","outcome":{"type":"exit","exit_code":0}}],"max_output_length":65536,"response_id":"caresp_<id-23>","agent_reference":{"type":"agent_reference","name":"a12-harness","version":"1"}},{"type":"shell_call","id":"lsh_<id-55>","call_id":"call_<id-56>","action":{"commands":["curl -s -m 10 https://api.ipify.org?format=json"],"timeout_ms":null,"max_output_length":65536},"status":"completed","environment":null,"response_id":"caresp_<id-23>","agent_reference":{"type":"agent_reference","name":"a12-harness","version":"1"}},{"type":"shell_call_output","id":"lsho_<id-57>","call_id":"call_<id-56>","status":"completed","output":[{"stdout":"{\"ip\":\"<public-ip-1>\"}\n<shellId: 1 completed with exit code 0>","stderr":"","outcome":{"type":"exit","exit_code":0}}],"max_output_length":65536,"response_id":"caresp_<id-23>","agent_reference":{"type":"agent_reference","name":"a12-harness","version":"1"}},{"type":"message","id":"msg_<id-58>","role":"assistant","content":[{"type":"output_text","text":"1. `curl -s -m 10 http://10.40.2.10:8080/whoami`\n```text\n{\"client_ip\": \"10.40.0.124\", \"secret_number\": 4217}\n```\n\n2. `curl -s -m 10 https://api.ipify.org?format=json`\n```text\n{\"ip\":\"<public-ip-1>\"}\n```\n\n3. `hostname -I`\n```text\n169.254.0.2\n```\n\n4. `getent hosts aif-<sfx>.services.ai.azure.com`\n```text\n10.40.1.9       aif-<sfx>.privatelink.services.ai.azure.com aif-<sfx>.services.ai.azure.com\n```","annotations":[],"logprobs":[]}],"status":"completed","response_id":"caresp_<id-23>","agent_reference":{"type":"agent_reference","name":"a12-harness","version":"1"}}],"created_at":1795325564,"parallel_tool_calls":false,"metadata":{"x-ms-telemetry-agent-kind":"prompt","x-ms-telemetry-agent-harness":"microsoft_copilot_preview","x-ms-telemetry-user-agent":"Python-urllib/3.12","x-ms-telemetry-response-start-time":"2026-11-22T05:32:40.1444602+00:00","x-ms-telemetry-agent-name":"a12-harness","x-ms-telemetry-agent-version":"1","x-ms-telemetry-is-streaming":"false","x-ms-telemetry-protocol":"Responses","x-ms-telemetry-protocol-handling-mode":"PassThrough"},"conversation":{"id":"conv_<id-22>"},"model":"gpt-5.4-mini","agent_reference":{"type":"agent_reference","name":"a12-harness","version":"1"},"status":"completed","completed_at":1795325570,"usage":{"input_tokens":22632,"input_tokens_details":{"cached_tokens":11264},"output_tokens":619,"output_tokens_details":{"reasoning_tokens":290},"total_tokens":23251},"response_id":"caresp_<id-23>","agent_session_id":"<token-2>","background":false}
+[harness] output_text: '1. `curl -s -m 10 http://10.40.2.10:8080/whoami`\n```text\n{"client_ip": "10.40.0.124", "secret_number": 4217}\n```\n\n2. `curl -s -m 10 https://api.ipify.org?format=json`\n```text\n{"ip":"<public-ip-1>"}\n```\n\n3. `hostname -I`\n```text\n169.254.0.2\n```\n\n4. `getent hosts aif-<sfx>.services.ai.azure.com`\n```text\n10.40.1.9       aif-<sfx>.privatelink.services.ai.azure.com aif-<sfx>.services.ai.azure.com\n```'
+[harness] tool items: [{"type": "shell_call", "action": {"commands": ["hostname -I"], "timeout_ms": null, "max_output_length": 65536}, "status": "completed"}, {"type": "shell_call_output", "status": "completed", "output": [{"stdout": "169.254.0.2\n<shellId: 2 completed with exit code 0>", "stderr": "", "outcome": {"type": "exit", "exit_code": 0}}]}, {"type": "shell_call", "action": {"commands": ["getent hosts aif-<sfx>.services.ai.azure.com"], "timeout_ms": null, "max_output_length": 65536}, "status": "completed"}, {"type": "shell_call_output", "status": "completed", "output": [{"stdout": "10.40.1.9       aif-<sfx>.privatelink.services.ai.azure.com aif-<sfx>.services.ai.azure.com\n<shellId: 3 completed with exit code 0>", "stderr": "", "outcome": {"type": "exit", "exit_code": 0}}]}, {"type": "shell_cal

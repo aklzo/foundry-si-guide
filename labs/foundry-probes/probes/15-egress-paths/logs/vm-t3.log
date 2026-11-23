@@ -1,0 +1,10 @@
+### [2026-11-22 18:52:53 JST] egressprobe.py t3 P4 
+Enable succeeded: 
+[stdout]
+===== t3 P4 @ 2026-11-22T09:52:55Z
+[P4][T3 mcp→learn] HTTP 200 (4.6s) route=project+agent_reference(agent endpoint 403) 
+[P4][T3 items] [{"type": "mcp_list_tools", "server_label": "mslearn"}, {"type": "mcp_call", "status": "completed", "server_label": "mslearn", "name": "microsoft_docs_search"}] | text='**Deep dive into Foundry Agent Service networking**'
+
+[stderr]
+
+### [2026-11-22 18:53:24 JST] done

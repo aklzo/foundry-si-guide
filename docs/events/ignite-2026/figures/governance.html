@@ -1,0 +1,21 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8"><meta name="figure-size" content="1600x675"><link rel="stylesheet" href="../../tools/figure.css"><style>
+.grid2{grid-template-columns:1fr 1.1fr;height:500px;zoom:1.22}
+.nav{display:flex;gap:8px;margin-bottom:12px}
+.nav .node{font-size:20px;padding:8px 12px}
+.gone{color:var(--muted);text-decoration:line-through;border-style:dashed !important}
+.menu{border:2px solid var(--accent);border-radius:12px;padding:12px 16px;font-size:22px}
+.menu li{margin-bottom:10px}
+.flow{display:flex;align-items:center;gap:10px}
+.flow .node{font-size:21px}
+</style></head><body><div class="grid2">
+<div><h2>ポータルは 5 セクションに</h2>
+<div class="nav"><div class="node">Home</div><div class="node">Discover</div><div class="node">Build</div><div class="node on">Manage</div><div class="node gone">Operate</div></div>
+<ul class="menu"><li><span class="pill preview">Preview</span>Fleet・Operations</li><li><span class="pill preview">Preview</span>Cost(支出・予算)</li><li><span class="pill preview">Preview</span>Compliance・AI Gateway</li><li><span class="pill ga">GA</span>Quota・プロジェクト詳細</li></ul>
+<div class="note">AI gateway はガバナンスの前提ではなくなった</div></div>
+<div><h2>予算で止める cost controls <span class="pill preview">Preview</span></h2>
+<div class="flow"><div class="node">要求</div><div class="arrow">▶</div><div class="node on">予算判定</div><div class="arrow">▶</div><div class="node bad">超過で 429</div></div>
+<div class="warn">対象は GPT / o-series だけ(PTU・ツールは対象外)</div>
+<div class="warn">判定できないときは通す(上限保証にならない)</div>
+<div class="warn">金額の閲覧には Cost Management Reader が必要</div>
+<div class="note">Policy でエージェントを縛る機能(Preview)は日本リージョン未提供</div></div>
+</div></body></html>

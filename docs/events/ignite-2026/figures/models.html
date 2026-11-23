@@ -1,0 +1,25 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8"><meta name="figure-size" content="1600x675"><link rel="stylesheet" href="../../tools/figure.css"><style>
+.grid2{grid-template-columns:1.1fr 1fr;height:500px;zoom:1.22}
+.flow{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.flow .node{font-size:21px}
+.models{display:flex;flex-direction:column;gap:6px}
+.models .node{font-size:19px;padding:6px 10px;text-align:left}
+.list{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.m{border:2px solid var(--border);border-radius:12px;padding:10px 12px}
+.m .t{font-weight:800;font-size:21px}.m .d{font-size:18px;color:var(--muted);margin-top:4px}
+</style></head><body><div class="grid2">
+<div><h2>Model router</h2>
+<div class="flow"><div class="node">アプリ</div><div class="arrow">▶</div>
+<div class="node on" style="font-size:24px;padding:18px 14px">router<br><span class="small">45 モデル</span><br><span class="small">(BoN は 50)</span></div><div class="arrow">▶</div>
+<div class="models"><div class="node">OpenAI</div><div class="node">Claude<span class="small muted">(Global のみ)</span></div><div class="node">Grok・DeepSeek</div><div class="node">Fireworks<span class="small muted">(有効化時)</span></div></div></div>
+<div class="warn">Azure Policy は振り先を要求ごとには縛らない</div>
+<div class="note">所在要件: Data Zone の router+モデル絞り込み、Auto(Preview)は止める</div></div>
+<div><h2>新しいモデル・提供形態</h2><div class="list">
+<div class="m"><div class="t"><span class="pill ga">GA</span>GPT-6.2</div><div class="d">Japan East の Data Zone 可</div></div>
+<div class="m"><div class="t"><span class="pill ga">GA</span>Decision-1.1</div><div class="d">分類・振り分け用の小型</div></div>
+<div class="m"><div class="t"><span class="pill ga">GA</span>managed compute</div><div class="d">Data Zone は US / EU のみ</div></div>
+<div class="m"><div class="t"><span class="pill ga">GA</span>Claude Opus 5.5 Fast</div><div class="d">2027-01-15 リタイア</div></div>
+<div class="m"><div class="t"><span class="pill preview">Preview</span>Baseten・fal</div><div class="d">Microsoft の DPA 対象外</div></div>
+<div class="m"><div class="t"><span class="pill preview">Preview</span>新トレーニング</div><div class="d">Managed / Programmed</div></div>
+</div><div class="warn">GPT-6 系で tools を使うなら Responses API</div></div>
+</div></body></html>

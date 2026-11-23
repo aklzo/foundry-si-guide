@@ -91,7 +91,7 @@ footer {
 <main>
 <h1 id="02-コスト見積もり手順-トークン推計-月額試算-ptu-判断">02. コスト見積もり手順(トークン推計 → 月額試算 → PTU 判断)</h1><div class="toc"><strong>このページの内容</strong><ul><li><a href="#step-1-ワークロードのプロファイリング-トークン量の推計">Step 1: ワークロードのプロファイリング(トークン量の推計)</a></li><li><a href="#step-2-コスト構成要素チェックリスト-見落とし防止">Step 2: コスト構成要素チェックリスト(見落とし防止)</a></li><li><a href="#step-3-単価の取得先-見積もりの都度参照">Step 3: 単価の取得先(見積もりの都度参照)</a></li><li><a href="#step-4-ptu-プロビジョン-判断">Step 4: PTU(プロビジョン)判断</a></li><li><a href="#step-5-コスト削減レバー-提案の調整代">Step 5: コスト削減レバー(提案の調整代)</a></li><li><a href="#step-6-copilot-studio-copilot-credits-と比べるとき-2026-10-10-追加">Step 6: Copilot Studio(Copilot Credits)と比べるとき(2026-10-10 追加)</a></li><li><a href="#試算例-単価は記号-数字を入れて使う">試算例(単価は記号。数字を入れて使う)</a></li><li><a href="#見積もり時の注意-検証済みの事実">見積もり時の注意(検証済みの事実)</a></li></ul></div>
 <p><a href="index.html">← 提案実務ガイド TOP</a></p>
-<blockquote><p><strong>最終更新:</strong> 2026-07-31 / 2026-09-26(課金単位を pricing ページ・learn で再確認: hosted agent・Foundry IQ Serverless・Voice Live・CU・Data Zone / Regional プレミアム・flex を追記、URL 1 件差し替え)/ 2026-09-29(Flex processing の専用ページ公開〈preview・50% 割引・gpt-5.6-sol のみ〉を反映)/ 2026-10-06(ラボ還元: AI Search Free での Foundry IQ PoC・CU のキャッシュ入力費目・既定サンプラーと取り込み量)/ 2026-10-06(GPT-6 系 PTU の normalized token〈キャッシュ入力も容量を消費〉、合成評価器、Routines の再試行 5 回、GPT-Live の WebRTC 最低 15 秒、voice agents、Agent 365、Fireworks のクォータプールと PTU 既定値の改訂、priority processing の確認方法を反映。単価は引き続き書かない) / 2026-10-10(Step 6 に Copilot Studio〈Copilot Credits〉との比較手順を追加: イベント別レート・M365 Copilot 利用者の扱い・GitHub Copilot harness の換算率非公開・比較の式・構造上の傾向。Step 3 に取得先を追加。単価は引き続き書かない) / 2026-10-14(Flex processing の対象 7 モデル、Model router の既定プールに Fireworks、Bing 系ツールではプロンプトキャッシュが効かない、評価サービス側のキャッシュ・TOON によるトークン削減〈Tech Community〉、voice agents の料金ページと推定コスト属性、M365 公開の共有データアクセスの従量課金、hosted agent の idle timeout 上限の両論、Grok の最低 6 か月。単価は引き続き書かない)<br><strong>方針: このドキュメントに単価を書かない。</strong>モデル単価は改定・リタイア・新モデル投入で頻繁に変わるため、ここには「変わらないもの」= 見積もりの手順・式・コスト構成要素のチェックリスト・単価の取得先だけを置く。試算例も単価は記号のまま示す。</p></blockquote>
+<blockquote><p><strong>最終更新:</strong> 2026-07-31 / 2026-09-26(課金単位を pricing ページ・learn で再確認: hosted agent・Foundry IQ Serverless・Voice Live・CU・Data Zone / Regional プレミアム・flex を追記、URL 1 件差し替え)/ 2026-09-29(Flex processing の専用ページ公開〈preview・50% 割引・gpt-5.6-sol のみ〉を反映)/ 2026-10-06(ラボ還元: AI Search Free での Foundry IQ PoC・CU のキャッシュ入力費目・既定サンプラーと取り込み量)/ 2026-10-06(GPT-6 系 PTU の normalized token〈キャッシュ入力も容量を消費〉、合成評価器、Routines の再試行 5 回、GPT-Live の WebRTC 最低 15 秒、voice agents、Agent 365、Fireworks のクォータプールと PTU 既定値の改訂、priority processing の確認方法を反映。単価は引き続き書かない) / 2026-10-10(Step 6 に Copilot Studio〈Copilot Credits〉との比較手順を追加: イベント別レート・M365 Copilot 利用者の扱い・GitHub Copilot harness の換算率非公開・比較の式・構造上の傾向。Step 3 に取得先を追加。単価は引き続き書かない) / 2026-10-14(Flex processing の対象 7 モデル、Model router の既定プールに Fireworks、Bing 系ツールではプロンプトキャッシュが効かない、評価サービス側のキャッシュ・TOON によるトークン削減〈Tech Community〉、voice agents の料金ページと推定コスト属性、M365 公開の共有データアクセスの従量課金、hosted agent の idle timeout 上限の両論、Grok の最低 6 か月。単価は引き続き書かない) / 2026-11-22(Copilot harness のサンドボックス課金〈12-01 開始〉・Model router のルーティング料・GPT-5.6 以降のキャッシュ書込課金と PTU の重み・決定モデル judge と評価 run の推定コスト・Insights のジャッジ費用、cost controls〈preview〉の対象範囲と「ハードリミットはない」の更新、コストの閲覧権限〈Cost Management Reader〉と 8〜24 時間の遅れ・エージェント名のタグ、Baseten / fal の契約差、hosted agent の idle 待機の課金と 240 分の確定、M365 公開で Bot Service が不要に、Foundry IQ Serverless の表記とインデクサーの CU、Web IQ と Bing の別メーター、CU の 2,000 ページ。単価は引き続き書かない) / 2026-11-22 訂正(Foundry IQ: ユーザートークンを渡さないときの KB の挙動は Learn のページで食い違うので両論に。閉域取り込みの tier を S2 / S3 / L1 / L2 と明記)<br><strong>方針: このドキュメントに単価を書かない。</strong>モデル単価は改定・リタイア・新モデル投入で頻繁に変わるため、ここには「変わらないもの」= 見積もりの手順・式・コスト構成要素のチェックリスト・単価の取得先だけを置く。試算例も単価は記号のまま示す。</p></blockquote>
 <h2 id="step-1-ワークロードのプロファイリング-トークン量の推計">Step 1: ワークロードのプロファイリング(トークン量の推計)</h2>
 <h3 id="1-1-日本語のトークン換算">1-1. 日本語のトークン換算</h3>
 <ul>
@@ -109,11 +109,13 @@ footer {
 <h3 id="1-3-月間量の式">1-3. 月間量の式</h3>
 <pre><code>月間入力トークン = ユーザー数 × 稼働日/月 × クエリ/人日 × 平均ターン/クエリ × 入力トークン/ターン
 月間出力トークン = 同 × 出力トークン/ターン
-月額(モデル推論・従量) = 月間入力 × P_in + 月間出力 × P_out + キャッシュヒット入力 × P_cached</code></pre>
+月額(モデル推論・従量) = 月間入力 × P_in + 月間出力 × P_out + キャッシュヒット入力 × P_cached
+                     + キャッシュ書込 × P_cache_write(GPT-5.6 以降のモデル。2026-11-22 追加)</code></pre>
 <ul>
 <li>P_in / P_out / P_cached は Step 3 で取得する単価(100万トークンあたり)。<strong>出力単価は入力の 3〜5 倍が通例</strong>なので、出力を絞る設計(構造化出力・max tokens)がコストに効く。</li>
 <li>エージェントは 1 クエリで<strong>内部的に複数 LLM 呼び出し</strong>(ツール選択 → 実行 → 統合)が走る。平均ターン/クエリはエージェント構成では 2〜5 倍に見積もる(PoC で実測して補正)。</li>
-<li>※2026-10-06 追加 — <strong>評価のジャッジ費用</strong>: <code>評価の月額 = 評価件数/月 × ジャッジ呼び出し回数/件 × (ジャッジ入力トークン × P_in + 出力トークン × P_out)</code>。個別の評価器はそれぞれジャッジを呼ぶので「呼び出し回数/件 = 使う評価器の数」になるが、<strong>合成評価器(preview)</strong>の <code>builtin.output_quality</code>(Fluency / Coherence / Intent Resolution / Task Adherence / Groundedness / Task Completion の 6 つ)と <code>builtin.tool_use_quality</code>(ツール系 5 つ)は 1 回のジャッジ呼び出しに束ねる(ジャッジは GPT-5.6 系推奨、最安の選択肢として gpt-5.6-luna が挙がっている)。1 回あたりの入出力は個別より大きくなりうるので、PoC で <code>&lt;composite&gt;_properties</code> のトークン数を実測して係数を決める(<a href="https://learn.microsoft.com/en-us/azure/foundry/concepts/built-in-evaluators">built-in evaluators</a>)。</li>
+<li>※2026-11-22 追加 — <strong>キャッシュ書込の課金</strong>: GPT-5.6 以降のモデルはキャッシュの読込割引に加えて<strong>書込にも課金</strong>される(GPT-5.6 より前は書込無料)。TTL は 30 分(既定)か 12 時間で、<strong>12 時間キャッシュの書込は 2026-11-01 の利用分から課金</strong>。書込量は応答の <code>usage.cache_write_tokens</code> で実測する。可変部分が先頭にあるプロンプトは書込ばかり増えるので、固定部分を前に置きブレークポイントを固定部分の直後に置く。キャッシュが効かない用途は explicit モードでブレークポイントを置かない(<a href="https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/prompt-caching">prompt-caching</a>、<a href="../../casebook/html/02-pitfalls-index.html#f-モデル-クォータ-コスト">casebook P-M24</a>)。</li>
+<li>※2026-10-06 追加 — <strong>評価のジャッジ費用</strong>: <code>評価の月額 = 評価件数/月 × ジャッジ呼び出し回数/件 × (ジャッジ入力トークン × P_in + 出力トークン × P_out)</code>。個別の評価器はそれぞれジャッジを呼ぶので「呼び出し回数/件 = 使う評価器の数」になるが、<strong>合成評価器(preview)</strong>の <code>builtin.output_quality</code>(Fluency / Coherence / Intent Resolution / Task Adherence / Groundedness / Task Completion の 6 つ)と <code>builtin.tool_use_quality</code>(ツール系 5 つ)は 1 回のジャッジ呼び出しに束ねる(ジャッジは GPT-5.6 系推奨、最安の選択肢として gpt-5.6-luna が挙がっている)。1 回あたりの入出力は個別より大きくなりうるので、PoC で <code>&lt;composite&gt;_properties</code> のトークン数を実測して係数を決める(<a href="https://learn.microsoft.com/en-us/azure/foundry/concepts/built-in-evaluators">built-in evaluators</a>)。※2026-11-22: (a) <strong>決定モデル judge(preview)</strong>は judge 呼び出しの費用を大きく下げうる — 課金は入力トークン(出力は無料とする記述。単価は Foundry Models の価格ページ)で、Tech Community 2026-11-20 の社内計測では 1,000 回あたりの費用が生成 judge の約 1/6〜1/290。ただし対応は Microsoft-Decision-1(preview、<strong>2027-02-04 リタイア</strong>)だけで 1.1 は judge 非対応(Learn)、理由文を返さず、Agent optimizer を駆動する評価器には向かない(<a href="../../casebook/html/02-pitfalls-index.html#g-観測と評価">casebook P-O29</a>)。(b) モデルをターゲットにした評価 run は <code>estimated_cost.target</code>(推定の推論コスト)を返すようになった(Global Standard のデプロイでトークンと価格データがそろう場合のみ。請求ではない)。(c) <strong>Insights(GA)</strong>のスキャンは GPT-5 以降の GPT デプロイをジャッジに使い、初回は過去 7 日分のトレースが対象 — スキャンの頻度 × トレース量のジャッジ費用を積む。</li>
 <li>※2026-10-06 追加 — <strong>Routines の起動回数</strong>: <code>エージェント実行回数/月 = 起動回数/月 × (1 + 再試行率 × 追加試行数)</code>。既定の配信再試行は<strong>最大 5 回(5〜60 秒の指数バックオフ)</strong>に変わった(旧 3 回)。再試行は一時障害のときだけだが、上振れの幅として最悪 5 倍を置き、冪等キーで二重処理を防ぐ設計とセットで説明する(<a href="../../casebook/html/02-pitfalls-index.html#b-agent-service-コア">casebook P-A13</a>)。</li>
 </ul>
 <h2 id="step-2-コスト構成要素チェックリスト-見落とし防止">Step 2: コスト構成要素チェックリスト(見落とし防止)</h2>
@@ -152,13 +154,13 @@ footer {
 <td>ナレッジ</td>
 <td>Foundry IQ(ナレッジベース / agentic retrieval)</td>
 <td><strong>AI Search 側で課金</strong>(agentic retrieval のトークン課金〈月 5,000 万トークン無料枠〉+ クエリ計画等のモデル従量)。SharePoint(remote)/ Web ナレッジソースは別課金</td>
-<td><strong>Serverless(Developer tier、プレビュー)は 2026-09-13 に課金開始</strong>(Compute Unit 時間 + ストレージ)。PoC で無料前提にしない</td>
+<td><strong>Serverless(Developer tier、プレビュー)は 2026-09-13 に課金開始</strong>(Compute Unit 時間 + ストレージ)。PoC で無料前提にしない。※2026-11-22: 名称は Foundry IQ (Azure AI Search)、Serverless は「Serverless tier」の表記になり GA は両論(Search Learn = GA / Azure ブログ = 2026-12 GA)。<strong>有償の Serverless はインデクサーの実行も CU を消費</strong>し(セマンティックランカー・クエリ書き換え・スキル実行・KB のモデル呼び出しは別メーター)、インデクサーは累積 48 時間 / 24 時間の窓を共有する。閉域の取り込みは Dedicated の S2 / S3 / L1 / L2 のみ(Basic・S1 は不可)なので、閉域の本番を見込む見積もりは S2 以上で積む(<a href="../../casebook/html/02-pitfalls-index.html#e-rag-とナレッジ">casebook P-R19</a>)</td>
 </tr>
 <tr>
 <td>ツール</td>
 <td>Web search / Grounding with Bing</td>
 <td>呼び出し従量(<strong>別課金</strong>)</td>
-<td>DPA 対象外の説明とセット(<a href="03-japan-compliance.html">03</a>)</td>
+<td>DPA 対象外の説明とセット(<a href="03-japan-compliance.html">03</a>)。※2026-11-22: prompt agent への直付けは <strong>Web IQ</strong>(GA。Ignite で値下げを発表)、toolbox 経由は従来の <strong>Grounding with Bing</strong> で、メーターも契約条件も経路で違う。見積もりは経路ごとに分けて積む(<a href="../../casebook/html/02-pitfalls-index.html#e-rag-とナレッジ">casebook P-R18</a>)</td>
 </tr>
 <tr>
 <td>ツール</td>
@@ -170,7 +172,13 @@ footer {
 <td>エージェント</td>
 <td>hosted agent セッション</td>
 <td><strong>vCPU 時間 + メモリ GiB 時間の従量</strong>(アクティブなセッション分。アイドルタイムアウト〈既定 15 分・2〜60 分で設定可。※2026-10-14: REST 仕様と azd 拡張 beta.19 は上限 240 分、Learn は 60 分のまま — 両論〉経過でコンピュート解放)</td>
-<td>cpu / memory 指定は 1 セッションあたり → サンドボックスのオーバーサイズ × 同時実行数で倍増</td>
+<td>cpu / memory 指定は 1 セッションあたり → サンドボックスのオーバーサイズ × 同時実行数で倍増。※2026-11-22: idle timeout は <strong>2〜240 分で確定</strong>(両論解消)。課金は割り当て量(使用率ではない)で、<strong>idle で止まるまでの待機時間も課金</strong>され <code>stop</code> で終わる — timeout を延ばす設計は待機分を積む。shared subnet IPs の GA で同時実行の律速はセッションクォータ(既定 2,000 / 1,000)になった</td>
+</tr>
+<tr>
+<td>エージェント</td>
+<td>Microsoft Copilot harness(prompt agent のマネージドハーネス、preview)(2026-11-22 追加)</td>
+<td><strong>サンドボックスの vCPU 時間 + メモリ GiB 時間の従量</strong>(2026-12-01 開始。それまでは harness の実行は無料)。モデル推論と個別課金のツールは従来どおり別に課金</td>
+<td>単価は devblogs 2026-10-28 に記載(Learn の料金ページへの掲載は要確認)。サンドボックスの CPU / メモリ / idle は利用者が設定できないので、会話数 × 会話あたりの実行時間で積む。PoC で使っている場合は 12-01 以降の費用を見積もり直す(<a href="../../casebook/html/02-pitfalls-index.html#b-agent-service-コア">casebook P-A18</a>)</td>
 </tr>
 <tr>
 <td>エージェント</td>
@@ -181,7 +189,7 @@ footer {
 <tr>
 <td>エージェント</td>
 <td>Bot Service(Teams/M365 公開時)</td>
-<td>SKU</td>
+<td>SKU(※2026-11-22: 直接公開では<strong>別途の Azure Bot Service リソースは不要</strong>になった — publish-copilot 2026-11-12 版。Foundry の直接公開なら見積もりから外す)</td>
 <td>公開チャネル追加時のみ。※2026-10-14: 公開したエージェントは Microsoft 365 Copilot ライセンスのない利用者も Copilot Chat で使えるが、SharePoint や Copilot コネクタなどの<strong>共有テナントデータにアクセスする利用は従量課金になりうる</strong>(troubleshoot-publish-copilot の注記)— 利用者のライセンス構成と、共有データへのアクセスの有無を見積もりの前提に書く</td>
 </tr>
 <tr>
@@ -194,7 +202,7 @@ footer {
 <td>観測性</td>
 <td>評価(クラウド評価・継続的評価・Red Teaming)</td>
 <td>評価器の LLM 従量</td>
-<td>playground 評価は<strong>既定で有効</strong>(全プロジェクト・従量)。※2026-10-06: 合成評価器(preview)でジャッジ呼び出し回数を減らせる(Step 1-3 の式)。※2026-10-14: 評価サービス側でも 2 つの削減が入った — ジャッジプロンプトの静的部分を先頭に並べてプレフィックスキャッシュを効かせた(エージェント評価のジャッジ通信で入力トークンの約 70% がキャッシュ)、Rubric 評価器の判定出力を表形式(TOON)にして出力トークンを約 30% 削減(書式を守れない mini / nano 系の推論モデルは JSON のまま)。コード変更なしで全評価に効くが、顧客の請求額にどう効くかは書かれていない(<a href="https://techcommunity.microsoft.com/t5/microsoft-foundry-blog/making-evaluations-cost-efficient/ba-p/4561786">Tech Community 2026-10-07「Making evaluations cost-efficient」</a>)→ 係数は PoC の実測で決める</td>
+<td>playground 評価は<strong>既定で有効</strong>(全プロジェクト・従量)。※2026-10-06: 合成評価器(preview)でジャッジ呼び出し回数を減らせる(Step 1-3 の式)。※2026-10-14: 評価サービス側でも 2 つの削減が入った — ジャッジプロンプトの静的部分を先頭に並べてプレフィックスキャッシュを効かせた(エージェント評価のジャッジ通信で入力トークンの約 70% がキャッシュ)、Rubric 評価器の判定出力を表形式(TOON)にして出力トークンを約 30% 削減(書式を守れない mini / nano 系の推論モデルは JSON のまま)。コード変更なしで全評価に効くが、顧客の請求額にどう効くかは書かれていない(<a href="https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/making-evaluations-cost-efficient/4561786">Tech Community 2026-10-07「Making evaluations cost-efficient」</a>)→ 係数は PoC の実測で決める。※2026-11-22: 決定モデル judge(preview)・評価 run の推定コスト・Insights のジャッジは Step 1-3 の注記。継続評価の既定の上限は 100 run / 時(<code>max_hourly_runs</code>)</td>
 </tr>
 <tr>
 <td>観測性</td>
@@ -258,7 +266,7 @@ footer {
 </tr>
 <tr>
 <td>特化</td>
-<td>voice agents(preview、<code>kind: voice</code>)/ GPT-Live(全二重音声)(2026-10-06 追加)</td>
+<td>voice agents(<code>kind: voice</code>。※2026-11-22: Learn・SDK・ブログ = GA / GA 一覧表 = Preview の両論。GPT-Live・SIP・campaigns・post-call delivery・WebRTC は preview)/ GPT-Live(全二重音声)(2026-10-06 追加)</td>
 <td>voice agents: 音声の入出力トークン・モデルのホスティング(<code>managed</code> はエージェント側で課金、<code>self_deployed</code> は自前デプロイの従量 / PTU)・接続時間・ツール・録音やアバター。GPT-Live: 音声の会話と、委任先のバックエンド(Responses 等)を別々に課金</td>
 <td><strong>GPT-Live の WebRTC セッションは 1 回あたり最低 15 秒の音声で課金</strong>(WebSocket は対象外)— 短い通話・接続し直しが多い用途では「セッション数 × max(実時間, 15 秒)」で積む。voice agents のトレースの推定コストは請求ではない(Cost Management が正)。※2026-10-14: 料金の考え方は <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/voice-agent-pricing">voice-agent-pricing</a>(2026-10-06 版)— 推定コストはトレースの <code>microsoft.foundry.voice.estimated_cost.*</code> 属性(managed / self-deployed 別)、削減策は <code>max_output_tokens</code> の上限・短い instructions・<code>static_interim_response</code> の優先・<code>end_conversation</code> での明示終了・不要時の <code>store</code> オフ。TTS アバターの標準アバターの一部(Jeff の全スタイル・Lisa の 4 スタイル)は 2026 年 12 月から利用不可</td>
 </tr>
@@ -266,7 +274,7 @@ footer {
 <td>特化</td>
 <td>Content Understanding</td>
 <td><strong>コンテンツ抽出</strong>(文書 = 1,000 ページ単位〈Minimal / Basic / Standard〉、音声・動画 = 時間単位〈分課金〉)+ <strong>コンテキスト処理トークン</strong> + <strong>フィールド抽出の BYO モデル(生成 + 埋め込み)従量</strong></td>
-<td>3 層を合算しないと過小見積もりになる。※2026-10-06(ラボ還元): CU の usage に<strong>キャッシュ入力の費目(<code>&lt;モデル&gt;-cached-input</code>)</strong>が新たに出た。自前の集計は費目一覧を固定せず、キャッシュ入力の単価も積む(<a href="../../casebook/html/02-pitfalls-index.html#l-文書処理と音声">casebook P-D10</a>)</td>
+<td>3 層を合算しないと過小見積もりになる。※2026-10-06(ラボ還元): CU の usage に<strong>キャッシュ入力の費目(<code>&lt;モデル&gt;-cached-input</code>)</strong>が新たに出た。自前の集計は費目一覧を固定せず、キャッシュ入力の単価も積む(<a href="../../casebook/html/02-pitfalls-index.html#l-文書処理と音声">casebook P-D10</a>)。※2026-11-22: 非同期分析の上限が 300 → 2,000 ページになり、GPT-5.6 / 6 / 6.1 系を接続モデルに選べる(モデルの単価差がフィールド抽出の費用に直結)。入力文書も最長 24 時間保持される(<a href="../../casebook/html/02-pitfalls-index.html#l-文書処理と音声">casebook P-D14</a>)</td>
 </tr>
 </tbody></table></div>
 <p><strong>閉域構成の経験則</strong>: Firewall + PE + APIM + App Gateway の<strong>固定費だけで月額の下限が決まる</strong>。小規模利用の閉域案件は「トークン代よりインフラ固定費」になるので、先にインフラ固定費を積んでから変動費を載せる。</p>
@@ -328,12 +336,12 @@ footer {
 <ul>
 <li>最小 PTU 数・増分はモデル別(例: 15/5 や 25/50 など。必ず現行ドキュメントで確認)。</li>
 <li><strong>PTU はモデル非依存(fungible)</strong>なのでモデル乗り換えでも無駄になりにくい。Reservation は 1 か月 / 1 年。</li>
-<li>※2026-10-06 追加: <strong>GPT-6 Astra / Sol / 6.1 Sol 以降は normalized token accounting</strong>。<code>normalized TPM = Σ(トークン種別ごとの TPM × 重み)</code>、<code>必要 PTU = normalized TPM ÷ モデルの PTU あたり normalized TPM</code>(重み = その種別の単価 ÷ 同じモデルの短コンテキスト入力単価。入力・<strong>キャッシュ入力</strong>・キャッシュ書き込み・出力を短 / 長コンテキスト別に)。<strong>キャッシュ入力も重みどおりに PTU 容量を消費</strong>し、旧来の「キャッシュ分は 100% 控除」はこの方式のモデルには当てはまらない(他のモデルは従来どおり控除)。キャッシュ率の高い用途ほど旧規則で見積もると足りなくなる(<a href="https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/provisioned-throughput-sizing">provisioned-throughput-sizing</a>、<a href="../../casebook/html/02-pitfalls-index.html#f-モデル-クォータ-コスト">casebook P-M16</a>)。</li>
+<li>※2026-10-06 追加: <strong>GPT-6 Astra / Sol / 6.1 Sol 以降は normalized token accounting</strong>。<code>normalized TPM = Σ(トークン種別ごとの TPM × 重み)</code>、<code>必要 PTU = normalized TPM ÷ モデルの PTU あたり normalized TPM</code>(重み = その種別の単価 ÷ 同じモデルの短コンテキスト入力単価。入力・<strong>キャッシュ入力</strong>・キャッシュ書き込み・出力を短 / 長コンテキスト別に)。<strong>キャッシュ入力も重みどおりに PTU 容量を消費</strong>し、旧来の「キャッシュ分は 100% 控除」はこの方式のモデルには当てはまらない(他のモデルは従来どおり控除)。キャッシュ率の高い用途ほど旧規則で見積もると足りなくなる(<a href="https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/provisioned-throughput-sizing">provisioned-throughput-sizing</a>、<a href="../../casebook/html/02-pitfalls-index.html#f-モデル-クォータ-コスト">casebook P-M16</a>)。※2026-11-22: GPT-5.6 以降のキャッシュ書込も重みを持ち、<strong>12 時間キャッシュの書込の重みは 2.5</strong>(Step 1-3 のキャッシュ書込)。</li>
 <li>※2026-10-06 追加: Fireworks モデルの PTU 既定値(最小デプロイ・増分・PTU あたり入力 TPM)は 2026-10-02 に多くのモデルで大きく改訂された(最小デプロイが倍増・PTU あたり TPM が減ったモデルが多い)。過去の試算・表を流用せず、見積もりのたびに現行の表で取り直す。</li>
 </ul>
 <li>キャパシティ試算はポータルの <strong>capacity calculator</strong> で「想定 RPM・トークン/リクエスト → 必要 PTU」を出す(モデル世代で PTU あたり性能が大きく違うため手計算しない)。</li>
 <li><strong>ピーク型トラフィックは「PTU をベースに、溢れを Standard に流す spillover 構成」</strong>が定石(Azure OpenAI モデルのみ対応。DeepSeek/Llama 非対応)。</li>
-<li>PTU デプロイは<strong>モデルリタイア時に自動アップグレードされない(手動移行)</strong>— 運用契約の論点(<a href="01-hearing-sheet.html">01 ヒアリング 6-4</a>)。</li>
+<li>PTU デプロイは<strong>モデルリタイア時に自動アップグレードされない(手動移行)</strong>— 運用契約の論点(<a href="01-hearing-sheet.html">01 ヒアリング 6-4</a>)。※2026-11-22: 実例として、gpt-4o 2024-05-13(2027-01-14 リタイア)の後継 gpt-5.1 への自動アップグレードは Standard 系だけで、PTU と Batch は手動。o-series の後継 gpt-5.6-sol / terra は Batch・Regional Standard で提供されず、gpt-5.6-sol は Global Provisioned のカバレッジも限定的なので、再見積もりの対象モデルが変わりうる(<a href="../../casebook/html/02-pitfalls-index.html#f-モデル-クォータ-コスト">casebook P-M21</a>)。</li>
 </ol>
 <h2 id="step-5-コスト削減レバー-提案の調整代">Step 5: コスト削減レバー(提案の調整代)</h2>
 <div class="tablewrap"><table><thead><tr>
@@ -354,12 +362,12 @@ footer {
 <tr>
 <td>プロンプトキャッシュ</td>
 <td>キャッシュ入力単価が大幅減</td>
-<td>システムプロンプト・ツール定義を先頭に固定する設計が前提。※2026-10-06: 従量では単価が下がるが、GPT-6 系の PTU ではキャッシュ入力も容量を消費する(Step 4)。※2026-10-14: Grounding with Bing Search / Bing Custom Search を付けたエージェントでは、ツールが毎リクエストに現在時刻入りの指示を追加するため<strong>プロンプトキャッシュがヒットしない</strong>(bing-tools の既知事項)— キャッシュ割引なしで見積もる(<a href="../../casebook/html/02-pitfalls-index.html#f-モデル-クォータ-コスト">casebook P-M19</a>)</td>
+<td>システムプロンプト・ツール定義を先頭に固定する設計が前提。※2026-10-06: 従量では単価が下がるが、GPT-6 系の PTU ではキャッシュ入力も容量を消費する(Step 4)。※2026-10-14: Grounding with Bing Search / Bing Custom Search を付けたエージェントでは、ツールが毎リクエストに現在時刻入りの指示を追加するため<strong>プロンプトキャッシュがヒットしない</strong>(bing-tools の既知事項)— キャッシュ割引なしで見積もる(<a href="../../casebook/html/02-pitfalls-index.html#f-モデル-クォータ-コスト">casebook P-M19</a>)。※2026-11-22: <strong>GPT-5.6 以降は書込にも課金</strong>されるので、ヒット率が低い用途ではかえって高くなりうる(Step 1-3)</td>
 </tr>
 <tr>
 <td>Model router</td>
 <td>簡単な質問を安いモデルへ自動ルーティング</td>
-<td>Global / Data Zone Standard のみ。Claude をプールに入れるなら事前デプロイ必須(Claude 分は Marketplace 課金)。ルーティングプールはバージョン更新で入れ替わるため評価をやり直す(model-router 2026-09-01 版。非 OpenAI ルーティングのプレビュー表記は現行ページにない)。※2026-10-14: 2026-10 にプールが 35 モデルへ拡大し、Fireworks の 3 モデル(<code>FW-GLM-5.3</code> / <code>FW-GLM-5.3-Flash</code> / <code>FW-Kimi-K3</code>)が事前デプロイ不要で既定プールに入った(Fireworks の従量は別のクォータプール・推論は Microsoft 施設外 — 下記と <a href="03-japan-compliance.html">03</a> §2)。既定プールのままだとルーティング先の単価・課金経路が混ざるので、見積もりは model subset で絞った構成で行う(<a href="https://learn.microsoft.com/en-us/azure/foundry/foundry-models/whats-new-model-router">What's new in model router</a>)</td>
+<td>Global / Data Zone Standard のみ。Claude をプールに入れるなら事前デプロイ必須(Claude 分は Marketplace 課金)。ルーティングプールはバージョン更新で入れ替わるため評価をやり直す(model-router 2026-09-01 版。非 OpenAI ルーティングのプレビュー表記は現行ページにない)。※2026-10-14: 2026-10 にプールが 35 モデルへ拡大し、Fireworks の 3 モデル(<code>FW-GLM-5.3</code> / <code>FW-GLM-5.3-Flash</code> / <code>FW-Kimi-K3</code>)が事前デプロイ不要で既定プールに入った(Fireworks の従量は別のクォータプール・推論は Microsoft 施設外 — 下記と <a href="03-japan-compliance.html">03</a> §2)。既定プールのままだとルーティング先の単価・課金経路が混ざるので、見積もりは model subset で絞った構成で行う(<a href="https://learn.microsoft.com/en-us/azure/foundry/foundry-models/whats-new-model-router">What's new in model router</a>)。※2026-11-22: 課金は<strong>ルーティング料(入力トークンあたり)+選ばれたモデルの利用料</strong>で、自前の PTU が応答した場合はルーティング料だけ — 見積もりにルーティング料の行を足す。プールは 45 モデル(Book of News は 50)、Fireworks は有効化したサブスクリプションだけ。Auto(preview)は常に Global Standard で処理し、Data Zone の router は Claude に流さない(<a href="../../casebook/html/02-pitfalls-index.html#f-モデル-クォータ-コスト">casebook P-M22</a>)。AI Gateway の automatic model selection(preview)は <strong>preview 中はルーティング料なし</strong>(GA 時に課金開始とブログ)、ゲートウェイとバックエンドの料金は発生</td>
 </tr>
 <tr>
 <td>合成評価器(preview、2026-10-06 追加)</td>
@@ -503,12 +511,12 @@ Foundry 月額       = Σ(LLM 呼び出し × トークン × P_tok)+ ページ 
 <p><strong>構造</strong>: ページ課金(CU/DI)が支配項。<strong>CU は BYO モデル接続必須</strong>なのでそのモデル従量も忘れず加算。リアルタイム性不要なら全部 Batch に寄せる。</p>
 <h2 id="見積もり時の注意-検証済みの事実">見積もり時の注意(検証済みの事実)</h2>
 <ul>
-<li><strong>Azure OpenAI にコストのハードリミット機能はない</strong>(公式明記)。Budget + アクショングループの自動化は自前開発。提案書に「上限保証」と書かない。</li>
-<li>Cost Analysis への反映は<strong>取り込みタイミングにより遅延あり</strong>(公式は時間非特定)。分単位の照合はしない。</li>
-<li>プロジェクト単位のチャージバック(<code>project</code> タグ)は<strong>プレビューかつ Marketplace モデル(Claude 等)非対応</strong>。テナント/部門別の正確な按分が要件なら <strong>APIM の <code>llm-emit-token-metric</code></strong>(既定8ディメンション + カスタム最大5)で自前実装。</li>
+<li><strong>Azure OpenAI にコストのハードリミット機能はない</strong>(公式明記)。Budget + アクショングループの自動化は自前開発。提案書に「上限保証」と書かない。※2026-11-22: <strong>Foundry の cost controls(preview)</strong>で予算超過の要求を HTTP 429(<code>x-ms-budget-cause: budget_exceeded</code>)で止められるようになったが、<strong>対象は GPT と o-series のみ</strong>(Claude 等は対象外)で、<strong>PTU・ツール料金・hosted agent のコンピュートは数えず</strong>、新しい GPT モデルは価格が入るまで約 1 週間計上されない。判定が間に合わなければ要求は通り(fail-open)、Spending は課金と突合しない推定。「上限保証」と書かない方針は変えず、cost controls は一次の歯止め+APIM / AI Gateway のトークン上限+予算アラートの多層で説明する。cost control を持つプロジェクトは削除できない(<a href="../../casebook/html/02-pitfalls-index.html#f-モデル-クォータ-コスト">casebook P-M25</a>)。</li>
+<li>Cost Analysis への反映は<strong>取り込みタイミングにより遅延あり</strong>(公式は時間非特定)。分単位の照合はしない。※2026-11-22: Foundry の Cost 画面のページ(analyze-costs-cost-management)は「<strong>コストは利用の 8〜24 時間後</strong>(利用量は数分)」と明記した。<strong>Foundry のロールではコストが見えない</strong>ので、見積もりの前提に「Cost Management Reader を誰に付けるか」を書く(<a href="../../casebook/html/02-pitfalls-index.html#c-id-と-rbac">casebook P-I16</a>)。</li>
+<li>プロジェクト単位のチャージバック(<code>project</code> タグ)は<strong>プレビューかつ Marketplace モデル(Claude 等)非対応</strong>。テナント/部門別の正確な按分が要件なら <strong>APIM の <code>llm-emit-token-metric</code></strong>(既定8ディメンション + カスタム最大5)で自前実装。※2026-11-22: エージェント名のタグ(<code>agent.name</code>)は 2026-11 以降の利用から付与され、内訳はタグ付きの課金だけなので合計より小さくなる。パートナー / コミュニティのモデルのメーターは Foundry リソースではなく RG 配下に出る。要求単位の独自タグでコストを分ける caller attribution は private preview(Tech Community 2026-11-19)。</li>
 <li>プレビュー期間中の機能(Memory 等)は<strong>課金体系が変更されうる</strong>と公式に明記。</li>
 <li>※2026-10-06 追加: <strong>Fireworks モデルの従量(pay-per-token)は Global Standard と Data Zone Standard で別々のクォータプール</strong>(Enterprise 契約は既定で各プール 10M TPM / リージョン / サブスクリプション、プール内は全 Fireworks モデルで共有)。さらに Fireworks 側の<strong>適応レート制限</strong>で実効の上限はクォータより低くなりうる(利用増に合わせて自動で上がる)。スループットを前提にする見積もりは段階的な立ち上げと 429 の再試行を含めて PoC で確かめる(<a href="https://learn.microsoft.com/en-us/azure/foundry/how-to/fireworks/enable-fireworks-models">enable-fireworks-models</a>)。データ処理場所は <a href="03-japan-compliance.html">03</a> §2。</li>
-<li>モデルリタイア(GA 後 12〜18 か月。温度感 18 か月・安全側 12 か月)のたびに単価が変わる。<strong>年間契約の提案では「モデル移行時の再見積もり条項」を入れる</strong>。※2026-10-14: xAI の Grok は「Grok 4.7 以降の GA モデルは最低 6 か月提供」という短い下限が新設され、Fireworks の一部モデルの従量はリタイア表にない期限で終了した(<a href="../../casebook/html/02-pitfalls-index.html#f-モデル-クォータ-コスト">casebook P-M07 / P-M18</a>)— 再見積もり条項の対象にパートナーモデルを含め、提供期間の下限をモデルごとに書く。</li>
+<li>モデルリタイア(GA 後 12〜18 か月。温度感 18 か月・安全側 12 か月)のたびに単価が変わる。<strong>年間契約の提案では「モデル移行時の再見積もり条項」を入れる</strong>。※2026-10-14: xAI の Grok は「Grok 4.7 以降の GA モデルは最低 6 か月提供」という短い下限が新設され、Fireworks の一部モデルの従量はリタイア表にない期限で終了した(<a href="../../casebook/html/02-pitfalls-index.html#f-モデル-クォータ-コスト">casebook P-M07 / P-M18</a>)— 再見積もり条項の対象にパートナーモデルを含め、提供期間の下限をモデルごとに書く。※2026-11-22: gpt-6.1-terra は GA から 12 か月(2027-10-26)でリタイアする。<strong>Baseten(preview)の pay-per-token は 30 日前予告</strong>で、Baseten / fal は Microsoft の Product Terms・DPA の対象外(Fireworks は DPA の範囲内)— 契約条件の違いを見積もりの前提に書く(<a href="../../casebook/html/02-pitfalls-index.html#f-モデル-クォータ-コスト">casebook P-M23</a>・<a href="03-japan-compliance.html">03</a> §2)。</li>
 </ul>
 </main>
 <footer>このHTMLは docs/survey/proposal/*.md から docs/survey/tools/md2html.py で自動生成されています。編集はMarkdown側で行ってください。</footer></body></html>

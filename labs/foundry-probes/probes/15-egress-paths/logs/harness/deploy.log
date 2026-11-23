@@ -1,0 +1,65 @@
+[2026-11-22 19:42:18 JST] az group create rg-ignite26-verify2
+[2026-11-22 19:42:22 JST] deployment p12-infra
+[2026-11-22 19:52:38 JST] deployment p13-public (baseName=<sfx>) — SKIP_PUBLIC のため省略
+### [2026-11-22 19:52:41 JST] account capability host
+[2026-11-22 19:52:44 JST] PUT https://management.azure.com/subscriptions/<sub>/resourceGroups/rg-ignite26-verify2/providers/Microsoft.CognitiveServices/accounts/aif-<sfx>/capabilityHosts/caphost-acct?api-version=2026-11-01
+  request: {"properties":{"capabilityHostKind":"Agents","customerSubnet":"/subscriptions/<sub>/resourceGroups/rg-ignite26-verify2/providers/Microsoft.Network/virtualNetworks/vnet-<sfx>/subnets/snet-agent"}}
+  HTTP 409
+  body: {"error":{"code":"UserError","message":"There is an existing Capability Host with name: aif-<sfx>@aml_aiagentservice, provisioning state: Succeeded for Foundry Account: <sub>/rg-ignite26-verify2/aif-<sfx>@AML/caphost-acct, cannot create a new Capability Host with name: caphost-acct for the same ClientId.","target":"caphost-acct","details":[],"additionalInfo":[{"type":"ComponentName","info":{"value":"managementfrontend"}},{"type":"Correlation","info":{"value":{"operation":"<hex-75>","request":"54096c5ef8acb8b7"}}},{"type":"Environment","info":{"value":"japaneast"}},{"type":"Location","info":{"value":"japaneast"}},{"type":"Time","info":{"value":"2026-11-22T10:52:44.3322581+00:00"}},{"type":"InnerError","info":{"value":{"code":"Conflict","innerError":null}}},{"type":"MessageFormat","info":{"value":"An error occurred"}},{"type":"MessageParameters","info":{"value":{"0":"There is an existing Capability Host with name: aif-<sfx>@aml_aiagentservice, provisioning state: Succeeded for Foundry Account: <sub>/rg-ignite26-verify2/aif-<sfx>@AML/caphost-acct, cannot create a new Capability Host with name: caphost-acct for the same ClientId."}}}]}}
+[2026-11-22 19:52:45 JST]   provisioningState=GET-failed
+[2026-11-22 19:53:16 JST]   provisioningState=GET-failed
+[2026-11-22 19:53:46 JST]   provisioningState=GET-failed
+[2026-11-22 19:53:47 JST] GET https://management.azure.com/subscriptions/<sub>/resourceGroups/rg-ignite26-verify2/providers/Microsoft.CognitiveServices/accounts/aif-<sfx>/capabilityHosts/caphost-acct?api-version=2026-11-01
+  HTTP 404
+  body: {"error":{"code":"UserError","message":"CapabilityHost 'caphost-acct' not found in workspace 'aif-<sfx>@AML'","details":[],"additionalInfo":[{"type":"ComponentName","info":{"value":"managementfrontend"}},{"type":"Correlation","info":{"value":{"operation":"<hex-76>","request":"bcc2d2e0a72bc4b8"}}},{"type":"Environment","info":{"value":"japaneast"}},{"type":"Location","info":{"value":"japaneast"}},{"type":"Time","info":{"value":"2026-11-22T10:53:47.2486295+00:00"}},{"type":"InnerError","info":{"value":{"code":"NotFoundError","innerError":null}}}]}}
+### [2026-11-22 19:53:47 JST] project capability host
+[2026-11-22 19:53:48 JST] PUT https://management.azure.com/subscriptions/<sub>/resourceGroups/rg-ignite26-verify2/providers/Microsoft.CognitiveServices/accounts/aif-<sfx>/projects/proj/capabilityHosts/caphost-proj?api-version=2026-11-01
+  request: {"properties":{"capabilityHostKind":"Agents","vectorStoreConnections":["conn-search"],"storageConnections":["conn-storage"],"threadStorageConnections":["conn-cosmos"]}}
+  HTTP 201
+  body: {"properties":{"description":null,"tags":null,"properties":null,"customerSubnet":null,"capabilityHostKind":"Agents","aiServicesConnections":null,"vectorStoreConnections":["conn-search"],"storageConnections":["conn-storage"],"threadStorageConnections":["conn-cosmos"],"provisioningState":"Creating"}}
+[2026-11-22 19:53:48 JST]   provisioningState=Creating
+[2026-11-22 19:54:19 JST]   provisioningState=Creating
+[2026-11-22 19:54:50 JST]   provisioningState=Creating
+[2026-11-22 19:55:20 JST]   provisioningState=Creating
+[2026-11-22 19:55:51 JST]   provisioningState=Creating
+[2026-11-22 19:56:22 JST]   provisioningState=Creating
+[2026-11-22 19:56:52 JST]   provisioningState=Succeeded
+[2026-11-22 19:56:53 JST] GET https://management.azure.com/subscriptions/<sub>/resourceGroups/rg-ignite26-verify2/providers/Microsoft.CognitiveServices/accounts/aif-<sfx>/projects/proj/capabilityHosts/caphost-proj?api-version=2026-11-01
+  HTTP 200
+  body: {"id":"/subscriptions/<sub>/resourceGroups/rg-ignite26-verify2/providers/Microsoft.CognitiveServices/accounts/aif-<sfx>/projects/proj/capabilityHosts/caphost-proj","name":"caphost-proj","type":"Microsoft.CognitiveServices/accounts/projects/capabilityHosts","properties":{"description":null,"tags":null,"properties":null,"customerSubnet":null,"capabilityHostKind":"Agents","aiServicesConnections":null,"vectorStoreConnections":["conn-search"],"storageConnections":["conn-storage"],"threadStorageConnections":["conn-cosmos"],"provisioningState":"Succeeded"},"systemData":{"createdAt":"2026-11-22T10:53:48.1196664+00:00","lastModifiedAt":"2026-11-22T10:56:27.6124993+00:00"}}
+### [2026-11-22 20:29:36 JST] down: capability host → アカウント → purge → RG
+[2026-11-22 20:29:39 JST] DELETE https://management.azure.com/subscriptions/<sub>/resourceGroups/rg-ignite26-verify2/providers/Microsoft.CognitiveServices/accounts/aif-<sfx>/projects/proj/capabilityHosts/caphost-proj?api-version=2026-11-01
+  HTTP 202
+  body: 
+[2026-11-22 20:30:45 JST] DELETE https://management.azure.com/subscriptions/<sub>/resourceGroups/rg-ignite26-verify2/providers/Microsoft.CognitiveServices/accounts/aif-<sfx>/capabilityHosts/caphost-acct?api-version=2026-11-01
+  HTTP 204
+  body: 
+[2026-11-22 20:31:46 JST] DELETE https://management.azure.com/subscriptions/<sub>/resourceGroups/rg-ignite26-verify2/providers/Microsoft.CognitiveServices/accounts/aif-<sfx>/projects/proj?api-version=2026-11-01
+  HTTP 202
+  body: 
+[2026-11-22 20:32:46 JST] delete + purge aif-<sfx>
+### [2026-11-22 20:33:41 JST] purge を待つあいだに時間課金の VM・AI Search を先に削除(ログ取得の完了後)
+ERROR: az vm delete: 'none' is not a valid value for '--force-deletion'. Allowed values: true, t, yes, y, 1, false, f, no, n, 0.
+
+Examples from command's help:
+az vm delete -g MyResourceGroup -n MyVm --yes
+Delete a VM without a prompt for confirmation.
+
+az vm delete --ids $(az vm list -g MyResourceGroup --query "[].id" -o tsv)
+Delete all VMs in a resource group.
+
+https://aka.ms/cli_ref
+Read more about the command in reference docs
+[2026-11-22 20:33:44 JST] vm deleted
+[2026-11-22 20:33:51 JST] search deleted
+[2026-11-22 20:34:00 JST] 訂正: 上の「vm deleted」は az vm delete の引数誤りで実際には削除されていない。引数を直してやり直す
+[2026-11-22 20:34:12 JST] vm deleted (az vm delete 終了)
+[2026-11-22 20:34:12 JST] 残り: 
+### [2026-11-22 20:34:23 JST] purge を待つあいだに PE 4 本を先に削除
+[2026-11-22 20:36:00 JST] PE 削除の終了。残り: 
+[2026-11-22 20:55:31 JST] az group delete -n rg-ignite26-verify2 --yes
+[2026-11-22 21:10:41 JST] az group exists -n rg-ignite26-verify2 -> false
+### [2026-11-22 21:10:54 JST] 撤去の最終確認
+az group exists -n rg-ignite26-verify2 -> false
+az cognitiveservices account list-deleted -> []
+az group list(名前のみ)-> NetworkWatcherRG rg-decision-models 

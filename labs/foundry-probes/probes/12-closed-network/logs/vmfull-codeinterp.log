@@ -1,0 +1,715 @@
+===== codeinterp  @ 2026-11-22T05:26:23Z
+[upload csv] POST {proj}/openai/v1/files -> 200 (2.7s) {   "object": "file",   "id": "assistant-<id-12>",   "purpose": "assistants",   "filename": "scores.csv",   "bytes": 36,   "created_at": 1795325183,   "expires_at": null,   "status": "processed",   "status_details": null } 
+   full: {
+  "object": "file",
+  "id": "assistant-<id-12>",
+  "purpose": "assistants",
+  "filename": "scores.csv",
+  "bytes": 36,
+  "created_at": 1795325183,
+  "expires_at": null,
+  "status": "processed",
+  "status_details": null
+}
+
+[create_version] POST {proj}/agents/a12-ci/versions?api-version=v1 -> 200 (3.1s) {   "metadata": {},   "object": "agent.version",   "id": "a12-ci:1",   "name": "a12-ci",   "version": "1",   "description": "probe a12-ci",   "created_at": 1795325188,   "definition": {     "kind": "prompt",     "model": "gpt-5.4-mini",     "instructions": "Use the python tool.",     "tools": [       {         "type": "code_interpreter",         "container": {"type":"auto","file_ids":["assistant-<id-12>"]}       }     ]   },   "draft": false,   "status": "active",   "instance_identity": {     "principal_id": "<guid-22>",     "client_id": "515e2459-b307
+   full: {
+  "metadata": {},
+  "object": "agent.version",
+  "id": "a12-ci:1",
+  "name": "a12-ci",
+  "version": "1",
+  "description": "probe a12-ci",
+  "created_at": 1795325188,
+  "definition": {
+    "kind": "prompt",
+    "model": "gpt-5.4-mini",
+    "instructions": "Use the python tool.",
+    "tools": [
+      {
+        "type": "code_interpreter",
+        "container": {"type":"auto","file_ids":["assistant-<id-12>"]}
+      }
+    ]
+  },
+  "draft": false,
+  "status": "active",
+  "instance_identity": {
+    "principal_id": "<guid-22>",
+    "client_id": "<guid-22>"
+  },
+  "blueprint": {
+    "principal_id": "<guid-23>",
+    "client_id": "<guid-24>"
+  },
+  "blueprint_reference": {
+    "type": "ManagedAgentIdentityBlueprint",
+    "blueprint_id": "a12-ci-1833f"
+  },
+  "agent_guid": "<guid-25>"
+}
+[agent code_interpreter(auto+file_ids)] POST {proj}/agents/a12-ci/endpoint/protocols/openai/responses?api-version=v1 -> 200 (8.2s) {   "metadata": {},   "top_logprobs": 0,   "temperature": 1,   "top_p": 0.98,   "service_tier": "default",   "prompt_cache_retention": "in_memory",   "model": "gpt-5.4-mini",   "reasoning": {     "effort": "none",     "context": "current_turn",     "mode": "standard"   },   "background": false,   "text": {     "format": {       "type": "text"     },     "verbosity": "medium"   },   "tools": [     {       "type": "code_interpreter",       "container": {         "type": "auto",         "file_ids": [           "assistant-<id-12>"         ]       }     }   ],   "tool_choice": "auto",   "truncation": "disabled",   "id": "resp_<id-32>",   "object": "response",   "status": "completed",   "created_at": 1795325189,   "completed_at": 1795325196,   "error": null,   "incomplete_details": null,   "output": [     {       "type": "code_interpret
+   full: {
+  "metadata": {},
+  "top_logprobs": 0,
+  "temperature": 1,
+  "top_p": 0.98,
+  "service_tier": "default",
+  "prompt_cache_retention": "in_memory",
+  "model": "gpt-5.4-mini",
+  "reasoning": {
+    "effort": "none",
+    "context": "current_turn",
+    "mode": "standard"
+  },
+  "background": false,
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "tools": [
+    {
+      "type": "code_interpreter",
+      "container": {
+        "type": "auto",
+        "file_ids": [
+          "assistant-<id-12>"
+        ]
+      }
+    }
+  ],
+  "tool_choice": "auto",
+  "truncation": "disabled",
+  "id": "resp_<id-32>",
+  "object": "response",
+  "status": "completed",
+  "created_at": 1795325189,
+  "completed_at": 1795325196,
+  "error": null,
+  "incomplete_details": null,
+  "output": [
+    {
+      "type": "code_interpreter_call",
+      "id": "ci_<id-33>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a12-ci",
+        "version": "1"
+      },
+      "response_id": "resp_<id-32>",
+      "status": "completed",
+      "container_id": "cntr_<id-34>",
+      "code": "import pandas as pd, os, json, textwrap, numpy as np\npath='/mnt/data/assistant-<id-12>-scores.csv'\ndf=pd.read_csv(path)\ndf.head(), df.columns, df.shape\n",
+      "outputs": null
+    },
+    {
+      "type": "code_interpreter_call",
+      "id": "ci_<id-35>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a12-ci",
+        "version": "1"
+      },
+      "response_id": "resp_<id-32>",
+      "status": "completed",
+      "container_id": "cntr_<id-34>",
+      "code": "mean_score = df['score'].mean()\nmean_score\n",
+      "outputs": null
+    },
+    {
+      "type": "code_interpreter_call",
+      "id": "ci_<id-36>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a12-ci",
+        "version": "1"
+      },
+      "response_id": "resp_<id-32>",
+      "status": "completed",
+      "container_id": "cntr_<id-34>",
+      "code": "out_path='/mnt/data/result.txt'\nwith open(out_path,'w') as f:\n    f.write(str(mean_score))\nout_path, os.path.getsize(out_path)\n",
+      "outputs": null
+    },
+    {
+      "type": "message",
+      "id": "msg_<id-37>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a12-ci",
+        "version": "1"
+      },
+      "response_id": "resp_<id-32>",
+      "phase": "final_answer",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "85.0",
+          "annotations": [],
+          "logprobs": []
+        }
+      ],
+      "status": "completed"
+    }
+  ],
+  "instructions": "Use the python tool.",
+  "usage": {
+    "input_tokens": 960,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0
+    },
+    "output_tokens": 136,
+    "output_tokens_details": {
+      "reasoning_tokens": 129
+    },
+    "total_tokens": 1096
+  },
+  "parallel_tool_calls": true,
+  "agent_reference": {
+    "type": "agent_reference",
+    "name": "a12-ci",
+    "version": "1"
+  },
+  "content_filters": [
+    {
+      "blocked": false,
+      "source_type": "prompt",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "jailbreak": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 3851,
+        "check_offset": 0
+      }
+    },
+    {
+      "blocked": false,
+      "source_type": "completion",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "protected_material_text": {
+          "filtered": false,
+          "detected": false
+        },
+        "protected_material_code": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 492,
+        "check_offset": 0
+      }
+    }
+  ]
+}
+[ci] output_text: '85.0'
+[ci] tool items: [{"type": "code_interpreter_call", "status": "completed", "code": "import pandas as pd, os, json, textwrap, numpy as np\npath='/mnt/data/assistant-<id-12>-scores.csv'\ndf=pd.read_csv(path)\ndf.head(), df.columns, df.shape\n"}, {"type": "code_interpreter_call", "status": "completed", "code": "mean_score = df['score'].mean()\nmean_score\n"}, {"type": "code_interpreter_call", "status": "completed", "code": "out_path='/mnt/data/result.txt'\nwith open(out_path,'w') as f:\n    f.write(str(mean_score))\nout_path, os.path.getsize(out_path)\n"}]
+[container files] GET {proj}/openai/v1/containers/cntr_<id-34>/files -> 200 (0.5s) {   "object": "list",   "data": [     {       "id": "cfile_<id-38>",       "object": "container.file",       "created_at": 1795325195,       "bytes": null,       "container_id": "cntr_<id-34>",       "path": "/mnt/data/result.txt",       "source": "assistant"     },     {       "id": "cfile_<id-39>",       "object": "container.file",       "created_at": 1795325190,       "bytes": 36,       "container_id": "cntr_<id-34>",       "path": "/mnt/data/assistant-<id-12>-scores.csv",       "source": "user"     }   ],   "first_id": "cfile_<id-38>",   "has_more": false,   "last_id": "cfile_<id-39>" }
+   full: {
+  "object": "list",
+  "data": [
+    {
+      "id": "cfile_<id-38>",
+      "object": "container.file",
+      "created_at": 1795325195,
+      "bytes": null,
+      "container_id": "cntr_<id-34>",
+      "path": "/mnt/data/result.txt",
+      "source": "assistant"
+    },
+    {
+      "id": "cfile_<id-39>",
+      "object": "container.file",
+      "created_at": 1795325190,
+      "bytes": 36,
+      "container_id": "cntr_<id-34>",
+      "path": "/mnt/data/assistant-<id-12>-scores.csv",
+      "source": "user"
+    }
+  ],
+  "first_id": "cfile_<id-38>",
+  "has_more": false,
+  "last_id": "cfile_<id-39>"
+}
+[download result.txt] GET {proj}/openai/v1/containers/cntr_<id-34>/files/cfile_<id-38>/content -> 200 (0.5s) 85.0
+   full: 85.0
+[create container (workaround)] POST {proj}/openai/v1/containers -> 200 (1.2s) {   "id": "cntr_<id-6>",   "object": "container",   "created_at": 1795325198,   "status": "running",   "expires_after": {     "anchor": "last_active_at",     "minutes": 20   },   "last_active_at": 1795325198,   "memory_limit": "2g",   "name": "probe-ci" }
+   full: {
+  "id": "cntr_<id-6>",
+  "object": "container",
+  "created_at": 1795325198,
+  "status": "running",
+  "expires_after": {
+    "anchor": "last_active_at",
+    "minutes": 20
+  },
+  "last_active_at": 1795325198,
+  "memory_limit": "2g",
+  "name": "probe-ci"
+}
+[create_version] POST {proj}/agents/a12-ci2/versions?api-version=v1 -> 200 (4.2s) {   "metadata": {},   "object": "agent.version",   "id": "a12-ci2:1",   "name": "a12-ci2",   "version": "1",   "description": "probe a12-ci2",   "created_at": 1795325201,   "definition": {     "kind": "prompt",     "model": "gpt-5.4-mini",     "instructions": "Use the python tool.",     "tools": [       {         "type": "code_interpreter",         "container": "cntr_<id-6>"       }     ]   },   "draft": false,   "status": "active",   "instance_identity": {     "principal_id": "<guid-16>",     "client_id": "<guid-46>
+   full: {
+  "metadata": {},
+  "object": "agent.version",
+  "id": "a12-ci2:1",
+  "name": "a12-ci2",
+  "version": "1",
+  "description": "probe a12-ci2",
+  "created_at": 1795325201,
+  "definition": {
+    "kind": "prompt",
+    "model": "gpt-5.4-mini",
+    "instructions": "Use the python tool.",
+    "tools": [
+      {
+        "type": "code_interpreter",
+        "container": "cntr_<id-6>"
+      }
+    ]
+  },
+  "draft": false,
+  "status": "active",
+  "instance_identity": {
+    "principal_id": "<guid-16>",
+    "client_id": "<guid-16>"
+  },
+  "blueprint": {
+    "principal_id": "<guid-26>",
+    "client_id": "<guid-27>"
+  },
+  "blueprint_reference": {
+    "type": "ManagedAgentIdentityBlueprint",
+    "blueprint_id": "a12-ci2-717b9"
+  },
+  "agent_guid": "<guid-28>"
+}
+[agent code_interpreter(container_id)] POST {proj}/agents/a12-ci2/endpoint/protocols/openai/responses?api-version=v1 -> 200 (6.1s) {   "metadata": {},   "top_logprobs": 0,   "temperature": 1,   "top_p": 0.98,   "service_tier": "default",   "prompt_cache_retention": "in_memory",   "model": "gpt-5.4-mini",   "reasoning": {     "effort": "none",     "context": "current_turn",     "mode": "standard"   },   "background": false,   "text": {     "format": {       "type": "text"     },     "verbosity": "medium"   },   "tools": [     {       "type": "code_interpreter",       "container": "cntr_<id-6>"     }   ],   "tool_choice": "auto",   "truncation": "disabled",   "id": "resp_<id-7>",   "object": "response",   "status": "completed",   "created_at": 1795325204,   "completed_at": 1795325209,   "error": null,   "incomplete_details": null,   "output": [     {       "type": "code_interpreter_call",       "id": "ci_<id-8>
+   full: {
+  "metadata": {},
+  "top_logprobs": 0,
+  "temperature": 1,
+  "top_p": 0.98,
+  "service_tier": "default",
+  "prompt_cache_retention": "in_memory",
+  "model": "gpt-5.4-mini",
+  "reasoning": {
+    "effort": "none",
+    "context": "current_turn",
+    "mode": "standard"
+  },
+  "background": false,
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "tools": [
+    {
+      "type": "code_interpreter",
+      "container": "cntr_<id-6>"
+    }
+  ],
+  "tool_choice": "auto",
+  "truncation": "disabled",
+  "id": "resp_<id-7>",
+  "object": "response",
+  "status": "completed",
+  "created_at": 1795325204,
+  "completed_at": 1795325209,
+  "error": null,
+  "incomplete_details": null,
+  "output": [
+    {
+      "type": "code_interpreter_call",
+      "id": "ci_<id-40>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a12-ci2",
+        "version": "1"
+      },
+      "response_id": "resp_<id-7>",
+      "status": "completed",
+      "container_id": "cntr_<id-6>",
+      "code": "import pandas as pd, os, textwrap, numpy as np\npath='/mnt/data/assistant-<id-12>-scores.csv'\ndf=pd.read_csv(path)\ndf.head(), df.columns, df.shape\n",
+      "outputs": null
+    },
+    {
+      "type": "code_interpreter_call",
+      "id": "ci_<id-41>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a12-ci2",
+        "version": "1"
+      },
+      "response_id": "resp_<id-7>",
+      "status": "completed",
+      "container_id": "cntr_<id-6>",
+      "code": "mean_score=df['score'].mean()\nmean_score\n",
+      "outputs": null
+    },
+    {
+      "type": "code_interpreter_call",
+      "id": "ci_<id-42>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a12-ci2",
+        "version": "1"
+      },
+      "response_id": "resp_<id-7>",
+      "status": "completed",
+      "container_id": "cntr_<id-6>",
+      "code": "out_path='/mnt/data/result.txt'\nwith open(out_path,'w') as f:\n    f.write(str(mean_score))\nout_path\n",
+      "outputs": null
+    },
+    {
+      "type": "message",
+      "id": "msg_<id-43>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a12-ci2",
+        "version": "1"
+      },
+      "response_id": "resp_<id-7>",
+      "phase": "final_answer",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "85.0",
+          "annotations": [],
+          "logprobs": []
+        }
+      ],
+      "status": "completed"
+    }
+  ],
+  "instructions": "Use the python tool.",
+  "usage": {
+    "input_tokens": 946,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0
+    },
+    "output_tokens": 126,
+    "output_tokens_details": {
+      "reasoning_tokens": 119
+    },
+    "total_tokens": 1072
+  },
+  "parallel_tool_calls": true,
+  "agent_reference": {
+    "type": "agent_reference",
+    "name": "a12-ci2",
+    "version": "1"
+  },
+  "content_filters": [
+    {
+      "blocked": false,
+      "source_type": "prompt",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "jailbreak": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 3842,
+        "check_offset": 0
+      }
+    },
+    {
+      "blocked": false,
+      "source_type": "completion",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "protected_material_text": {
+          "filtered": false,
+          "detected": false
+        },
+        "protected_material_code": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 452,
+        "check_offset": 0
+      }
+    }
+  ]
+}
+[ci2] output_text: '85.0'
+[container files (workaround)] GET {proj}/openai/v1/containers/cntr_<id-6>/files -> 200 (0.5s) {   "object": "list",   "data": [     {       "id": "cfile_<id-9>",       "object": "container.file",       "created_at": 1795325209,       "bytes": null,       "container_id": "cntr_<id-6>",       "path": "/mnt/data/result.txt",       "source": "assistant"     },     {       "id": "cfile_<id-10>",       "object": "container.file",       "created_at": 1795325199,       "bytes": 36,       "container_id": "cntr_<id-6>",       "path": "/mnt/data/assistant-<id-12>-scores.csv",       "source": "user"     }   ],   "first_id": "cfile_<id-9>",   "has_more": false,   "last_id": "cfile_<id-10>" }
+   full: {
+  "object": "list",
+  "data": [
+    {
+      "id": "cfile_<id-9>",
+      "object": "container.file",
+      "created_at": 1795325209,
+      "bytes": null,
+      "container_id": "cntr_<id-6>",
+      "path": "/mnt/data/result.txt",
+      "source": "assistant"
+    },
+    {
+      "id": "cfile_<id-10>",
+      "object": "container.file",
+      "created_at": 1795325199,
+      "bytes": 36,
+      "container_id": "cntr_<id-6>",
+      "path": "/mnt/data/assistant-<id-12>-scores.csv",
+      "source": "user"
+    }
+  ],
+  "first_id": "cfile_<id-9>",
+  "has_more": false,
+  "last_id": "cfile_<id-10>"
+}
+[code_interpreter egress] POST {proj}/agents/a12-ci/endpoint/protocols/openai/responses?api-version=v1 -> 200 (15.8s) {   "metadata": {},   "top_logprobs": 0,   "temperature": 1,   "top_p": 0.98,   "service_tier": "default",   "prompt_cache_retention": "in_memory",   "model": "gpt-5.4-mini",   "reasoning": {     "effort": "none",     "context": "current_turn",     "mode": "standard"   },   "background": false,   "text": {     "format": {       "type": "text"     },     "verbosity": "medium"   },   "tools": [     {       "type": "code_interpreter",       "container": {         "type": "auto",         "file_ids": [           "assistant-<id-12>"         ]       }     }   ],   "tool_choice": "auto",   "truncation": "disabled",   "id": "resp_<id-11>",   "object": "response",   "status": "completed",   "created_at": 1795325210,   "completed_at": 1795325225,   "error": null,   "incomplete_details": null,   "output": [     {       "type": "code_interpret
+   full: {
+  "metadata": {},
+  "top_logprobs": 0,
+  "temperature": 1,
+  "top_p": 0.98,
+  "service_tier": "default",
+  "prompt_cache_retention": "in_memory",
+  "model": "gpt-5.4-mini",
+  "reasoning": {
+    "effort": "none",
+    "context": "current_turn",
+    "mode": "standard"
+  },
+  "background": false,
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "tools": [
+    {
+      "type": "code_interpreter",
+      "container": {
+        "type": "auto",
+        "file_ids": [
+          "assistant-<id-12>"
+        ]
+      }
+    }
+  ],
+  "tool_choice": "auto",
+  "truncation": "disabled",
+  "id": "resp_<id-11>",
+  "object": "response",
+  "status": "completed",
+  "created_at": 1795325210,
+  "completed_at": 1795325225,
+  "error": null,
+  "incomplete_details": null,
+  "output": [
+    {
+      "type": "code_interpreter_call",
+      "id": "ci_<id-44>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a12-ci",
+        "version": "1"
+      },
+      "response_id": "resp_<id-11>",
+      "status": "completed",
+      "container_id": "cntr_<id-45>",
+      "code": "import urllib.request, ssl, traceback, sys, socket, urllib.error, os, json, textwrap\nresults = {}\nfor label, url in [('whoami','http://10.40.2.10:8080/whoami'), ('ipify','https://api.ipify.org')]:\n    try:\n        with urllib.request.urlopen(url, timeout=5) as r:\n            data = r.read()\n        results[label] = ('ok', data)\n    except Exception as e:\n        results[label] = ('err', repr(e), traceback.format_exc())\nresults\n",
+      "outputs": null
+    },
+    {
+      "type": "message",
+      "id": "msg_<id-46>",
+      "agent_reference": {
+        "type": "agent_reference",
+        "name": "a12-ci",
+        "version": "1"
+      },
+      "response_id": "resp_<id-11>",
+      "phase": "final_answer",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "I ran both requests.\n\n1. `http://10.40.2.10:8080/whoami`  \n   Error:\n   `urllib.error.URLError: <urlopen error timed out>`\n\n2. `https://api.ipify.org`  \n   Error:\n   `urllib.error.URLError: <urlopen error [Errno -3] Temporary failure in name resolution>`\n\nIf you want, I can also give you the full tracebacks in a cleaner formatted block.",
+          "annotations": [],
+          "logprobs": []
+        }
+      ],
+      "status": "completed"
+    }
+  ],
+  "instructions": "Use the python tool.",
+  "usage": {
+    "input_tokens": 2375,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0
+    },
+    "output_tokens": 231,
+    "output_tokens_details": {
+      "reasoning_tokens": 127
+    },
+    "total_tokens": 2606
+  },
+  "parallel_tool_calls": true,
+  "agent_reference": {
+    "type": "agent_reference",
+    "name": "a12-ci",
+    "version": "1"
+  },
+  "content_filters": [
+    {
+      "blocked": false,
+      "source_type": "prompt",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "jailbreak": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 3881,
+        "check_offset": 0
+      }
+    },
+    {
+      "blocked": false,
+      "source_type": "completion",
+      "content_filter_results": {
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "protected_material_text": {
+          "filtered": false,
+          "detected": false
+        },
+        "protected_material_code": {
+          "filtered": false,
+          "detected": false
+        }
+      },
+      "content_filter_raw": [],
+      "content_filter_offsets": {
+        "start_offset": 0,
+        "end_offset": 6242,
+        "check_offset": 0
+      }
+    }
+  ]
+}
+[ci3] output_text: 'I ran both requests.\n\n1. `http://10.40.2.10:8080/whoami`  \n   Error:\n   `urllib.error.URLError: <urlopen error timed out>`\n\n2. `https://api.ipify.org`  \n   Error:\n   `urllib.error.URLError: <urlopen error [Errno -3] Temporary failure in name resolution>`\n\nIf you want, I can also give you the full tracebacks in a cleaner formatted block.'

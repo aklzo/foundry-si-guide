@@ -75,10 +75,10 @@ d.edge(ha.port("right", 0.653), appi, style="dashed", color=TELEM, label="OTel �
 
 d.notes(
     [
-        ("運用", "アイドル(既定 15 分。上限は Learn 60 分 / REST 仕様・azd 240 分)で計算資源を解放し状態は保持。30 日無操作で完全削除"),
-        ("制約", "数日単位の承認待ちは B3(Durable Extension + DTS)へ。hosted 内の長時間実行はプレビュー"),
+        ("運用", "アイドル(既定 15 分・2〜240 分で設定可、2026-11 に確定)で計算資源を解放し状態は保持。30 日無操作で完全削除。memory snapshots(Preview)有効時は $HOME が残らない"),
+        ("制約", "数日単位の承認待ちは B3(Durable Extension + DTS)へ。hosted 内の長時間実行の回復(long-running resiliency)は 2026-11 に GA"),
         ("注意", "トレースは業務監査ログではない(ポータル表示 90 日・プロンプトや PII を含み得る)→ 承認記録は自前ストアに"),
-        ("課金", "アクティブセッションの CPU + メモリで課金。サイズ過大は同時実行数で掛け算になる"),
+        ("課金", "割り当てた CPU + メモリ × 稼働時間で課金(idle で止まるまでの待機も課金)。サイズ過大は同時実行数で掛け算 → 終わったら stop"),
         ("認証", "承認者 → 業務 UI は Entra ID / エージェント → Entra Agent ID(エージェント単位)/ 基幹ツールは APIM で OBO か app-only をツールごとに決める"),
     ],
     source="出典: docs/survey/architecture/05 B2",
